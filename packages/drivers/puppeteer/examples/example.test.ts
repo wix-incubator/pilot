@@ -19,7 +19,7 @@ describe("Example Test Suite", () => {
   });
 
   afterAll(async () => {
-    frameworkDriver.getCurrentPage()?.browser().close();
+    await frameworkDriver.getCurrentPage()?.browser().close();
   });
 
   beforeEach(async () => {
