@@ -39,11 +39,13 @@ export class CacheHandler {
   }
 
   public getStepFromCache(key: string): any | undefined {
+    if (this.shouldOverrideCache()) {
+      return undefined;
+    }
     return this.cache.get(key);
   }
 
   public addToTemporaryCache(key: string, value: any): void {
-    logger.info(`Adding to temporary cache: ${key}`);
     this.temporaryCache.set(key, [
       ...(this.temporaryCache.get(key) ?? []),
       value,
@@ -76,7 +78,7 @@ export class CacheHandler {
     return JSON.stringify(cacheKeyData);
   }
 
-  public shouldOverrideCache() {
+  private shouldOverrideCache() {
     return (
       process.env.PILOT_OVERRIDE_CACHE === "true" ||
       process.env.PILOT_OVERRIDE_CACHE === "1"

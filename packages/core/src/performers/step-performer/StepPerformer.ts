@@ -125,7 +125,7 @@ export class StepPerformer {
     const cachedValues =
       cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
 
-    if (!this.cacheHandler.shouldOverrideCache() && cachedValues) {
+    if (cachedValues) {
       const code = await this.findCodeInCacheValues(
         cachedValues,
         viewHierarchy,
