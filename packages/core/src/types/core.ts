@@ -32,9 +32,9 @@ export interface PilotFacade {
 
   /**
    * Ends the current test flow session and handles cache management.
-   * @param isCacheDisabled - If true, temporary cache data won't be persisted (default: false)
+   * @param shouldSaveInCache - If true, the current test flow will be saved in cache
    */
-  end: (isCacheDisabled?: boolean) => void;
+  end: (shouldSaveInCache?: boolean) => void;
 
   /**
    * Executes one or more test operations in sequence.
@@ -73,9 +73,6 @@ export interface PilotFacade {
   ) => void;
 }
 
-/** Cache mode settings */
-export type CacheMode = "full" | "disabled";
-
 /** Analysis mode settings */
 export type AnalysisMode = "fast" | "full";
 
@@ -83,10 +80,17 @@ export type AnalysisMode = "fast" | "full";
  * Pilot behavior configuration options.
  */
 export interface PilotOptions {
-  /** Cache mode (default: 'full') */
-  cacheMode?: CacheMode;
+  /** Cache options */
+  cacheOptions?: CacheOptions;
   /** Analysis mode (default: 'fast') */
   analysisMode?: AnalysisMode;
+}
+
+export interface CacheOptions {
+    /** If true, cache will be used for operations (default: true) */
+    shouldUseCache?: boolean;
+    /** If true, cache will be updated with new data (default: false) */
+    shouldOverrideCache?: boolean;
 }
 
 /**

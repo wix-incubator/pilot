@@ -46,7 +46,7 @@ export class Pilot {
       downscaleImage,
     );
 
-    this.cacheHandler = new CacheHandler();
+    this.cacheHandler = new CacheHandler(config.options?.cacheOptions);
     this.stepPerformerPromptCreator = new StepPerformerPromptCreator(
       config.frameworkDriver.apiCatalog,
     );
@@ -60,7 +60,6 @@ export class Pilot {
       config.promptHandler,
       this.cacheHandler,
       this.snapshotComparator,
-      config.options?.cacheMode,
       config.options?.analysisMode,
     );
 
@@ -148,9 +147,9 @@ export class Pilot {
 
   /**
    * Ends the Pilot test flow and optionally saves the temporary cache to the main cache.
-   * @param isCacheDisabled If true, temporary cache data won't be persisted
+   * @param shouldSaveInCache - If true, the current test flow will be saved in cache
    */
-  public end(isCacheDisabled = false): void {
+  public end(shouldSaveInCache = true): void {
     if (!this.running) {
       throw new PilotError(
         "Pilot is not running. Please call the `start()` method before ending the test flow.",
@@ -159,7 +158,7 @@ export class Pilot {
 
     this.running = false;
 
-    if (!isCacheDisabled) this.cacheHandler.flushTemporaryCache();
+    if (shouldSaveInCache) this.cacheHandler.flushTemporaryCache();
   }
 
   /**

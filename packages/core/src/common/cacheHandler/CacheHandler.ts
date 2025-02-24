@@ -1,15 +1,20 @@
 import fs from "fs";
 import path from "path";
-import { AutoPreviousStep, PreviousStep } from "@/types";
+import {AutoPreviousStep, CacheOptions, PreviousStep} from "@/types";
 import logger from "@/common/logger";
 
 export class CacheHandler {
   private cache: Map<string, any> = new Map();
   private temporaryCache: Map<string, any> = new Map();
   private readonly cacheFilePath: string;
+  private cacheOptions?: CacheOptions;
 
-  constructor(cacheFileName: string = "wix_pilot_cache.json") {
+  constructor(cacheOptions: CacheOptions = {}, cacheFileName: string = "wix_pilot_cache.json") {
     this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
+    this.cacheOptions = {
+        shouldUseCache: cacheOptions.shouldUseCache ?? true,
+        shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
+    };
   }
 
   public loadCacheFromFile(): void {
@@ -67,9 +72,8 @@ export class CacheHandler {
   public generateCacheKey(
     currentGoal: string,
     previous: PreviousStep[] | AutoPreviousStep[],
-    cacheMode: string,
   ): string | undefined {
-    if (cacheMode === "disabled") {
+    if (!this.isCacheInUse()) {
       return undefined;
     }
 
@@ -83,5 +87,9 @@ export class CacheHandler {
       process.env.PILOT_OVERRIDE_CACHE === "true" ||
       process.env.PILOT_OVERRIDE_CACHE === "1"
     );
+  }
+
+  public isCacheInUse() {
+      return this.cacheOptions?.shouldUseCache !== false;
   }
 }

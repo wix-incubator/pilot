@@ -6,7 +6,6 @@ import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
 import {
   AnalysisMode,
-  CacheMode,
   CodeEvaluationResult,
   PreviousStep,
   PromptHandler,
@@ -20,7 +19,6 @@ import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
 import logger from "@/common/logger";
 
 export class StepPerformer {
-  private readonly cacheMode: CacheMode;
   private readonly analysisMode: AnalysisMode;
   private sharedContext: Record<string, any> = {};
 
@@ -33,10 +31,9 @@ export class StepPerformer {
     private promptHandler: PromptHandler,
     private cacheHandler: CacheHandler,
     private snapshotComparator: SnapshotComparator,
-    cacheMode: CacheMode = "full",
+
     analysisMode: AnalysisMode = "fast",
   ) {
-    this.cacheMode = cacheMode;
     this.analysisMode = analysisMode;
   }
 
@@ -57,7 +54,7 @@ export class StepPerformer {
     viewHierarchy: string,
     snapshot: any,
   ): Promise<SingleCacheValue | undefined> {
-    if (this.cacheMode === "disabled") {
+    if (!this.cacheHandler.isCacheInUse()) {
       throw new Error("Cache is disabled");
     }
 
@@ -119,7 +116,6 @@ export class StepPerformer {
     const cacheKey = this.cacheHandler.generateCacheKey(
       step,
       previous,
-      this.cacheMode,
     );
 
     const cachedValues =
@@ -165,7 +161,7 @@ export class StepPerformer {
 
     const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
     const code = extractCodeBlock(promptResult);
-    if (this.cacheMode !== "disabled") {
+    if (this.cacheHandler.isCacheInUse()) {
       const newCacheValue = await this.generateCacheValue(
         code,
         viewHierarchy,

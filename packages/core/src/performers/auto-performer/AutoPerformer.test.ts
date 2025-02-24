@@ -109,6 +109,7 @@ describe("AutoPerformer", () => {
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
       generateCacheKey: jest.fn(),
+      isCacheInUse: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
