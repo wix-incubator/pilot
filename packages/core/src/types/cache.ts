@@ -1,4 +1,4 @@
-import { AutoReview, AutoStepPlan, AutoStepReport } from "@/types/auto";
+import { AutoReview, AutoStepPlan } from "@/types/auto";
 
 /**
  * Screen capture output.

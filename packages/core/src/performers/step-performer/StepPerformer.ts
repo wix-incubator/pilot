@@ -113,10 +113,7 @@ export class StepPerformer {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
   ): Promise<string> {
-    const cacheKey = this.cacheHandler.generateCacheKey(
-      step,
-      previous,
-    );
+    const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
 
     const cachedValues =
       cacheKey && this.cacheHandler.getStepFromCache(cacheKey);

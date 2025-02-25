@@ -594,7 +594,7 @@ describe("Pilot Integration Tests", () => {
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
         options: {
-          cacheOptions: {shouldUseCache: false},
+          cacheOptions: { shouldUseCache: false },
         },
       });
       pilot.start();

@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import {AutoPreviousStep, CacheOptions, PreviousStep} from "@/types";
-import logger from "@/common/logger";
+import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
 
 export class CacheHandler {
   private cache: Map<string, any> = new Map();
@@ -9,11 +8,14 @@ export class CacheHandler {
   private readonly cacheFilePath: string;
   private cacheOptions?: CacheOptions;
 
-  constructor(cacheOptions: CacheOptions = {}, cacheFileName: string = "wix_pilot_cache.json") {
+  constructor(
+    cacheOptions: CacheOptions = {},
+    cacheFileName: string = "wix_pilot_cache.json",
+  ) {
     this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
     this.cacheOptions = {
-        shouldUseCache: cacheOptions.shouldUseCache ?? true,
-        shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
+      shouldUseCache: cacheOptions.shouldUseCache ?? true,
+      shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
   }
 
@@ -90,6 +92,6 @@ export class CacheHandler {
   }
 
   public isCacheInUse() {
-      return this.cacheOptions?.shouldUseCache !== false;
+    return this.cacheOptions?.shouldUseCache !== false;
   }
 }

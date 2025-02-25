@@ -9,8 +9,6 @@ import {
   ScreenCapturerResult,
   AutoStepReport,
   AutoReport,
-  HashingAlgorithm,
-  SnapshotHashObject,
 } from "@/types";
 import { StepPerformer } from "../step-performer/StepPerformer";
 

@@ -87,10 +87,10 @@ export interface PilotOptions {
 }
 
 export interface CacheOptions {
-    /** If true, cache will be used for operations (default: true) */
-    shouldUseCache?: boolean;
-    /** If true, cache will be updated with new data (default: false) */
-    shouldOverrideCache?: boolean;
+  /** If true, cache will be used for operations (default: true) */
+  shouldUseCache?: boolean;
+  /** If true, cache will be updated with new data (default: false) */
+  shouldOverrideCache?: boolean;
 }
 
 /**

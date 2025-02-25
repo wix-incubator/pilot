@@ -31,9 +31,7 @@ export class AutoPerformer {
     private screenCapturer: ScreenCapturer,
     private cacheHandler: CacheHandler,
     private snapshotComparator: SnapshotComparator,
-  ) {
-
-  }
+  ) {}
 
   private extractReviewOutput(text: string): AutoReviewSection {
     const { summary, findings, score } = extractTaggedOutputs({
@@ -98,17 +96,14 @@ export class AutoPerformer {
     previousSteps: AutoPreviousStep[],
     screenCapture: ScreenCapturerResult,
   ): Promise<AutoStepReport> {
-      const cacheKey = this.cacheHandler.generateCacheKey(
-          goal,
-          previousSteps,
-      );
+    const cacheKey = this.cacheHandler.generateCacheKey(goal, previousSteps);
 
-      if (this.cacheHandler.isCacheInUse() && cacheKey) {
-          const cacheResult = await this.getValueFromCache(cacheKey, screenCapture);
-          if (cacheResult) {
-              return cacheResult;
-          }
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
+      const cacheResult = await this.getValueFromCache(cacheKey, screenCapture);
+      if (cacheResult) {
+        return cacheResult;
       }
+    }
 
     const analysisLoggerSpinner = logger.startSpinner(
       "🤔 Thinking on next step",
@@ -314,7 +309,7 @@ export class AutoPerformer {
       );
 
       const correctCachedValue = cachedValues.find(
-          //
+        //
         (singleAutoPilotCachedValue) => {
           return (
             singleAutoPilotCachedValue.snapshotHash &&
@@ -332,23 +327,25 @@ export class AutoPerformer {
     }
   }
 
-  private async getValueFromCache(cacheKey: string, screenCapture: ScreenCapturerResult)
-  {
-        const cachedValues = await this.cacheHandler.getStepFromCache(cacheKey);
-        if (cachedValues) {
-            const cacheValue = await this.findInCachedValues(
-                cachedValues,
-                screenCapture,
-            );
-            if (cacheValue) {
-                return {
-                    screenDescription: cacheValue.screenDescription,
-                    plan: cacheValue.plan,
-                    review: cacheValue.review,
-                    goalAchieved: cacheValue.goalAchieved,
-                    summary: cacheValue.summary,
-                };
-            }
-        }
+  private async getValueFromCache(
+    cacheKey: string,
+    screenCapture: ScreenCapturerResult,
+  ) {
+    const cachedValues = await this.cacheHandler.getStepFromCache(cacheKey);
+    if (cachedValues) {
+      const cacheValue = await this.findInCachedValues(
+        cachedValues,
+        screenCapture,
+      );
+      if (cacheValue) {
+        return {
+          screenDescription: cacheValue.screenDescription,
+          plan: cacheValue.plan,
+          review: cacheValue.review,
+          goalAchieved: cacheValue.goalAchieved,
+          summary: cacheValue.summary,
+        };
+      }
     }
+  }
 }

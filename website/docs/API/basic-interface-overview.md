@@ -190,27 +190,31 @@ pilot.extendAPICatalog([
 ### Config Interface
 
 ```typescript
+import {CacheOptions} from "@wix-pilot/core/dist/types";
+
 interface Config {
-  /** Testing framework driver */
-  frameworkDriver: TestingFrameworkDriver;
-  /** AI service handler */
-  promptHandler: PromptHandler;
-  /** Optional behavior settings */
-  options?: PilotOptions;
+    /** Testing framework driver */
+    frameworkDriver: TestingFrameworkDriver;
+    /** AI service handler */
+    promptHandler: PromptHandler;
+    /** Optional behavior settings */
+    options?: PilotOptions;
 }
 
 interface PilotOptions {
-  /** Cache mode (default: 'full') */
-  cacheMode?: CacheMode;  // 'full' | 'disabled'
-  /** Analysis mode (default: 'fast') */
-  analysisMode?: AnalysisMode;  // 'fast' | 'full'
+    /** Cache options */
+    cacheOptions?: CacheOptions;
+    /** Analysis mode (default: 'fast') */
+    analysisMode?: AnalysisMode;  // 'fast' | 'full'
+}
+
+interface CacheOptions {
+    /** If true, cache will be used for operations (default: true) */
+    shouldUseCache?: boolean;
+    /** If true, cache will be updated with new data (default: false) */
+    shouldOverrideCache?: boolean;
 }
 ```
-
-#### Cache Modes
-
-- **full**: Cache is used with the screen state (default)
-- **disabled**: No caching is used
 
 #### Analysis Modes
 
