@@ -16,6 +16,7 @@ import {
 } from "@/types";
 import * as crypto from "crypto";
 import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
+import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
 export class StepPerformer {
@@ -32,6 +33,7 @@ export class StepPerformer {
     private promptHandler: PromptHandler,
     private cacheHandler: StepPerformerCacheHandler,
     private snapshotComparator: SnapshotComparator,
+    private screenCapturer: ScreenCapturer,
     cacheMode: CacheMode = "full",
     analysisMode: AnalysisMode = "fast",
   ) {
@@ -220,7 +222,7 @@ export class StepPerformer {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
         const { snapshot, viewHierarchy, isSnapshotImageAttached } =
-          screenCapture;
+          attempt == 1 ? screenCapture : await this.screenCapturer.capture();
 
         const code = await this.generateCode(
           step,
