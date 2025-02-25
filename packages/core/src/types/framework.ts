@@ -34,6 +34,8 @@ export type TestingFrameworkAPICatalog = {
   categories: TestingFrameworkAPICatalogCategory[];
   /** List of restrictions and guidlines of wrong actions */
   restrictions?: string[];
+  /** Allows pilot to delay failure with extended actions*/
+  extended_step?: boolean;
 };
 
 /**
