@@ -33,9 +33,6 @@ export class SnapshotComparator {
     cachedSnapshot: SnapshotHashObject,
     threshold?: number,
   ): boolean {
-    if (!newSnapshot) {
-      return false;
-    }
     const comparisonPromises = Object.entries(cachedSnapshot).map(
       ([algorithmName, hash]) => {
         const algorithm = this.hashingAlgorithms.get(
