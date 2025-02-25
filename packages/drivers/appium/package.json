@@ -1,0 +1,55 @@
+{
+  "name": "@wix-pilot/webdriverio-appium",
+  "version": "1.0.1",
+  "description": "WebdriverIO and Appium driver for Wix Pilot usage",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wix-incubator/pilot.git"
+  },
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "test": "echo No tests available for this package",
+    "test:example": "wdio run examples/wdio.conf.ts",
+    "build:app": "cd ../detox/ExampleApp &&  npm run build:ios",
+    "bump-version:patch": "npm version patch && git commit -am 'chore: bump patch version' && git push",
+    "release:patch": "npm run test && npm run bump-version:patch && npm run build && npm publish --access public",
+    "bump-version:minor": "npm version minor && git commit -am 'chore: bump minor version' && git push",
+    "release:minor": "npm run test && npm run bump-version:minor && npm run build && npm publish --access public",
+    "bump-version:major": "npm version major && git commit -am 'chore: bump major version' && git push",
+    "release:major": "npm run test && npm run bump-version:major && npm run build && npm publish --access public",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/wix-incubator/pilot/issues"
+  },
+  "dependencies": {
+    "@wix-pilot/core": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@wdio/globals": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@wdio/globals": "^9.9.1",
+    "@wdio/appium-service": "^8.29.0",
+    "@wdio/cli": "^9.9.1",
+    "@wdio/local-runner": "^9.9.1",
+    "@wdio/mocha-framework": "^9.9.0",
+    "@wdio/spec-reporter": "^9.9.0",
+    "@wdio/types": "^9.9.0",
+    "appium": "^2.15.0",
+    "appium-xcuitest-driver": "^8.3.1",
+    "axios": "^1.7.9",
+    "chai": "^5.2.0",
+    "webdriverio": "^9.9.1"
+  }
+}

@@ -32,7 +32,7 @@ describe("Example Test Suite", () => {
 
   it("perform test with pilot", async () => {
     await pilot.autopilot(
-      "Open https://www.wix.com/domains, and search for the domain Shraga.com, is it available?. if there is cookies message decline it",
+      "Open https://github.com/wix-incubator/pilot and click on the 'Code' tab, open with GUI browser",
     );
   });
 });

@@ -10,22 +10,14 @@ import type {
   Page as PuppeteerPage,
 } from "puppeteer";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
-import { bundleDriverUtils } from "./bundle";
 type FrameworkDriver = "puppeteer" | "playwright";
 
 expect.extend({ toMatchImageSnapshot });
-
-declare global {
-  interface Window {
-    driverUtils: typeof import("../utils").default;
-  }
-}
 
 export interface TestContext {
   browser: PuppeteerBrowser | PlaywrightBrowser;
   context?: PlaywrightContext;
   page: PuppeteerPage | PlaywrightPage;
-  bundledCode: string;
 }
 
 export async function setupTestEnvironment(
@@ -33,8 +25,6 @@ export async function setupTestEnvironment(
   driver: FrameworkDriver,
 ): Promise<TestContext> {
   try {
-    const bundledCode = await bundleDriverUtils();
-
     let browser: PuppeteerBrowser | PlaywrightBrowser;
     let context: PlaywrightContext | undefined;
     let page: PuppeteerPage | PlaywrightPage;
@@ -62,9 +52,8 @@ export async function setupTestEnvironment(
     page.setDefaultNavigationTimeout(10000);
 
     await page.goto(`file://${__dirname}/test-pages/${htmlFileName}`);
-    await page.addScriptTag({ content: bundledCode });
 
-    return { browser, context, page, bundledCode };
+    return { browser, context, page };
   } catch (error) {
     console.error("Setup failed:", error);
     throw error;

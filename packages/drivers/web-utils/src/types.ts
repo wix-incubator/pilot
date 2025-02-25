@@ -5,7 +5,8 @@ export type ElementCategory =
   | "list"
   | "table"
   | "header"
-  | "semantic";
+  | "semantic"
+  | "scrollable";
 
 export interface ElementHandle {
   // Optional: Define common methods if needed

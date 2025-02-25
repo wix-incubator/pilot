@@ -20,6 +20,26 @@ it('should update profile', async () => {
 });
 ```
 
+### WebdriverIO with Appium
+
+WebdriverIO integration with Appium. supports both iOS and Android testing
+
+```js
+// 1. Install: npm install --save-dev @wix-pilot/webdriverio-appium
+// 2. Import and use:
+import { WebdriverIOAppiumFrameworkDriver } from '@wix-pilot/webdriverio-appium';
+
+it('should update profile', async () => {
+  await pilot.perform(
+    'Launch the app',
+    'Navigate to Settings',
+    'Tap on "Edit Profile"',
+    'Update username to "john_doe"',
+    'Verify changes are saved'
+  );
+});
+```
+
 ## Web Testing Support
 
 ### Playwright

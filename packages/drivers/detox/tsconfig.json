@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "./",
+    "types": ["jest", "node"],
+    "baseUrl": "./",
+    "resolveJsonModule": true
+  },
+  "include": ["./"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "ExampleApp"
+  ]
+}
