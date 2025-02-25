@@ -12,7 +12,6 @@ import {
   ScreenCapturerResult,
   type CacheValues,
   type SingleCacheValue,
-  AutoPreviousStep,
 } from "@/types";
 import * as crypto from "crypto";
 import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
@@ -115,19 +114,13 @@ export class StepPerformer {
   ): Promise<string> {
     const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
 
-    const cachedValues =
-      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
-
-    if (cachedValues) {
-      const code = await this.findCodeInCacheValues(
-        cachedValues,
-        viewHierarchy,
-        snapshot,
-      );
-      if (code) {
-        return code;
-      }
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
+        const code = await this.getValueFromCache(cacheKey, viewHierarchy, snapshot);
+        if (code) {
+            return code;
+        }
     }
+
     let viewAnalysisResult = "";
     let apiSearchResult = "";
 
@@ -168,6 +161,24 @@ export class StepPerformer {
     }
 
     return code;
+  }
+
+
+  async getValueFromCache(cacheKey: string, viewHierarchy: string, snapshot: string|undefined): Promise<string | undefined> {
+      const cachedValues =
+          cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
+
+      if (cachedValues) {
+          const code = await this.findCodeInCacheValues(
+              cachedValues,
+              viewHierarchy,
+              snapshot,
+          );
+          if (code) {
+              return code;
+          }
+      }
+      return undefined;
   }
 
   async perform(
