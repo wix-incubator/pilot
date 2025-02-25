@@ -4,10 +4,12 @@ import {
 } from "@wix-pilot/core";
 import * as fs from "fs";
 import * as path from "path";
+
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
 {
   constructor() {}
+
   /**
    * Attempts to capture the current view hierarchy (source) of the mobile app as XML.
    * If there's no active session or the app isn't running, returns an error message.
@@ -73,33 +75,51 @@ export class WebdriverIOAppiumFrameworkDriver
               description:
                 "Locate an element by its accessibility ID (commonly used in Appium).",
               example: `const loginButton = await $('~loginButton'); // Accessibility ID`,
+              guidelines: [
+                "Always prefer using test IDs when available; if no ID is present, use another stable identifier.",
+              ],
             },
             {
               signature: `$('android=uiSelector')`,
               description:
                 "Locate an element using an Android UIAutomator selector.",
               example: `const el = await $('android=new UiSelector().text("Login")');`,
+              guidelines: [
+                "For Android, use UIAutomator selectors to target elements by text, resource-id, or other properties. Ensure selectors are precise to avoid ambiguity.",
+              ],
             },
             {
               signature: `$('ios=predicateString')`,
               description: "Locate an element using an iOS NSPredicate string.",
               example: `const el = await $('ios=predicate string:type == "XCUIElementTypeButton" AND name == "Login"');`,
+              guidelines: [
+                "For iOS, use NSPredicate strings to define clear and concise conditions for element identification. Validate the predicate to ensure it uniquely identifies the element.",
+              ],
             },
             {
               signature: `$$('#elementSelector')`,
               description: "Locate all elements with a given selector",
               example: `const firstSite = await $$('#Site')[index];`,
+              guidelines: [
+                "Use this to select multiple elements. Make sure your selector targets a specific subset of elements to avoid excessive matches.",
+              ],
             },
             {
               signature: `$('//*[@text="Login"]')`,
               description: "Locate an element using an XPath expression.",
               example: `const el = await $('//*[@text="Login"]');`,
+              guidelines: [
+                "Use XPath as a last resort when other selectors are not available, as XPath can be slower and more brittle. Ensure your XPath expression is optimized for performance.",
+              ],
             },
             {
               signature: `$('#elementId'), $('elementTag'), $('.className')`,
               description:
                 "Web-like selectors (useful if your app is a hybrid or has a web context).",
               example: `const el = await $('.someNativeClass');`,
+              guidelines: [
+                "Use web-like selectors in hybrid apps or web contexts. Ensure selectors are unique and adhere to best practices for CSS selectors.",
+              ],
             },
           ],
         },
@@ -112,6 +132,9 @@ export class WebdriverIOAppiumFrameworkDriver
               example: `
               await (await $('~loginButton')).waitForEnabled();
               await (await $('~loginButton')).click();`,
+              guidelines: [
+                "Before clicking on an element make sure it is enabled",
+              ],
             },
             {
               signature: `.setValue(value: string)`,
@@ -142,12 +165,6 @@ await (await $('~dragHandle')).touchAction([
               `,
             },
             {
-              signature: `.scrollIntoView() (web/hybrid context only)`,
-              description:
-                "Scrolls the element into view (if in a web context).",
-              example: `await (await $('#someElement')).scrollIntoView();`,
-            },
-            {
               signature: `.dragAndDrop(target, duration?)`,
               description:
                 "Drags the element to the target location (native or web context).",
@@ -167,35 +184,53 @@ await (await $('~draggable')).dragAndDrop(
               signature: `toBeDisplayed()`,
               description: "Asserts that the element is displayed (visible).",
               example: `await expect(await $('~loginButton')).toBeDisplayed();`,
+              guidelines: [
+                "Use this matcher to verify that the element is visible to the user.",
+              ],
             },
             {
               signature: `toExist()`,
               description:
                 "Asserts that the element exists in the DOM/hierarchy.",
               example: `await expect(await $('~usernameInput')).toExist();`,
+              guidelines: [
+                "Use this matcher to check that the element exists in the DOM or view hierarchy.",
+              ],
             },
             {
               signature: `toHaveText(text: string)`,
               description:
                 "Asserts that the element's text matches the given string.",
               example: `await expect(await $('~welcomeMessage')).toHaveText('Welcome, user!');`,
+              guidelines: [
+                "Use this matcher to verify the text content of an element exactly matches the expected value.",
+              ],
             },
             {
               signature: `toHaveValue(value: string)`,
               description:
                 "Asserts that the element's value matches the given string (for inputs, etc.).",
               example: `await expect(await $('~usernameInput')).toHaveValue('myusername');`,
+              guidelines: [
+                "Use this matcher for form elements to verify that the input value is correct.",
+              ],
             },
             {
               signature: `toBeEnabled() / toBeDisabled()`,
               description:
                 "Asserts that an element is enabled/disabled (if applicable).",
               example: `await expect(await $('~submitButton')).toBeEnabled();`,
+              guidelines: [
+                "Use these matchers to assert that an element is enabled or disabled as required by the test scenario.",
+              ],
             },
             {
               signature: `not`,
               description: "Negates the expectation.",
               example: `await expect(await $('~spinner')).not.toBeDisplayed();`,
+              guidelines: [
+                "Use this matcher to invert the condition of any expectation, ensuring the element does not meet the specified criteria.",
+              ],
             },
           ],
         },

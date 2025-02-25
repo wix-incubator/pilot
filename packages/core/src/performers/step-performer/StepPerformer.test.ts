@@ -3,6 +3,7 @@ import { StepPerformerPromptCreator } from "./StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
 import { CacheHandler } from "../../common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
+import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import {
   PromptHandler,
   TestingFrameworkAPICatalog,
@@ -42,6 +43,8 @@ describe("CopilotStepPerformer", () => {
   let mockPromptHandler: jest.Mocked<PromptHandler>;
   let mockCacheHandler: jest.Mocked<CacheHandler>;
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
+  let mockScreenCapturer: jest.Mocked<ScreenCapturer>;
+  let mockCaptureResult: ScreenCapturerResult;
   let uuidCounter = 0;
 
   beforeEach(() => {
@@ -102,6 +105,10 @@ describe("CopilotStepPerformer", () => {
       compareSnapshot: jest.fn(),
     } as unknown as jest.Mocked<SnapshotComparator>;
 
+    mockScreenCapturer = {
+      capture: jest.fn(),
+    } as unknown as jest.Mocked<ScreenCapturer>;
+
     copilotStepPerformer = new StepPerformer(
       mockContext,
       mockPromptCreator,
@@ -111,6 +118,7 @@ describe("CopilotStepPerformer", () => {
       mockPromptHandler,
       mockCacheHandler,
       mockSnapshotComparator,
+      mockScreenCapturer,
       "fast",
     );
   });
@@ -155,6 +163,13 @@ describe("CopilotStepPerformer", () => {
         digest: jest.fn().mockReturnValue(viewHierarchyHash),
       }),
     });
+
+    mockCaptureResult = {
+      snapshot: SNAPSHOT_DATA,
+      viewHierarchy: VIEW_HIERARCHY,
+      isSnapshotImageAttached: true,
+    };
+    mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
 
     const cacheKey = JSON.stringify({
       step: intent,
@@ -494,6 +509,7 @@ describe("CopilotStepPerformer", () => {
         mockPromptHandler,
         mockCacheHandler,
         mockSnapshotComparator,
+        mockScreenCapturer,
         "full",
       );
 
@@ -540,6 +556,7 @@ describe("CopilotStepPerformer", () => {
         mockPromptHandler,
         mockCacheHandler,
         mockSnapshotComparator,
+        mockScreenCapturer,
         "fast",
       );
 

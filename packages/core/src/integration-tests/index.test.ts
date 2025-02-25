@@ -210,10 +210,10 @@ describe("Pilot Integration Tests", () => {
       ).rejects.toThrow("Username field not found");
 
       expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(3);
-      expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(4);
+      expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(6);
       expect(
         mockFrameworkDriver.captureViewHierarchyString,
-      ).toHaveBeenCalledTimes(4);
+      ).toHaveBeenCalledTimes(6);
     });
   });
 

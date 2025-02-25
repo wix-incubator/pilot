@@ -51,6 +51,11 @@ export class Pilot {
       config.frameworkDriver.apiCatalog,
     );
 
+    this.screenCapturer = new ScreenCapturer(
+      this.snapshotManager,
+      config.promptHandler,
+    );
+
     this.stepPerformer = new StepPerformer(
       config.frameworkDriver.apiCatalog.context,
       this.stepPerformerPromptCreator,
@@ -59,7 +64,8 @@ export class Pilot {
       new CodeEvaluator(),
       config.promptHandler,
       this.cacheHandler,
-      this.snapshotComparator,
+      new SnapshotComparator(),
+      this.screenCapturer,
       config.options?.analysisMode,
     );
 

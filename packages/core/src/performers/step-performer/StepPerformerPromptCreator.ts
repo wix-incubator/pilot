@@ -230,6 +230,7 @@ export class StepPerformerPromptCreator {
     if (isSnapshotImageAttached) {
       steps.push(
         "Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.",
+        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.",
         "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.",
         "Determine if the intent can be fully validated visually using the snapshot image.",
         "If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.",
