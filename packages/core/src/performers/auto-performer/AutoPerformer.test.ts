@@ -172,6 +172,7 @@ describe("AutoPerformer", () => {
         }),
       );
       mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
+      mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
       const cacheData: Map<string, any> = new Map();
       cacheData.set(cacheKey, [

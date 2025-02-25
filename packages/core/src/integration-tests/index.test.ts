@@ -322,7 +322,7 @@ describe("Pilot Integration Tests", () => {
       mockPromptHandler.runPrompt.mockResolvedValue("// Perform action");
 
       await pilot.perform("Perform action");
-      pilot.end(false);
+      pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
         '{"currentGoal":"Perform action","previous":[]}':
@@ -594,7 +594,7 @@ describe("Pilot Integration Tests", () => {
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
         options: {
-          cacheMode: "disabled",
+          cacheOptions: {shouldUseCache: false},
         },
       });
       pilot.start();

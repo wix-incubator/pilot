@@ -93,6 +93,8 @@ describe("CopilotStepPerformer", () => {
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
       getFromTemporaryCache: jest.fn(),
+      generateCacheKey: jest.fn(),
+      isCacheInUse: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -158,6 +160,9 @@ describe("CopilotStepPerformer", () => {
       step: intent,
       previous: previous,
     });
+
+    mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
+    mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
     if (cacheExists) {
       const cacheData: Map<string, any> = new Map();
@@ -397,35 +402,6 @@ describe("CopilotStepPerformer", () => {
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
     expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled();
-  });
-
-  it("should not use cached prompt result if PILOT_OVERRIDE_CACHE is enabled", async () => {
-    const intent = "tap button";
-    setupMocks({ cacheExists: true, overrideCache: true, intent });
-
-    const screenCapture: ScreenCapturerResult = {
-      snapshot: SNAPSHOT_DATA,
-      viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
-    };
-
-    const result = await copilotStepPerformer.perform(
-      intent,
-      [],
-      screenCapture,
-      2,
-    );
-
-    expect(result).toBe("success");
-    // Should call runPrompt and createPrompt. Shouldn't use current cache but override it
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalled();
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalled();
-    expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
-      mockContext,
-      {},
-    );
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalled();
   });
 
   describe("extendJSContext", () => {
