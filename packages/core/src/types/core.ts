@@ -115,4 +115,6 @@ export type PreviousStep = {
   code: string;
   /** Step execution result */
   result: any;
+  /** Step execution error */
+  error?: any;
 };
