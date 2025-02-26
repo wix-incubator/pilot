@@ -1,19 +1,194 @@
+@use './fonts' as *;
+
+// Code line highlighting
 .docusaurus-highlight-code-line {
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+  background-color: var(--docusaurus-highlighted-code-line-bg);
 }
 
+// Enhanced markdown styling
 .markdown {
+  // Improved typography
+  > h1 {
+    @include h1;
+    margin-bottom: 1.5rem;
+  }
+  
+  > h2 {
+    @include h2;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--ifm-toc-border-color);
+  }
+  
+  > h3 {
+    @include h3;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  > h4 {
+    @include h4;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  > h5 {
+    @include h5;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  > h6 {
+    @include h6;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  // Paragraph spacing
+  > p {
+    margin-bottom: 1.25rem;
+    @include t2;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Code formatting
+  code {
+    @include code;
+    border-radius: 3px;
+    font-size: 85%;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    background-color: var(--ifm-code-background);
+    vertical-align: 0.05em;
+  }
+  
   @media (min-width: 768px) {
     code {
       white-space: break-spaces;
     }
   }
-
+  
   h1, h2, h3, h4, h5, h6 {
     code {
       white-space: break-spaces;
+      font-size: 85%;
+    }
+  }
+  
+  // Lists styling
+  > ul, > ol {
+    padding-left: 2rem;
+    margin-bottom: 1.25rem;
+    
+    li {
+      margin-bottom: 0.5rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      > p {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+  
+  // Table styling
+  table {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--ifm-toc-border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--pilot-subtle-shadow);
+    
+    thead {
+      background-color: var(--ifm-table-head-background);
+      
+      tr {
+        border-bottom: 1px solid var(--ifm-toc-border-color);
+        
+        th {
+          @include t3b;
+          padding: 0.75rem 1rem;
+          text-align: left;
+          border-bottom: none;
+          border-right: none;
+        }
+      }
+    }
+    
+    tbody {
+      tr {
+        border-bottom: 1px solid var(--ifm-toc-border-color);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        &:nth-child(2n) {
+          background-color: var(--ifm-table-stripe-background);
+        }
+        
+        td {
+          padding: 0.75rem 1rem;
+          border-right: none;
+        }
+      }
+    }
+  }
+  
+  // Blockquote styling
+  blockquote {
+    background-color: var(--ifm-code-background);
+    border-left: 3px solid var(--ifm-blockquote-border-left-color);
+    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    
+    > :first-child {
+      margin-top: 0;
+    }
+    
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // Horizontal rule
+  hr {
+    height: 1px;
+    margin: 2rem 0;
+    border: none;
+    background-color: var(--ifm-toc-border-color);
+  }
+  
+  // Code blocks
+  pre {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 90%;
+    overflow-x: auto;
+    background-color: var(--ifm-pre-background);
+    box-shadow: var(--pilot-subtle-shadow);
+    
+    code {
+      background-color: transparent;
+      padding: 0;
+      border: none;
+      font-size: inherit;
     }
   }
 }

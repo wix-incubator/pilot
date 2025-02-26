@@ -10,9 +10,9 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Pilot',
-  tagline: 'Simplify your mobile app testing with intuitive, natural language commands, making automation faster and more efficient.',
-  favicon: '/img/favicon.ico',
+  title: 'Wix Pilot',
+  tagline: 'Simplify your testing with intuitive, natural language commands for faster and more efficient automation.',
+  favicon: '/img/paper-plane.svg',
 
   // Set the production url of your site here
   url: 'https://wix-pilot.com',
@@ -58,17 +58,29 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      // Enable image zoom for documentation
+      image: 'img/paper-plane.svg',
+      metadata: [
+        {name: 'keywords', content: 'testing, automation, natural language, ui testing, test automation, frameworks'},
+        {name: 'description', content: 'Write UI tests in natural language with Pilot - simplifying test automation for web and mobile apps.'}
+      ],
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
       navbar: {
+        title: 'Wix Pilot',
         logo: {
           alt: 'Wix Pilot Logo',
-          src: 'img/homepage/pilot-logo.png',
-          srcDark: 'img/homepage/pilot-logo.png',
+          src: 'img/paper-plane.svg',
         },
-        style: 'dark',
+        hideOnScroll: false,
+        style: 'primary',
         items: [
           {
             type: 'doc',
-            docId: 'guides/integrating-with-testing-frameworks',
+            docId: 'guides/pilot-best-practices',
             label: 'Guides',
             position: 'right',
           },
@@ -80,7 +92,7 @@ const config = {
           },
           {
             type: 'doc',
-            label: 'Supported Frameworks',
+            label: 'Frameworks',
             docId: 'pages/supported-frameworks',
             position: 'right',
           },
@@ -96,30 +108,36 @@ const config = {
         style: 'light',
         links: [
           {
-            title: 'Guides',
+            title: 'Documentation',
             items: [
+              {
+                label: 'Getting Started',
+                to: 'docs/guides/integrating-with-testing-frameworks'
+              },
               {
                 label: 'Best Practices',
                 to: 'docs/guides/pilot-best-practices'
               },
               {
-                label: 'Contributing to Pilot',
-                to: 'docs/guides/contributing-to-pilot'
+                label: 'API Reference',
+                to: 'docs/API/basic-interface-overview'
               }
             ]
           },
           {
-            title: 'Support',
+            title: 'Community',
             items: [
               {
-                label: 'Ask a question on Stack Overflow',
-                to: 'https://stackoverflow.com/questions/tagged/wix-pilot',
-                target: '_self'
+                label: 'Contributing to Pilot',
+                to: 'docs/guides/contributing-to-pilot'
               },
               {
-                label: 'Create new issue on Github',
-                to: 'https://github.com/wix-incubator/pilot/issues',
-                target: '_self'
+                label: 'Stack Overflow',
+                to: 'https://stackoverflow.com/questions/tagged/wix-pilot',
+              },
+              {
+                label: 'Report Issues',
+                to: 'https://github.com/wix-incubator/pilot/issues'
               }
             ]
           },
@@ -131,6 +149,11 @@ const config = {
                 to: 'https://github.com/wix-incubator/pilot',
                 className: 'footer__link-item footer__link-item_git-hub',
               },
+              {
+                label: 'Supported Frameworks',
+                to: 'docs/pages/supported-frameworks'
+              }
+              // Uncomment when these social links are available
               // {
               //   label: 'Twitter',
               //   to: 'https://twitter.com/WixEng/',
@@ -143,11 +166,19 @@ const config = {
               // }
             ]
           }
-        ]
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Wix. Built with Docusaurus.`,
+      },
+      docs: {
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
       },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: ['bash', 'diff', 'json'],
       },
     }),
 };
