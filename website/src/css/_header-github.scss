@@ -1,27 +1,49 @@
-.header-github-link:hover {
-  opacity: 0.6;
-}
-
-.header-github-link:before {
-  content: '';
-  width: 24px;
-  height: 24px;
-  display: flex;
-  background: url(@site/static/img/navbar/gh-nav-dark.svg) no-repeat;
-}
-
-html[data-theme='dark'] .header-github-link:before {
-  background: url(@site/static/img/navbar/gh-nav-dark.svg) no-repeat;
-}
-
-.header-github-link:hover {
-  -webkit-tap-highlight-color: transparent;
-  background-color: #ebedf0;
+.header-github-link {
+  position: relative;
+  transition: all 0.2s ease;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  transition: background var(--ifm-transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  
+  &:before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    display: flex;
+    background: url('/img/navbar/gh-nav-dark.svg') no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+  
+  &:hover {
+    opacity: 0.9;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--ifm-color-emphasis-200);
+    transition: all var(--ifm-transition-fast);
+  }
 }
 
-html[data-theme='dark'] .header-github-link:hover {
-  background-color: #444950;
+// Dark theme adjustments
+html[data-theme='dark'] .header-github-link {
+  &:before {
+    background: url('/img/navbar/gh-nav-dark.svg') no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+  
+  &:hover {
+    background-color: var(--ifm-color-emphasis-300);
+  }
+}
+
+// Mobile optimization
+@media (max-width: 768px) {
+  .header-github-link {
+    margin-left: 0;
+  }
 }
 

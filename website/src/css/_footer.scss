@@ -1,86 +1,175 @@
-@use '../css/_fonts.scss' as *;
+@use './fonts' as *;
 
+// Modern footer styling
 .footer {
-  @include t2;
-
+  padding: 3rem 0 2rem;
+  color: var(--ifm-color-emphasis-700);
+  background-color: var(--ifm-footer-background-color);
+  
+  // Light/dark theme specific styles
   [data-theme='light'] & {
-    border-top: 1px solid rgba(19, 20, 25, 0.15);
+    border-top: 1px solid var(--ifm-toc-border-color);
   }
 
   [data-theme='dark'] & {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    border-top: 1px solid var(--detox-color-a3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1);
   }
-
+  
+  // Section titles
   &__title {
     @include t2b;
+    color: var(--ifm-color-emphasis-900);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    
+    [data-theme='dark'] & {
+      color: var(--ifm-color-emphasis-200);
+    }
   }
-
+  
+  // Links styling
   &__link-item {
-    display: inline-block;
+    @include t3;
+    display: flex;
+    align-items: center;
+    color: var(--ifm-color-emphasis-700);
+    text-decoration: none;
+    margin-bottom: 0.75rem;
     background-repeat: no-repeat;
     background-position: left center;
-
-    &_git-hub {
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--ifm-color-primary);
+      text-decoration: none;
+    }
+    
+    [data-theme='dark'] & {
+      color: var(--ifm-color-emphasis-500);
+      
+      &:hover {
+        color: var(--ifm-color-primary-lighter);
+      }
+    }
+    
+    // Icon links styling
+    &_git-hub, &_twitter, &_discord {
       padding-left: 30px;
+      background-size: 20px;
+    }
+    
+    &_git-hub {
       [data-theme='light'] & {
         background-image: url('/img/footer/gh-footer-light.svg');
       }
-
+      
       [data-theme='dark'] & {
         background-image: url('/img/footer/gh-footer-dark.svg');
       }
     }
-
+    
     &_twitter {
-      padding-left: 30px;
       [data-theme='light'] & {
         background-image: url('/img/footer/twitter-footer-light.svg');
       }
-
+      
       [data-theme='dark'] & {
         background-image: url('/img/footer/twitter-footer-dark.svg');
       }
     }
-
+    
     &_discord {
-      padding-left: 30px;
       [data-theme='light'] & {
         background-image: url('/img/footer/discord-footer-light.svg');
       }
-
+      
       [data-theme='dark'] & {
         background-image: url('/img/footer/discord-footer-dark.svg');
       }
     }
   }
-
-  .footer__col_more {
-    & > .footer__link-item {
-      display: inline; // Ensure proper inline styling for items in `.footer__col_more`
+  
+  // Additional styling for "More" column
+  &__col {
+    &_more {
+      > .footer__items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      > .footer__link-item {
+        display: inline-flex;
+      }
     }
   }
-
+  
+  // Copyright section
+  &__copyright {
+    @include t4;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: var(--ifm-color-emphasis-600);
+    border-top: 1px solid var(--ifm-toc-border-color);
+    
+    a {
+      color: var(--ifm-color-primary);
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    
+    [data-theme='dark'] & {
+      border-top-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+  
+  // Responsive styles
   @media only screen and (min-width: 320px) and (max-width: 996px) {
     &__col_more > &__items {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      max-width: 325px;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      max-width: 100%;
     }
   }
-
+  
   @media only screen and (max-width: 996px) {
+    padding: 2.5rem 0 1.5rem;
+    
     &__col {
-      margin-bottom: calc(var(--ifm-spacing-vertical) * 2.8);
+      margin-bottom: calc(var(--ifm-spacing-vertical) * 2);
     }
-
+    
     &__col_more &__title {
-      margin-bottom: 7px;
+      margin-bottom: 1rem;
     }
-
-    &__link-item a {
-      margin-bottom: 12px;
+    
+    &__link-item {
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  @media only screen and (max-width: 768px) {
+    padding: 2rem 0 1.5rem;
+    
+    &__col {
+      text-align: center;
+      
+      &_more > &__items {
+        justify-content: center;
+      }
+    }
+    
+    &__link-item {
+      justify-content: center;
+      
+      &_git-hub, &_twitter, &_discord {
+        margin: 0 0.75rem;
+      }
     }
   }
 }

@@ -4,14 +4,9 @@
   @include define-detox-extra-colors();
 
   &[data-theme] {
-    --ifm-color-primary: #3ba337;
-    --ifm-color-primary-dark: #2d7d2a;
-    --ifm-color-primary-darker: #296f26;
-    --ifm-color-primary-darkest: #245f21;
-    --ifm-color-primary-light: var(--detox-color-p0);
-    --ifm-color-primary-lighter: var(--detox-color-p1);
-    --ifm-color-primary-lightest: var(--detox-color-p2);
-
+    // Main colors are now defined in _colors.scss
+    
+    // Secondary UI colors
     --ifm-color-secondary-contrast-background: var(--detox-color-u4a);
     --ifm-color-secondary-contrast-foreground: var(--detox-color-a0);
     --ifm-color-secondary-dark: var(--detox-color-u0);
@@ -24,37 +19,101 @@
     --ifm-color-info-contrast-background: var(--detox-color-b4a);
     --ifm-color-info-dark: var(--detox-color-b0);
 
-    --ifm-footer-background-color: #FDFDFD;
-
-    --ifm-code-font-size: 95%;
-
-
+    // Typography
+    --ifm-font-family-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --ifm-font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --ifm-heading-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --ifm-heading-font-weight: 600;
+    
+    // Spacing and layout
+    --ifm-spacing-horizontal: 1.5rem;
+    --ifm-container-width: 1140px;
+    --ifm-global-radius: 0.5rem;
+    
+    // Code blocks
+    --ifm-code-font-size: 90%;
+    --ifm-code-border-radius: 4px;
+    --ifm-code-padding-horizontal: 0.6rem;
+    --ifm-code-padding-vertical: 0.4rem;
+    
+    // Buttons
     --ifm-button-background-color: #fff;
-    --ifm-color-gray-900: #12161B;
-
-    --ifm-font-family-base: 'Exo 2', sans-serif;
+    --ifm-button-border-radius: 6px;
+    --ifm-button-padding-horizontal: 1.5rem;
+    --ifm-button-padding-vertical: 0.6rem;
+    --ifm-button-font-weight: 500;
+    
+    // Colors
+    --ifm-color-gray-900: #1f2937;
+    
+    // Cards and containers
+    --ifm-card-border-radius: 8px;
+    --ifm-card-background-color: var(--ifm-background-surface-color);
+    
+    // Tables
+    --ifm-table-border-width: 1px;
+    --ifm-table-head-background: var(--pilot-code-background);
+    --ifm-table-stripe-background: var(--pilot-bg-lighter);
+    
+    // Sidebar
+    --doc-sidebar-width: 280px;
   }
 
   &[data-theme='light'] {
     @include define-detox-light-colors();
-    --docusaurus-highlighted-code-line-bg: #d9e5f6;
+    --docusaurus-highlighted-code-line-bg: rgba(46, 133, 64, 0.1);
 
     --ifm-button-hover-background-color: var(--ifm-color-primary-lighter);
-
+    
+    // Code blocks
+    --ifm-code-background: var(--pilot-code-background);
+    --ifm-pre-background: var(--pilot-code-background);
+    --ifm-pre-border-radius: 8px;
+    --ifm-pre-box-shadow: var(--pilot-code-border);
+    
+    // Content
+    --ifm-heading-color: #1f2937;
+    --ifm-blockquote-border-left-color: var(--ifm-color-primary);
   }
 
   &[data-theme='dark'] {
     @include define-detox-dark-colors();
-    --docusaurus-highlighted-code-line-bg: #414458;
-    --ifm-background-color: var(--detox-color-a1);
-    --ifm-footer-background-color: var(--detox-color-a1);
-    --ifm-heading-color: #fff;
+    --docusaurus-highlighted-code-line-bg: rgba(46, 133, 64, 0.2);
+    --ifm-background-color: var(--pilot-bg-dark);
+    --ifm-footer-background-color: var(--pilot-bg-darker);
+    --ifm-heading-color: #f5f5f5;
 
     --ifm-button-hover-background-color: var(--ifm-color-primary-darker);
+    
+    // Code blocks
+    --ifm-code-background: var(--pilot-code-background);
+    --ifm-pre-background: var(--pilot-code-background);
+    --ifm-pre-border-radius: 8px;
+    --ifm-pre-box-shadow: var(--pilot-code-border);
+    
+    // Content
+    --ifm-blockquote-border-left-color: var(--ifm-color-primary-lighter);
   }
 }
 
 html {
-  -webkit-font-smoothing: initial;
-  text-rendering: initial;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+// Improve readability
+p, li, td {
+  line-height: 1.6;
+}
+
+// Better focus styles
+a:focus, button:focus, input:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+// Add subtle transitions
+a, button {
+  transition: all 0.2s ease;
 }

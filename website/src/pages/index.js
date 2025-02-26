@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -10,8 +11,24 @@ function HomepageHeader() {
     <header className={styles.heroBanner}>
       <div className="container">
         <div className={styles.logoContainer}>
-          <h1 className={styles.title}>{siteConfig.title}</h1>
-          <p className={styles.subtitle}>By Detox</p>
+          <div className={styles.titleContainer}>
+            <h1 className={styles.title}>Pilot</h1>
+            <span className={styles.byWix}>by Wix</span>
+          </div>
+          <p className={styles.subtitle}>Transform testing with natural language commands. Engineered by the creators of Detox, born from real testing challenges, and open sourced for the community.</p>
+
+          <div className={styles.ctaSection}>
+            <Link
+              className={styles.primaryButton}
+              to="/docs/guides/integrating-with-testing-frameworks">
+              Get Started
+            </Link>
+            <Link
+              className={styles.secondaryButton}
+              to="https://github.com/wix-incubator/pilot">
+              View on GitHub
+            </Link>
+          </div>
         </div>
       </div>
     </header>
@@ -22,11 +39,11 @@ function FeatureSection({ title, description, link, linkText, boxStyle }) {
   return (
     <div className={`${styles.featureSection} ${boxStyle ? styles[boxStyle] : ''}`}>
       <div className="container">
-        <h2 className={styles.h2}>{title}</h2>
+        <h2>{title}</h2>
         <p>{description}</p>
         {link && (
           <Link
-            className="button button--secondary button--lg"
+            className={styles.button}
             to={link}>
             {linkText}
           </Link>
@@ -38,7 +55,9 @@ function FeatureSection({ title, description, link, linkText, boxStyle }) {
 
 export default function Home() {
   return (
-    <Layout>
+    <Layout
+      title="Wix Pilot - Natural Language Automation"
+      description="Simplify your app testing with intuitive, natural language commands, making automation faster and more efficient.">
       <HomepageHeader />
       <main>
         <section className={styles.demoSection}>
@@ -50,7 +69,7 @@ export default function Home() {
 
         <FeatureSection
           title="Universal Testing Framework Support"
-          description="Copilot is designed by Detox to work seamlessly with any testing framework, making your automation journey smoother than ever."
+          description="Pilot is designed to work seamlessly with many testing frameworks, including Playwright, Puppeteer, Detox, and Appium. Write tests in natural language that work across any supported framework."
           link="/docs/pages/supported-frameworks"
           linkText="View Supported Frameworks"
           boxStyle="box-light-green"
@@ -58,10 +77,18 @@ export default function Home() {
 
         <FeatureSection
           title="Open for Contributions"
-          description="Join our community and help expand Copilot's capabilities. Integrate your favorite testing framework today."
+          description="Join our growing community and help expand Pilot's capabilities. Add support for your favorite testing framework, improve documentation, or enhance existing features."
           link="/docs/guides/contributing-to-pilot"
           linkText="Contribute Now"
           boxStyle="box-dark-green"
+        />
+
+        <FeatureSection
+          title="Professional Testing Made Simple"
+          description="Write robust tests without learning complex APIs. Pilot handles the underlying details while you focus on describing your test flows naturally."
+          link="/docs/guides/pilot-best-practices"
+          linkText="Explore Best Practices"
+          boxStyle=""
         />
       </main>
     </Layout>

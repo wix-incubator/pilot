@@ -1,97 +1,187 @@
 @use './fonts' as *;
 
-.navbar__title {
-  @include t2b;
-  font-weight: 700;
-}
-
-.navbar__link {
-  @include t2b;
-  margin-right: 20px;
-  font-weight: 300;
-}
-
-.navbar__link--active {
-  text-decoration: none;
-  color: var(--ifm-navbar-link-color);
-  font-weight: var(--ifm-font-weight-semibold);
-}
-
-.navbar__item {
-
-  padding: 5px;
-  font-weight: 300;
-}
-
-.navbar__brand {
-  margin-right: 30px;
-}
-
-
-/*===========*/
-
-/* Restyle logo & hamburger button */
-
+// Modern navbar styling
 .navbar {
-  height: 60px;
+  height: 70px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+
+  &__brand {
+    margin-right: 2rem;
+  }
+
+  &__title {
+    @include nav-item;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ifm-color-primary);
+    font-size: 1.2rem;
+    padding-left: 34px;
+    position: relative;
+
+    [data-theme='dark'] & {
+      color: var(--ifm-color-primary-lighter);
+    }
+  }
+
+  &__link {
+    @include nav-item;
+    position: relative;
+    margin-right: 1.5rem;
+    padding: 0.5rem 0;
+    color: var(--ifm-color-emphasis-600);
+
+    &:hover {
+      color: var(--ifm-color-primary);
+      text-decoration: none;
+    }
+
+    // Underline effect on hover
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--ifm-color-primary);
+      transition: width 0.3s ease;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+  }
+
+  &__link--active {
+    font-weight: 500;
+    color: var(--ifm-color-primary);
+
+    // Active indicator
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--ifm-color-primary);
+    }
+  }
+
+  &__item {
+    padding: 0.5rem;
+  }
+
+  // Logo styling removed as we're using a CSS background image approach instead
+
+  &__toggle {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: var(--ifm-color-emphasis-200);
+    }
+  }
 
   &__items {
     &--right {
       position: relative;
     }
   }
+}
 
-  &__logo {
-    height: 26px;
-    margin: 0 10px 0 0;
+// Dark theme specific navbar styles
+[data-theme='dark'] .navbar {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+
+  &__link {
+    color: var(--ifm-color-emphasis-600);
+
+    &:hover {
+      color: var(--ifm-color-primary-lighter);
+    }
+
+    &::after {
+      background-color: var(--ifm-color-primary-lighter);
+    }
   }
 
-  &__toggle {
-    width: 40px;
-    height: 40px;
-    background-color: var(--detox-color-a3);
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    margin-right: 0;
-    top: 15px;
-    right: 25px;
+  &__link--active {
+    color: var(--ifm-color-primary-lighter);
+
+    &::after {
+      background-color: var(--ifm-color-primary-lighter);
+    }
   }
 }
 
-@media (max-width: 996px) {
-  .navbar__toggle {
-    display: none;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .navbar__toggle {
-    display: inherit;
-    position: absolute;
-    margin: 0;
-    top: 10px;
-    right: 25px;
-  }
-}
-
-/* Restyle search button */
-
+// Search button styling
 .DocSearch-Button {
-  font-family: inherit;
-}
+  margin: 0 0 0 0.5rem;
+  height: 36px;
+  border-radius: 0.5rem;
+  background-color: var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  transition: all 0.2s ease;
 
-@media (max-width: 768px) {
-  button.DocSearch-Button {
-    background-color: var(--detox-color-a3);
-    height: 40px;
-    border-radius: 10px;
-    padding: 0 10px;
+  &:hover {
+    background-color: var(--ifm-color-emphasis-300);
   }
 
   .DocSearch-Search-Icon {
-    opacity: 0.6;
+    color: var(--ifm-color-emphasis-600);
+  }
+
+  .DocSearch-Button-Placeholder {
+    @include t3;
+    font-weight: 400;
+    padding: 0 0.75rem 0 0.5rem;
+  }
+
+  .DocSearch-Button-Key {
+    background: var(--ifm-color-emphasis-300);
+    border: 1px solid var(--ifm-color-emphasis-400);
+    border-radius: 0.25rem;
+    box-shadow: none;
+    color: var(--ifm-color-emphasis-600);
+    padding: 0 0.4rem;
+    margin: 0 0.1rem;
+  }
+}
+
+// Mobile optimizations
+@media (max-width: 996px) {
+  .navbar {
+    &__toggle {
+      display: flex;
+      margin-right: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+
+    &__toggle {
+      right: 1rem;
+    }
+  }
+
+  .DocSearch-Button {
+    margin: 0;
+    padding: 0 0.75rem;
+    height: 36px;
+    background-color: var(--ifm-color-emphasis-200);
+
+    .DocSearch-Button-Placeholder,
+    .DocSearch-Button-KeySeparator {
+      display: none;
+    }
   }
 }
