@@ -5,31 +5,31 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
   <head>
   </head>
   <body>
-    <header aria-pilot-category="semantic" aria-pilot-index="0" data-category="semantic" data-index="0">
-      <button aria-pilot-category="button" aria-pilot-index="0" data-category="button" data-index="0">
+    <header aria-pilot-category="semantic" aria-pilot-id="ad9a7cb" data-category="semantic" data-id="ad9a7cb">
+      <button aria-pilot-category="button" aria-pilot-id="eaab2b18" data-category="button" data-id="eaab2b18">
       </button>
       <div>
         <div>
-          <a href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="0" data-category="link" data-index="0">
+          <a href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-id="9f503ce7" data-category="link" data-id="9f503ce7">
           </a>
         </div>
-        <button aria-pilot-category="button" aria-pilot-index="1" data-category="button" data-index="1">
+        <button aria-pilot-category="button" aria-pilot-id="3ace49aa" data-category="button" data-id="3ace49aa">
         </button>
-        <nav aria-pilot-category="semantic" aria-pilot-index="1" data-category="semantic" data-index="1">
+        <nav aria-pilot-category="semantic" aria-pilot-id="6500cb46" data-category="semantic" data-id="6500cb46">
           <div>
             <div>
-              <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" target="_self" aria-pilot-category="link" aria-pilot-index="1" data-category="link" data-index="1">
+              <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" target="_self" aria-pilot-category="link" aria-pilot-id="4167365a" data-category="link" data-id="4167365a">
               </a>
             </div>
           </div>
-          <ul aria-pilot-category="list" aria-pilot-index="0" data-category="list" data-index="0">
+          <ul aria-pilot-category="list" aria-pilot-id="7051d825" data-category="list" data-id="7051d825">
             <li>
-              <a href="https://www.wix.com/my-account" target="_self" aria-pilot-category="link" aria-pilot-index="2" data-category="link" data-index="2">
+              <a href="https://www.wix.com/my-account" target="_self" aria-pilot-category="link" aria-pilot-id="16f800e4" data-category="link" data-id="16f800e4">
               </a>
             </li>
             <li>
               <div>
-                <button aria-pilot-category="button" aria-pilot-index="2" data-category="button" data-index="2">
+                <button aria-pilot-category="button" aria-pilot-id="24031e46" data-category="button" data-id="24031e46">
                 </button>
                 <div>
                   <div>
@@ -37,17 +37,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       <div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="1" data-category="list" data-index="1">
+                            <ul aria-pilot-category="list" aria-pilot-id="3caf2f23" data-category="list" data-id="3caf2f23">
                               <li>
-                                <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-index="3" data-category="link" data-index="3">
+                                <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-id="bb32abf" data-category="link" data-id="bb32abf">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-index="4" data-category="link" data-index="4">
+                                <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-id="1d0e342f" data-category="link" data-id="1d0e342f">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/ai-website-builder" target="_self" aria-pilot-category="link" aria-pilot-index="5" data-category="link" data-index="5">
+                                <a href="https://www.wix.com/ai-website-builder" target="_self" aria-pilot-category="link" aria-pilot-id="61ef9358" data-category="link" data-id="61ef9358">
                                 </a>
                               </li>
                             </ul>
@@ -55,25 +55,25 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         </div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="2" data-category="list" data-index="2">
+                            <ul aria-pilot-category="list" aria-pilot-id="68c814f9" data-category="list" data-id="68c814f9">
                               <li>
-                                <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-index="6" data-category="link" data-index="6">
+                                <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-id="37bc7d99" data-category="link" data-id="37bc7d99">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/scheduling-software" target="_self" aria-pilot-category="link" aria-pilot-index="7" data-category="link" data-index="7">
+                                <a href="https://www.wix.com/scheduling-software" target="_self" aria-pilot-category="link" aria-pilot-id="20925950" data-category="link" data-id="20925950">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-index="8" data-category="link" data-index="8">
+                                <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-id="4533cb98" data-category="link" data-id="4533cb98">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-index="9" data-category="link" data-index="9">
+                                <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-id="175710dc" data-category="link" data-id="175710dc">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-index="10" data-category="link" data-index="10">
+                                <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-id="d5534b65" data-category="link" data-id="d5534b65">
                                 </a>
                               </li>
                             </ul>
@@ -82,17 +82,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       </div>
                       <div>
                         <div>
-                          <ul aria-pilot-category="list" aria-pilot-index="3" data-category="list" data-index="3">
+                          <ul aria-pilot-category="list" aria-pilot-id="6059eb0f" data-category="list" data-id="6059eb0f">
                             <li>
-                              <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="11" data-category="link" data-index="11">
+                              <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-id="94315c33" data-category="link" data-id="94315c33">
                               </a>
                             </li>
                             <li>
-                              <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-index="12" data-category="link" data-index="12">
+                              <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-id="efcd335e" data-category="link" data-id="efcd335e">
                               </a>
                             </li>
                             <li>
-                              <a href="https://www.wix.com/website-security" target="_self" aria-pilot-category="link" aria-pilot-index="13" data-category="link" data-index="13">
+                              <a href="https://www.wix.com/website-security" target="_self" aria-pilot-category="link" aria-pilot-id="58bf336a" data-category="link" data-id="58bf336a">
                               </a>
                             </li>
                           </ul>
@@ -105,7 +105,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
             </li>
             <li>
               <div>
-                <button aria-pilot-category="button" aria-pilot-index="3" data-category="button" data-index="3">
+                <button aria-pilot-category="button" aria-pilot-id="922a9a90" data-category="button" data-id="922a9a90">
                 </button>
                 <div>
                   <div>
@@ -113,25 +113,25 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       <div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="4" data-category="list" data-index="4">
+                            <ul aria-pilot-category="list" aria-pilot-id="887e954a" data-category="list" data-id="887e954a">
                               <li>
-                                <a href="https://www.wix.com/payments" target="_self" aria-pilot-category="link" aria-pilot-index="14" data-category="link" data-index="14">
+                                <a href="https://www.wix.com/payments" target="_self" aria-pilot-category="link" aria-pilot-id="ee5df6d9" data-category="link" data-id="ee5df6d9">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/mobile/wix-app" target="_self" aria-pilot-category="link" aria-pilot-index="15" data-category="link" data-index="15">
+                                <a href="https://www.wix.com/mobile/wix-app" target="_self" aria-pilot-category="link" aria-pilot-id="bffa05f" data-category="link" data-id="bffa05f">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="16" data-category="link" data-index="16">
+                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-id="b992cb39" data-category="link" data-id="b992cb39">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/features/crm" target="_self" aria-pilot-category="link" aria-pilot-index="17" data-category="link" data-index="17">
+                                <a href="https://www.wix.com/features/crm" target="_self" aria-pilot-category="link" aria-pilot-id="19d76bab" data-category="link" data-id="19d76bab">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/manage/analytics" target="_self" aria-pilot-category="link" aria-pilot-index="18" data-category="link" data-index="18">
+                                <a href="https://www.wix.com/manage/analytics" target="_self" aria-pilot-category="link" aria-pilot-id="da590d5e" data-category="link" data-id="da590d5e">
                                 </a>
                               </li>
                             </ul>
@@ -139,17 +139,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         </div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="5" data-category="list" data-index="5">
+                            <ul aria-pilot-category="list" aria-pilot-id="28511039" data-category="list" data-id="28511039">
                               <li>
-                                <a href="https://www.wix.com/features/email-marketing" target="_self" aria-pilot-category="link" aria-pilot-index="19" data-category="link" data-index="19">
+                                <a href="https://www.wix.com/features/email-marketing" target="_self" aria-pilot-category="link" aria-pilot-id="6bfcb1da" data-category="link" data-id="6bfcb1da">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/seo" target="_self" aria-pilot-category="link" aria-pilot-index="20" data-category="link" data-index="20">
+                                <a href="https://www.wix.com/seo" target="_self" aria-pilot-category="link" aria-pilot-id="3930111" data-category="link" data-id="3930111">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="21" data-category="link" data-index="21">
+                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-id="4d80a3f2" data-category="link" data-id="4d80a3f2">
                                 </a>
                               </li>
                             </ul>
@@ -158,17 +158,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       </div>
                       <div>
                         <div>
-                          <ul aria-pilot-category="list" aria-pilot-index="6" data-category="list" data-index="6">
+                          <ul aria-pilot-category="list" aria-pilot-id="40ba846a" data-category="list" data-id="40ba846a">
                             <li>
-                              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-index="22" data-category="link" data-index="22">
+                              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-id="24b90c7f" data-category="link" data-id="24b90c7f">
                               </a>
                             </li>
                             <li>
-                              <a href="https://www.wix.com/studio/developers" target="_blank" aria-pilot-category="link" aria-pilot-index="23" data-category="link" data-index="23">
+                              <a href="https://www.wix.com/studio/developers" target="_blank" aria-pilot-category="link" aria-pilot-id="6c51e96e" data-category="link" data-id="6c51e96e">
                               </a>
                             </li>
                             <li>
-                              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-index="24" data-category="link" data-index="24">
+                              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-id="7080dfc5" data-category="link" data-id="7080dfc5">
                               </a>
                             </li>
                           </ul>
@@ -181,7 +181,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
             </li>
             <li>
               <div>
-                <button aria-pilot-category="button" aria-pilot-index="4" data-category="button" data-index="4">
+                <button aria-pilot-category="button" aria-pilot-id="d6ded4ba" data-category="button" data-id="d6ded4ba">
                 </button>
                 <div>
                   <div>
@@ -189,31 +189,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       <div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="7" data-category="list" data-index="7">
+                            <ul aria-pilot-category="list" aria-pilot-id="a51cf0fb" data-category="list" data-id="a51cf0fb">
                               <li>
-                                <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-index="25" data-category="link" data-index="25">
+                                <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-id="5d2eab9a" data-category="link" data-id="5d2eab9a">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/features/ai" target="_self" aria-pilot-category="link" aria-pilot-index="26" data-category="link" data-index="26">
+                                <a href="https://www.wix.com/features/ai" target="_self" aria-pilot-category="link" aria-pilot-id="fb17248e" data-category="link" data-id="fb17248e">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/explore/websites" target="_self" aria-pilot-category="link" aria-pilot-index="27" data-category="link" data-index="27">
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div>
-                          <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="8" data-category="list" data-index="8">
-                              <li>
-                                <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-index="28" data-category="link" data-index="28">
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-index="29" data-category="link" data-index="29">
+                                <a href="https://www.wix.com/explore/websites" target="_self" aria-pilot-category="link" aria-pilot-id="3d4f1530" data-category="link" data-id="3d4f1530">
                                 </a>
                               </li>
                             </ul>
@@ -221,17 +207,31 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         </div>
                         <div>
                           <div>
-                            <ul aria-pilot-category="list" aria-pilot-index="9" data-category="list" data-index="9">
+                            <ul aria-pilot-category="list" aria-pilot-id="49de3044" data-category="list" data-id="49de3044">
                               <li>
-                                <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-index="30" data-category="link" data-index="30">
+                                <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-id="eb38a20b" data-category="link" data-id="eb38a20b">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/tools/business-name-generator" target="_self" aria-pilot-category="link" aria-pilot-index="31" data-category="link" data-index="31">
+                                <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-id="e111368a" data-category="link" data-id="e111368a">
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div>
+                          <div>
+                            <ul aria-pilot-category="list" aria-pilot-id="a7d56431" data-category="list" data-id="a7d56431">
+                              <li>
+                                <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-id="9930094f" data-category="link" data-id="9930094f">
                                 </a>
                               </li>
                               <li>
-                                <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-index="32" data-category="link" data-index="32">
+                                <a href="https://www.wix.com/tools/business-name-generator" target="_self" aria-pilot-category="link" aria-pilot-id="b056f995" data-category="link" data-id="b056f995">
+                                </a>
+                              </li>
+                              <li>
+                                <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-id="62760527" data-category="link" data-id="62760527">
                                 </a>
                               </li>
                             </ul>
@@ -240,7 +240,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       </div>
                       <div>
                         <div>
-                          <a href="https://www.wix.com/blog/how-to-build-website-from-scratch-guide" target="_blank" aria-pilot-category="link" aria-pilot-index="33" data-category="link" data-index="33">
+                          <a href="https://www.wix.com/blog/how-to-build-website-from-scratch-guide" target="_blank" aria-pilot-category="link" aria-pilot-id="eacd984e" data-category="link" data-id="eacd984e">
                           </a>
                         </div>
                       </div>
@@ -250,44 +250,44 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               </div>
             </li>
             <li>
-              <a href="https://www.wix.com/plans" target="_self" aria-pilot-category="link" aria-pilot-index="34" data-category="link" data-index="34">
+              <a href="https://www.wix.com/plans" target="_self" aria-pilot-category="link" aria-pilot-id="e0e462f4" data-category="link" data-id="e0e462f4">
               </a>
             </li>
             <li>
-              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-index="35" data-category="link" data-index="35">
+              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-id="dbc3bcd6" data-category="link" data-id="dbc3bcd6">
               </a>
             </li>
             <li>
-              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-index="36" data-category="link" data-index="36">
+              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-id="1c17e766" data-category="link" data-id="1c17e766">
               </a>
             </li>
           </ul>
         </nav>
         <div>
           <div>
-            <button aria-pilot-category="button" aria-pilot-index="5" data-category="button" data-index="5">
+            <button aria-pilot-category="button" aria-pilot-id="9777fb3f" data-category="button" data-id="9777fb3f">
             </button>
           </div>
           <div>
-            <ul aria-pilot-category="list" aria-pilot-index="10" data-category="list" data-index="10">
+            <ul aria-pilot-category="list" aria-pilot-id="c7bbe0e0" data-category="list" data-id="c7bbe0e0">
               <li>
-                <a href="https://www.wix.com/account/account-settings" aria-pilot-category="link" aria-pilot-index="37" data-category="link" data-index="37">
+                <a href="https://www.wix.com/account/account-settings" aria-pilot-category="link" aria-pilot-id="b633d8de" data-category="link" data-id="b633d8de">
                 </a>
               </li>
               <li>
-                <a href="https://www.wix.com/wix/api/PaymentConsole" aria-pilot-category="link" aria-pilot-index="38" data-category="link" data-index="38">
+                <a href="https://www.wix.com/wix/api/PaymentConsole" aria-pilot-category="link" aria-pilot-id="8b071ff3" data-category="link" data-id="8b071ff3">
                 </a>
               </li>
               <li>
-                <a href="https://www.wix.com/account/vouchers" aria-pilot-category="link" aria-pilot-index="39" data-category="link" data-index="39">
+                <a href="https://www.wix.com/account/vouchers" aria-pilot-category="link" aria-pilot-id="4811d20b" data-category="link" data-id="4811d20b">
                 </a>
               </li>
               <li>
-                <button aria-pilot-category="button" aria-pilot-index="6" data-category="button" data-index="6">
+                <button aria-pilot-category="button" aria-pilot-id="fd88d4c5" data-category="button" data-id="fd88d4c5">
                 </button>
               </li>
               <li>
-                <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" aria-pilot-category="link" aria-pilot-index="40" data-category="link" data-index="40">
+                <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" aria-pilot-category="link" aria-pilot-id="4154688f" data-category="link" data-id="4154688f">
                 </a>
               </li>
             </ul>
@@ -297,9 +297,9 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
     </header>
     <div>
       <div>
-        <div aria-pilot-category="semantic" aria-pilot-index="2" data-category="semantic" data-index="2">
+        <div aria-pilot-category="semantic" aria-pilot-id="dd688b6d" data-category="semantic" data-id="dd688b6d">
         </div>
-        <button aria-pilot-category="button" aria-pilot-index="7" data-category="button" data-index="7">
+        <button aria-pilot-category="button" aria-pilot-id="abcda6b4" data-category="button" data-id="abcda6b4">
         </button>
         <div>
           <div>
@@ -307,9 +307,9 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div>
                 <div>
                   <div>
-                    <main aria-pilot-category="semantic" aria-pilot-index="3" data-category="semantic" data-index="3">
+                    <main aria-pilot-category="semantic" aria-pilot-id="80592604" data-category="semantic" data-id="80592604">
                       <div>
-                        <section aria-pilot-category="semantic" aria-pilot-index="4" data-category="semantic" data-index="4">
+                        <section aria-pilot-category="semantic" aria-pilot-id="a402d34" data-category="semantic" data-id="a402d34">
                           <div>
                             <div>
                               <div>
@@ -317,24 +317,24 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   <div>
                                     <div>
                                       <nav>
-                                        <ul aria-pilot-category="list" aria-pilot-index="11" data-category="list" data-index="11">
+                                        <ul aria-pilot-category="list" aria-pilot-id="463ef3db" data-category="list" data-id="463ef3db">
                                           <li>
-                                            <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="41" data-category="link" data-index="41">
+                                            <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-id="d0ffa903" data-category="link" data-id="d0ffa903">
                                             </a>
                                           </li>
                                           <li>
-                                            <div aria-pilot-category="button" aria-pilot-index="8" data-category="button" data-index="8">
+                                            <div aria-pilot-category="button" aria-pilot-id="aa5b54ef" data-category="button" data-id="aa5b54ef">
                                             </div>
                                             <div>
                                               <div>
                                                 <div>
-                                                  <ul aria-pilot-category="list" aria-pilot-index="12" data-category="list" data-index="12">
+                                                  <ul aria-pilot-category="list" aria-pilot-id="3645572d" data-category="list" data-id="3645572d">
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/domain-name-search" target="_self" aria-pilot-category="link" aria-pilot-index="42" data-category="link" data-index="42">
+                                                      <a href="https://www.wix.com/domains/domain-name-search" target="_self" aria-pilot-category="link" aria-pilot-id="92c8aa1" data-category="link" data-id="92c8aa1">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_self" aria-pilot-category="link" aria-pilot-index="43" data-category="link" data-index="43">
+                                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_self" aria-pilot-category="link" aria-pilot-id="ca764351" data-category="link" data-id="ca764351">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -343,26 +343,26 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                             </div>
                                           </li>
                                           <li>
-                                            <div aria-pilot-category="button" aria-pilot-index="9" data-category="button" data-index="9">
+                                            <div aria-pilot-category="button" aria-pilot-id="8c56b7ba" data-category="button" data-id="8c56b7ba">
                                             </div>
                                             <div>
                                               <div>
                                                 <div>
-                                                  <ul aria-pilot-category="list" aria-pilot-index="13" data-category="list" data-index="13">
+                                                  <ul aria-pilot-category="list" aria-pilot-id="d124a2fe" data-category="list" data-id="d124a2fe">
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/com-domain" target="_self" aria-pilot-category="link" aria-pilot-index="44" data-category="link" data-index="44">
+                                                      <a href="https://www.wix.com/domains/tld-list/tlds/com-domain" target="_self" aria-pilot-category="link" aria-pilot-id="411cf394" data-category="link" data-id="411cf394">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/net-domain" target="_self" aria-pilot-category="link" aria-pilot-index="45" data-category="link" data-index="45">
+                                                      <a href="https://www.wix.com/domains/tld-list/tlds/net-domain" target="_self" aria-pilot-category="link" aria-pilot-id="335d2acf" data-category="link" data-id="335d2acf">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/org-domain" target="_self" aria-pilot-category="link" aria-pilot-index="46" data-category="link" data-index="46">
+                                                      <a href="https://www.wix.com/domains/tld-list/tlds/org-domain" target="_self" aria-pilot-category="link" aria-pilot-id="251aa075" data-category="link" data-id="251aa075">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/tld-list" target="_self" aria-pilot-category="link" aria-pilot-index="47" data-category="link" data-index="47">
+                                                      <a href="https://www.wix.com/domains/tld-list" target="_self" aria-pilot-category="link" aria-pilot-id="5354599b" data-category="link" data-id="5354599b">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -371,22 +371,22 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                             </div>
                                           </li>
                                           <li>
-                                            <div aria-pilot-category="button" aria-pilot-index="10" data-category="button" data-index="10">
+                                            <div aria-pilot-category="button" aria-pilot-id="da74820c" data-category="button" data-id="da74820c">
                                             </div>
                                             <div>
                                               <div>
                                                 <div>
-                                                  <ul aria-pilot-category="list" aria-pilot-index="14" data-category="list" data-index="14">
+                                                  <ul aria-pilot-category="list" aria-pilot-id="f3dc8e4e" data-category="list" data-id="f3dc8e4e">
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/business-email" target="_self" aria-pilot-category="link" aria-pilot-index="48" data-category="link" data-index="48">
+                                                      <a href="https://www.wix.com/domains/business-email" target="_self" aria-pilot-category="link" aria-pilot-id="4add2fe" data-category="link" data-id="4add2fe">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://www.wix.com/domains/whois" target="_self" aria-pilot-category="link" aria-pilot-index="49" data-category="link" data-index="49">
+                                                      <a href="https://www.wix.com/domains/whois" target="_self" aria-pilot-category="link" aria-pilot-id="f2db7a93" data-category="link" data-id="f2db7a93">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://support.wix.com/en/transferring-domains" target="_blank" aria-pilot-category="link" aria-pilot-index="50" data-category="link" data-index="50">
+                                                      <a href="https://support.wix.com/en/transferring-domains" target="_blank" aria-pilot-category="link" aria-pilot-id="4b2dff7c" data-category="link" data-id="4b2dff7c">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -395,18 +395,18 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                             </div>
                                           </li>
                                           <li>
-                                            <div aria-pilot-category="button" aria-pilot-index="11" data-category="button" data-index="11">
+                                            <div aria-pilot-category="button" aria-pilot-id="4ac3e576" data-category="button" data-id="4ac3e576">
                                             </div>
                                             <div>
                                               <div>
                                                 <div>
-                                                  <ul aria-pilot-category="list" aria-pilot-index="15" data-category="list" data-index="15">
+                                                  <ul aria-pilot-category="list" aria-pilot-id="1274397c" data-category="list" data-id="1274397c">
                                                     <li>
-                                                      <a href="https://www.wix.com/blog/explore/categories/domains-guide" target="_blank" aria-pilot-category="link" aria-pilot-index="51" data-category="link" data-index="51">
+                                                      <a href="https://www.wix.com/blog/explore/categories/domains-guide" target="_blank" aria-pilot-category="link" aria-pilot-id="7ca5b806" data-category="link" data-id="7ca5b806">
                                                       </a>
                                                     </li>
                                                     <li>
-                                                      <a href="https://support.wix.com/en/connecting-a-domain" target="_blank" aria-pilot-category="link" aria-pilot-index="52" data-category="link" data-index="52">
+                                                      <a href="https://support.wix.com/en/connecting-a-domain" target="_blank" aria-pilot-category="link" aria-pilot-id="20e431fa" data-category="link" data-id="20e431fa">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -419,7 +419,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     </div>
                                     <div>
                                       <div>
-                                        <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-pilot-category="link" aria-pilot-index="53" data-category="link" data-index="53">
+                                        <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-pilot-category="link" aria-pilot-id="96857b4a" data-category="link" data-id="96857b4a">
                                         </a>
                                       </div>
                                     </div>
@@ -428,13 +428,13 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div>
                                       <div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="12" data-category="button" data-index="12">
+                                          <button aria-pilot-category="button" aria-pilot-id="d0bf5c0f" data-category="button" data-id="d0bf5c0f">
                                           </button>
                                         </div>
                                       </div>
                                       <div>
                                         <div>
-                                          <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-pilot-category="link" aria-pilot-index="54" data-category="link" data-index="54">
+                                          <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-pilot-category="link" aria-pilot-id="96857b4a" data-category="link" data-id="96857b4a">
                                           </a>
                                         </div>
                                       </div>
@@ -446,11 +446,11 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </section>
                       </div>
-                      <section aria-pilot-category="semantic" aria-pilot-index="5" data-category="semantic" data-index="5">
+                      <section aria-pilot-category="semantic" aria-pilot-id="76a9b132" data-category="semantic" data-id="76a9b132">
                         <div>
                           <div>
                             <div>
-                              <h1 aria-pilot-category="header" aria-pilot-index="0" data-category="header" data-index="0">
+                              <h1 aria-pilot-category="header" aria-pilot-id="2358aa4d" data-category="header" data-id="2358aa4d">
                               </h1>
                             </div>
                             <div>
@@ -461,13 +461,13 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                       <div>
                                         <div>
                                           <div>
-                                            <input name="e.g.-yogamiss.org" type="text" value="" aria-pilot-category="input" aria-pilot-index="0" data-category="input" data-index="0">
+                                            <input name="e.g.-yogamiss.org" type="text" value="" aria-pilot-category="input" aria-pilot-id="a372378c" data-category="input" data-id="a372378c">
                                             </input>
                                           </div>
                                         </div>
                                         <div>
                                           <div>
-                                            <button aria-pilot-category="button" aria-pilot-index="13" data-category="button" data-index="13">
+                                            <button aria-pilot-category="button" aria-pilot-id="935f51c8" data-category="button" data-id="935f51c8">
                                             </button>
                                           </div>
                                         </div>
@@ -478,12 +478,12 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               </div>
                             </div>
                             <div>
-                              <div aria-pilot-category="button" aria-pilot-index="14" data-category="button" data-index="14">
+                              <div aria-pilot-category="button" aria-pilot-id="e4d46b7d" data-category="button" data-id="e4d46b7d">
                                 <div>
                                   <p>
                                     <span>
                                       <span>
-                                        <a href="https://www.wix.com/plans" target="_blank" aria-pilot-category="link" aria-pilot-index="55" data-category="link" data-index="55">
+                                        <a href="https://www.wix.com/plans" target="_blank" aria-pilot-category="link" aria-pilot-id="1e4f4025" data-category="link" data-id="1e4f4025">
                                         </a>
                                       </span>
                                     </span>
@@ -494,70 +494,70 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                           <div>
                             <div>
-                              <h2 aria-pilot-category="header" aria-pilot-index="1" data-category="header" data-index="1">
+                              <h2 aria-pilot-category="header" aria-pilot-id="978b236a" data-category="header" data-id="978b236a">
                               </h2>
                             </div>
                             <div>
                               <div>
                                 <div>
-                                  <div aria-pilot-category="list" aria-pilot-index="16" data-category="list" data-index="16">
-                                    <div aria-pilot-category="list" aria-pilot-index="17" data-category="list" data-index="17">
+                                  <div aria-pilot-category="list" aria-pilot-id="1d4067f" data-category="list" data-id="1d4067f">
+                                    <div aria-pilot-category="list" aria-pilot-id="8e3b0255" data-category="list" data-id="8e3b0255">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="2" data-category="header" data-index="2">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="2f0fe669" data-category="header" data-id="2f0fe669">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="15" data-category="button" data-index="15">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="18" data-category="list" data-index="18">
+                                    <div aria-pilot-category="list" aria-pilot-id="ddca2c54" data-category="list" data-id="ddca2c54">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="3" data-category="header" data-index="3">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="405c4446" data-category="header" data-id="405c4446">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="16" data-category="button" data-index="16">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="19" data-category="list" data-index="19">
+                                    <div aria-pilot-category="list" aria-pilot-id="8c083805" data-category="list" data-id="8c083805">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="4" data-category="header" data-index="4">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="5125e08e" data-category="header" data-id="5125e08e">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="17" data-category="button" data-index="17">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="20" data-category="list" data-index="20">
+                                    <div aria-pilot-category="list" aria-pilot-id="9a874488" data-category="list" data-id="9a874488">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="5" data-category="header" data-index="5">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="dfe53141" data-category="header" data-id="dfe53141">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="18" data-category="button" data-index="18">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="21" data-category="list" data-index="21">
+                                    <div aria-pilot-category="list" aria-pilot-id="4b5e4999" data-category="list" data-id="4b5e4999">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="6" data-category="header" data-index="6">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="b95a0056" data-category="header" data-id="b95a0056">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="19" data-category="button" data-index="19">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="22" data-category="list" data-index="22">
+                                    <div aria-pilot-category="list" aria-pilot-id="75bcca04" data-category="list" data-id="75bcca04">
                                       <div>
-                                        <h3 aria-pilot-category="header" aria-pilot-index="7" data-category="header" data-index="7">
+                                        <h3 aria-pilot-category="header" aria-pilot-id="3c5c7c9c" data-category="header" data-id="3c5c7c9c">
                                         </h3>
                                       </div>
                                       <div>
-                                        <button aria-pilot-category="button" aria-pilot-index="20" data-category="button" data-index="20">
+                                        <button aria-pilot-category="button" aria-pilot-id="ad5103d1" data-category="button" data-id="ad5103d1">
                                         </button>
                                       </div>
                                     </div>
@@ -565,29 +565,29 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                 </div>
                               </div>
                             </div>
-                            <div aria-pilot-category="button" aria-pilot-index="21" data-category="button" data-index="21">
+                            <div aria-pilot-category="button" aria-pilot-id="5ae1dd80" data-category="button" data-id="5ae1dd80">
                               <div>
-                                <a href="https://www.wix.com/domains/tld-list" target="_blank" aria-pilot-category="link" aria-pilot-index="56" data-category="link" data-index="56">
+                                <a href="https://www.wix.com/domains/tld-list" target="_blank" aria-pilot-category="link" aria-pilot-id="b4ed57e2" data-category="link" data-id="b4ed57e2">
                                 </a>
                               </div>
                             </div>
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="6" data-category="semantic" data-index="6">
+                      <section aria-pilot-category="semantic" aria-pilot-id="fade14c1" data-category="semantic" data-id="fade14c1">
                         <div>
                           <div>
                             <div>
                               <div>
                                 <div>
                                   <div>
-                                    <h2 aria-pilot-category="header" aria-pilot-index="8" data-category="header" data-index="8">
+                                    <h2 aria-pilot-category="header" aria-pilot-id="729826b9" data-category="header" data-id="729826b9">
                                     </h2>
                                   </div>
                                   <div>
-                                    <div aria-pilot-category="button" aria-pilot-index="22" data-category="button" data-index="22">
+                                    <div aria-pilot-category="button" aria-pilot-id="3c6334f7" data-category="button" data-id="3c6334f7">
                                       <div>
-                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_your_domain_get_started&loginCompName=domain_gate_your_domain_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=login&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-index="57" data-category="link" data-index="57">
+                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_your_domain_get_started&loginCompName=domain_gate_your_domain_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=login&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-id="c9b2f577" data-category="link" data-id="c9b2f577">
                                         </a>
                                       </div>
                                     </div>
@@ -596,7 +596,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               </div>
                               <div>
                                 <div>
-                                  <button aria-pilot-category="button" aria-pilot-index="23" data-category="button" data-index="23">
+                                  <button aria-pilot-category="button" aria-pilot-id="aa5da1ba" data-category="button" data-id="aa5da1ba">
                                   </button>
                                 </div>
                               </div>
@@ -604,32 +604,32 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="7" data-category="semantic" data-index="7">
+                      <section aria-pilot-category="semantic" aria-pilot-id="148a50be" data-category="semantic" data-id="148a50be">
                         <div>
                           <div>
                             <div>
-                              <h2 aria-pilot-category="header" aria-pilot-index="9" data-category="header" data-index="9">
+                              <h2 aria-pilot-category="header" aria-pilot-id="c7a4d8b0" data-category="header" data-id="c7a4d8b0">
                               </h2>
                             </div>
-                            <div aria-pilot-category="button" aria-pilot-index="24" data-category="button" data-index="24">
+                            <div aria-pilot-category="button" aria-pilot-id="73b4ed9a" data-category="button" data-id="73b4ed9a">
                               <div>
-                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_full_domain_package_start_now&loginCompName=domain_gate_full_domain_package_start_now&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-index="58" data-category="link" data-index="58">
+                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_full_domain_package_start_now&loginCompName=domain_gate_full_domain_package_start_now&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-id="f86fa1d8" data-category="link" data-id="f86fa1d8">
                                 </a>
                               </div>
                             </div>
                             <div>
-                              <div aria-pilot-category="list" aria-pilot-index="23" data-category="list" data-index="23">
-                                <div aria-pilot-category="list" aria-pilot-index="24" data-category="list" data-index="24">
+                              <div aria-pilot-category="list" aria-pilot-id="9f634229" data-category="list" data-id="9f634229">
+                                <div aria-pilot-category="list" aria-pilot-id="a5af0dd1" data-category="list" data-id="a5af0dd1">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="10" data-category="header" data-index="10">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="d443adce" data-category="header" data-id="d443adce">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
                                           <span>
-                                            <a href="https://www.wix.com/free/web-hosting" target="_blank" aria-pilot-category="link" aria-pilot-index="59" data-category="link" data-index="59">
+                                            <a href="https://www.wix.com/free/web-hosting" target="_blank" aria-pilot-category="link" aria-pilot-id="654b44ae" data-category="link" data-id="654b44ae">
                                             </a>
                                           </span>
                                         </span>
@@ -637,80 +637,80 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="25" data-category="list" data-index="25">
+                                <div aria-pilot-category="list" aria-pilot-id="bbceb12f" data-category="list" data-id="bbceb12f">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="11" data-category="header" data-index="11">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="6ee0281a" data-category="header" data-id="6ee0281a">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
-                                          <a href="https://www.wix.com/website-security" target="_blank" aria-pilot-category="link" aria-pilot-index="60" data-category="link" data-index="60">
+                                          <a href="https://www.wix.com/website-security" target="_blank" aria-pilot-category="link" aria-pilot-id="485ae406" data-category="link" data-id="485ae406">
                                           </a>
                                         </span>
                                       </p>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="26" data-category="list" data-index="26">
+                                <div aria-pilot-category="list" aria-pilot-id="386e2162" data-category="list" data-id="386e2162">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="12" data-category="header" data-index="12">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="527f02a5" data-category="header" data-id="527f02a5">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
-                                          <a href="https://www.wix.com/manage/privacy-security-hub" target="_blank" aria-pilot-category="link" aria-pilot-index="61" data-category="link" data-index="61">
+                                          <a href="https://www.wix.com/manage/privacy-security-hub" target="_blank" aria-pilot-category="link" aria-pilot-id="b26f8e8" data-category="link" data-id="b26f8e8">
                                           </a>
                                         </span>
                                       </p>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="27" data-category="list" data-index="27">
+                                <div aria-pilot-category="list" aria-pilot-id="c4abc9a9" data-category="list" data-id="c4abc9a9">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="13" data-category="header" data-index="13">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="a4391c24" data-category="header" data-id="a4391c24">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
-                                          <a href="https://support.wix.com/en/article/transferring-a-domain-purchased-elsewhere-to-wix" target="_blank" aria-pilot-category="link" aria-pilot-index="62" data-category="link" data-index="62">
+                                          <a href="https://support.wix.com/en/article/transferring-a-domain-purchased-elsewhere-to-wix" target="_blank" aria-pilot-category="link" aria-pilot-id="7bff5254" data-category="link" data-id="7bff5254">
                                           </a>
                                         </span>
                                       </p>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="28" data-category="list" data-index="28">
+                                <div aria-pilot-category="list" aria-pilot-id="eef68abe" data-category="list" data-id="eef68abe">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="14" data-category="header" data-index="14">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="73188136" data-category="header" data-id="73188136">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
-                                          <a href="https://support.wix.com/en/article/purchasing-a-domain-from-wix-3133977" target="_blank" aria-pilot-category="link" aria-pilot-index="63" data-category="link" data-index="63">
+                                          <a href="https://support.wix.com/en/article/purchasing-a-domain-from-wix-3133977" target="_blank" aria-pilot-category="link" aria-pilot-id="ba83f7c7" data-category="link" data-id="ba83f7c7">
                                           </a>
                                         </span>
                                       </p>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="29" data-category="list" data-index="29">
+                                <div aria-pilot-category="list" aria-pilot-id="58e400dc" data-category="list" data-id="58e400dc">
                                   <div>
                                     <div>
-                                      <h3 aria-pilot-category="header" aria-pilot-index="15" data-category="header" data-index="15">
+                                      <h3 aria-pilot-category="header" aria-pilot-id="6906298a" data-category="header" data-id="6906298a">
                                       </h3>
                                     </div>
                                     <div>
                                       <p>
                                         <span>
-                                          <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-index="64" data-category="link" data-index="64">
+                                          <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-id="8e642323" data-category="link" data-id="8e642323">
                                           </a>
                                         </span>
                                       </p>
@@ -722,18 +722,18 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="8" data-category="semantic" data-index="8">
+                      <section aria-pilot-category="semantic" aria-pilot-id="de0bd3c6" data-category="semantic" data-id="de0bd3c6">
                         <div>
                           <div>
                             <div>
                               <div>
                                 <div>
-                                  <h2 aria-pilot-category="header" aria-pilot-index="16" data-category="header" data-index="16">
+                                  <h2 aria-pilot-category="header" aria-pilot-id="c850f077" data-category="header" data-id="c850f077">
                                   </h2>
                                 </div>
-                                <div aria-pilot-category="button" aria-pilot-index="25" data-category="button" data-index="25">
+                                <div aria-pilot-category="button" aria-pilot-id="1ed18bd9" data-category="button" data-id="1ed18bd9">
                                   <div>
-                                    <a href="https://users.wix.com/signin?referralInfo=domain_gate_build_your_brand_get_started&loginCompName=domain_gate_build_your_brand_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-index="65" data-category="link" data-index="65">
+                                    <a href="https://users.wix.com/signin?referralInfo=domain_gate_build_your_brand_get_started&loginCompName=domain_gate_build_your_brand_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-id="c9b2f577" data-category="link" data-id="c9b2f577">
                                     </a>
                                   </div>
                                 </div>
@@ -741,12 +741,12 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               <div>
                                 <div>
                                   <div>
-                                    <h3 aria-pilot-category="header" aria-pilot-index="17" data-category="header" data-index="17">
+                                    <h3 aria-pilot-category="header" aria-pilot-id="5e071dee" data-category="header" data-id="5e071dee">
                                     </h3>
                                   </div>
-                                  <div aria-pilot-category="button" aria-pilot-index="26" data-category="button" data-index="26">
+                                  <div aria-pilot-category="button" aria-pilot-id="36b83db4" data-category="button" data-id="36b83db4">
                                     <div>
-                                      <a href="https://www.wix.com/domains/business-email" target="_blank" aria-pilot-category="link" aria-pilot-index="66" data-category="link" data-index="66">
+                                      <a href="https://www.wix.com/domains/business-email" target="_blank" aria-pilot-category="link" aria-pilot-id="51888c99" data-category="link" data-id="51888c99">
                                       </a>
                                     </div>
                                   </div>
@@ -757,24 +757,24 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div>
                             <div>
                               <div>
-                                <h3 aria-pilot-category="header" aria-pilot-index="18" data-category="header" data-index="18">
+                                <h3 aria-pilot-category="header" aria-pilot-id="11aa92b0" data-category="header" data-id="11aa92b0">
                                 </h3>
                               </div>
                               <div>
                                 <p>
                                   <span>
-                                    <a href="https://www.wix.com/tools/business-name-generator" target="_blank" aria-pilot-category="link" aria-pilot-index="67" data-category="link" data-index="67">
+                                    <a href="https://www.wix.com/tools/business-name-generator" target="_blank" aria-pilot-category="link" aria-pilot-id="9eca5e16" data-category="link" data-id="9eca5e16">
                                     </a>
                                   </span>
                                   <span>
-                                    <a href="https://www.wix.com/tools/business-card-maker" target="_blank" aria-pilot-category="link" aria-pilot-index="68" data-category="link" data-index="68">
+                                    <a href="https://www.wix.com/tools/business-card-maker" target="_blank" aria-pilot-category="link" aria-pilot-id="9cbd1e1c" data-category="link" data-id="9cbd1e1c">
                                     </a>
                                   </span>
                                 </p>
                               </div>
-                              <div aria-pilot-category="button" aria-pilot-index="27" data-category="button" data-index="27">
+                              <div aria-pilot-category="button" aria-pilot-id="d3a88b20" data-category="button" data-id="d3a88b20">
                                 <div>
-                                  <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-index="69" data-category="link" data-index="69">
+                                  <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-id="7a2f7fc6" data-category="link" data-id="7a2f7fc6">
                                   </a>
                                 </div>
                               </div>
@@ -783,20 +783,20 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div>
                             <div>
                               <div>
-                                <h3 aria-pilot-category="header" aria-pilot-index="19" data-category="header" data-index="19">
+                                <h3 aria-pilot-category="header" aria-pilot-id="9ccf6358" data-category="header" data-id="9ccf6358">
                                 </h3>
                               </div>
                               <div>
                                 <p>
                                   <span>
-                                    <a href="https://www.wix.com/seo" target="_blank" aria-pilot-category="link" aria-pilot-index="70" data-category="link" data-index="70">
+                                    <a href="https://www.wix.com/seo" target="_blank" aria-pilot-category="link" aria-pilot-id="af658a42" data-category="link" data-id="af658a42">
                                     </a>
                                   </span>
                                 </p>
                               </div>
-                              <div aria-pilot-category="button" aria-pilot-index="28" data-category="button" data-index="28">
+                              <div aria-pilot-category="button" aria-pilot-id="f0f618ae" data-category="button" data-id="f0f618ae">
                                 <div>
-                                  <a href="https://www.wix.com/manage/analytics" target="_blank" aria-pilot-category="link" aria-pilot-index="71" data-category="link" data-index="71">
+                                  <a href="https://www.wix.com/manage/analytics" target="_blank" aria-pilot-category="link" aria-pilot-id="ad4277f1" data-category="link" data-id="ad4277f1">
                                   </a>
                                 </div>
                               </div>
@@ -804,26 +804,26 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="9" data-category="semantic" data-index="9">
+                      <section aria-pilot-category="semantic" aria-pilot-id="5f11237b" data-category="semantic" data-id="5f11237b">
                         <div>
                           <div>
                             <div>
                               <div>
-                                <h2 aria-pilot-category="header" aria-pilot-index="20" data-category="header" data-index="20">
+                                <h2 aria-pilot-category="header" aria-pilot-id="b250c87c" data-category="header" data-id="b250c87c">
                                 </h2>
                               </div>
                               <div>
                                 <div>
                                   <div>
-                                    <div aria-pilot-category="button" aria-pilot-index="29" data-category="button" data-index="29">
+                                    <div aria-pilot-category="button" aria-pilot-id="20292edc" data-category="button" data-id="20292edc">
                                       <div>
-                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_how_to_section_get_started&loginCompName=domain_gate_how_to_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-index="72" data-category="link" data-index="72">
+                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_how_to_section_get_started&loginCompName=domain_gate_how_to_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-id="c9b2f577" data-category="link" data-id="c9b2f577">
                                         </a>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="button" aria-pilot-index="30" data-category="button" data-index="30">
+                                    <div aria-pilot-category="button" aria-pilot-id="f88659e3" data-category="button" data-id="f88659e3">
                                       <div>
-                                        <a href="https://www.wix.com/blog/how-to-register-a-domain-name" target="_blank" aria-pilot-category="link" aria-pilot-index="73" data-category="link" data-index="73">
+                                        <a href="https://www.wix.com/blog/how-to-register-a-domain-name" target="_blank" aria-pilot-category="link" aria-pilot-id="ad5103d1" data-category="link" data-id="ad5103d1">
                                         </a>
                                       </div>
                                     </div>
@@ -833,35 +833,35 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                             </div>
                           </div>
                           <div>
-                            <div aria-pilot-category="list" aria-pilot-index="30" data-category="list" data-index="30">
-                              <div aria-pilot-category="list" aria-pilot-index="31" data-category="list" data-index="31">
+                            <div aria-pilot-category="list" aria-pilot-id="85e3646f" data-category="list" data-id="85e3646f">
+                              <div aria-pilot-category="list" aria-pilot-id="6d95fee6" data-category="list" data-id="6d95fee6">
                                 <div>
                                   <div>
-                                    <h3 aria-pilot-category="header" aria-pilot-index="21" data-category="header" data-index="21">
+                                    <h3 aria-pilot-category="header" aria-pilot-id="968f704a" data-category="header" data-id="968f704a">
                                     </h3>
                                   </div>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="32" data-category="list" data-index="32">
+                              <div aria-pilot-category="list" aria-pilot-id="213497a4" data-category="list" data-id="213497a4">
                                 <div>
                                   <div>
-                                    <h3 aria-pilot-category="header" aria-pilot-index="22" data-category="header" data-index="22">
+                                    <h3 aria-pilot-category="header" aria-pilot-id="f9c6c8c7" data-category="header" data-id="f9c6c8c7">
                                     </h3>
                                   </div>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="33" data-category="list" data-index="33">
+                              <div aria-pilot-category="list" aria-pilot-id="edd822d9" data-category="list" data-id="edd822d9">
                                 <div>
                                   <div>
-                                    <h3 aria-pilot-category="header" aria-pilot-index="23" data-category="header" data-index="23">
+                                    <h3 aria-pilot-category="header" aria-pilot-id="e021e3c0" data-category="header" data-id="e021e3c0">
                                     </h3>
                                   </div>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="34" data-category="list" data-index="34">
+                              <div aria-pilot-category="list" aria-pilot-id="14d82f63" data-category="list" data-id="14d82f63">
                                 <div>
                                   <div>
-                                    <h3 aria-pilot-category="header" aria-pilot-index="24" data-category="header" data-index="24">
+                                    <h3 aria-pilot-category="header" aria-pilot-id="204cf7fc" data-category="header" data-id="204cf7fc">
                                     </h3>
                                   </div>
                                 </div>
@@ -870,35 +870,35 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="10" data-category="semantic" data-index="10">
+                      <section aria-pilot-category="semantic" aria-pilot-id="c6a0901c" data-category="semantic" data-id="c6a0901c">
                         <div>
                           <div>
                             <div>
-                              <h2 aria-pilot-category="header" aria-pilot-index="25" data-category="header" data-index="25">
+                              <h2 aria-pilot-category="header" aria-pilot-id="f6c8970d" data-category="header" data-id="f6c8970d">
                               </h2>
                             </div>
                             <div>
-                              <div aria-pilot-category="list" aria-pilot-index="35" data-category="list" data-index="35">
-                                <div aria-pilot-category="list" aria-pilot-index="36" data-category="list" data-index="36">
-                                  <div aria-pilot-category="button" aria-pilot-index="31" data-category="button" data-index="31">
+                              <div aria-pilot-category="list" aria-pilot-id="393d8d3e" data-category="list" data-id="393d8d3e">
+                                <div aria-pilot-category="list" aria-pilot-id="c6358c12" data-category="list" data-id="c6358c12">
+                                  <div aria-pilot-category="button" aria-pilot-id="8f63cb3b" data-category="button" data-id="8f63cb3b">
                                     <div>
-                                      <a href="https://www.wix.com/domains/domain-name-search" target="_blank" aria-pilot-category="link" aria-pilot-index="74" data-category="link" data-index="74">
+                                      <a href="https://www.wix.com/domains/domain-name-search" target="_blank" aria-pilot-category="link" aria-pilot-id="98c23ba1" data-category="link" data-id="98c23ba1">
                                       </a>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="37" data-category="list" data-index="37">
-                                  <div aria-pilot-category="button" aria-pilot-index="32" data-category="button" data-index="32">
+                                <div aria-pilot-category="list" aria-pilot-id="a814885e" data-category="list" data-id="a814885e">
+                                  <div aria-pilot-category="button" aria-pilot-id="a9a73bf7" data-category="button" data-id="a9a73bf7">
                                     <div>
-                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_blank" aria-pilot-category="link" aria-pilot-index="75" data-category="link" data-index="75">
+                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_blank" aria-pilot-category="link" aria-pilot-id="5a37d63a" data-category="link" data-id="5a37d63a">
                                       </a>
                                     </div>
                                   </div>
                                 </div>
-                                <div aria-pilot-category="list" aria-pilot-index="38" data-category="list" data-index="38">
-                                  <div aria-pilot-category="button" aria-pilot-index="33" data-category="button" data-index="33">
+                                <div aria-pilot-category="list" aria-pilot-id="2382c281" data-category="list" data-id="2382c281">
+                                  <div aria-pilot-category="button" aria-pilot-id="3a42a83c" data-category="button" data-id="3a42a83c">
                                     <div>
-                                      <a href="https://www.wix.com/domains/whois" target="_blank" aria-pilot-category="link" aria-pilot-index="76" data-category="link" data-index="76">
+                                      <a href="https://www.wix.com/domains/whois" target="_blank" aria-pilot-category="link" aria-pilot-id="72737e" data-category="link" data-id="72737e">
                                       </a>
                                     </div>
                                   </div>
@@ -908,33 +908,33 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="11" data-category="semantic" data-index="11">
+                      <section aria-pilot-category="semantic" aria-pilot-id="a9120751" data-category="semantic" data-id="a9120751">
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="12" data-category="semantic" data-index="12">
+                      <section aria-pilot-category="semantic" aria-pilot-id="bcd21e6" data-category="semantic" data-id="bcd21e6">
                         <div>
                           <div>
                             <div>
                               <div>
-                                <h2 aria-pilot-category="header" aria-pilot-index="26" data-category="header" data-index="26">
+                                <h2 aria-pilot-category="header" aria-pilot-id="dc982717" data-category="header" data-id="dc982717">
                                 </h2>
                               </div>
-                              <div aria-pilot-category="button" aria-pilot-index="34" data-category="button" data-index="34">
+                              <div aria-pilot-category="button" aria-pilot-id="17864d9c" data-category="button" data-id="17864d9c">
                                 <div>
-                                  <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-index="77" data-category="link" data-index="77">
+                                  <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-id="26abd11e" data-category="link" data-id="26abd11e">
                                   </a>
                                 </div>
                               </div>
                             </div>
                           </div>
                           <div>
-                            <div aria-pilot-category="list" aria-pilot-index="39" data-category="list" data-index="39">
-                              <div aria-pilot-category="list" aria-pilot-index="40" data-category="list" data-index="40">
+                            <div aria-pilot-category="list" aria-pilot-id="6effba57" data-category="list" data-id="6effba57">
+                              <div aria-pilot-category="list" aria-pilot-id="e93d3801" data-category="list" data-id="e93d3801">
                                 <div>
                                   <div>
                                     <div>
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="27" data-category="header" data-index="27">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="bc21b42e" data-category="header" data-id="bc21b42e">
                                           </h3>
                                         </div>
                                       </div>
@@ -942,17 +942,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div>
-                                  <a href="https://www.wix.com/blog/what-is-a-domain" target="_blank" aria-pilot-category="link" aria-pilot-index="78" data-category="link" data-index="78">
+                                  <a href="https://www.wix.com/blog/what-is-a-domain" target="_blank" aria-pilot-category="link" aria-pilot-id="bd444591" data-category="link" data-id="bd444591">
                                   </a>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="41" data-category="list" data-index="41">
+                              <div aria-pilot-category="list" aria-pilot-id="b4770ce6" data-category="list" data-id="b4770ce6">
                                 <div>
                                   <div>
                                     <div>
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="28" data-category="header" data-index="28">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="e3dfc141" data-category="header" data-id="e3dfc141">
                                           </h3>
                                         </div>
                                       </div>
@@ -960,17 +960,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div>
-                                  <a href="https://www.wix.com/blog/types-of-domains" target="_blank" aria-pilot-category="link" aria-pilot-index="79" data-category="link" data-index="79">
+                                  <a href="https://www.wix.com/blog/types-of-domains" target="_blank" aria-pilot-category="link" aria-pilot-id="c2c6bf23" data-category="link" data-id="c2c6bf23">
                                   </a>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="42" data-category="list" data-index="42">
+                              <div aria-pilot-category="list" aria-pilot-id="383abf41" data-category="list" data-id="383abf41">
                                 <div>
                                   <div>
                                     <div>
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="29" data-category="header" data-index="29">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="4a15b560" data-category="header" data-id="4a15b560">
                                           </h3>
                                         </div>
                                       </div>
@@ -978,17 +978,17 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div>
-                                  <a href="https://www.wix.com/blog/how-much-does-a-domain-name-cost" target="_blank" aria-pilot-category="link" aria-pilot-index="80" data-category="link" data-index="80">
+                                  <a href="https://www.wix.com/blog/how-much-does-a-domain-name-cost" target="_blank" aria-pilot-category="link" aria-pilot-id="be9b5777" data-category="link" data-id="be9b5777">
                                   </a>
                                 </div>
                               </div>
-                              <div aria-pilot-category="list" aria-pilot-index="43" data-category="list" data-index="43">
+                              <div aria-pilot-category="list" aria-pilot-id="2d0a56c2" data-category="list" data-id="2d0a56c2">
                                 <div>
                                   <div>
                                     <div>
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="30" data-category="header" data-index="30">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="ca33f063" data-category="header" data-id="ca33f063">
                                           </h3>
                                         </div>
                                       </div>
@@ -996,7 +996,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div>
-                                  <a href="https://www.wix.com/blog/domain-hosting-vs-web-hosting" target="_blank" aria-pilot-category="link" aria-pilot-index="81" data-category="link" data-index="81">
+                                  <a href="https://www.wix.com/blog/domain-hosting-vs-web-hosting" target="_blank" aria-pilot-category="link" aria-pilot-id="b54d6ded" data-category="link" data-id="b54d6ded">
                                   </a>
                                 </div>
                               </div>
@@ -1004,133 +1004,133 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           </div>
                         </div>
                       </section>
-                      <section aria-pilot-category="semantic" aria-pilot-index="13" data-category="semantic" data-index="13">
+                      <section aria-pilot-category="semantic" aria-pilot-id="6bf12d90" data-category="semantic" data-id="6bf12d90">
                         <div>
                           <div>
-                            <h2 aria-pilot-category="header" aria-pilot-index="31" data-category="header" data-index="31">
+                            <h2 aria-pilot-category="header" aria-pilot-id="7757ba56" data-category="header" data-id="7757ba56">
                             </h2>
                           </div>
                           <div>
                             <div>
                               <div>
                                 <div>
-                                  <div aria-pilot-category="list" aria-pilot-index="44" data-category="list" data-index="44">
-                                    <div aria-pilot-category="list" aria-pilot-index="45" data-category="list" data-index="45">
+                                  <div aria-pilot-category="list" aria-pilot-id="2887caa2" data-category="list" data-id="2887caa2">
+                                    <div aria-pilot-category="list" aria-pilot-id="f171b9aa" data-category="list" data-id="f171b9aa">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="32" data-category="header" data-index="32">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="b3ca5dd0" data-category="header" data-id="b3ca5dd0">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="35" data-category="button" data-index="35">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="46" data-category="list" data-index="46">
+                                    <div aria-pilot-category="list" aria-pilot-id="7320b08d" data-category="list" data-id="7320b08d">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="33" data-category="header" data-index="33">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="6558f6cb" data-category="header" data-id="6558f6cb">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="36" data-category="button" data-index="36">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="47" data-category="list" data-index="47">
+                                    <div aria-pilot-category="list" aria-pilot-id="cc28bf4f" data-category="list" data-id="cc28bf4f">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="34" data-category="header" data-index="34">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="ac7cdd78" data-category="header" data-id="ac7cdd78">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="37" data-category="button" data-index="37">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="48" data-category="list" data-index="48">
+                                    <div aria-pilot-category="list" aria-pilot-id="6ec59a0f" data-category="list" data-id="6ec59a0f">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="35" data-category="header" data-index="35">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="e4461fc6" data-category="header" data-id="e4461fc6">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="38" data-category="button" data-index="38">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="49" data-category="list" data-index="49">
+                                    <div aria-pilot-category="list" aria-pilot-id="333fe0ca" data-category="list" data-id="333fe0ca">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="36" data-category="header" data-index="36">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="36e4ad82" data-category="header" data-id="36e4ad82">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="39" data-category="button" data-index="39">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="50" data-category="list" data-index="50">
+                                    <div aria-pilot-category="list" aria-pilot-id="4674322f" data-category="list" data-id="4674322f">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="37" data-category="header" data-index="37">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="ec252938" data-category="header" data-id="ec252938">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="40" data-category="button" data-index="40">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="51" data-category="list" data-index="51">
+                                    <div aria-pilot-category="list" aria-pilot-id="9318b79f" data-category="list" data-id="9318b79f">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="38" data-category="header" data-index="38">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="d7d21268" data-category="header" data-id="d7d21268">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="41" data-category="button" data-index="41">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="52" data-category="list" data-index="52">
+                                    <div aria-pilot-category="list" aria-pilot-id="fd5b4eb9" data-category="list" data-id="fd5b4eb9">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="39" data-category="header" data-index="39">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="ecf6b430" data-category="header" data-id="ecf6b430">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="42" data-category="button" data-index="42">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="53" data-category="list" data-index="53">
+                                    <div aria-pilot-category="list" aria-pilot-id="8ac990d7" data-category="list" data-id="8ac990d7">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="40" data-category="header" data-index="40">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="cc8ea269" data-category="header" data-id="cc8ea269">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="43" data-category="button" data-index="43">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
                                     </div>
-                                    <div aria-pilot-category="list" aria-pilot-index="54" data-category="list" data-index="54">
+                                    <div aria-pilot-category="list" aria-pilot-id="97582a29" data-category="list" data-id="97582a29">
                                       <div>
                                         <div>
-                                          <h3 aria-pilot-category="header" aria-pilot-index="41" data-category="header" data-index="41">
+                                          <h3 aria-pilot-category="header" aria-pilot-id="1ae3bc27" data-category="header" data-id="1ae3bc27">
                                           </h3>
                                         </div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="44" data-category="button" data-index="44">
+                                          <button aria-pilot-category="button" aria-pilot-id="284c678" data-category="button" data-id="284c678">
                                           </button>
                                         </div>
                                       </div>
@@ -1144,12 +1144,12 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         <div>
                           <div>
                             <div>
-                              <h2 aria-pilot-category="header" aria-pilot-index="42" data-category="header" data-index="42">
+                              <h2 aria-pilot-category="header" aria-pilot-id="872979e2" data-category="header" data-id="872979e2">
                               </h2>
                             </div>
-                            <div aria-pilot-category="button" aria-pilot-index="45" data-category="button" data-index="45">
+                            <div aria-pilot-category="button" aria-pilot-id="9ab5c17e" data-category="button" data-id="9ab5c17e">
                               <div>
-                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_send_off_section_get_started&loginCompName=domain_gate_send_off_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-index="82" data-category="link" data-index="82">
+                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_send_off_section_get_started&loginCompName=domain_gate_send_off_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-pilot-category="link" aria-pilot-id="c9b2f577" data-category="link" data-id="c9b2f577">
                                 </a>
                               </div>
                             </div>
@@ -1168,13 +1168,13 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div>
                                       <div>
                                         <div>
-                                          <input name="type-the domain you want" type="text" value="" aria-pilot-category="input" aria-pilot-index="1" data-category="input" data-index="1">
+                                          <input name="type-the domain you want" type="text" value="" aria-pilot-category="input" aria-pilot-id="8088a9d8" data-category="input" data-id="8088a9d8">
                                           </input>
                                         </div>
                                       </div>
                                       <div>
                                         <div>
-                                          <button aria-pilot-category="button" aria-pilot-index="46" data-category="button" data-index="46">
+                                          <button aria-pilot-category="button" aria-pilot-id="935f51c8" data-category="button" data-id="935f51c8">
                                           </button>
                                         </div>
                                       </div>
@@ -1193,186 +1193,186 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
             </div>
           </div>
         </div>
-        <div aria-pilot-category="semantic" aria-pilot-index="14" data-category="semantic" data-index="14">
+        <div aria-pilot-category="semantic" aria-pilot-id="7ed12e43" data-category="semantic" data-id="7ed12e43">
         </div>
       </div>
     </div>
     <div>
-      <footer aria-pilot-category="semantic" aria-pilot-index="15" data-category="semantic" data-index="15">
-        <nav aria-pilot-category="semantic" aria-pilot-index="16" data-category="semantic" data-index="16">
+      <footer aria-pilot-category="semantic" aria-pilot-id="dc5cc414" data-category="semantic" data-id="dc5cc414">
+        <nav aria-pilot-category="semantic" aria-pilot-id="1685afff" data-category="semantic" data-id="1685afff">
           <div>
             <div>
               <div>
-                <ul aria-pilot-category="list" aria-pilot-index="55" data-category="list" data-index="55">
+                <ul aria-pilot-category="list" aria-pilot-id="773b5c2d" data-category="list" data-id="773b5c2d">
                   <li>
-                    <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-index="83" data-category="link" data-index="83">
+                    <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-id="5c42d723" data-category="link" data-id="5c42d723">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="84" data-category="link" data-index="84">
+                    <a href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-id="4f432b46" data-category="link" data-id="4f432b46">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-index="85" data-category="link" data-index="85">
+                    <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-id="4001ee68" data-category="link" data-id="4001ee68">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="86" data-category="link" data-index="86">
+                    <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-id="3b7b995b" data-category="link" data-id="3b7b995b">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/app-market" target="_blank" aria-pilot-category="link" aria-pilot-index="87" data-category="link" data-index="87">
+                    <a href="https://www.wix.com/app-market" target="_blank" aria-pilot-category="link" aria-pilot-id="72ccd15e" data-category="link" data-id="72ccd15e">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-index="88" data-category="link" data-index="88">
+                    <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-id="1ff2cf22" data-category="link" data-id="1ff2cf22">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="89" data-category="link" data-index="89">
+                    <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-id="6f0022ed" data-category="link" data-id="6f0022ed">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/accessibility" target="_self" aria-pilot-category="link" aria-pilot-index="90" data-category="link" data-index="90">
+                    <a href="https://www.wix.com/accessibility" target="_self" aria-pilot-category="link" aria-pilot-id="45ada6bf" data-category="link" data-id="45ada6bf">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/app-builder" target="_self" aria-pilot-category="link" aria-pilot-index="91" data-category="link" data-index="91">
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <ul aria-pilot-category="list" aria-pilot-index="56" data-category="list" data-index="56">
-                  <li>
-                    <a href="https://www.wix.com/ecommerce/online-store" target="_blank" aria-pilot-category="link" aria-pilot-index="92" data-category="link" data-index="92">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/scheduling-software" target="_blank" aria-pilot-category="link" aria-pilot-index="93" data-category="link" data-index="93">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-index="94" data-category="link" data-index="94">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-index="95" data-category="link" data-index="95">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-index="96" data-category="link" data-index="96">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-index="97" data-category="link" data-index="97">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/studio" target="_self" aria-pilot-category="link" aria-pilot-index="98" data-category="link" data-index="98">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/studio/enterprise" target="_self" aria-pilot-category="link" aria-pilot-index="99" data-category="link" data-index="99">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/students" target="_self" aria-pilot-category="link" aria-pilot-index="100" data-category="link" data-index="100">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-index="101" data-category="link" data-index="101">
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-index="102" data-category="link" data-index="102">
+                    <a href="https://www.wix.com/app-builder" target="_self" aria-pilot-category="link" aria-pilot-id="930af2bd" data-category="link" data-id="930af2bd">
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <ul aria-pilot-category="list" aria-pilot-index="57" data-category="list" data-index="57">
+                <ul aria-pilot-category="list" aria-pilot-id="56de5c7d" data-category="list" data-id="56de5c7d">
                   <li>
-                    <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-index="103" data-category="link" data-index="103">
+                    <a href="https://www.wix.com/ecommerce/online-store" target="_blank" aria-pilot-category="link" aria-pilot-id="77defaba" data-category="link" data-id="77defaba">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/manage/privacy-security-hub" target="_self" aria-pilot-category="link" aria-pilot-index="104" data-category="link" data-index="104">
+                    <a href="https://www.wix.com/scheduling-software" target="_blank" aria-pilot-category="link" aria-pilot-id="16867011" data-category="link" data-id="16867011">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/seo/learn" target="_blank" aria-pilot-category="link" aria-pilot-index="105" data-category="link" data-index="105">
+                    <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-id="80e4a71c" data-category="link" data-id="80e4a71c">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/encyclopedia" target="_blank" aria-pilot-category="link" aria-pilot-index="106" data-category="link" data-index="106">
+                    <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-id="43b00b20" data-category="link" data-id="43b00b20">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-id="4da88af7" data-category="link" data-id="4da88af7">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-id="7473de70" data-category="link" data-id="7473de70">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/studio" target="_self" aria-pilot-category="link" aria-pilot-id="ac116670" data-category="link" data-id="ac116670">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/studio/enterprise" target="_self" aria-pilot-category="link" aria-pilot-id="22ebae1a" data-category="link" data-id="22ebae1a">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/students" target="_self" aria-pilot-category="link" aria-pilot-id="aa63406e" data-category="link" data-id="aa63406e">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-id="14b1af9f" data-category="link" data-id="14b1af9f">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-id="a0136538" data-category="link" data-id="a0136538">
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <ul aria-pilot-category="list" aria-pilot-index="58" data-category="list" data-index="58">
+                <ul aria-pilot-category="list" aria-pilot-id="df29ad49" data-category="list" data-id="df29ad49">
                   <li>
-                    <a href="https://support.wix.com/en" target="_self" aria-pilot-category="link" aria-pilot-index="107" data-category="link" data-index="107">
+                    <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-id="434e8d61" data-category="link" data-id="434e8d61">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-index="108" data-category="link" data-index="108">
+                    <a href="https://www.wix.com/manage/privacy-security-hub" target="_self" aria-pilot-category="link" aria-pilot-id="1b9d911a" data-category="link" data-id="1b9d911a">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/abuse" target="_self" aria-pilot-category="link" aria-pilot-index="109" data-category="link" data-index="109">
+                    <a href="https://www.wix.com/seo/learn" target="_blank" aria-pilot-category="link" aria-pilot-id="f026e439" data-category="link" data-id="f026e439">
                     </a>
                   </li>
                   <li>
-                    <a href="https://status.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="110" data-category="link" data-index="110">
+                    <a href="https://www.wix.com/encyclopedia" target="_blank" aria-pilot-category="link" aria-pilot-id="5efdb1fc" data-category="link" data-id="5efdb1fc">
                     </a>
                   </li>
                 </ul>
               </div>
               <div>
-                <ul aria-pilot-category="list" aria-pilot-index="59" data-category="list" data-index="59">
+                <ul aria-pilot-category="list" aria-pilot-id="b235e5b" data-category="list" data-id="b235e5b">
                   <li>
-                    <a href="https://www.wix.com/press-room/home" target="_self" aria-pilot-category="link" aria-pilot-index="111" data-category="link" data-index="111">
+                    <a href="https://support.wix.com/en" target="_self" aria-pilot-category="link" aria-pilot-id="7295f906" data-category="link" data-id="7295f906">
                     </a>
                   </li>
                   <li>
-                    <a href="https://investors.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="112" data-category="link" data-index="112">
+                    <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-id="dc182ea5" data-category="link" data-id="dc182ea5">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/wix-capital" target="_self" aria-pilot-category="link" aria-pilot-index="113" data-category="link" data-index="113">
+                    <a href="https://www.wix.com/abuse" target="_self" aria-pilot-category="link" aria-pilot-id="8d30b3bc" data-category="link" data-id="8d30b3bc">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/about/terms-accessibility" target="_self" aria-pilot-category="link" aria-pilot-index="114" data-category="link" data-index="114">
+                    <a href="https://status.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-id="c127c6b8" data-category="link" data-id="c127c6b8">
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <ul aria-pilot-category="list" aria-pilot-id="e3b6964a" data-category="list" data-id="e3b6964a">
+                  <li>
+                    <a href="https://www.wix.com/press-room/home" target="_self" aria-pilot-category="link" aria-pilot-id="8db5e680" data-category="link" data-id="8db5e680">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/about/patent-notice" target="_self" aria-pilot-category="link" aria-pilot-index="115" data-category="link" data-index="115">
+                    <a href="https://investors.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-id="112d7751" data-category="link" data-id="112d7751">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.wix.com/about/sitemap" target="_self" aria-pilot-category="link" aria-pilot-index="116" data-category="link" data-index="116">
+                    <a href="https://www.wix.com/wix-capital" target="_self" aria-pilot-category="link" aria-pilot-id="1a6170e3" data-category="link" data-id="1a6170e3">
                     </a>
                   </li>
                   <li>
-                    <a href="https://careers.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="117" data-category="link" data-index="117">
+                    <a href="https://www.wix.com/about/terms-accessibility" target="_self" aria-pilot-category="link" aria-pilot-id="7901e393" data-category="link" data-id="7901e393">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/about/patent-notice" target="_self" aria-pilot-category="link" aria-pilot-id="efb67d07" data-category="link" data-id="efb67d07">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.wix.com/about/sitemap" target="_self" aria-pilot-category="link" aria-pilot-id="ed0b564d" data-category="link" data-id="ed0b564d">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://careers.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-id="8cc043ce" data-category="link" data-id="8cc043ce">
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
             <div>
-              <a href="https://www.wix.com/" aria-pilot-category="link" aria-pilot-index="118" data-category="link" data-index="118">
+              <a href="https://www.wix.com/" aria-pilot-category="link" aria-pilot-id="9f503ce7" data-category="link" data-id="9f503ce7">
               </a>
-              <ul aria-pilot-category="list" aria-pilot-index="60" data-category="list" data-index="60">
+              <ul aria-pilot-category="list" aria-pilot-id="b4f4edc4" data-category="list" data-id="b4f4edc4">
                 <li>
-                  <a href="https://www.wix.com/about/us" target="_self" aria-pilot-category="link" aria-pilot-index="119" data-category="link" data-index="119">
+                  <a href="https://www.wix.com/about/us" target="_self" aria-pilot-category="link" aria-pilot-id="1750548" data-category="link" data-id="1750548">
                   </a>
                 </li>
                 <li>
-                  <a href="https://www.wix.com/about/contact-us" target="_self" aria-pilot-category="link" aria-pilot-index="120" data-category="link" data-index="120">
+                  <a href="https://www.wix.com/about/contact-us" target="_self" aria-pilot-category="link" aria-pilot-id="65ba3a58" data-category="link" data-id="65ba3a58">
                   </a>
                 </li>
               </ul>
@@ -1381,44 +1381,44 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
           <div>
             <div>
               <div>
-                <ul aria-pilot-category="list" aria-pilot-index="61" data-category="list" data-index="61">
+                <ul aria-pilot-category="list" aria-pilot-id="eca029" data-category="list" data-id="eca029">
                   <li>
-                    <a href="https://www.facebook.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-index="121" data-category="link" data-index="121">
+                    <a href="https://www.facebook.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-id="1da19ac6" data-category="link" data-id="1da19ac6">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.youtube.com/user/Wix" target="_blank" aria-pilot-category="link" aria-pilot-index="122" data-category="link" data-index="122">
+                    <a href="https://www.youtube.com/user/Wix" target="_blank" aria-pilot-category="link" aria-pilot-id="c4e32b23" data-category="link" data-id="c4e32b23">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.instagram.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-index="123" data-category="link" data-index="123">
+                    <a href="https://www.instagram.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-id="1b907b2" data-category="link" data-id="1b907b2">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.tiktok.com/@wix" target="_blank" aria-pilot-category="link" aria-pilot-index="124" data-category="link" data-index="124">
+                    <a href="https://www.tiktok.com/@wix" target="_blank" aria-pilot-category="link" aria-pilot-id="cbec30fa" data-category="link" data-id="cbec30fa">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.pinterest.com/wixcom" target="_blank" aria-pilot-category="link" aria-pilot-index="125" data-category="link" data-index="125">
+                    <a href="https://www.pinterest.com/wixcom" target="_blank" aria-pilot-category="link" aria-pilot-id="fff0379a" data-category="link" data-id="fff0379a">
                     </a>
                   </li>
                   <li>
-                    <a href="https://twitter.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-index="126" data-category="link" data-index="126">
+                    <a href="https://twitter.com/wix" target="_blank" aria-pilot-category="link" aria-pilot-id="c961aa73" data-category="link" data-id="c961aa73">
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.linkedin.com/company/wix-com?trk=biz-companies-cym" target="_blank" aria-pilot-category="link" aria-pilot-index="127" data-category="link" data-index="127">
+                    <a href="https://www.linkedin.com/company/wix-com?trk=biz-companies-cym" target="_blank" aria-pilot-category="link" aria-pilot-id="473590fe" data-category="link" data-id="473590fe">
                     </a>
                   </li>
                 </ul>
                 <div>
-                  <ul aria-pilot-category="list" aria-pilot-index="62" data-category="list" data-index="62">
+                  <ul aria-pilot-category="list" aria-pilot-id="f698a941" data-category="list" data-id="f698a941">
                     <li>
-                      <a href="https://www.wix.com/about/terms-of-use" target="_self" aria-pilot-category="link" aria-pilot-index="128" data-category="link" data-index="128">
+                      <a href="https://www.wix.com/about/terms-of-use" target="_self" aria-pilot-category="link" aria-pilot-id="cda36c95" data-category="link" data-id="cda36c95">
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.wix.com/about/privacy" target="_self" aria-pilot-category="link" aria-pilot-index="129" data-category="link" data-index="129">
+                      <a href="https://www.wix.com/about/privacy" target="_self" aria-pilot-category="link" aria-pilot-id="afae1307" data-category="link" data-id="afae1307">
                       </a>
                     </li>
                   </ul>
