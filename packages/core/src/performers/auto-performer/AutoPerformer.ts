@@ -181,7 +181,6 @@ export class AutoPerformer {
           goalAchieved,
           summary,
         );
-        logger.info(`Adding step to cache with key: ${cacheKey}`);
         this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
       }
       return {
