@@ -7,13 +7,61 @@ import styles from './index.module.scss';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+  
+  React.useEffect(() => {
+    const plane = document.querySelector(`.${styles.paperPlane}`);
+    
+    // Scroll event handler
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      
+      // Fly to top-right diagonally as user scrolls
+      plane.style.transform = `translate(${scrollY * 0.6}px, ${-scrollY * 0.4}px) rotate(${scrollY * 0.02}deg) scale(${Math.max(1 - scrollY * 0.001, 0.5)})`;
+      plane.style.opacity = Math.max(0.15 - scrollY * 0.0005, 0);
+    };
+    
+    // Mouse move event handler
+    const handleMouseMove = (e) => {
+      // Only respond to mouse movement when near the top of the page
+      if (window.scrollY > 300) return;
+      
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      
+      // Calculate mouse position as percentage of window
+      const mouseXPercent = mouseX / windowWidth - 0.5; // -0.5 to 0.5
+      const mouseYPercent = mouseY / windowHeight - 0.5; // -0.5 to 0.5
+      
+      // Subtle hover animation - simulates preparing to take off
+      plane.style.transform = `translate(${mouseXPercent * 15}px, ${mouseYPercent * -20}px) rotate(${mouseXPercent * 3}deg)`;
+      // Add slight shadow increase on hover
+      plane.style.filter = `drop-shadow(0 ${4 + Math.abs(mouseYPercent * 8)}px ${10 + Math.abs(mouseYPercent * 10)}px rgba(0, 0, 0, ${0.15 + Math.abs(mouseYPercent * 0.05)}))`;
+    
+    };
+    
+    // Add event listeners
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    // Initial position
+    handleScroll();
+    
+    // Remove event listeners on cleanup
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+  
   return (
     <header className={styles.heroBanner}>
+      <div className={styles.paperPlane}></div>
       <div className="container">
         <div className={styles.logoContainer}>
           <div className={styles.titleContainer}>
-            <h1 className={styles.title}>Pilot</h1>
-            <span className={styles.byWix}>by Wix</span>
+            <h1 className={styles.title}>Wix Pilot</h1>
           </div>
           <p className={styles.subtitle}>Transform testing with natural language commands. Engineered by the creators of Detox, born from real testing challenges, and open sourced for the community.</p>
 

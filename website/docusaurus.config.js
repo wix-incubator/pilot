@@ -65,14 +65,14 @@ const config = {
         {name: 'description', content: 'Write UI tests in natural language with Pilot - simplifying test automation for web and mobile apps.'}
       ],
       colorMode: {
-        defaultMode: 'light',
+        defaultMode: 'dark',
         disableSwitch: false,
         respectPrefersColorScheme: true,
       },
       navbar: {
         title: 'Wix Pilot',
         hideOnScroll: false,
-        style: 'light',
+        style: 'primary',
         items: [
           {
             type: 'doc',
@@ -107,7 +107,7 @@ const config = {
         ],
       },
       footer: {
-        style: 'light',
+        style: 'primary',
         links: [
           {
             title: 'Documentation',

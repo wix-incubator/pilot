@@ -38,6 +38,25 @@
     pointer-events: none;
   }
   
+  .paperPlane {
+    position: absolute;
+    background-image: url('/img/paper-plane.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+    z-index: 0;
+    transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+    width: 300px;
+    height: 300px;
+    left: 8%;
+    top: calc(50% - 130px);
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+  
   [data-theme='dark'] & {
     background: var(--pilot-dark-gradient);
     
@@ -52,8 +71,15 @@
         rgba(46, 133, 64, 0.1) 100%
       );
     }
+    
+    .paperPlane {
+      opacity: 0.2;
+      filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3)) brightness(1.1);
+    }
   }
 }
+
+/* Animations removed as we're now handling this with JavaScript */
 
 // Logo and title container
 .logoContainer {
