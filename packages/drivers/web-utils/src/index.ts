@@ -83,7 +83,6 @@ export default class WebTestingFrameworkDriverHelper {
 
     await this.currentPage.screenshot({
       path: filePath,
-      fullPage: true,
     });
 
     await this.removeMarkedElementsHighlights(this.currentPage);

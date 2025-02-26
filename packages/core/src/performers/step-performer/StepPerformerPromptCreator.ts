@@ -79,8 +79,8 @@ export class StepPerformerPromptCreator {
     const basePrompt = [
       "# Test Code Generation",
       "",
-      "You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.",
-      "Please generate the minimal executable code to perform the desired intent based on the given information and context.",
+      "You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.",
+      "Generate the minimal executable code to perform the desired intent, based on the provided step and context.",
       "",
     ];
 
@@ -141,7 +141,7 @@ export class StepPerformerPromptCreator {
 
     if (previousSteps.length > 0) {
       context.push(
-        "### Previous intents",
+        "### Previous steps",
         "",
         ...previousSteps
           .map((previousStep, index) => [
@@ -212,7 +212,7 @@ export class StepPerformerPromptCreator {
       .concat(
         isSnapshotImageAttached
           ? [
-              "#### Example of returning a commented visual test if the visual assertion passes:",
+              "#### Visual validation using the snapshot:",
               "```typescript",
               "// Visual assertion passed based on the snapshot image.",
               "```",
@@ -220,7 +220,7 @@ export class StepPerformerPromptCreator {
             ]
           : [],
       )
-      .concat(["Please provide your response below:"]);
+      .concat(["Please provide your code below:"]);
   }
 
   private createStepByStepInstructions(

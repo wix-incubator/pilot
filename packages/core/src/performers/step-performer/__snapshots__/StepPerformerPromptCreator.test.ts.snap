@@ -3,8 +3,8 @@
 exports[`PromptCreator constructor should merge redundant categories 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Testing Framework
 
@@ -156,14 +156,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator extentAPICategories should extend the API catalog with new category 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -297,14 +297,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator extentAPICategories should extend the API with existing category 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -452,14 +452,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator should create a prompt for an intent correctly 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -582,19 +582,19 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-#### Example of returning a commented visual test if the visual assertion passes:
+#### Visual validation using the snapshot:
 \`\`\`typescript
 // Visual assertion passed based on the snapshot image.
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator should handle when no snapshot image is attached 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -712,14 +712,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator should include API search results when provided 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -852,14 +852,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator should include previous intents in the context 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -877,7 +877,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 No snapshot image is attached for this intent.
 
-### Previous intents
+### Previous steps
 
 #### Step 1
 - Intent: "navigate to login screen"
@@ -996,14 +996,14 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;
 
 exports[`PromptCreator should not include API search results section when not provided 1`] = `
 "# Test Code Generation
 
-You are an AI assistant tasked with generating test code for an application using the provided UI testing framework API.
-Please generate the minimal executable code to perform the desired intent based on the given information and context.
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
 
 ## Context
 
@@ -1121,5 +1121,5 @@ sharedContext.userId = userId;
 await element(by.id('user-' + sharedContext.userId)).tap();
 \`\`\`
 
-Please provide your response below:"
+Please provide your code below:"
 `;

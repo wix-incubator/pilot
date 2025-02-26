@@ -145,8 +145,5 @@ dist
 .DS_Store
 Thumbs.db
 
-# Cache files
-**/*/wix_pilot_cache.json
-
 # Legacy cache files
 **/*/detox_copilot_cache.json

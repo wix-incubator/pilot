@@ -64,13 +64,14 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
             {
               signature: "const browser = await puppeteer.launch([options])",
               description: "Launches a new browser instance.",
-              example: `const browser = await puppeteer.launch({\`headless: "false"\`, executablePath: "${this.executablePath}" });`,
+              example: `const browser = await puppeteer.launch({\`headless: false\`, executablePath: "${this.executablePath}" });`,
               guidelines: [
                 `Executable path is required always, use the path: ${this.executablePath}`,
                 "Options can specify `headless`, `slowMo`, `args`, etc.",
-                "Useful for running tests in a headless browser environment.",
-                'Prefer passing `headless: "new"` to `puppeteer.launch() unless mentioned that ' +
-                  "it is required not to (e.g. launching with GUI was mentioned).",
+                "Prefer passing `headless: false` to `puppeteer.launch() unless mentioned that " +
+                  "it is required to run with headless mode.",
+                "Use big viewport size (e.g. `viewport: { width: 1920, height: 1080 }`) to avoid " +
+                  "issues with responsive design. (e.g. defaultViewport: null, args:['--start-maximized' ])",
               ],
             },
             {
