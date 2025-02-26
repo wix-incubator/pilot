@@ -1,6 +1,13 @@
-# Wix Pilot 👨‍✈️
-
-> Write tests in plain English, powered by AI.
+<div align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./logo/dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="./logo/light.png">
+      <img alt="Wix Pilot logo" src="./logo/dark.png">
+    </picture>
+    <br>
+    <b>Write tests in plain text, powered by AI</b>
+</div>
+<br>
 
 Wix Pilot is an AI-powered testing framework that translates human-readable commands into precise testing actions. Originally designed for Detox, it now supports multiple testing platforms including Puppeteer, Playwright, Appium, and more.
 
@@ -175,7 +182,7 @@ await pilot.perform([
 ]);
 ```
 
-### AutoPilot
+### AutoPilot API
 Enhanced mode for autonomous testing:
 
 ```typescript
