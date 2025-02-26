@@ -105,7 +105,7 @@ const config = {
         ],
       },
       footer: {
-        style: 'primary',
+        style: 'light',
         links: [
           {
             title: 'Documentation',

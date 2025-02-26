@@ -76,7 +76,7 @@
                    rgba(46, 133, 64, 0.06) 0%,
                    rgba(41, 119, 58, 0.03) 100%);
   --pilot-border: 1px solid rgba(46, 133, 64, 0.15);
-  
+
   // Background colors
   --pilot-bg-dark: #1a1a1a;
   --pilot-bg-darker: #121212;
@@ -85,7 +85,7 @@
 
   // Text effects
   --pilot-text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  
+
   // Code block styling
   --pilot-code-background: #f5f7f9;
   --pilot-code-border: 1px solid rgba(0, 0, 0, 0.05);
@@ -103,17 +103,16 @@
   --ifm-color-primary-light: #47b35b;
   --ifm-color-primary-lighter: #5bc16e;
   --ifm-color-primary-lightest: #78cc88;
-  
+
   --pilot-code-background: #2a2a2a;
   --pilot-code-border: 1px solid rgba(255, 255, 255, 0.05);
-  
+
   --ifm-link-color: #47b35b;
   --ifm-link-hover-color: #5bc16e;
-  
+
   --ifm-toc-border-color: rgba(255, 255, 255, 0.1);
   --ifm-table-border-color: rgba(255, 255, 255, 0.1);
-  
-  // Custom navbar gradient for dark mode
+
   --navbar-dark-gradient: linear-gradient(90deg, rgba(42, 59, 46, 0.85) 0%, rgba(34, 46, 37, 0.85) 100%);
 }
 
@@ -130,13 +129,13 @@
   --ifm-color-primary-lighter: #3aa14d;
   --ifm-color-primary-lightest: #47b35b;
   --pilot-border: 1px solid rgba(46, 133, 64, 0.2);
-  
+
   --ifm-link-color: #2e8540;
   --ifm-link-hover-color: #339347;
-  
+
   --ifm-toc-border-color: rgba(0, 0, 0, 0.1);
   --ifm-table-border-color: rgba(0, 0, 0, 0.1);
-  
+
   // Custom navbar gradient for light mode
   --navbar-light-gradient: linear-gradient(90deg, rgba(46, 133, 64, 0.85) 0%, rgba(58, 161, 77, 0.85) 100%);
 }
