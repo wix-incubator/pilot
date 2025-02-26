@@ -94,7 +94,7 @@
 [data-theme='dark'] {
   --ifm-background-color: var(--pilot-bg-dark);
   --ifm-background-surface-color: var(--pilot-bg-darker);
-  --ifm-navbar-background-color: rgba(18, 18, 18, 0.95);
+  --ifm-navbar-background-color: transparent; // Will be handled by gradient in navbar.scss
   --ifm-footer-background-color: rgba(18, 18, 18, 0.98);
   --ifm-color-primary: #3aa14d;
   --ifm-color-primary-dark: #29773a;
@@ -112,12 +112,15 @@
   
   --ifm-toc-border-color: rgba(255, 255, 255, 0.1);
   --ifm-table-border-color: rgba(255, 255, 255, 0.1);
+  
+  // Custom navbar gradient for dark mode
+  --navbar-dark-gradient: linear-gradient(90deg, rgba(42, 59, 46, 0.85) 0%, rgba(34, 46, 37, 0.85) 100%);
 }
 
 [data-theme='light'] {
   --ifm-background-color: var(--pilot-bg-light);
   --ifm-background-surface-color: var(--pilot-bg-lighter);
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.95);
+  --ifm-navbar-background-color: transparent; // Will be handled by gradient in navbar.scss
   --ifm-footer-background-color: rgba(245, 245, 245, 0.98);
   --ifm-color-primary: #2e8540;
   --ifm-color-primary-dark: #29773a;
@@ -133,4 +136,7 @@
   
   --ifm-toc-border-color: rgba(0, 0, 0, 0.1);
   --ifm-table-border-color: rgba(0, 0, 0, 0.1);
+  
+  // Custom navbar gradient for light mode
+  --navbar-light-gradient: linear-gradient(90deg, rgba(46, 133, 64, 0.85) 0%, rgba(58, 161, 77, 0.85) 100%);
 }

@@ -4,7 +4,8 @@
 .navbar {
   height: 70px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  background: var(--navbar-light-gradient);
 
   &__brand {
     margin-right: 2rem;
@@ -14,14 +15,8 @@
     @include nav-item;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--ifm-color-primary);
+    color: #ffffff; // White text for contrast against green
     font-size: 1.2rem;
-    padding-left: 34px;
-    position: relative;
-
-    [data-theme='dark'] & {
-      color: var(--ifm-color-primary-lighter);
-    }
   }
 
   &__link {
@@ -29,11 +24,14 @@
     position: relative;
     margin-right: 1.5rem;
     padding: 0.5rem 0;
-    color: var(--ifm-color-emphasis-600);
+    color: #ffffff; // White text for maximum contrast on green
+    font-weight: 600;
+    // Removed text shadow/glow effect
 
     &:hover {
-      color: var(--ifm-color-primary);
+      color: #ffffff; // Keep white for max contrast
       text-decoration: none;
+      // Removed hover glow effect
     }
 
     // Underline effect on hover
@@ -41,10 +39,10 @@
       content: '';
       position: absolute;
       width: 0;
-      height: 2px;
+      height: 3px; // Thicker underline
       bottom: 0;
       left: 0;
-      background-color: var(--ifm-color-primary);
+      background-color: #ffffff; // White underline for max contrast
       transition: width 0.3s ease;
     }
 
@@ -54,18 +52,19 @@
   }
 
   &__link--active {
-    font-weight: 500;
-    color: var(--ifm-color-primary);
+    font-weight: 700; // Bolder for active links
+    color: #ffffff; // White for maximum contrast 
+    // Removed text shadow/glow effect
 
     // Active indicator
     &::after {
       content: '';
       position: absolute;
       width: 100%;
-      height: 2px;
+      height: 3px; // Thicker underline
       bottom: 0;
       left: 0;
-      background-color: var(--ifm-color-primary);
+      background-color: #ffffff; // White underline
     }
   }
 
@@ -98,26 +97,7 @@
 // Dark theme specific navbar styles
 [data-theme='dark'] .navbar {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-
-  &__link {
-    color: var(--ifm-color-emphasis-600);
-
-    &:hover {
-      color: var(--ifm-color-primary-lighter);
-    }
-
-    &::after {
-      background-color: var(--ifm-color-primary-lighter);
-    }
-  }
-
-  &__link--active {
-    color: var(--ifm-color-primary-lighter);
-
-    &::after {
-      background-color: var(--ifm-color-primary-lighter);
-    }
-  }
+  background: var(--navbar-dark-gradient);
 }
 
 // Search button styling

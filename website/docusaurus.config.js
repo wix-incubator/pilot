@@ -71,15 +71,13 @@ const config = {
       },
       navbar: {
         title: 'Wix Pilot',
+        logo: {
+          alt: 'Wix Pilot Logo',
+          src: 'img/paper-plane.svg',
+        },
         hideOnScroll: false,
         style: 'primary',
         items: [
-          {
-            type: 'doc',
-            docId: 'guides/integrating-with-testing-frameworks',
-            label: 'Getting Started',
-            position: 'right',
-          },
           {
             type: 'doc',
             docId: 'guides/pilot-best-practices',
