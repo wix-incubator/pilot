@@ -72,9 +72,16 @@ export function createMarkedViewHierarchy() {
         .filter(
           (attr) =>
             attr.name.match(/^aria-/i) || // all aria-* attributes
-            ["href", "target", "src", "alt", "type", "name", "value", "role"].includes(
-              attr.name.toLowerCase(),
-            ),
+            [
+              "href",
+              "target",
+              "src",
+              "alt",
+              "type",
+              "name",
+              "value",
+              "role",
+            ].includes(attr.name.toLowerCase()),
         )
         .forEach((attr) => {
           structure += ` ${attr.name}="${attr.value}"`;
