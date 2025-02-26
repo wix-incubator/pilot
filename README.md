@@ -1,130 +1,206 @@
-# Wix Pilot
+<div align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./logo/dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="./logo/light.png">
+      <img alt="Wix Pilot logo" src="./logo/dark.png">
+    </picture>
+    <br>
+    <b>Write tests in plain text, powered by AI</b>
+</div>
+<br>
 
-A flexible plugin that drives your tests with human-written commands, enhanced by the power of large language models (LLMs).
-While originally designed for Detox, Pilot can be extended to **any other testing frameworks**.
+Wix Pilot is an AI-powered testing framework that translates human-readable commands into precise testing actions. Originally designed for Detox, it now supports multiple testing platforms including Puppeteer, Playwright, Appium, and more.
 
-It provides clear APIs to perform actions and assertions within your tests while interfacing with an LLM service to enhance the testing process.
+## 🌟 Key Features
 
-## Quick Demo
+- **Natural Language Testing**: Write tests in plain English (or any language you prefer)
+- **Multi-Platform Support**: Works with Detox, Puppeteer, Playwright, and Appium
+- **AI-Enhanced**: Powered by LLMs for intelligent test interpretation
+- **Extensible**: Easy to add support for new testing frameworks and custom APIs
+
+## 📝 Installation
+
+```bash
+# npm
+npm install --save-dev @wix-pilot/core
+
+# yarn
+yarn add -D @wix-pilot/core
+```
+
+You will also need to install a driver for your testing framework, here are the drivers supported by Wix Pilot:
+
+```bash
+npm install --save-dev @wix-pilot/detox # Detox
+npm install --save-dev @wix-pilot/webdriverio-appium # Appium (WebDriverIO)
+npm install --save-dev @wix-pilot/puppeteer # Puppeteer
+npm install --save-dev @wix-pilot/playwright # Playwright
+```
+
+
+## 📚 Quick Start
+
+### Setting up the LLM Handler
+```typescript
+import { PromptHandler } from '@wix-pilot/core';
+
+// Implement your LLM service handler
+class CustomPromptHandler implements PromptHandler {
+  async runPrompt(prompt: string, image?: string): Promise<string> {
+    // Integrate with your preferred LLM (OpenAI, Anthropic, etc.)
+    const response = await yourLLMService.complete({
+      prompt,
+      imageUrl: image, // Optional: for visual testing support
+    });
+    return response.text;
+  }
+
+  isSnapshotImageSupported(): boolean {
+    return true; // Set to true if your LLM supports image analysis
+  }
+}
+```
+
+### Web Testing
+Wix Pilot supports both [Puppeteer](https://pptr.dev/) and [Playwright](https://playwright.dev/) for web testing, for example:
+
+```typescript
+import pilot from '@wix-pilot/core';
+import puppeteer from 'puppeteer';
+// Import your preferred web driver
+import { PlaywrightFrameworkDriver } from '@wix-pilot/playwright';
+
+describe('Web Testing', () => {
+  beforeAll(async () => {
+    pilot.init({
+      frameworkDriver: new PlaywrightFrameworkDriver(),
+      promptHandler: new CustomPromptHandler(),
+    });
+  });
+
+  beforeEach(() => pilot.start());
+  afterEach(() => pilot.end());
+
+  // Perform a test with Pilot
+  it('should search for a domain', async () => {
+    await pilot.perform([
+      'Open the URL https://www.wix.com/domains',
+      'Type "my-domain.com" in the search input',
+      'Click the "Search" button',
+      'The domain availability message should appear'
+    ]);
+  });
+  
+  // Perform an autonomous flow with AutoPilot
+  it('should search for a domain (AutoPilot)', async () => {
+    const report = await pilot.autopilot('Check domain availability for "my-domain.com", verify availability message');
+    console.log(report);
+  });
+});
+```
+
+### Mobile Testing
+Wix Pilot supports both [Detox](https://wix.github.io/Detox/) and [Appium (WebdriverIO)](https://webdriver.io/docs/api/appium/) for mobile apps testing:
+
+```typescript
+import pilot from '@wix-pilot/core';
+// Import your preferred driver
+import { DetoxFrameworkDriver } from '@wix-pilot/detox';
+
+describe('Mobile App', () => {
+  beforeAll(() => {
+    // Initialize with Detox
+    pilot.init({
+      frameworkDriver: new DetoxFrameworkDriver(),
+      promptHandler: new CustomPromptHandler(),
+    });
+  });
+
+  beforeEach(() => pilot.start());
+  afterEach(() => pilot.end());
+
+  it('should handle login flow', async () => {
+    await pilot.perform([
+      'Enter "test@example.com" in the email field',
+      'Enter "password123" in the password field',
+      'Tap the login button',
+      'The dashboard should be visible'
+    ]);
+  });
+});
+```
+
+## 🔧 API Overview
+
+The main interface for Pilot:
+
+```typescript
+interface PilotFacade {
+  // Initialize Pilot with configuration
+  init(config: Config): void;
+
+  // Start a new test flow
+  start(): void;
+
+  // Execute test steps
+  perform(steps: string | string[]): Promise<any>;
+  
+  // Execute a high-level test goal
+  autopilot(goal: string): Promise<AutoReport>;
+
+  // End current test flow
+  end(isCacheDisabled?: boolean): void;
+}
+```
+
+### Configuration
+
+```typescript
+interface Config {
+  // Test automation driver (Puppeteer, Detox, etc.)
+  frameworkDriver: TestingFrameworkDriver;
+    
+  // LLM service handler for natural language processing
+  promptHandler: PromptHandler;
+    
+  // Optional settings
+  options?: PilotOptions
+}
+```
+
+### Pilot Perform API
+Execute a series of test steps:
+
+```typescript
+// Example usage:
+await pilot.perform([
+  'Open the products catalog at https://www.example.com/products', 
+  'Click the "Add to Cart" button on the first product',
+  'Verify the cart icon shows "1" item',
+  'Click the cart icon',
+  'Verify the cart page shows the product added'
+]);
+```
+
+### AutoPilot API
+Enhanced mode for autonomous testing:
+
+```typescript
+// Example usage:
+const report = await pilot.autopilot(
+  'Test the "Add to Cart" functionality on the product page'
+);
+```
+
+The AutoReport includes:
+- Detailed step-by-step execution and results
+- UX, accessibility, and i18n reviews and score (Beta)
+- Recommendations for improvements
+
+## 🎉 Demo
 
 Here's an example of how Pilot runs over a Detox test case:
 
 <img src="copilot-demo.gif" width="800">
 
-The test case is written in a human-readable format, and Pilot translates it into Detox actions on the fly.
-
-**Not just Detox!** Pilot can be extended to any other testing frameworks.
-
-## API Overview
-
-High-level overview of the API that Pilot exposes:
-
-```typescript
-/**
- * Initializes the Pilot with the given configuration.
- * Must be called before any other Pilot methods.
- * @param config The configuration for the Pilot.
- */
-init: (config: Config) => void;
-
-/**
- * Checks if the Pilot has been initialized.
- * @returns True if the Pilot has been initialized, false otherwise.
- */
-isInitialized: () => boolean;
-
-/**
- * Start the Pilot instance.
- * @note Must be called before each flow to ensure a clean state (the Pilot uses the operations history as part of
- * its context).
- */
-start: () => void;
-
-/**
- * Finalizes the flow and optionally saves temporary cache data to the main cache.
- * If `isCacheDisabled` is true, the temporary cache will not be saved. False is the default value.
- * @param isCacheDisabled
- * @note This must be called after the flow is complete.
- */
-end: (isCacheDisabled?: boolean) => void;
-
-/**
- * Performs a testing operation or series of testing operations in the app based on the given `steps`.
- * @returns The result of the operation(s), which can be a single value or an array of values for each step.
- * @example Tap on the login button
- * @example Scroll down to the 7th item in the Events list
- * @example The welcome message should be visible
- * @example The welcome message text should be "Hello, world!"
- * @example [
- *    'Tap on the login button',
- *    'A login form should be visible',
- * ]
- */
-perform: (steps: string | string[]) => Promise<any | any[]>;
-```
-
-### Additional Note
-
-In addition to the operations history, Pilot maintains a repository-level cache. If you need to ignore the current cache for any reason (e.g., when adding an action to the testing framework driver), you can set the environment variable `PILOT_OVERRIDE_CACHE` to "true" before running your tests. This will ensure that the current cache is not taken into consideration and will override the existing one.
-
-```shell
-export PILOT_OVERRIDE_CACHE=true
-```
-
-If you want to disable the override after setting it to "true" and revert to using the cache, you can set `PILOT_OVERRIDE_CACHE` to "false"
-
-```shell
-export PILOT_OVERRIDE_CACHE=false
-```
-
-
-## Integration with Testing Frameworks
-
-The Pilot requires two main components to work:
-
-### **Prompt Handler**
-
-An adapter that interfaces with the LLM service to generate actions based on the provided prompts. For example, GPT, Gemini, Sonnet or any other LLM service.
-
-#### `PromptHandler` Interface
-
-```typescript
-/**
- * Sends a prompt to the AI service and returns the response.
- * @param prompt The prompt to send to the AI service.
- * @param image Optional path to the image to upload to the AI service that captures the current UI state.
- * @returns The response from the AI service.
- */
-runPrompt: (prompt: string, image?: string) => Promise<string>;
-
-/**
- * Checks if the AI service supports snapshot images for context.
- */
-isSnapshotImageSupported: () => boolean;
-```
-
-### Testing Framework Driver
-
-An adapter that interfaces with the testing framework to execute the generated actions. For example, Detox, Appium, Espresso, XCTest or any other testing framework.
-
-In order for Pilot to work with the testing framework, the driver provides the API catalog and the JS context to execute the generated actions.
-
-#### `TestingFrameworkDriver` Interface
-
-```typescript
-/**
- * Takes a snapshot of the current screen and returns the path to the saved image.
- * If the driver does not support image, return undefined.
- */
-captureSnapshotImage: () => Promise<string | undefined>;
-
-/**
- * Returns the current view hierarchy in a string representation.
- */
-captureViewHierarchyString: () => Promise<string>;
-
-/**
- * The available API methods of the testing framework.
- */
-apiCatalog: TestingFrameworkAPICatalog;
-```
+The test case is written in human-readable format, and Pilot translates it into framework-specific actions on the fly.
