@@ -85,10 +85,7 @@ export class CacheHandler {
   }
 
   private shouldOverrideCache() {
-    return (
-      process.env.PILOT_OVERRIDE_CACHE === "true" ||
-      process.env.PILOT_OVERRIDE_CACHE === "1"
-    );
+    return this.cacheOptions?.shouldOverrideCache;
   }
 
   public isCacheInUse() {
