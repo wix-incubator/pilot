@@ -15,9 +15,14 @@ export class ViewAnalysisPromptCreator {
       "",
       `Analyze the view hierarchy to identify the location and context of elements relevant to this task: "${step}"`,
       "",
-        ...(previousSteps.length >0 && previousSteps[previousSteps.length - 1].step === step && previousSteps[previousSteps.length - 1].error
-            ? ["**Notice:**This error occurred in your previous attempt: " + previousSteps[previousSteps.length - 1].error]
-            : []),
+      ...(previousSteps.length > 0 &&
+      previousSteps[previousSteps.length - 1].step === step &&
+      previousSteps[previousSteps.length - 1].error
+        ? [
+            "**Notice:**This error occurred in your previous attempt: " +
+              previousSteps[previousSteps.length - 1].error,
+          ]
+        : []),
       "## View Hierarchy",
       "```",
       viewHierarchy,
@@ -33,8 +38,8 @@ export class ViewAnalysisPromptCreator {
                 `- Intent: "${previousStep.step}"`,
                 `- Result: ${previousStep.result}`,
                 ...(index === previousSteps.length - 1 && previousStep.error
-                   ? [`- Error: ${previousStep.error}`]
-                   : []),
+                  ? [`- Error: ${previousStep.error}`]
+                  : []),
                 "",
               ])
               .flat(),
