@@ -322,22 +322,23 @@ describe("Pilot Integration Tests", () => {
       mockPromptHandler.runPrompt.mockResolvedValue("// Perform action");
 
       await pilot.perform("Perform action");
-      pilot.end(false);
+      pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
-        '{"step":"Perform action","previous":[]}': expect.arrayContaining([
-          expect.objectContaining({
-            code: "// Perform action",
-            snapshotHash: expect.any(Object),
-            viewHierarchy: expect.any(String),
-          }),
-        ]),
+        '{"currentGoal":"Perform action","previous":[]}':
+          expect.arrayContaining([
+            expect.objectContaining({
+              code: "// Perform action",
+              snapshotHash: expect.any(Object),
+              viewHierarchy: expect.any(String),
+            }),
+          ]),
       });
     });
 
     it("should read from existing cache file", async () => {
       mockCache({
-        '{"step":"Cached action","previous":[]}': [
+        '{"currentGoal":"Cached action","previous":[]}': [
           { code: "// Cached action code", viewHierarchy: "hash" },
         ],
       });
@@ -349,7 +350,7 @@ describe("Pilot Integration Tests", () => {
 
     it("should use snapshot cache if available", async () => {
       mockCache({
-        '{"step":"Cached action","previous":[]}': [
+        '{"currentGoal":"Cached action","previous":[]}': [
           {
             code: "// Cached action code",
             viewHierarchy: "WrongHash",
@@ -370,7 +371,7 @@ describe("Pilot Integration Tests", () => {
       pilot.end();
 
       expect(mockedCacheFile).toEqual({
-        '{"step":"New action","previous":[]}': expect.arrayContaining([
+        '{"currentGoal":"New action","previous":[]}': expect.arrayContaining([
           expect.any(Object),
           expect.objectContaining({
             code: "// New action code",
@@ -588,32 +589,12 @@ describe("Pilot Integration Tests", () => {
       expect(firstCacheValue).toHaveProperty("snapshotHash");
     });
 
-    it("should not include view hierarchy in cache value when using lightweight mode", async () => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-        options: {
-          cacheMode: "lightweight",
-        },
-      });
-      pilot.start();
-
-      await pilot.perform("Tap on the login button");
-      pilot.end();
-      const firstCacheValue = Object.values(
-        (mockedCacheFile as Record<string, CacheValues>) || {},
-      )[0][0];
-
-      expect(firstCacheValue).not.toHaveProperty("viewHierarchy");
-      expect(firstCacheValue).toHaveProperty("code");
-    });
-
     it("should not use cache when cache mode is disabled", async () => {
       pilot.init({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
         options: {
-          cacheMode: "disabled",
+          cacheOptions: { shouldUseCache: false },
         },
       });
       pilot.start();

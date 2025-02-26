@@ -14,6 +14,9 @@ export class SnapshotComparator {
   }
 
   public async generateHashes(snapshot: any): Promise<SnapshotHashObject> {
+    if (!snapshot) {
+      return {} as SnapshotHashObject;
+    }
     const hashPromises = Array.from(this.hashingAlgorithms.entries()).map(
       async ([algorithm, comparator]) => {
         const hash = await comparator.hashSnapshot(snapshot);
@@ -28,7 +31,7 @@ export class SnapshotComparator {
   public compareSnapshot(
     newSnapshot: SnapshotHashObject,
     cachedSnapshot: SnapshotHashObject,
-    trashload?: number,
+    threshold?: number,
   ): boolean {
     const comparisonPromises = Object.entries(cachedSnapshot).map(
       ([algorithmName, hash]) => {
@@ -38,7 +41,7 @@ export class SnapshotComparator {
         return algorithm?.areSnapshotsSimilar(
           hash,
           newSnapshot[algorithmName as HashingAlgorithm],
-          trashload,
+          threshold,
         );
       },
     );

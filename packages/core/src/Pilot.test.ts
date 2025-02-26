@@ -235,7 +235,7 @@ describe("Pilot", () => {
   });
 
   describe("end", () => {
-    it("end with isCacheDisabled=true should not save to cache", async () => {
+    it("end with shouldSaveToCache=false should not save to cache", async () => {
       mockCache();
 
       Pilot.init(mockConfig);
@@ -243,7 +243,7 @@ describe("Pilot", () => {
       instance.start();
 
       await instance.performStep(INTENT);
-      instance.end(true);
+      instance.end(false);
 
       expect(mockedCacheFile).toBeUndefined();
     });

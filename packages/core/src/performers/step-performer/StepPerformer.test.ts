@@ -1,7 +1,7 @@
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { StepPerformerPromptCreator } from "./StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
-import { StepPerformerCacheHandler } from "@/performers/step-performer/StepPerformerCacheHandler";
+import { CacheHandler } from "../../common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import {
@@ -9,7 +9,6 @@ import {
   TestingFrameworkAPICatalog,
   ScreenCapturerResult,
   PreviousStep,
-  CacheMode,
 } from "@/types";
 import * as crypto from "crypto";
 import {
@@ -42,7 +41,7 @@ describe("CopilotStepPerformer", () => {
   let mockViewAnalysisPromptCreator: jest.Mocked<ViewAnalysisPromptCreator>;
   let mockCodeEvaluator: jest.Mocked<CodeEvaluator>;
   let mockPromptHandler: jest.Mocked<PromptHandler>;
-  let mockCacheHandler: jest.Mocked<StepPerformerCacheHandler>;
+  let mockCacheHandler: jest.Mocked<CacheHandler>;
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
   let mockScreenCapturer: jest.Mocked<ScreenCapturer>;
   let mockCaptureResult: ScreenCapturerResult;
@@ -97,7 +96,9 @@ describe("CopilotStepPerformer", () => {
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
       getFromTemporaryCache: jest.fn(),
-    } as unknown as jest.Mocked<StepPerformerCacheHandler>;
+      generateCacheKey: jest.fn(),
+      isCacheInUse: jest.fn(),
+    } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
       generateHashes: jest.fn(),
@@ -118,7 +119,6 @@ describe("CopilotStepPerformer", () => {
       mockCacheHandler,
       mockSnapshotComparator,
       mockScreenCapturer,
-      "full",
       "fast",
     );
   });
@@ -175,6 +175,9 @@ describe("CopilotStepPerformer", () => {
       step: intent,
       previous: previous,
     });
+
+    mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
+    mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
     if (cacheExists) {
       const cacheData: Map<string, any> = new Map();
@@ -416,35 +419,6 @@ describe("CopilotStepPerformer", () => {
     expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled();
   });
 
-  it("should not use cached prompt result if PILOT_OVERRIDE_CACHE is enabled", async () => {
-    const intent = "tap button";
-    setupMocks({ cacheExists: true, overrideCache: true, intent });
-
-    const screenCapture: ScreenCapturerResult = {
-      snapshot: SNAPSHOT_DATA,
-      viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
-    };
-
-    const result = await copilotStepPerformer.perform(
-      intent,
-      [],
-      screenCapture,
-      2,
-    );
-
-    expect(result).toBe("success");
-    // Should call runPrompt and createPrompt. Shouldn't use current cache but override it
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalled();
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalled();
-    expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
-      mockContext,
-      {},
-    );
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalled();
-  });
-
   describe("extendJSContext", () => {
     it("should extend the context with the given object", async () => {
       // Initial context
@@ -508,91 +482,6 @@ describe("CopilotStepPerformer", () => {
       );
     });
   });
-  describe("cache modes", () => {
-    const testCacheModes = async (cacheMode: CacheMode) => {
-      const generatedKeys: string[] = [];
-      const generatedValues: any[] = [];
-      mockCacheHandler.addToTemporaryCache.mockImplementation(
-        (key: string, newVal: any) => {
-          generatedKeys.push(key);
-          generatedValues.push(newVal);
-        },
-      );
-
-      copilotStepPerformer = new StepPerformer(
-        mockContext,
-        mockPromptCreator,
-        mockApiSearchPromptCreator,
-        mockViewAnalysisPromptCreator,
-        mockCodeEvaluator,
-        mockPromptHandler,
-        mockCacheHandler,
-        mockSnapshotComparator,
-        mockScreenCapturer,
-        cacheMode,
-        "fast",
-      );
-      const screenCapture: ScreenCapturerResult = {
-        snapshot: SNAPSHOT_DATA,
-        viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
-      };
-
-      setupMocks({
-        promptResult: "```\nconst code = true;\n```",
-        codeEvaluationResult: "success",
-      });
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, undefined);
-      return { key: generatedKeys[0], value: generatedValues };
-    };
-
-    it("should include view hierarchy hash in cache value when mode is full", async () => {
-      const cache = await testCacheModes("full");
-      expect(cache.value[0]).toHaveProperty("viewHierarchy");
-      expect(cache.value[0].viewHierarchy).toBe("hash");
-    });
-
-    it("should not include view hierarchy hash in cache value when mode is lightweight", async () => {
-      const cache = await testCacheModes("lightweight");
-      const parsedKey = JSON.parse(cache.key);
-      expect(parsedKey).not.toHaveProperty("viewHierarchy");
-      expect(cache.value[0]).not.toHaveProperty("viewHierarchy");
-    });
-
-    it("should not generate cache key when mode is disabled", async () => {
-      const firstKey = await testCacheModes("disabled");
-      const secondKey = await testCacheModes("disabled");
-      expect(firstKey.key).toBeUndefined();
-      expect(secondKey.key).toBeUndefined();
-    });
-
-    it("should not use cache when mode is disabled", async () => {
-      const screenCapture: ScreenCapturerResult = {
-        snapshot: SNAPSHOT_DATA,
-        viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
-      };
-
-      copilotStepPerformer = new StepPerformer(
-        mockContext,
-        mockPromptCreator,
-        mockApiSearchPromptCreator,
-        mockViewAnalysisPromptCreator,
-        mockCodeEvaluator,
-        mockPromptHandler,
-        mockCacheHandler,
-        mockSnapshotComparator,
-        mockScreenCapturer,
-        "disabled",
-        "fast",
-      );
-
-      setupMocks({ cacheExists: true });
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, undefined);
-
-      expect(mockPromptHandler.runPrompt).toHaveBeenCalled();
-    });
-  });
 
   describe("analysis modes", () => {
     it("should perform full analysis in full mode", async () => {
@@ -621,7 +510,6 @@ describe("CopilotStepPerformer", () => {
         mockCacheHandler,
         mockSnapshotComparator,
         mockScreenCapturer,
-        "full",
         "full",
       );
 
@@ -669,7 +557,6 @@ describe("CopilotStepPerformer", () => {
         mockCacheHandler,
         mockSnapshotComparator,
         mockScreenCapturer,
-        "full",
         "fast",
       );
 

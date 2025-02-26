@@ -1,13 +1,22 @@
 import fs from "fs";
 import path from "path";
+import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
 
-export class StepPerformerCacheHandler {
+export class CacheHandler {
   private cache: Map<string, any> = new Map();
   private temporaryCache: Map<string, any> = new Map();
   private readonly cacheFilePath: string;
+  private cacheOptions?: CacheOptions;
 
-  constructor(cacheFileName: string = "wix_pilot_cache.json") {
+  constructor(
+    cacheOptions: CacheOptions = {},
+    cacheFileName: string = "wix_pilot_cache.json",
+  ) {
     this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
+    this.cacheOptions = {
+      shouldUseCache: cacheOptions.shouldUseCache ?? true,
+      shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
+    };
   }
 
   public loadCacheFromFile(): void {
@@ -37,6 +46,9 @@ export class StepPerformerCacheHandler {
   }
 
   public getStepFromCache(key: string): any | undefined {
+    if (this.shouldOverrideCache()) {
+      return undefined;
+    }
     return this.cache.get(key);
   }
 
@@ -57,5 +69,26 @@ export class StepPerformerCacheHandler {
 
   public clearTemporaryCache(): void {
     this.temporaryCache.clear();
+  }
+
+  public generateCacheKey(
+    currentGoal: string,
+    previous: PreviousStep[] | AutoPreviousStep[],
+  ): string | undefined {
+    if (!this.isCacheInUse()) {
+      return undefined;
+    }
+
+    const cacheKeyData: any = { currentGoal, previous };
+
+    return JSON.stringify(cacheKeyData);
+  }
+
+  private shouldOverrideCache() {
+    return this.cacheOptions?.shouldOverrideCache;
+  }
+
+  public isCacheInUse() {
+    return this.cacheOptions?.shouldUseCache !== false;
   }
 }

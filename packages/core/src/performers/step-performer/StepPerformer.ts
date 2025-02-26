@@ -2,11 +2,10 @@ import { StepPerformerPromptCreator } from "./StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
 import { APISearchPromptCreator } from "@/common/prompts/APISearchPromptCreator";
 import { ViewAnalysisPromptCreator } from "@/common/prompts/ViewAnalysisPromptCreator";
-import { StepPerformerCacheHandler } from "@/performers/step-performer/StepPerformerCacheHandler";
+import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
 import {
   AnalysisMode,
-  CacheMode,
   CodeEvaluationResult,
   PreviousStep,
   PromptHandler,
@@ -20,7 +19,6 @@ import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
 export class StepPerformer {
-  private readonly cacheMode: CacheMode;
   private readonly analysisMode: AnalysisMode;
   private sharedContext: Record<string, any> = {};
 
@@ -31,13 +29,12 @@ export class StepPerformer {
     private viewAnalysisPromptCreator: ViewAnalysisPromptCreator,
     private codeEvaluator: CodeEvaluator,
     private promptHandler: PromptHandler,
-    private cacheHandler: StepPerformerCacheHandler,
+    private cacheHandler: CacheHandler,
     private snapshotComparator: SnapshotComparator,
+
     private screenCapturer: ScreenCapturer,
-    cacheMode: CacheMode = "full",
     analysisMode: AnalysisMode = "fast",
   ) {
-    this.cacheMode = cacheMode;
     this.analysisMode = analysisMode;
   }
 
@@ -53,30 +50,13 @@ export class StepPerformer {
     this.context = { ...this.context, ...newContext };
   }
 
-  private generateCacheKey(
-    step: string,
-    previous: PreviousStep[],
-  ): string | undefined {
-    if (this.cacheMode === "disabled") {
-      return undefined;
-    }
-
-    const cacheKeyData: any = { step, previous };
-
-    return JSON.stringify(cacheKeyData);
-  }
-
   private async generateCacheValue(
     code: string,
     viewHierarchy: string,
     snapshot: any,
   ): Promise<SingleCacheValue | undefined> {
-    if (this.cacheMode === "disabled") {
+    if (!this.cacheHandler.isCacheInUse()) {
       throw new Error("Cache is disabled");
-    }
-
-    if (this.cacheMode === "lightweight") {
-      return { code };
     }
 
     const snapshotHashes =
@@ -92,15 +72,11 @@ export class StepPerformer {
     };
   }
 
-  private async findCodeInCacheValue(
+  private async findCodeInCacheValues(
     cacheValue: CacheValues,
     viewHierarchy: string,
     snapshot?: string,
   ): Promise<string | undefined> {
-    if (this.cacheMode === "lightweight") {
-      return cacheValue[0].code;
-    }
-
     if (snapshot) {
       const snapshotHash =
         await this.snapshotComparator.generateHashes(snapshot);
@@ -131,13 +107,6 @@ export class StepPerformer {
     })?.code;
   }
 
-  private shouldOverrideCache() {
-    return (
-      process.env.PILOT_OVERRIDE_CACHE === "true" ||
-      process.env.PILOT_OVERRIDE_CACHE === "1"
-    );
-  }
-
   private async generateCode(
     step: string,
     previous: PreviousStep[],
@@ -145,14 +114,11 @@ export class StepPerformer {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
   ): Promise<string> {
-    const cacheKey = this.generateCacheKey(step, previous);
+    const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
 
-    const cachedValue =
-      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
-
-    if (!this.shouldOverrideCache() && cachedValue) {
-      const code = await this.findCodeInCacheValue(
-        cachedValue,
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
+      const code = await this.getValueFromCache(
+        cacheKey,
         viewHierarchy,
         snapshot,
       );
@@ -160,6 +126,7 @@ export class StepPerformer {
         return code;
       }
     }
+
     let viewAnalysisResult = "";
     let apiSearchResult = "";
 
@@ -190,7 +157,7 @@ export class StepPerformer {
 
     const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
     const code = extractCodeBlock(promptResult);
-    if (this.cacheMode !== "disabled") {
+    if (this.cacheHandler.isCacheInUse()) {
       const newCacheValue = await this.generateCacheValue(
         code,
         viewHierarchy,
@@ -200,6 +167,27 @@ export class StepPerformer {
     }
 
     return code;
+  }
+
+  async getValueFromCache(
+    cacheKey: string,
+    viewHierarchy: string,
+    snapshot: string | undefined,
+  ): Promise<string | undefined> {
+    const cachedValues =
+      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
+
+    if (cachedValues) {
+      const code = await this.findCodeInCacheValues(
+        cachedValues,
+        viewHierarchy,
+        snapshot,
+      );
+      if (code) {
+        return code;
+      }
+    }
+    return undefined;
   }
 
   async perform(

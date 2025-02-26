@@ -6,7 +6,7 @@ import {
 } from "@/types";
 import { PilotError } from "@/errors/PilotError";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
-import { StepPerformerCacheHandler } from "@/performers/step-performer/StepPerformerCacheHandler";
+import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { AutoPerformer } from "@/performers/auto-performer/AutoPerformer";
 import { AutoPerformerPromptCreator } from "@/performers/auto-performer/AutoPerformerPromptCreator";
 import { AutoReport } from "@/types/auto";
@@ -31,19 +31,22 @@ export class Pilot {
   private previousSteps: PreviousStep[] = [];
   private stepPerformerPromptCreator: StepPerformerPromptCreator;
   private stepPerformer: StepPerformer;
-  private cacheHandler: StepPerformerCacheHandler;
+  private cacheHandler: CacheHandler;
   private running: boolean = false;
   private autoPerformer: AutoPerformer;
   private screenCapturer: ScreenCapturer;
+  private snapshotComparator: SnapshotComparator;
 
   private constructor(config: Config) {
+    this.snapshotComparator = new SnapshotComparator();
+
     this.snapshotManager = new SnapshotManager(
       config.frameworkDriver,
-      new SnapshotComparator(),
+      this.snapshotComparator,
       downscaleImage,
     );
 
-    this.cacheHandler = new StepPerformerCacheHandler();
+    this.cacheHandler = new CacheHandler(config.options?.cacheOptions);
     this.stepPerformerPromptCreator = new StepPerformerPromptCreator(
       config.frameworkDriver.apiCatalog,
     );
@@ -63,15 +66,23 @@ export class Pilot {
       this.cacheHandler,
       new SnapshotComparator(),
       this.screenCapturer,
-      config.options?.cacheMode,
       config.options?.analysisMode,
     );
+
+    this.screenCapturer = new ScreenCapturer(
+      this.snapshotManager,
+      config.promptHandler,
+    );
+
+    this.snapshotComparator = new SnapshotComparator();
 
     this.autoPerformer = new AutoPerformer(
       new AutoPerformerPromptCreator(),
       this.stepPerformer,
       config.promptHandler,
       this.screenCapturer,
+      this.cacheHandler,
+      this.snapshotComparator,
     );
   }
 
@@ -142,9 +153,9 @@ export class Pilot {
 
   /**
    * Ends the Pilot test flow and optionally saves the temporary cache to the main cache.
-   * @param isCacheDisabled If true, temporary cache data won't be persisted
+   * @param shouldSaveInCache - If true, the current test flow will be saved in cache
    */
-  public end(isCacheDisabled = false): void {
+  public end(shouldSaveInCache = true): void {
     if (!this.running) {
       throw new PilotError(
         "Pilot is not running. Please call the `start()` method before ending the test flow.",
@@ -153,7 +164,7 @@ export class Pilot {
 
     this.running = false;
 
-    if (!isCacheDisabled) this.cacheHandler.flushTemporaryCache();
+    if (shouldSaveInCache) this.cacheHandler.flushTemporaryCache();
   }
 
   /**

@@ -1,3 +1,5 @@
+import { AutoReview, AutoStepPlan } from "@/types/auto";
+
 /**
  * Screen capture output.
  */
@@ -28,8 +30,31 @@ export type SingleCacheValue = {
   code: string;
 };
 
+/**
+ * Single auto pilot cache entry.
+ */
+export type SingleAutoPilotCacheValue = {
+  /** Screen capture output */
+  screenCapture: ScreenCapturerResult;
+  /** UI snapshot hash */
+  snapshotHash?: SnapshotHashObject;
+  /** Screen description */
+  screenDescription: string;
+  /** Auto pilot step plan */
+  plan: AutoStepPlan;
+  /** Auto pilot step review */
+  review: AutoReview;
+  /** Goal achievement status */
+  goalAchieved: boolean;
+  /** Summary*/
+  summary?: string;
+};
+
 /** Cache entry array */
 export type CacheValues = SingleCacheValue[];
+
+/** Auto pilot cache entry array */
+export type CacheAutoPilotValues = SingleAutoPilotCacheValue[];
 
 /**
  * Snapshot hashing operations interface.
