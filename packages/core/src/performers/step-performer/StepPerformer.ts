@@ -117,10 +117,14 @@ export class StepPerformer {
     const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
-        const code = await this.getValueFromCache(cacheKey, viewHierarchy, snapshot);
-        if (code) {
-            return code;
-        }
+      const code = await this.getValueFromCache(
+        cacheKey,
+        viewHierarchy,
+        snapshot,
+      );
+      if (code) {
+        return code;
+      }
     }
 
     let viewAnalysisResult = "";
@@ -165,22 +169,25 @@ export class StepPerformer {
     return code;
   }
 
+  async getValueFromCache(
+    cacheKey: string,
+    viewHierarchy: string,
+    snapshot: string | undefined,
+  ): Promise<string | undefined> {
+    const cachedValues =
+      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
 
-  async getValueFromCache(cacheKey: string, viewHierarchy: string, snapshot: string|undefined): Promise<string | undefined> {
-      const cachedValues =
-          cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
-
-      if (cachedValues) {
-          const code = await this.findCodeInCacheValues(
-              cachedValues,
-              viewHierarchy,
-              snapshot,
-          );
-          if (code) {
-              return code;
-          }
+    if (cachedValues) {
+      const code = await this.findCodeInCacheValues(
+        cachedValues,
+        viewHierarchy,
+        snapshot,
+      );
+      if (code) {
+        return code;
       }
-      return undefined;
+    }
+    return undefined;
   }
 
   async perform(
