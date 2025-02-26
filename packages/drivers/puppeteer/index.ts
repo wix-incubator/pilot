@@ -71,6 +71,8 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
                 "Useful for running tests in a headless browser environment.",
                 'Prefer passing `headless: "new"` to `puppeteer.launch() unless mentioned that ' +
                   "it is required not to (e.g. launching with GUI was mentioned).",
+                'Use big viewport size (e.g. `viewport: { width: 1920, height: 1080 }`) to avoid ' +
+                    "issues with responsive design. (e.g. defaultViewport: null, args:['--start-maximized' ])",
               ],
             },
             {
