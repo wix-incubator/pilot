@@ -51,7 +51,7 @@ describe("Example Test Suite", () => {
 
   it.only("perform test with autopilot", async () => {
     await pilot.autopilot(
-      "Open https://www.wix.com/domains and check availability for wix-pilot.net with GUI browser",
+      "Open https://www.wix.com/domains and check domain availability for wix-pilot.net with GUI browser",
     );
   });
 });
