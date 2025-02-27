@@ -19,8 +19,8 @@ export class ViewAnalysisPromptCreator {
       previousSteps[previousSteps.length - 1].step === step &&
       previousSteps[previousSteps.length - 1].error
         ? [
-            "**Notice:**This error occurred in your previous attempt: " +
-              previousSteps[previousSteps.length - 1].error,
+            "**Notice:** This error occurred in your previous attempt: " +
+              previousSteps[previousSteps.length - 1].error + ". Try another approach for this step",
           ]
         : []),
       "## View Hierarchy",

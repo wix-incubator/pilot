@@ -261,7 +261,7 @@ export class StepPerformer {
       } catch (error) {
         lastError = error;
         logger.warn(
-          `💥 Attempt ${attempt}/${maxAttempts} failed for step "${step}": ${error instanceof Error ? error.message : error}`,
+          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${error instanceof Error ? error.message : error}`,
         );
 
         if (attempt < maxAttempts) {
