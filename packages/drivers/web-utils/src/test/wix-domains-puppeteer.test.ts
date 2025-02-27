@@ -6,16 +6,36 @@ import {
 } from "./setup";
 import WebTestingFrameworkDriverHelper from "../index";
 
-function areHashesSimilar(
-  hash1: string,
-  hash2: string,
-  threshold: number,
-): boolean {
-  const num1 = parseInt(hash1, 16);
-  const num2 = parseInt(hash2, 16);
-  return Math.abs(num1 - num2) <= threshold;
+function simpleHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // Convert to 32-bit integer
+  }
+  return (hash >>> 0).toString(16);
 }
 
+export function simHash(text: string, hashBits: number = 32): string {
+  const tokens = text.split(/\s+/).filter((token) => token.length > 0);
+  const bitVector = new Array(hashBits).fill(0);
+  tokens.forEach((token) => {
+    const tokenHashHex = simpleHash(token);
+    const tokenHashNum = parseInt(tokenHashHex, 16);
+
+    for (let i = 0; i < hashBits; i++) {
+      if (tokenHashNum & (1 << i)) {
+        bitVector[i] += 1;
+      } else {
+        bitVector[i] -= 1;
+      }
+    }
+  });
+  let fingerprint = "";
+  for (let i = 0; i < hashBits; i++) {
+    fingerprint += bitVector[i] >= 0 ? "1" : "0";
+  }
+  return fingerprint;
+}
 describe("Wix Domains Page Testing", () => {
   let testContext: TestContext;
   let page: PuppeteerPage;

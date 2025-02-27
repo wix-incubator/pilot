@@ -32,21 +32,13 @@ const ATTRIBUTE_WHITELIST: Record<string, string[]> = {
 const ESSENTIAL_ELEMENTS = ["HTML", "HEAD", "BODY"];
 
 /**
- * Returns all elements under root sorted by their on-screen position.
+ * Return elements in a depth-first search order.
  */
-function getVisuallySortedElements(root: Element): Element[] {
+function dfsElements(root: Element): Element[] {
   const result: Element[] = [];
 
   function dfs(node: Element) {
-    const children = Array.from(node.children);
-    children.sort((a, b) => {
-      const ra = a.getBoundingClientRect();
-      const rb = b.getBoundingClientRect();
-      if (ra.top !== rb.top) return ra.top - rb.top;
-      if (ra.left !== rb.left) return ra.left - rb.left;
-      return 0;
-    });
-    for (const child of children) {
+    for (const child of Array.from(node.children)) {
       result.push(child);
       dfs(child);
     }
@@ -69,23 +61,47 @@ function simpleHash(str: string): string {
 }
 
 /**
+ * Returns a weight value for a given attribute name.
+ */
+function getAttributeWeight(attr: string): number {
+  const weights: Record<string, number> = {
+    "aria-label": 100,
+    id: 90,
+    href: 80,
+    target: 60,
+    src: 90,
+    alt: 70,
+    type: 80,
+    name: 70,
+    value: 60,
+    content: 70,
+    rel: 60,
+  };
+  return weights[attr.toLowerCase()] || 10;
+}
+
+/**
  * Computes a stable unique identifier for an element based on intrinsic properties.
+ * This version assigns weights to attributes and builds a canonical string with explicit delimiters.
  */
 function computeUniqueId(el: Element): string {
-  if (el.hasAttribute("aria-label")) {
-    return simpleHash(el.getAttribute("aria-label")!);
-  }
   const tag = el.tagName.toLowerCase();
   const allowedAttrs = new Set(
     ATTRIBUTE_WHITELIST["*"].concat(ATTRIBUTE_WHITELIST[tag] || []),
   );
-  const attributes: Record<string, string> = {};
+
+  const weightedAttributes: string[] = [];
   Array.from(el.attributes).forEach((attr) => {
-    if (allowedAttrs.has(attr.name.toLowerCase())) {
-      attributes[attr.name.toLowerCase()] = attr.value;
+    const attrName = attr.name.toLowerCase();
+    if (allowedAttrs.has(attrName)) {
+      const weight = getAttributeWeight(attrName);
+      weightedAttributes.push(`${weight}:${attrName}=${attr.value}`);
     }
   });
-  // round to nearest multiply by 5
+  // Sort to ensure consistent order.
+  weightedAttributes.sort();
+
+  // Round the bounding rectangle values.
   const rect = el.getBoundingClientRect();
   const roundedRect = {
     top: Math.round(rect.top / 5) * 5,
@@ -95,28 +111,27 @@ function computeUniqueId(el: Element): string {
   };
 
   const text = (el.textContent || "").trim();
+  const parentTag = el.parentElement
+    ? el.parentElement.tagName.toLowerCase()
+    : "no-parent";
 
-  function getDomPath(element: Element): string {
-    let path = "";
-    while (element.parentElement) {
-      const siblings = Array.from(element.parentElement.children);
-      const index = siblings.indexOf(element);
-      path = `/${element.tagName.toLowerCase()}[${index}]` + path;
-      element = element.parentElement;
-    }
-    return path;
-  }
-  const domPath = getDomPath(el);
-  const dataToHash = { tag, attributes, roundedRect, text, domPath };
-  const hashString = JSON.stringify(dataToHash, Object.keys(dataToHash).sort());
-  return simpleHash(hashString);
+  // Build a canonical string with explicit delimiters.
+  const dataToHash = [
+    `tag=${tag}`,
+    `attrs=[${weightedAttributes.join("|")}]`,
+    `rect=${JSON.stringify(roundedRect)}`,
+    `text=${text}`,
+    `parent=${parentTag}`,
+  ].join("||");
+
+  return simpleHash(dataToHash);
 }
 
 /**
  * Marks important elements by setting category, index, and a stable unique identifier.
  */
 export function markImportantElements(options?: { includeHidden?: boolean }) {
-  const visuallyOrdered = getVisuallySortedElements(document.body);
+  const visuallyOrdered = dfsElements(document.body);
   const relevant = visuallyOrdered.filter((el) => {
     if (!options?.includeHidden && isElementHidden(el)) {
       return false;
