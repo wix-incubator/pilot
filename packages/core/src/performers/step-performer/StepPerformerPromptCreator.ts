@@ -147,9 +147,12 @@ export class StepPerformerPromptCreator {
             "```",
             previousStep.code,
             "```",
-            ...(previousStep.result
+            ...(previousStep.result && !previousStep.error
               ? [`- Result: ${previousStep.result}`]
               : []),
+            ...(index === previousSteps.length - 1 && previousStep.error
+                ? [`- Error:\n "${previousStep.error}" \nOccurred in your previous attempt. Try another approach for this step`]
+                : []),
             "",
           ])
           .flat(),
