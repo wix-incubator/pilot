@@ -166,6 +166,24 @@ export function createMarkedViewHierarchy() {
     if (isImportantElement || childStructure) {
       const indent = "  ".repeat(depth);
       structure += `${indent}<${element.tagName.toLowerCase()}`;
+      Array.from(element.attributes)
+        .filter(
+          (attr) =>
+            attr.name.match(/^aria-/i) || // all aria-* attributes
+            [
+              "href",
+              "target",
+              "src",
+              "alt",
+              "type",
+              "name",
+              "value",
+              "role",
+            ].includes(attr.name.toLowerCase()),
+        )
+        .forEach((attr) => {
+          structure += ` ${attr.name}="${attr.value}"`;
+        });
       const interestingAttrs = getInterestingAttributes(element as HTMLElement);
       for (const [attr, value] of Object.entries(interestingAttrs)) {
         if (value != null && value !== "") {
