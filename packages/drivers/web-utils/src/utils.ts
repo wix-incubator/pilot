@@ -1,43 +1,17 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
-import { ElementCategory } from "./types";
+import {
+  ElementCategory,
+  SelectorCriteria,
+  AttributeRule,
+  InterestingAttributes,
+  Rect,
+} from "./types";
 
 declare global {
   interface Window {
     createMarkedViewHierarchy: () => string;
   }
-}
-
-interface Rect {
-  x: number;
-  y: number;
-}
-
-interface SelectorCriteria {
-  rect?: Rect;
-  "aria-label"?: string;
-  "aria-role"?: string;
-  class?: string;
-  id?: string;
-  name?: string;
-  title?: string;
-  placeholder?: string;
-}
-
-interface AttributeRule {
-  weight: number;
-  enforce: boolean;
-}
-
-interface InterestingAttributes {
-  rect: Rect;
-  "aria-label": string | null;
-  "aria-role": string | null;
-  class: string;
-  id: string | null;
-  name: string | null;
-  title: string | null;
-  placeholder: string | null;
 }
 
 const ATTRIBUTE_RULES: Record<keyof SelectorCriteria, AttributeRule> = {
