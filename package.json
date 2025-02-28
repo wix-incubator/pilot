@@ -13,7 +13,35 @@
         "test": "npm run test --workspaces",
         "lint": "npm run lint --workspaces",
         "lint:fix": "npm run lint:fix --workspaces",
-        "type-check": "npm run type-check --workspaces"
+        "type-check": "npm run type-check --workspaces",
+        "watch": "node scripts/package-monitor.js"
+    },
+    "packageMonitor": {
+        "packages": {
+            "core": {
+                "path": "packages/core",
+                "buildCommand": "npm run build --workspace=@wix-pilot/core"
+            },
+            "web-utils": {
+                "path": "packages/drivers/web-utils",
+                "buildCommand": "npm run build --workspace=@wix-pilot/web-utils"
+            }
+        },
+        "watchPatterns": [
+            "src/**/*.ts",
+            "src/**/*.tsx",
+            "src/**/*.js",
+            "src/**/*.jsx"
+        ],
+        "ignorePatterns": [
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/*.test.ts",
+            "**/*.test.tsx",
+            "**/*.test.js",
+            "**/*.test.jsx"
+        ],
+        "debounceMs": 300
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",
