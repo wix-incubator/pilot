@@ -3,6 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/packages/drivers/detox/ExampleApp" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/packages/drivers/detox/ExampleApp/ExampleApp" vcs="Git" />
   </component>
 </project>
