@@ -144,6 +144,3 @@ dist
 # OS files
 .DS_Store
 Thumbs.db
-
-# Legacy cache files
-**/*/detox_copilot_cache.json
