@@ -11,8 +11,6 @@ import { AutoPerformer } from "@/performers/auto-performer/AutoPerformer";
 import { AutoPerformerPromptCreator } from "@/performers/auto-performer/AutoPerformerPromptCreator";
 import { AutoReport } from "@/types/auto";
 import { StepPerformerPromptCreator } from "@/performers/step-performer/StepPerformerPromptCreator";
-import { APISearchPromptCreator } from "@/common/prompts/APISearchPromptCreator";
-import { ViewAnalysisPromptCreator } from "@/common/prompts/ViewAnalysisPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
 import { SnapshotManager } from "@/common/snapshot/SnapshotManager";
@@ -59,14 +57,11 @@ export class Pilot {
     this.stepPerformer = new StepPerformer(
       config.frameworkDriver.apiCatalog.context,
       this.stepPerformerPromptCreator,
-      new APISearchPromptCreator(config.frameworkDriver.apiCatalog),
-      new ViewAnalysisPromptCreator(config.frameworkDriver.apiCatalog),
       new CodeEvaluator(),
       config.promptHandler,
       this.cacheHandler,
       new SnapshotComparator(),
       this.screenCapturer,
-      config.options?.analysisMode,
     );
 
     this.screenCapturer = new ScreenCapturer(

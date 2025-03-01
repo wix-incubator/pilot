@@ -55,7 +55,6 @@ export class StepPerformerPromptCreator {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
     previousSteps: PreviousStep[],
-    apiSearchResults?: string,
   ): string {
     return [
       this.createBasePrompt(),
@@ -66,9 +65,6 @@ export class StepPerformerPromptCreator {
         previousSteps,
       ),
       this.createAPIInfo(),
-      ...(apiSearchResults
-        ? ["## Semantic Matches from API Search", "", apiSearchResults, ""]
-        : []),
       this.createInstructions(intent, isSnapshotImageAttached),
     ]
       .flat()
