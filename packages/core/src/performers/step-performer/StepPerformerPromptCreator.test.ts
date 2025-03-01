@@ -128,7 +128,6 @@ describe("PromptCreator", () => {
     expect(prompt).toMatchSnapshot();
   });
 
-
   describe("extentAPICategories", () => {
     const intent = "expect button to be visible";
     const viewHierarchy =

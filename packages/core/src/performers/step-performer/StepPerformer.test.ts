@@ -66,7 +66,6 @@ describe("CopilotStepPerformer", () => {
       extendAPICategories: jest.fn(),
     } as unknown as jest.Mocked<StepPerformerPromptCreator>;
 
-
     mockCodeEvaluator = {
       evaluate: jest.fn(),
     } as unknown as jest.Mocked<CodeEvaluator>;
@@ -105,7 +104,7 @@ describe("CopilotStepPerformer", () => {
       mockPromptHandler,
       mockCacheHandler,
       mockSnapshotComparator,
-      mockScreenCapturer
+      mockScreenCapturer,
     );
   });
 
@@ -191,7 +190,7 @@ describe("CopilotStepPerformer", () => {
       INTENT,
       VIEW_HIERARCHY,
       true,
-      []
+      [],
     );
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
       "generated prompt",
@@ -220,7 +219,7 @@ describe("CopilotStepPerformer", () => {
       INTENT,
       VIEW_HIERARCHY,
       false,
-      []
+      [],
     );
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
       "generated prompt",
@@ -248,7 +247,7 @@ describe("CopilotStepPerformer", () => {
       INTENT,
       VIEW_HIERARCHY,
       false,
-      []
+      [],
     );
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
       "generated prompt",
@@ -285,7 +284,7 @@ describe("CopilotStepPerformer", () => {
       intent,
       VIEW_HIERARCHY,
       true,
-      previousIntents
+      previousIntents,
     );
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
       "generated prompt",
@@ -464,5 +463,4 @@ describe("CopilotStepPerformer", () => {
       );
     });
   });
-
 });

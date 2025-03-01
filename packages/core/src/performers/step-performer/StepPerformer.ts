@@ -117,12 +117,11 @@ export class StepPerformer {
       }
     }
 
-
     const prompt = this.promptCreator.createPrompt(
       step,
       viewHierarchy,
       isSnapshotImageAttached,
-      previous
+      previous,
     );
 
     const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
