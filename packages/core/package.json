@@ -44,6 +44,7 @@
   "dependencies": {
     "blockhash-core": "^0.1.0",
     "canvas": "^3.0.1",
+    "glob": "^10.3.10",
     "ora": "^5.4.1",
     "png-js": "^1.0.0",
     "winston": "^3.17.0"
