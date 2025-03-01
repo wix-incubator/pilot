@@ -128,46 +128,6 @@ describe("PromptCreator", () => {
     expect(prompt).toMatchSnapshot();
   });
 
-  it("should include API search results when provided", () => {
-    const intent = "tap button";
-    const viewHierarchy =
-      '<View><Button testID="submit" title="Submit" /></View>';
-    const apiSearchResults = [
-      "Semantic Category Matches:",
-      "1. Actions",
-      "   - Match Confidence: High - Contains tap-related actions",
-      "   - Context Notes: Direct interaction with buttons",
-      "",
-      "Semantic API Matches:",
-      "1. tap(element: Element)",
-      "   - Match Confidence: High - Direct semantic match for tapping",
-      "   - Context Notes: Primary method for button interaction",
-      "2. by.id(id: string)",
-      "   - Match Confidence: Medium - Required for element selection",
-      "   - Context Notes: Used to locate the target button",
-    ].join("\n");
-
-    const prompt = promptCreator.createPrompt(
-      intent,
-      viewHierarchy,
-      false,
-      [],
-      apiSearchResults,
-    );
-
-    expect(prompt).toMatchSnapshot();
-  });
-
-  it("should not include API search results section when not provided", () => {
-    const intent = "tap button";
-    const viewHierarchy =
-      '<View><Button testID="submit" title="Submit" /></View>';
-
-    const prompt = promptCreator.createPrompt(intent, viewHierarchy, false, []);
-
-    expect(prompt).toMatchSnapshot();
-  });
-
   describe("extentAPICategories", () => {
     const intent = "expect button to be visible";
     const viewHierarchy =

@@ -35,8 +35,7 @@ pilot.init({
     apiKey: process.env.OPENAI_API_KEY
   }),
   options: {
-    cacheMode: 'full',
-    analysisMode: 'fast'
+    cacheMode: 'full'
   }
 });
 ```
@@ -204,8 +203,6 @@ interface Config {
 interface PilotOptions {
     /** Cache options */
     cacheOptions?: CacheOptions;
-    /** Analysis mode (default: 'fast') */
-    analysisMode?: AnalysisMode;  // 'fast' | 'full'
 }
 
 interface CacheOptions {
@@ -215,11 +212,6 @@ interface CacheOptions {
     shouldOverrideCache?: boolean;
 }
 ```
-
-#### Analysis Modes
-
-- **fast**: Skip API search and view hierarchy analysis preprocessing (default)
-- **full**: Perform complete analysis including API search and view hierarchy preprocessing
 
 ### Framework Driver Interface
 
