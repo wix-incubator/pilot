@@ -147,12 +147,7 @@ export class StepPerformerPromptCreator {
             "```",
             previousStep.code,
             "```",
-            ...(previousStep.result && !previousStep.error
-              ? [`- Result: ${previousStep.result}`]
-              : []),
-            ...(index === previousSteps.length - 1 && previousStep.error
-                ? [`- Error:\n "${previousStep.error}" \nOccurred in your previous attempt. Try another approach for this step`]
-                : []),
+            this.previousStepResultOrError(previousStep, index === previousSteps.length - 1),
             "",
           ])
           .flat(),
@@ -251,5 +246,13 @@ export class StepPerformerPromptCreator {
       "Do not provide any additional code beyond the minimal executable code required to perform the intent.",
     );
     return steps;
+  }
+
+  private previousStepResultOrError(previousStep: PreviousStep, isMostPreviousStep: boolean): string {
+      if (previousStep.result && !previousStep.error)
+        return `- Result: ${previousStep.result}`;
+      if (isMostPreviousStep && previousStep.error)
+        return `- Error:\n"${previousStep.error}" \nOccurred in your previous attempt. Try another approach for this step`;
+      return "";
   }
 }

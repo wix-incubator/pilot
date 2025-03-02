@@ -237,17 +237,11 @@ export class StepPerformer {
           loggerSpinner.update(`Retrying step: "${step}"`);
 
           const errorDetails = error instanceof Error ? error.message : error;
-
-          const resultMessage = lastCode
-            ? `Caught an error while evaluating "${step}", tried with generated code: "${lastCode}". Error details: "${errorDetails}". Validate the code against the APIs and hierarchy and continue with a different approach. If can't, return a code that throws a descriptive error.`
-            : `Failed to perform "${step}", could not generate prompt result. Let's try a different approach. If can't, return a code that throws a descriptive error.`;
-
           previous = [
             ...previous,
             {
               step,
               code: lastCode ?? "undefined",
-              result: resultMessage,
               error: errorDetails,
             },
           ];

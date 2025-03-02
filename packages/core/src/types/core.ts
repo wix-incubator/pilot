@@ -109,7 +109,7 @@ export type PreviousStep = {
   /** Generated test code */
   code: string;
   /** Step execution result */
-  result: any;
+  result?: any;
   /** Step execution error */
   error?: any;
 };
