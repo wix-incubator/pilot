@@ -715,6 +715,292 @@ await element(by.id('user-' + sharedContext.userId)).tap();
 Please provide your code below:"
 `;
 
+exports[`PromptCreator should include API search results when provided 1`] = `
+"# Test Code Generation
+
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
+
+## Context
+
+### Intent to perform
+
+Generate the minimal executable code to perform the following intent: "tap button"
+
+### View hierarchy
+
+\`\`\`
+<View><Button testID="submit" title="Submit" /></View>
+\`\`\`
+
+### Snapshot image
+
+No snapshot image is attached for this intent.
+
+## Available Testing Framework API
+
+### Actions
+
+#### tap(element: Element)
+
+Taps on the specified element.
+
+##### Example
+
+\`\`\`
+await element(by.id("button")).tap();
+\`\`\`
+
+##### Guidelines
+
+- Ensure the element is tappable before using this method.
+
+#### typeText(element: Element, text: string)
+
+Types the specified text into the element.
+
+##### Example
+
+\`\`\`
+await element(by.id("input")).typeText("Hello, World!");
+\`\`\`
+
+##### Guidelines
+
+- Use this method only on text input elements.
+
+### Assertions
+
+#### toBeVisible()
+
+Asserts that the element is visible on the screen.
+
+##### Example
+
+\`\`\`
+await expect(element(by.id("title"))).toBeVisible();
+\`\`\`
+
+##### Guidelines
+
+- Consider scroll position when using this assertion.
+
+### Matchers
+
+#### by.id(id: string)
+
+Matches elements by their ID attribute.
+
+##### Example
+
+\`\`\`
+element(by.id("uniqueId"))
+\`\`\`
+
+##### Guidelines
+
+- Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
+
+## Semantic Matches from API Search
+
+Semantic Category Matches:
+1. Actions
+   - Match Confidence: High - Contains tap-related actions
+   - Context Notes: Direct interaction with buttons
+
+Semantic API Matches:
+1. tap(element: Element)
+   - Match Confidence: High - Direct semantic match for tapping
+   - Context Notes: Primary method for button interaction
+2. by.id(id: string)
+   - Match Confidence: Medium - Required for element selection
+   - Context Notes: Used to locate the target button
+
+## Instructions
+
+Your task is to generate the minimal executable code to perform the following intent: "tap button"
+
+Please follow these steps carefully:
+
+1. Analyze the provided intent and the view hierarchy to understand the required action.
+2. Generate the minimal executable code required to perform the intent using the available API.
+3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+7. Wrap the generated code with backticks, without any additional formatting.
+8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+
+### Verify the prompt
+
+Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Examples
+
+#### Example of throwing an informative error:
+\`\`\`typescript
+throw new Error("Unable to find the 'Submit' button element in the current context.");
+\`\`\`
+
+#### Example of using shared context between steps:
+\`\`\`typescript
+// Step 1: Store the user ID
+const userId = await getUserId();
+sharedContext.userId = userId;
+
+// Step 2: Use the stored user ID
+await element(by.id('user-' + sharedContext.userId)).tap();
+\`\`\`
+
+Please provide your code below:"
+`;
+
+exports[`PromptCreator should include error in the prompt if previous step failed 1`] = `
+"# Test Code Generation
+
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
+
+## Context
+
+### Intent to perform
+
+Generate the minimal executable code to perform the following intent: "tap button"
+
+### View hierarchy
+
+\`\`\`
+<View><Button testID="submit" title="Submit" /></View>
+\`\`\`
+
+### Snapshot image
+
+No snapshot image is attached for this intent.
+
+### Previous steps
+
+#### Step 1
+- Intent: "navigate to login screen"
+- Generated code:
+\`\`\`
+await element(by.id("login")).tap();
+\`\`\`
+- Result: success
+
+#### Step 2
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+- Error:
+"could not find element"
+Occurred in your previous attempt. Try another approach for this step
+
+
+## Available Testing Framework API
+
+### Actions
+
+#### tap(element: Element)
+
+Taps on the specified element.
+
+##### Example
+
+\`\`\`
+await element(by.id("button")).tap();
+\`\`\`
+
+##### Guidelines
+
+- Ensure the element is tappable before using this method.
+
+#### typeText(element: Element, text: string)
+
+Types the specified text into the element.
+
+##### Example
+
+\`\`\`
+await element(by.id("input")).typeText("Hello, World!");
+\`\`\`
+
+##### Guidelines
+
+- Use this method only on text input elements.
+
+### Assertions
+
+#### toBeVisible()
+
+Asserts that the element is visible on the screen.
+
+##### Example
+
+\`\`\`
+await expect(element(by.id("title"))).toBeVisible();
+\`\`\`
+
+##### Guidelines
+
+- Consider scroll position when using this assertion.
+
+### Matchers
+
+#### by.id(id: string)
+
+Matches elements by their ID attribute.
+
+##### Example
+
+\`\`\`
+element(by.id("uniqueId"))
+\`\`\`
+
+##### Guidelines
+
+- Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
+
+## Instructions
+
+Your task is to generate the minimal executable code to perform the following intent: "tap button"
+
+Please follow these steps carefully:
+
+1. Analyze the provided intent and the view hierarchy to understand the required action.
+2. Generate the minimal executable code required to perform the intent using the available API.
+3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+7. Wrap the generated code with backticks, without any additional formatting.
+8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+
+### Verify the prompt
+
+Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Examples
+
+#### Example of throwing an informative error:
+\`\`\`typescript
+throw new Error("Unable to find the 'Submit' button element in the current context.");
+\`\`\`
+
+#### Example of using shared context between steps:
+\`\`\`typescript
+// Step 1: Store the user ID
+const userId = await getUserId();
+sharedContext.userId = userId;
+
+// Step 2: Use the stored user ID
+await element(by.id('user-' + sharedContext.userId)).tap();
+\`\`\`
+
+Please provide your code below:"
+`;
+
 exports[`PromptCreator should include previous intents in the context 1`] = `
 "# Test Code Generation
 
@@ -748,6 +1034,283 @@ await element(by.id("login")).tap();
 - Result: success
 
 #### Step 2
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+- Result: john doe
+
+
+## Available Testing Framework API
+
+### Actions
+
+#### tap(element: Element)
+
+Taps on the specified element.
+
+##### Example
+
+\`\`\`
+await element(by.id("button")).tap();
+\`\`\`
+
+##### Guidelines
+
+- Ensure the element is tappable before using this method.
+
+#### typeText(element: Element, text: string)
+
+Types the specified text into the element.
+
+##### Example
+
+\`\`\`
+await element(by.id("input")).typeText("Hello, World!");
+\`\`\`
+
+##### Guidelines
+
+- Use this method only on text input elements.
+
+### Assertions
+
+#### toBeVisible()
+
+Asserts that the element is visible on the screen.
+
+##### Example
+
+\`\`\`
+await expect(element(by.id("title"))).toBeVisible();
+\`\`\`
+
+##### Guidelines
+
+- Consider scroll position when using this assertion.
+
+### Matchers
+
+#### by.id(id: string)
+
+Matches elements by their ID attribute.
+
+##### Example
+
+\`\`\`
+element(by.id("uniqueId"))
+\`\`\`
+
+##### Guidelines
+
+- Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
+
+## Instructions
+
+Your task is to generate the minimal executable code to perform the following intent: "tap button"
+
+Please follow these steps carefully:
+
+1. Analyze the provided intent and the view hierarchy to understand the required action.
+2. Generate the minimal executable code required to perform the intent using the available API.
+3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+7. Wrap the generated code with backticks, without any additional formatting.
+8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+
+### Verify the prompt
+
+Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Examples
+
+#### Example of throwing an informative error:
+\`\`\`typescript
+throw new Error("Unable to find the 'Submit' button element in the current context.");
+\`\`\`
+
+#### Example of using shared context between steps:
+\`\`\`typescript
+// Step 1: Store the user ID
+const userId = await getUserId();
+sharedContext.userId = userId;
+
+// Step 2: Use the stored user ID
+await element(by.id('user-' + sharedContext.userId)).tap();
+\`\`\`
+
+Please provide your code below:"
+`;
+
+exports[`PromptCreator should not include API search results section when not provided 1`] = `
+"# Test Code Generation
+
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
+
+## Context
+
+### Intent to perform
+
+Generate the minimal executable code to perform the following intent: "tap button"
+
+### View hierarchy
+
+\`\`\`
+<View><Button testID="submit" title="Submit" /></View>
+\`\`\`
+
+### Snapshot image
+
+No snapshot image is attached for this intent.
+
+## Available Testing Framework API
+
+### Actions
+
+#### tap(element: Element)
+
+Taps on the specified element.
+
+##### Example
+
+\`\`\`
+await element(by.id("button")).tap();
+\`\`\`
+
+##### Guidelines
+
+- Ensure the element is tappable before using this method.
+
+#### typeText(element: Element, text: string)
+
+Types the specified text into the element.
+
+##### Example
+
+\`\`\`
+await element(by.id("input")).typeText("Hello, World!");
+\`\`\`
+
+##### Guidelines
+
+- Use this method only on text input elements.
+
+### Assertions
+
+#### toBeVisible()
+
+Asserts that the element is visible on the screen.
+
+##### Example
+
+\`\`\`
+await expect(element(by.id("title"))).toBeVisible();
+\`\`\`
+
+##### Guidelines
+
+- Consider scroll position when using this assertion.
+
+### Matchers
+
+#### by.id(id: string)
+
+Matches elements by their ID attribute.
+
+##### Example
+
+\`\`\`
+element(by.id("uniqueId"))
+\`\`\`
+
+##### Guidelines
+
+- Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
+
+## Instructions
+
+Your task is to generate the minimal executable code to perform the following intent: "tap button"
+
+Please follow these steps carefully:
+
+1. Analyze the provided intent and the view hierarchy to understand the required action.
+2. Generate the minimal executable code required to perform the intent using the available API.
+3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+7. Wrap the generated code with backticks, without any additional formatting.
+8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+
+### Verify the prompt
+
+Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Examples
+
+#### Example of throwing an informative error:
+\`\`\`typescript
+throw new Error("Unable to find the 'Submit' button element in the current context.");
+\`\`\`
+
+#### Example of using shared context between steps:
+\`\`\`typescript
+// Step 1: Store the user ID
+const userId = await getUserId();
+sharedContext.userId = userId;
+
+// Step 2: Use the stored user ID
+await element(by.id('user-' + sharedContext.userId)).tap();
+\`\`\`
+
+Please provide your code below:"
+`;
+
+exports[`PromptCreator should not include error if the error was not in the immediate previous step 1`] = `
+"# Test Code Generation
+
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
+
+## Context
+
+### Intent to perform
+
+Generate the minimal executable code to perform the following intent: "tap button"
+
+### View hierarchy
+
+\`\`\`
+<View><Button testID="submit" title="Submit" /></View>
+\`\`\`
+
+### Snapshot image
+
+No snapshot image is attached for this intent.
+
+### Previous steps
+
+#### Step 1
+- Intent: "navigate to login screen"
+- Generated code:
+\`\`\`
+await element(by.id("login")).tap();
+\`\`\`
+- Result: success
+
+#### Step 2
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+
+
+#### Step 3
 - Intent: "enter username"
 - Generated code:
 \`\`\`
