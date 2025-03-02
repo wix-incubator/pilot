@@ -120,6 +120,7 @@ describe("Wix Domains Page Testing", () => {
 
   it("should find a specific element among a large number of elements using multiple attributes", async () => {
     await page.evaluate(() => {
+      // Create 1000 dummy elements with random sizes.
       for (let i = 0; i < 1000; i++) {
         const dummy = document.createElement("div");
         dummy.className = "dummy-element";
@@ -129,9 +130,12 @@ describe("Wix Domains Page Testing", () => {
         dummy.setAttribute("title", "dummyTitle");
         dummy.setAttribute("placeholder", "dummyPlaceholder");
         dummy.textContent = `Dummy Element ${i}`;
+        dummy.style.width = Math.floor(Math.random() * 200 + 50) + "px";
+        dummy.style.height = Math.floor(Math.random() * 200 + 50) + "px";
         document.body.appendChild(dummy);
       }
 
+      // Create the special element with random sizes.
       const special = document.createElement("button");
       special.setAttribute("aria-role", "special");
       special.className = "special-element";
@@ -140,6 +144,8 @@ describe("Wix Domains Page Testing", () => {
       special.setAttribute("title", "specialTitle");
       special.setAttribute("placeholder", "specialPlaceholder");
       special.textContent = "Special Element";
+      special.style.width = Math.floor(Math.random() * 200 + 50) + "px";
+      special.style.height = Math.floor(Math.random() * 200 + 50) + "px";
       document.body.appendChild(special);
     });
 
