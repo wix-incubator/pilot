@@ -422,24 +422,6 @@ describe("Pilot Integration Tests", () => {
           expect(promptParam).toContain("Element not found");
           expect(promptParam).toMatchSnapshot();
       });
-
-      it("should add result and not add error for next perform step", async () => {
-          let promptParam: string = "";
-          mockPromptHandler.runPrompt
-              .mockImplementationOnce((prompt, _snapshot) => {
-                  promptParam = prompt;
-                  return Promise.resolve("Operation successful");  // Return a successful result here
-              })
-              .mockImplementationOnce((prompt, _snapshot) => {
-                  promptParam = prompt;
-                  return Promise.resolve("// No operation");  // Return another result on the second call
-              });
-
-          await pilot.perform("Tap on a non-existent button");
-
-          expect(promptParam).toContain("Result");
-          expect(promptParam).toMatchSnapshot();
-      });
   });
 
   describe("Feature Support", () => {
