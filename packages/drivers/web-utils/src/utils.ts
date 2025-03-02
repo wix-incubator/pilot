@@ -3,56 +3,33 @@ import isElementHidden from "./isElementHidden";
 import {
   ElementCategory,
   SelectorCriteria,
-  AttributeRule,
   InterestingAttributes,
-  Rect,
 } from "./types";
+import { CRITERIA_CONFIG } from "./config";
 
 declare global {
   interface Window {
     createMarkedViewHierarchy: () => string;
+    findElementWithLowestError: (
+      criteria: SelectorCriteria,
+    ) => HTMLElement | null;
   }
 }
-
-const ATTRIBUTE_RULES: Record<keyof SelectorCriteria, AttributeRule> = {
-  rect: { weight: 0.2, enforce: false },
-  "aria-label": { weight: 1, enforce: true },
-  "aria-role": { weight: 0.4, enforce: false },
-  class: { weight: 0.2, enforce: false },
-  id: { weight: 0.7, enforce: false },
-  name: { weight: 0.5, enforce: false },
-  title: { weight: 0.3, enforce: false },
-  placeholder: { weight: 0.3, enforce: false },
-};
 
 /**
  * Retrieves the “interesting” attributes from an element.
  * For `rect`, it uses the element’s top-left (x, y) coordinates.
  */
-function getInterestingAttributes(element: HTMLElement): InterestingAttributes {
-  const rect = element.getBoundingClientRect();
-  return {
-    rect: { x: rect.left, y: rect.top },
-    "aria-label": element.getAttribute("aria-label"),
-    "aria-role":
-      element.getAttribute("aria-role") || element.getAttribute("role"),
-    class: element.className,
-    id: element.getAttribute("data-testid"),
-    name: element.getAttribute("name"),
-    title: element.getAttribute("title"),
-    placeholder: element.getAttribute("placeholder"),
-  };
-}
-
-function calcRectError(actual: Rect, expected: Rect, weight: number): number {
-  const dx = Math.abs(actual.x - expected.x);
-  const dy = Math.abs(actual.y - expected.y);
-  return dx <= 5 && dy <= 5 ? 0 : weight;
-}
-
-function calcError(actual: any, expected: any, weight: number): number {
-  if (actual == null) return weight;
-  return actual === expected ? 0 : weight;
+export function getInterestingAttributes(
+  element: HTMLElement,
+): InterestingAttributes {
+  const attributes = {} as InterestingAttributes;
+  for (const key in CRITERIA_CONFIG) {
+    const criteriaKey = key as keyof InterestingAttributes;
+    const config = CRITERIA_CONFIG[criteriaKey];
+    attributes[criteriaKey] = config.extract(element);
+  }
+  return attributes;
 }
 
 export function findElementWithLowestError(
@@ -63,29 +40,34 @@ export function findElementWithLowestError(
   ) as HTMLElement[];
   let bestCandidate: HTMLElement | null = null;
   let lowestDelta = Infinity;
-  if (criteria["aria-label"])
+  if (criteria["aria-label"]) {
     return document.querySelector(`[aria-label="${criteria["aria-label"]}"]`);
+  }
+
   for (const candidate of candidates) {
     let delta = 0;
-    const attrs = getInterestingAttributes(candidate);
+
     for (const key in criteria) {
-      const attrKey = key as keyof SelectorCriteria;
-      const rule = ATTRIBUTE_RULES[attrKey];
-      const expected = criteria[attrKey];
+      const criteriaKey = key as keyof SelectorCriteria;
+      const expected = criteria[criteriaKey];
       if (expected != null) {
-        const actual = attrs[attrKey as keyof InterestingAttributes];
-        if (attrKey === "rect" && typeof expected === "object" && actual) {
-          delta += calcRectError(actual as Rect, expected as Rect, rule.weight);
-        } else {
-          delta += calcError(actual, expected, rule.weight);
+        const config = CRITERIA_CONFIG[criteriaKey];
+        const actual = config.extract(candidate);
+        const error = config.compare(actual, expected, config.weight);
+        if (config.enforce && error > 0) {
+          delta = Infinity;
+          break;
         }
+        delta += error;
       }
     }
+
     if (delta < lowestDelta) {
       lowestDelta = delta;
       bestCandidate = candidate;
     }
   }
+
   return bestCandidate;
 }
 
@@ -121,7 +103,8 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
 }
 
 export function createMarkedViewHierarchy() {
-  const clone = document.documentElement.cloneNode(true) as HTMLElement;
+  // Use the live DOM root instead of a detached clone
+  const root = document.documentElement;
 
   function processElement(element: Element, depth = 0): string {
     const children = Array.from(element.children);
@@ -136,14 +119,14 @@ export function createMarkedViewHierarchy() {
     const isImportantElement =
       element.hasAttribute("aria-pilot-category") ||
       ESSENTIAL_ELEMENTS.includes(element.tagName);
-
     if (isImportantElement || childStructure) {
       const indent = "  ".repeat(depth);
       structure += `${indent}<${element.tagName.toLowerCase()}`;
+
       Array.from(element.attributes)
         .filter(
           (attr) =>
-            attr.name.match(/^aria-/i) || // all aria-* attributes
+            attr.name.match(/^aria-/i) ||
             [
               "href",
               "target",
@@ -174,14 +157,12 @@ export function createMarkedViewHierarchy() {
       if (childStructure) {
         structure += childStructure;
       }
-
       structure += `${indent}</${element.tagName.toLowerCase()}>\n`;
     }
-
     return structure;
   }
 
-  return processElement(clone);
+  return processElement(root);
 }
 
 export function highlightMarkedElements() {
@@ -294,4 +275,5 @@ export function removeMarkedElementsHighlights() {
 
 if (typeof window !== "undefined") {
   window.createMarkedViewHierarchy = createMarkedViewHierarchy;
+  window.findElementWithLowestError = findElementWithLowestError;
 }

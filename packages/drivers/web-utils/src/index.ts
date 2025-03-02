@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Page } from "./types";
+import { Page, SelectorCriteria } from "./types";
 
 export default class WebTestingFrameworkDriverHelper {
   protected currentPage?: Page;
@@ -58,6 +58,18 @@ export default class WebTestingFrameworkDriverHelper {
   async createMarkedViewHierarchy(page: Page): Promise<string> {
     return await page.evaluate(() => {
       return window.createMarkedViewHierarchy();
+    });
+  }
+
+  /**
+   * returns closest element to given a criteria
+   */
+  async findElementWithLowestError(
+    page: Page,
+    element: SelectorCriteria,
+  ): Promise<HTMLElement | null> {
+    return await page.evaluate(() => {
+      return window.findElementWithLowestError(element);
     });
   }
 
