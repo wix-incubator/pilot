@@ -62,14 +62,16 @@ describe("Wix Domains Page Testing", () => {
       }
     });
 
-    const foundAriaLabel = await page.evaluate(() => {
-      const el = window.findElementWithLowestError({
+    const elementHandle = await page.evaluateHandle(() => {
+      return window.findElement({
         "aria-label": "TestButton",
       });
-      return el ? el.getAttribute("aria-label") : null;
     });
 
-    expect(foundAriaLabel).toBe("TestButton");
+    const ariaLabel = await elementHandle.asElement()?.evaluate((el) => {
+      return (el as HTMLElement).getAttribute("aria-label");
+    });
+    expect(ariaLabel).toBe("TestButton");
   });
 
   it("should find the complex button using multiple attributes (excluding aria-label)", async () => {
@@ -96,7 +98,7 @@ describe("Wix Domains Page Testing", () => {
       placeholder: "complexPlaceholder",
     };
     const foundElementData = await page.evaluate((criteria) => {
-      const el = window.findElementWithLowestError(criteria);
+      const el = window.findElement(criteria);
       if (!el) return null;
       return {
         ariaRole: el.getAttribute("aria-role") || el.getAttribute("role"),
@@ -159,7 +161,7 @@ describe("Wix Domains Page Testing", () => {
     };
 
     const foundSpecialElementData = await page.evaluate((criteria) => {
-      const el = window.findElementWithLowestError(criteria);
+      const el = window.findElement(criteria);
       if (!el) return null;
       return {
         ariaRole: el.getAttribute("aria-role") || el.getAttribute("role"),

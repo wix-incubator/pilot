@@ -64,13 +64,13 @@ export default class WebTestingFrameworkDriverHelper {
   /**
    * returns closest element to given a criteria
    */
-  async findElementWithLowestError(
+  async findElement(
     page: Page,
     element: SelectorCriteria,
   ): Promise<HTMLElement | null> {
-    return await page.evaluate(() => {
-      return window.findElementWithLowestError(element);
-    });
+    return (
+      await page.evaluateHandle((sel) => window.findElement(sel), element)
+    ).asElement() as HTMLElement | null;
   }
 
   /**

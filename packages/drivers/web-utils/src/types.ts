@@ -56,6 +56,11 @@ export interface Page {
     type?: string;
   }): Promise<any>;
 
+  evaluateHandle<T = any>(
+    pageFunction: string | ((...args: any[]) => T | Promise<T>),
+    ...args: any[]
+  ): Promise<any>;
+
   screenshot(options?: {
     path?: string;
     fullPage?: boolean;

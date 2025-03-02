@@ -10,9 +10,7 @@ import { CRITERIA_CONFIG } from "./config";
 declare global {
   interface Window {
     createMarkedViewHierarchy: () => string;
-    findElementWithLowestError: (
-      criteria: SelectorCriteria,
-    ) => HTMLElement | null;
+    findElement: (criteria: SelectorCriteria) => HTMLElement | null;
   }
 }
 
@@ -32,9 +30,7 @@ export function getInterestingAttributes(
   return attributes;
 }
 
-export function findElementWithLowestError(
-  criteria: SelectorCriteria,
-): HTMLElement | null {
+export function findElement(criteria: SelectorCriteria): HTMLElement | null {
   const candidates = Array.from(
     document.querySelectorAll("*"),
   ) as HTMLElement[];
@@ -280,5 +276,5 @@ export function removeMarkedElementsHighlights() {
 
 if (typeof window !== "undefined") {
   window.createMarkedViewHierarchy = createMarkedViewHierarchy;
-  window.findElementWithLowestError = findElementWithLowestError;
+  window.findElement = findElement;
 }
