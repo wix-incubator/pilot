@@ -143,6 +143,7 @@ describe("PromptCreator", () => {
     );
 
     expect(prompt).toMatchSnapshot();
+    expect(prompt).toContain("could not find element");
   });
 
   it("should not include error if the error was not in the immediate previous step", () => {
@@ -176,6 +177,7 @@ describe("PromptCreator", () => {
     );
 
     expect(prompt).toMatchSnapshot();
+    expect(prompt).not.toContain("could not find element");
   });
 
   it("should handle when no snapshot image is attached", () => {

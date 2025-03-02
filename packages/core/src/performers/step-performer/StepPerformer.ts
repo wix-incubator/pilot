@@ -229,14 +229,14 @@ export class StepPerformer {
         return result;
       } catch (error) {
         lastError = error;
+        const errorDetails = error instanceof Error ? error.message : error;
         logger.warn(
-          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${error instanceof Error ? error.message : error}`,
+          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
         );
 
         if (attempt < maxAttempts) {
           loggerSpinner.update(`Retrying step: "${step}"`);
 
-          const errorDetails = error instanceof Error ? error.message : error;
           previous = [
             ...previous,
             {

@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pilot Integration Tests Caching Behavior should add error and not add result for next perform step 1`] = `
+"# Test Code Generation
+
+You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
+Generate the minimal executable code to perform the desired intent, based on the provided step and context.
+
+## Context
+
+### Intent to perform
+
+Generate the minimal executable code to perform the following intent: "Tap on a non-existent button"
+
+### View hierarchy
+
+\`\`\`
+<view><button>Login</button></view>
+\`\`\`
+
+### Snapshot image
+
+A snapshot image is attached for visual reference.
+
+### Previous steps
+
+#### Step 1
+- Intent: "Tap on a non-existent button"
+- Generated code:
+\`\`\`
+throw new Error("Element not found");
+\`\`\`
+- Error occurred in your previous attempt. Try another approach to perform this step. Error message:
+\`\`\`
+Element not found
+\`\`\`
+
+
+## Available Testing Framework API
+
+
+## Instructions
+
+Your task is to generate the minimal executable code to perform the following intent: "Tap on a non-existent button"
+
+Please follow these steps carefully:
+
+1. Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.
+2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.
+3. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
+4. Determine if the intent can be fully validated visually using the snapshot image.
+5. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
+6. If the visual assertion fails, return code that throws an informative error explaining the failure.
+7. If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.
+8. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+9. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+10. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+11. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+12. Wrap the generated code with backticks, without any additional formatting.
+13. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+
+### Verify the prompt
+
+Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Examples
+
+#### Example of throwing an informative error:
+\`\`\`typescript
+throw new Error("Unable to find the 'Submit' button element in the current context.");
+\`\`\`
+
+#### Example of using shared context between steps:
+\`\`\`typescript
+// Step 1: Store the user ID
+const userId = await getUserId();
+sharedContext.userId = userId;
+
+// Step 2: Use the stored user ID
+await element(by.id('user-' + sharedContext.userId)).tap();
+\`\`\`
+
+#### Visual validation using the snapshot:
+\`\`\`typescript
+// Visual assertion passed based on the snapshot image.
+\`\`\`
+
+Please provide your code below:"
+`;
