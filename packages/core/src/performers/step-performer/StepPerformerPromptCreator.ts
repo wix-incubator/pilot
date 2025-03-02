@@ -147,7 +147,10 @@ export class StepPerformerPromptCreator {
             "```",
             previousStep.code,
             "```",
-            this.previousStepResultOrError(previousStep, index === previousSteps.length - 1),
+            this.previousStepResultOrError(
+              previousStep,
+              index === previousSteps.length - 1,
+            ),
             "",
           ])
           .flat(),
@@ -248,11 +251,14 @@ export class StepPerformerPromptCreator {
     return steps;
   }
 
-  private previousStepResultOrError(previousStep: PreviousStep, isMostPreviousStep: boolean): string {
-      if (previousStep.result && !previousStep.error)
-        return `- Result: ${previousStep.result}`;
-      if (isMostPreviousStep && previousStep.error)
-        return `- Error:\n"${previousStep.error}" \nOccurred in your previous attempt. Try another approach for this step`;
-      return "";
+  private previousStepResultOrError(
+    previousStep: PreviousStep,
+    isMostPreviousStep: boolean,
+  ): string {
+    if (previousStep.result && !previousStep.error)
+      return `- Result: ${previousStep.result}`;
+    if (isMostPreviousStep && previousStep.error)
+      return `- Error:\n"${previousStep.error}" \nOccurred in your previous attempt. Try another approach for this step`;
+    return "";
   }
 }
