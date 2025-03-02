@@ -53,7 +53,12 @@ export function findElementWithLowestError(
       if (expected != null) {
         const config = CRITERIA_CONFIG[criteriaKey];
         const actual = config.extract(candidate);
-        const error = config.compare(actual, expected, config.weight);
+        const error = config.compare(
+          actual,
+          expected,
+          config.weight,
+          config.threshold,
+        );
         if (config.enforce && error > 0) {
           delta = Infinity;
           break;
