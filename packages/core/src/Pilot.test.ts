@@ -131,7 +131,7 @@ describe("Pilot", () => {
   });
 
   describe("performStep", () => {
-    it("should call CopilotStepPerformer.perform with the given intent", async () => {
+    it("should call stepPerformer.perform with the given intent", async () => {
       Pilot.init(mockConfig);
       const instance = Pilot.getInstance();
       instance.start();
@@ -144,7 +144,7 @@ describe("Pilot", () => {
       );
     });
 
-    it("should return the result from CopilotStepPerformer.perform", async () => {
+    it("should return the result from stepPerformer.perform", async () => {
       Pilot.init(mockConfig);
       const instance = Pilot.getInstance();
       instance.start();
@@ -254,7 +254,7 @@ describe("Pilot", () => {
       Pilot.init(mockConfig);
       const instance = Pilot.getInstance();
 
-      const spyCopilotStepPerformer = jest.spyOn(
+      const spystepPerformer = jest.spyOn(
         instance["stepPerformer"],
         "extendJSContext",
       );
@@ -264,14 +264,14 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
       ]);
-      expect(spyCopilotStepPerformer).not.toHaveBeenCalled();
+      expect(spystepPerformer).not.toHaveBeenCalled();
     });
 
     it("should extend the API catalog with a new category and context", () => {
       Pilot.init(mockConfig);
       const instance = Pilot.getInstance();
 
-      const spyCopilotStepPerformer = jest.spyOn(
+      const spystepPerformer = jest.spyOn(
         instance["stepPerformer"],
         "extendJSContext",
       );
@@ -281,14 +281,14 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
       ]);
-      expect(spyCopilotStepPerformer).toHaveBeenCalledWith(dummyContext);
+      expect(spystepPerformer).toHaveBeenCalledWith(dummyContext);
     });
 
     it("should extend the API catalog with an existing category", () => {
       Pilot.init(mockConfig);
       const instance = Pilot.getInstance();
 
-      const spyCopilotStepPerformer = jest.spyOn(
+      const spystepPerformer = jest.spyOn(
         instance["stepPerformer"],
         "extendJSContext",
       );
@@ -302,7 +302,7 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories[0].items).toEqual(
         [...barCategory1.items, ...barCategory2.items],
       );
-      expect(spyCopilotStepPerformer).toHaveBeenCalledWith(dummyContext);
+      expect(spystepPerformer).toHaveBeenCalledWith(dummyContext);
     });
 
     it("should extend the API catalog with multiple categories sequentially", () => {
