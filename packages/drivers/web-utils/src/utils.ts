@@ -1,11 +1,79 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
-import { ElementCategory } from "./types";
+import {
+  ElementCategory,
+  SelectorCriteria,
+  InterestingAttributes,
+} from "./types";
+import { CRITERIA_CONFIG } from "./config";
 
 declare global {
   interface Window {
     createMarkedViewHierarchy: () => string;
+    findElementWithLowestError: (
+      criteria: SelectorCriteria,
+    ) => HTMLElement | null;
   }
+}
+
+/**
+ * Retrieves the “interesting” attributes from an element.
+ * For `rect`, it uses the element’s top-left (x, y) coordinates.
+ */
+export function getInterestingAttributes(
+  element: HTMLElement,
+): InterestingAttributes {
+  const attributes = {} as InterestingAttributes;
+  for (const key in CRITERIA_CONFIG) {
+    const criteriaKey = key as keyof InterestingAttributes;
+    const config = CRITERIA_CONFIG[criteriaKey];
+    attributes[criteriaKey] = config.extract(element);
+  }
+  return attributes;
+}
+
+export function findElementWithLowestError(
+  criteria: SelectorCriteria,
+): HTMLElement | null {
+  const candidates = Array.from(
+    document.querySelectorAll("*"),
+  ) as HTMLElement[];
+  let bestCandidate: HTMLElement | null = null;
+  let lowestDelta = Infinity;
+  if (criteria["aria-label"]) {
+    return document.querySelector(`[aria-label="${criteria["aria-label"]}"]`);
+  }
+
+  for (const candidate of candidates) {
+    let delta = 0;
+
+    for (const key in criteria) {
+      const criteriaKey = key as keyof SelectorCriteria;
+      const expected = criteria[criteriaKey];
+      if (expected != null) {
+        const config = CRITERIA_CONFIG[criteriaKey];
+        const actual = config.extract(candidate);
+        const error = config.compare(
+          actual,
+          expected,
+          config.weight,
+          config.threshold,
+        );
+        if (config.enforce && error > 0) {
+          delta = Infinity;
+          break;
+        }
+        delta += error;
+      }
+    }
+
+    if (delta < lowestDelta) {
+      lowestDelta = delta;
+      bestCandidate = candidate;
+    }
+  }
+
+  return bestCandidate;
 }
 
 const CATEGORY_COLORS: Record<ElementCategory, [string, string]> = {
@@ -40,13 +108,12 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
 }
 
 export function createMarkedViewHierarchy() {
-  const clone = document.documentElement.cloneNode(true) as HTMLElement;
+  // Use the live DOM root instead of a detached clone
+  const root = document.documentElement;
 
   function processElement(element: Element, depth = 0): string {
     const children = Array.from(element.children);
     let structure = "";
-
-    // Process all children
     let childStructure = "";
     for (const child of children) {
       const childStr = processElement(child, depth + 1);
@@ -54,24 +121,17 @@ export function createMarkedViewHierarchy() {
         childStructure += childStr;
       }
     }
-
-    // Determine if current element is important or has important descendants
     const isImportantElement =
       element.hasAttribute("aria-pilot-category") ||
       ESSENTIAL_ELEMENTS.includes(element.tagName);
-
     if (isImportantElement || childStructure) {
-      const category = element.getAttribute("aria-pilot-category");
-      const index = element.getAttribute("aria-pilot-index");
       const indent = "  ".repeat(depth);
-
       structure += `${indent}<${element.tagName.toLowerCase()}`;
 
-      // Preserve all aria-* attributes and essential attributes
       Array.from(element.attributes)
         .filter(
           (attr) =>
-            attr.name.match(/^aria-/i) || // all aria-* attributes
+            attr.name.match(/^aria-/i) ||
             [
               "href",
               "target",
@@ -86,37 +146,41 @@ export function createMarkedViewHierarchy() {
         .forEach((attr) => {
           structure += ` ${attr.name}="${attr.value}"`;
         });
-
+      const interestingAttrs = getInterestingAttributes(element as HTMLElement);
+      for (const [attr, value] of Object.entries(interestingAttrs)) {
+        if (value != null && value !== "") {
+          structure += ` ${attr}="${JSON.stringify(value)}"`;
+        }
+      }
+      const category = element.getAttribute("aria-pilot-category");
+      const index = element.getAttribute("aria-pilot-index");
       if (category) {
         structure += ` data-category="${category}" data-index="${index}"`;
       }
-
       structure += ">\n";
 
       if (childStructure) {
         structure += childStructure;
       }
-
       structure += `${indent}</${element.tagName.toLowerCase()}>\n`;
     }
-
     return structure;
   }
 
-  return processElement(clone);
+  return processElement(root);
 }
 
 export function highlightMarkedElements() {
   const styleId = "aria-pilot-styles";
   const containerId = "aria-pilot-overlay-container";
 
-  // Remove old styles and container if they exist
+  // Remove old styles and container if they exist.
   const oldStyle = document.getElementById(styleId);
   const oldContainer = document.getElementById(containerId);
   oldStyle?.remove();
   oldContainer?.remove();
 
-  // Create overlay container for labels
+  // Create overlay container for labels.
   const container = document.createElement("div");
   container.id = containerId;
   Object.assign(container.style, {
@@ -130,7 +194,7 @@ export function highlightMarkedElements() {
   });
   document.body.appendChild(container);
 
-  // Create style element
+  // Create style element.
   const style = document.createElement("style");
   style.id = styleId;
   style.textContent = Object.entries(CATEGORY_COLORS)
@@ -172,7 +236,7 @@ export function highlightMarkedElements() {
     .join("\n");
   document.head.appendChild(style);
 
-  // Create labels for each marked element
+  // Create labels for each marked element.
   const elements = document.querySelectorAll("[aria-pilot-category]");
   elements.forEach((el) => {
     const category = el.getAttribute("aria-pilot-category");
@@ -184,7 +248,7 @@ export function highlightMarkedElements() {
     label.dataset.category = category;
     label.textContent = `${category} #${index}`;
 
-    // Position label relative to element
+    // Position the label relative to the element.
     const rect = el.getBoundingClientRect();
     Object.assign(label.style, {
       left: `${rect.left + window.scrollX}px`,
@@ -193,7 +257,7 @@ export function highlightMarkedElements() {
 
     container.appendChild(label);
 
-    // Update label position on scroll and resize
+    // Update label position on scroll and resize.
     const updatePosition = () => {
       const newRect = el.getBoundingClientRect();
       Object.assign(label.style, {
@@ -216,4 +280,5 @@ export function removeMarkedElementsHighlights() {
 
 if (typeof window !== "undefined") {
   window.createMarkedViewHierarchy = createMarkedViewHierarchy;
+  window.findElementWithLowestError = findElementWithLowestError;
 }
