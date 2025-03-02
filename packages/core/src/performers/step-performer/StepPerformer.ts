@@ -229,23 +229,20 @@ export class StepPerformer {
         return result;
       } catch (error) {
         lastError = error;
+        const errorDetails = error instanceof Error ? error.message : error;
         logger.warn(
-          `💥 Attempt ${attempt}/${maxAttempts} failed for step "${step}": ${error instanceof Error ? error.message : error}`,
+          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
         );
 
         if (attempt < maxAttempts) {
           loggerSpinner.update(`Retrying step: "${step}"`);
-
-          const resultMessage = lastCode
-            ? `Caught an error while evaluating "${step}", tried with generated code: "${lastCode}". Validate the code against the APIs and hierarchy and continue with a different approach. If can't, return a code that throws a descriptive error.`
-            : `Failed to perform "${step}", could not generate prompt result. Let's try a different approach. If can't, return a code that throws a descriptive error.`;
 
           previous = [
             ...previous,
             {
               step,
               code: lastCode ?? "undefined",
-              result: resultMessage,
+              error: errorDetails,
             },
           ];
         }

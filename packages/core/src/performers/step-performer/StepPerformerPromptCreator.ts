@@ -147,9 +147,10 @@ export class StepPerformerPromptCreator {
             "```",
             previousStep.code,
             "```",
-            ...(previousStep.result
-              ? [`- Result: ${previousStep.result}`]
-              : []),
+            this.previousStepResultOrError(
+              previousStep,
+              index === previousSteps.length - 1,
+            ),
             "",
           ])
           .flat(),
@@ -248,5 +249,26 @@ export class StepPerformerPromptCreator {
       "Do not provide any additional code beyond the minimal executable code required to perform the intent.",
     );
     return steps;
+  }
+
+  private previousStepResultOrError(
+    previousStep: PreviousStep,
+    isMostPreviousStep: boolean,
+  ): string {
+    if (previousStep.result && !previousStep.error)
+      return `- Result: ${previousStep.result}`;
+    if (isMostPreviousStep && previousStep.error) {
+      const truncatedError = this.truncateString(previousStep.error, 2000);
+      return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
+    }
+    return "";
+  }
+
+  private truncateString(str: string, limit: number) {
+    if (str.length <= limit) {
+      return str;
+    } else {
+      return str.slice(0, limit) + "...";
+    }
   }
 }
