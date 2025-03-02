@@ -106,7 +106,6 @@ describe("AutoPerformer", () => {
       flushTemporaryCache: jest.fn(),
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
-      generateCacheKey: jest.fn(),
       isCacheInUse: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
@@ -154,7 +153,11 @@ describe("AutoPerformer", () => {
     mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
     mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
 
-    const cacheKey = JSON.stringify({ goal: GOAL, previousSteps: [] });
+    // Format matches the implementation in AutoPerformer.generateCacheKey
+    const cacheKey = JSON.stringify({
+      goal: GOAL,
+      steps: []
+    });
 
     if (cacheExists) {
       const screenCapturerResult: ScreenCapturerResult = {
@@ -163,7 +166,8 @@ describe("AutoPerformer", () => {
         isSnapshotImageAttached: true,
       };
 
-      mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
+      // Mock the private generateCacheKey method by spying on its implementation
+      jest.spyOn(performer as any, 'generateCacheKey').mockReturnValue(cacheKey);
       mockSnapshotComparator.generateHashes.mockReturnValue(
         Promise.resolve({
           BlockHash: "hash",
@@ -524,7 +528,7 @@ describe("AutoPerformer", () => {
     expect(mockCacheHandler.getStepFromCache).toHaveBeenCalledWith(
       JSON.stringify({
         goal: GOAL,
-        previousSteps: [],
+        steps: [],
       }),
     );
 
