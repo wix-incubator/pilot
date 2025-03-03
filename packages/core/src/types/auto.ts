@@ -70,4 +70,6 @@ export type AutoPreviousStep = {
   step: string;
   /** Optional reviews */
   review?: AutoReview;
+  /** Error */
+  error?: any;
 };

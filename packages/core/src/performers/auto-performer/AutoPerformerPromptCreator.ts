@@ -111,6 +111,11 @@ export class AutoPerformerPromptCreator {
                 }
               }
             }
+            const error = this.isPreviousStepError(
+              previousStep,
+              index === previousSteps.length - 1,
+            );
+            typeof error === "string" && stepDetails.push(error);
 
             stepDetails.push("");
             return stepDetails;
@@ -405,5 +410,16 @@ The 'Profile' icon may not be properly adapted for different locales.
       "If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.",
     ];
     return steps;
+  }
+
+  private isPreviousStepError(
+    previousStep: AutoPreviousStep,
+    isMostPreviousStep: boolean,
+  ): string | undefined {
+    if (previousStep.error && isMostPreviousStep) {
+      //const truncatedError = this.truncateString(previousStep.error, 2000);
+      return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${previousStep.error}\n\`\`\``;
+    }
+    return undefined;
   }
 }
