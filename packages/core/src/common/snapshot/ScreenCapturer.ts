@@ -8,7 +8,7 @@ export class ScreenCapturer {
     private promptHandler: PromptHandler,
   ) {}
 
-  async capture(): Promise<ScreenCapturerResult> {
+  async capture(shouldHighlightSnapshot: boolean): Promise<ScreenCapturerResult> {
     const loggerSpinner = logger.startSpinner(
       "Waiting for the screen to reach a stable state...",
     );
@@ -19,7 +19,7 @@ export class ScreenCapturer {
 
       const [snapshot, viewHierarchy] = await Promise.all([
         shouldCaptureSnapshot
-          ? this.snapshotManager.captureSnapshotImage()
+          ? this.snapshotManager.captureSnapshotImage(shouldHighlightSnapshot)
           : Promise.resolve(undefined),
         this.snapshotManager.captureViewHierarchyString(),
       ]);
