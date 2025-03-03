@@ -19,25 +19,27 @@ export type HashingAlgorithm = "BlockHash";
 export type SnapshotHashObject = Record<HashingAlgorithm, string>;
 
 /**
- * Single cache entry.
+ * Shared snapshot data used in both SingleCacheValue and SingleAutoPilotCacheValue
  */
-export type SingleCacheValue = {
+export type SnapshotData = {
   /** UI snapshot hash */
   snapshotHash?: SnapshotHashObject;
-  /** Component hierarchy */
-  viewHierarchy?: string;
+  /** View hierarchy hash (MD5) */
+  viewHierarchyHash: string;
+};
+
+/**
+ * Single cache entry for step performer.
+ */
+export type SingleCacheValue = SnapshotData & {
   /** Generated code */
   code: string;
 };
 
 /**
- * Single auto pilot cache entry.
+ * Auto pilot cache entry with minimal required data
  */
-export type SingleAutoPilotCacheValue = {
-  /** Screen capture output */
-  screenCapture: ScreenCapturerResult;
-  /** UI snapshot hash */
-  snapshotHash?: SnapshotHashObject;
+export type SingleAutoPilotCacheValue = SnapshotData & {
   /** Screen description */
   screenDescription: string;
   /** Auto pilot step plan */
@@ -46,7 +48,7 @@ export type SingleAutoPilotCacheValue = {
   review: AutoReview;
   /** Goal achievement status */
   goalAchieved: boolean;
-  /** Summary*/
+  /** Success summary */
   summary?: string;
 };
 

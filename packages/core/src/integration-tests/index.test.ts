@@ -325,12 +325,11 @@ describe("Pilot Integration Tests", () => {
       pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
-        '{"currentGoal":"Perform action","previous":[]}':
+        '{"currentStep":"Perform action","previousSteps":[]}':
           expect.arrayContaining([
             expect.objectContaining({
               code: "// Perform action",
               snapshotHash: expect.any(Object),
-              viewHierarchy: expect.any(String),
             }),
           ]),
       });
@@ -338,8 +337,8 @@ describe("Pilot Integration Tests", () => {
 
     it("should read from existing cache file", async () => {
       mockCache({
-        '{"currentGoal":"Cached action","previous":[]}': [
-          { code: "// Cached action code", viewHierarchy: "hash" },
+        '{"currentStep":"Cached action","previousSteps":[]}': [
+          { code: "// Cached action code" },
         ],
       });
 
@@ -350,11 +349,11 @@ describe("Pilot Integration Tests", () => {
 
     it("should use snapshot cache if available", async () => {
       mockCache({
-        '{"currentGoal":"Cached action","previous":[]}': [
+        '{"currentStep":"Cached action","previousSteps":[]}': [
           {
             code: "// Cached action code",
-            viewHierarchy: "WrongHash",
             snapshotHash: mockedCachedSnapshotHash,
+            viewHierarchyHash: "hash",
           },
         ],
       });
@@ -371,14 +370,14 @@ describe("Pilot Integration Tests", () => {
       pilot.end();
 
       expect(mockedCacheFile).toEqual({
-        '{"currentGoal":"New action","previous":[]}': expect.arrayContaining([
-          expect.any(Object),
-          expect.objectContaining({
-            code: "// New action code",
-            snapshotHash: expect.any(Object),
-            viewHierarchy: expect.any(String),
-          }),
-        ]),
+        '{"currentStep":"New action","previousSteps":[]}':
+          expect.arrayContaining([
+            expect.any(Object),
+            expect.objectContaining({
+              code: "// New action code",
+              snapshotHash: expect.any(Object),
+            }),
+          ]),
       });
     });
 
@@ -599,9 +598,9 @@ describe("Pilot Integration Tests", () => {
         (mockedCacheFile as Record<string, CacheValues>) || {},
       )[0][0];
 
-      expect(firstCacheValue).toHaveProperty("viewHierarchy");
       expect(firstCacheValue).toHaveProperty("code");
       expect(firstCacheValue).toHaveProperty("snapshotHash");
+      expect(firstCacheValue).toHaveProperty("viewHierarchyHash");
     });
 
     it("should not use cache when cache mode is disabled", async () => {

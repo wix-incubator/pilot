@@ -1,48 +1,96 @@
-import fs from "fs";
+import { CacheOptions } from "@/types";
+import { AtomicOperationQueue } from "./atomicFileOperations";
+import {
+  ensureDirectoryExists,
+  readJsonFile,
+  writeJsonFile,
+} from "./fileSystem";
 import path from "path";
-import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
+import glob from "glob";
 
 export class CacheHandler {
-  private cache: Map<string, any> = new Map();
-  private temporaryCache: Map<string, any> = new Map();
-  private readonly cacheFilePath: string;
-  private cacheOptions?: CacheOptions;
+  private cache: Map<string, unknown[]> = new Map();
+  private temporaryCache: Map<string, unknown[]> = new Map();
+  private cacheFilePath: string;
+  private cacheOptions: CacheOptions;
+  private callerFilePath?: string;
+  private fileOperationQueue = new AtomicOperationQueue();
 
-  constructor(
-    cacheOptions: CacheOptions = {},
-    cacheFileName: string = "wix_pilot_cache.json",
-  ) {
-    this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
+  private static CACHE_DIRECTORY = "__pilot_cache__";
+  private static DEFAULT_CACHE_FILENAME = "global.json";
+
+  constructor(cacheOptions: CacheOptions = {}, testFilePath?: string) {
+    if (testFilePath) {
+      this.callerFilePath = path.resolve(testFilePath); // Ensure absolute path
+    }
+
     this.cacheOptions = {
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
+
+    this.cacheFilePath = this.getCacheFilePath();
+  }
+
+  private getCacheFilePath(): string {
+    if (this.callerFilePath) {
+      const testDir = path.dirname(this.callerFilePath);
+      const testFilename = path.basename(
+        this.callerFilePath,
+        path.extname(this.callerFilePath),
+      );
+      return path.join(
+        testDir,
+        CacheHandler.CACHE_DIRECTORY,
+        `${testFilename}.json`,
+      );
+    }
+
+    // Fall back to global cache only when no context is available
+    return path.resolve(
+      process.cwd(),
+      CacheHandler.CACHE_DIRECTORY,
+      CacheHandler.DEFAULT_CACHE_FILENAME,
+    );
+  }
+
+  public setCallerFilePath(callerPath: string): void {
+    if (!callerPath) {
+      throw new Error("Cannot set empty test file path");
+    }
+
+    this.callerFilePath = path.resolve(callerPath);
+    this.cacheFilePath = this.getCacheFilePath();
+
+    this.loadCacheFromFile();
   }
 
   public loadCacheFromFile(): void {
-    try {
-      if (fs.existsSync(this.cacheFilePath)) {
-        const data = fs.readFileSync(this.cacheFilePath, "utf-8");
-        const json = JSON.parse(data);
-        this.cache = new Map(Object.entries(json));
-      } else {
-        this.cache.clear(); // Ensure cache is empty if file doesn't exist
-      }
-    } catch (error) {
-      console.warn("Error loading cache from file:", error);
-      this.cache.clear(); // Clear cache on error to avoid stale data
+    this.cacheFilePath = this.getCacheFilePath();
+
+    const cacheDir = path.dirname(this.cacheFilePath);
+    ensureDirectoryExists(cacheDir);
+
+    const fileData = readJsonFile<Record<string, unknown[]>>(
+      this.cacheFilePath,
+    );
+
+    if (fileData) {
+      this.cache = new Map(Object.entries(fileData));
+    } else {
+      this.cache.clear();
     }
   }
 
   private saveCacheToFile(): void {
-    try {
-      const json = Object.fromEntries(this.cache);
-      fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
-        flag: "w+",
-      });
-    } catch (error) {
-      console.error("Error saving cache to file:", error);
-    }
+    this.fileOperationQueue.execute(() => {
+      this.cacheFilePath = this.getCacheFilePath();
+
+      // Simply write the current in-memory cache to file
+      // without re-reading and merging with existing file content
+      const jsonData = Object.fromEntries(this.cache);
+      writeJsonFile(this.cacheFilePath, jsonData);
+    });
   }
 
   public getStepFromCache(key: string): any | undefined {
@@ -53,16 +101,18 @@ export class CacheHandler {
   }
 
   public addToTemporaryCache(key: string, value: any): void {
-    this.temporaryCache.set(key, [
-      ...(this.temporaryCache.get(key) ?? []),
-      value,
-    ]);
+    const existingValues = this.temporaryCache.get(key) ?? [];
+    this.temporaryCache.set(key, [...existingValues, value]);
   }
 
   public flushTemporaryCache(): void {
-    this.temporaryCache.forEach((value, key) => {
-      this.cache.set(key, value);
+    const tempCacheSnapshot = new Map(this.temporaryCache);
+
+    tempCacheSnapshot.forEach((value, key) => {
+      const existingValues = this.cache.get(key) ?? [];
+      this.cache.set(key, [...existingValues, ...value]);
     });
+
     this.saveCacheToFile();
     this.clearTemporaryCache();
   }
@@ -71,24 +121,28 @@ export class CacheHandler {
     this.temporaryCache.clear();
   }
 
-  public generateCacheKey(
-    currentGoal: string,
-    previous: PreviousStep[] | AutoPreviousStep[],
-  ): string | undefined {
-    if (!this.isCacheInUse()) {
-      return undefined;
+  public getTestFilePath(): string | undefined {
+    return this.callerFilePath;
+  }
+
+  public findCacheFiles(basePath: string): string[] {
+    if (!basePath) {
+      throw new Error("Base path must be provided");
     }
 
-    const cacheKeyData: any = { currentGoal, previous };
-
-    return JSON.stringify(cacheKeyData);
+    try {
+      return glob.sync(`${basePath}/**/${CacheHandler.CACHE_DIRECTORY}/*.json`);
+    } catch (error) {
+      console.warn("Error finding cache files:", error);
+      return [];
+    }
   }
 
-  private shouldOverrideCache() {
-    return this.cacheOptions?.shouldOverrideCache;
-  }
-
-  public isCacheInUse() {
+  public isCacheInUse(): boolean {
     return this.cacheOptions?.shouldUseCache !== false;
+  }
+
+  private shouldOverrideCache(): boolean {
+    return !!this.cacheOptions?.shouldOverrideCache;
   }
 }
