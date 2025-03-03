@@ -1,6 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { Page, SelectorCriteria } from "./types";
+import { Page } from "./types";
+import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
+type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
+type ElementMatchingCriteria = {
+  [K in AttributeKey]?: ReturnType<
+    (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
+  >;
+};
 
 export default class WebTestingFrameworkDriverHelper {
   protected currentPage?: Page;
@@ -62,14 +69,17 @@ export default class WebTestingFrameworkDriverHelper {
   }
 
   /**
-   * returns closest element to given a criteria
+   * Returns the closest element matching the given criteria.
    */
   async findElement(
     page: Page,
-    element: SelectorCriteria,
+    matchingCriteria: ElementMatchingCriteria,
   ): Promise<HTMLElement | null> {
     return (
-      await page.evaluateHandle((sel) => window.findElement(sel), element)
+      await page.evaluateHandle(
+        (cretiria) => window.findElement(cretiria),
+        matchingCriteria,
+      )
     ).asElement() as HTMLElement | null;
   }
 

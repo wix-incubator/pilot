@@ -1,75 +1,75 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
-import {
-  ElementCategory,
-  SelectorCriteria,
-  InterestingAttributes,
-} from "./types";
-import { CRITERIA_CONFIG } from "./config";
+import { ElementCategory, CandidateScore } from "./types";
+import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
+type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
+type ElementMatchingCriteria = {
+  [K in AttributeKey]?: ReturnType<
+    (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
+  >;
+};
 
 declare global {
   interface Window {
     createMarkedViewHierarchy: () => string;
-    findElement: (criteria: SelectorCriteria) => HTMLElement | null;
+    findElement: (criteria: ElementMatchingCriteria) => HTMLElement | null;
   }
 }
 
 /**
- * Retrieves the “interesting” attributes from an element.
- * For `rect`, it uses the element’s top-left (x, y) coordinates.
+ * Retrieves the “interesting” attributes from an element based on the
+ * extract functions provided in ELEMENT_MATCHING_CONFIG.
  */
 export function getInterestingAttributes(
   element: HTMLElement,
-): InterestingAttributes {
-  const attributes = {} as InterestingAttributes;
-  for (const key in CRITERIA_CONFIG) {
-    const criteriaKey = key as keyof InterestingAttributes;
-    const config = CRITERIA_CONFIG[criteriaKey];
-    attributes[criteriaKey] = config.extract(element);
+): Record<string, unknown> {
+  const attributes: Record<string, unknown> = {};
+  for (const key in ELEMENT_MATCHING_CONFIG) {
+    const config = ELEMENT_MATCHING_CONFIG[key];
+    attributes[key] = config.extract(element);
   }
   return attributes;
 }
 
-export function findElement(criteria: SelectorCriteria): HTMLElement | null {
+export function calcCandidateError(
+  candidate: HTMLElement,
+  criteria: ElementMatchingCriteria,
+): number {
+  return Object.entries(criteria).reduce((totalError, [key, expected]) => {
+    if (totalError === Infinity) return Infinity;
+    if (expected == null) return totalError;
+
+    const config = ELEMENT_MATCHING_CONFIG[key];
+    if (!config) return totalError;
+
+    const actual = config.extract(candidate);
+    const error = config.weight * config.compare(actual, expected);
+    if (config.critical && error > 0) return Infinity;
+
+    return totalError + error;
+  }, 0);
+}
+
+export function findElement(
+  criteria: ElementMatchingCriteria,
+): HTMLElement | null {
+  const maxErrorThreshold: number = 0.7;
   const candidates = Array.from(
     document.querySelectorAll("*"),
   ) as HTMLElement[];
-  let bestCandidate: HTMLElement | null = null;
-  let lowestDelta = Infinity;
-  if (criteria["aria-label"]) {
-    return document.querySelector(`[aria-label="${criteria["aria-label"]}"]`);
-  }
+  const candidateScores: CandidateScore[] = candidates.map((candidate) => ({
+    candidate,
+    errorScore: calcCandidateError(candidate, criteria),
+  }));
 
-  for (const candidate of candidates) {
-    let delta = 0;
+  const bestCandidatePair = candidateScores.reduce<CandidateScore>(
+    (best, current) => (current.errorScore < best.errorScore ? current : best),
+    { candidate: null, errorScore: Infinity },
+  );
 
-    for (const key in criteria) {
-      const criteriaKey = key as keyof SelectorCriteria;
-      const expected = criteria[criteriaKey];
-      if (expected != null) {
-        const config = CRITERIA_CONFIG[criteriaKey];
-        const actual = config.extract(candidate);
-        const error = config.compare(
-          actual,
-          expected,
-          config.weight,
-          config.threshold,
-        );
-        if (config.enforce && error > 0) {
-          delta = Infinity;
-          break;
-        }
-        delta += error;
-      }
-    }
-
-    if (delta < lowestDelta) {
-      lowestDelta = delta;
-      bestCandidate = candidate;
-    }
-  }
-
-  return bestCandidate;
+  return bestCandidatePair.errorScore < maxErrorThreshold
+    ? bestCandidatePair.candidate
+    : null;
 }
 
 const CATEGORY_COLORS: Record<ElementCategory, [string, string]> = {
@@ -145,7 +145,7 @@ export function createMarkedViewHierarchy() {
       const interestingAttrs = getInterestingAttributes(element as HTMLElement);
       for (const [attr, value] of Object.entries(interestingAttrs)) {
         if (value != null && value !== "") {
-          structure += ` ${attr}="${JSON.stringify(value)}"`;
+          structure += ` ${attr}=${JSON.stringify(value)}`;
         }
       }
       const category = element.getAttribute("aria-pilot-category");

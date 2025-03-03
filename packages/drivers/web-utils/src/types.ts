@@ -8,40 +8,15 @@ export type ElementCategory =
   | "semantic"
   | "scrollable";
 
+export type CandidateScore = {
+  candidate: HTMLElement | null;
+  errorScore: number;
+};
+
 export type Rect = {
   x: number;
   y: number;
 };
-
-export type SelectorCriteria = {
-  rect?: Rect;
-  "aria-label"?: string;
-  "aria-role"?: string;
-  class?: string;
-  id?: string;
-  name?: string;
-  title?: string;
-  placeholder?: string;
-};
-
-export type AttributeRule = {
-  weight: number;
-  enforce: boolean;
-};
-
-export type InterestingAttributes = {
-  rect: Rect;
-  "aria-label": string | null;
-  "aria-role": string | null;
-  class: string;
-  id: string | null;
-  name: string | null;
-  title: string | null;
-  placeholder: string | null;
-};
-export interface ElementHandle {
-  // Optional: Define common methods if needed
-}
 
 export interface Page {
   evaluate<T = any>(
