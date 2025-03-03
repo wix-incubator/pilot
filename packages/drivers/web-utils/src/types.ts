@@ -8,9 +8,15 @@ export type ElementCategory =
   | "semantic"
   | "scrollable";
 
-export interface ElementHandle {
-  // Optional: Define common methods if needed
-}
+export type CandidateScore = {
+  candidate: HTMLElement | null;
+  errorScore: number;
+};
+
+export type Rect = {
+  x: number;
+  y: number;
+};
 
 export interface Page {
   evaluate<T = any>(
@@ -24,6 +30,11 @@ export interface Page {
     url?: string;
     type?: string;
   }): Promise<any>;
+
+  evaluateHandle<T = any>(
+    pageFunction: string | ((...args: any[]) => T | Promise<T>),
+    ...args: any[]
+  ): Promise<any>;
 
   screenshot(options?: {
     path?: string;

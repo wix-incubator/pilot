@@ -1,6 +1,13 @@
 import fs from "fs";
 import path from "path";
 import { Page } from "./types";
+import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
+type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
+type ElementMatchingCriteria = {
+  [K in AttributeKey]?: ReturnType<
+    (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
+  >;
+};
 
 export default class WebTestingFrameworkDriverHelper {
   protected currentPage?: Page;
@@ -59,6 +66,21 @@ export default class WebTestingFrameworkDriverHelper {
     return await page.evaluate(() => {
       return window.createMarkedViewHierarchy();
     });
+  }
+
+  /**
+   * Returns the closest element matching the given criteria.
+   */
+  async findElement(
+    page: Page,
+    matchingCriteria: ElementMatchingCriteria,
+  ): Promise<HTMLElement | null> {
+    return (
+      await page.evaluateHandle(
+        (cretiria) => window.findElement(cretiria),
+        matchingCriteria,
+      )
+    ).asElement() as HTMLElement | null;
   }
 
   /**
