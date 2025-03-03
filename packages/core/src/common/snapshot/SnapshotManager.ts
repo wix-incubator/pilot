@@ -67,8 +67,8 @@ export class SnapshotManager {
     return currentHash === lastHash;
   }
 
-  private async captureDownscaledImage(): Promise<string | undefined> {
-    const imagePath = await this.driver.captureSnapshotImage();
+  private async captureDownscaledImage(shouldHighlightSnapshot: boolean): Promise<string | undefined> {
+    const imagePath = await this.driver.captureSnapshotImage(shouldHighlightSnapshot);
     if (imagePath) {
       const downscaledImagePath = await this.downscaleImage(imagePath);
       return downscaledImagePath;
@@ -76,12 +76,13 @@ export class SnapshotManager {
   }
 
   async captureSnapshotImage(
+    shouldHighlightSnapshot: boolean,
     pollInterval?: number,
     timeout?: number,
     stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
     return this.waitForStableState(
-      async () => this.captureDownscaledImage(),
+      async () => this.captureDownscaledImage(shouldHighlightSnapshot),
       (current, last) =>
         this.compareSnapshots(current, last, stabilityThreshold),
       pollInterval,

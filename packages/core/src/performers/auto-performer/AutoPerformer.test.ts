@@ -489,7 +489,7 @@ describe("AutoPerformer", () => {
 
       const result = await performer.perform(GOAL);
 
-      expect(mockScreenCapturer.capture).toHaveBeenCalledTimes(2);
+      expect(mockScreenCapturer.capture).toHaveBeenCalledTimes(3);
       expect(analyseScreenAndCreateCopilotStep).toHaveBeenCalledTimes(2);
 
       const expectedReport: AutoReport = {
