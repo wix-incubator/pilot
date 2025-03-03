@@ -73,17 +73,12 @@ export interface PilotFacade {
   ) => void;
 }
 
-/** Analysis mode settings */
-export type AnalysisMode = "fast" | "full";
-
 /**
  * Pilot behavior configuration options.
  */
 export interface PilotOptions {
   /** Cache options */
   cacheOptions?: CacheOptions;
-  /** Analysis mode (default: 'fast') */
-  analysisMode?: AnalysisMode;
 }
 
 export interface CacheOptions {
@@ -114,5 +109,7 @@ export type PreviousStep = {
   /** Generated test code */
   code: string;
   /** Step execution result */
-  result: any;
+  result?: any;
+  /** Step execution error */
+  error?: any;
 };

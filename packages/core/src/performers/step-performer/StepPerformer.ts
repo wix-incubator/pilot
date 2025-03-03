@@ -1,11 +1,8 @@
 import { StepPerformerPromptCreator } from "./StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
-import { APISearchPromptCreator } from "@/common/prompts/APISearchPromptCreator";
-import { ViewAnalysisPromptCreator } from "@/common/prompts/ViewAnalysisPromptCreator";
 import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
 import {
-  AnalysisMode,
   CodeEvaluationResult,
   PreviousStep,
   PromptHandler,
@@ -19,24 +16,17 @@ import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
 export class StepPerformer {
-  private readonly analysisMode: AnalysisMode;
   private sharedContext: Record<string, any> = {};
 
   constructor(
     private context: any,
     private promptCreator: StepPerformerPromptCreator,
-    private apiSearchPromptCreator: APISearchPromptCreator,
-    private viewAnalysisPromptCreator: ViewAnalysisPromptCreator,
     private codeEvaluator: CodeEvaluator,
     private promptHandler: PromptHandler,
     private cacheHandler: CacheHandler,
     private snapshotComparator: SnapshotComparator,
-
     private screenCapturer: ScreenCapturer,
-    analysisMode: AnalysisMode = "fast",
-  ) {
-    this.analysisMode = analysisMode;
-  }
+  ) {}
 
   extendJSContext(newContext: any): void {
     for (const key in newContext) {
@@ -127,32 +117,11 @@ export class StepPerformer {
       }
     }
 
-    let viewAnalysisResult = "";
-    let apiSearchResult = "";
-
-    if (this.analysisMode === "full") {
-      // Perform view hierarchy analysis and API search only in full mode
-      viewAnalysisResult = await this.promptHandler.runPrompt(
-        this.viewAnalysisPromptCreator.createPrompt(
-          step,
-          viewHierarchy,
-          previous,
-        ),
-        undefined,
-      );
-
-      apiSearchResult = await this.promptHandler.runPrompt(
-        this.apiSearchPromptCreator.createPrompt(step, viewAnalysisResult),
-        undefined,
-      );
-    }
-
     const prompt = this.promptCreator.createPrompt(
       step,
       viewHierarchy,
       isSnapshotImageAttached,
       previous,
-      apiSearchResult,
     );
 
     const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
@@ -260,23 +229,20 @@ export class StepPerformer {
         return result;
       } catch (error) {
         lastError = error;
+        const errorDetails = error instanceof Error ? error.message : error;
         logger.warn(
-          `💥 Attempt ${attempt}/${maxAttempts} failed for step "${step}": ${error instanceof Error ? error.message : error}`,
+          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
         );
 
         if (attempt < maxAttempts) {
           loggerSpinner.update(`Retrying step: "${step}"`);
-
-          const resultMessage = lastCode
-            ? `Caught an error while evaluating "${step}", tried with generated code: "${lastCode}". Validate the code against the APIs and hierarchy and continue with a different approach. If can't, return a code that throws a descriptive error.`
-            : `Failed to perform "${step}", could not generate prompt result. Let's try a different approach. If can't, return a code that throws a descriptive error.`;
 
           previous = [
             ...previous,
             {
               step,
               code: lastCode ?? "undefined",
-              result: resultMessage,
+              error: errorDetails,
             },
           ];
         }

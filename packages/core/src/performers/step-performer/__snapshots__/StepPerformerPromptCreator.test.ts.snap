@@ -715,7 +715,7 @@ await element(by.id('user-' + sharedContext.userId)).tap();
 Please provide your code below:"
 `;
 
-exports[`PromptCreator should include API search results when provided 1`] = `
+exports[`PromptCreator should include error in the prompt if previous step failed 1`] = `
 "# Test Code Generation
 
 You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
@@ -736,6 +736,28 @@ Generate the minimal executable code to perform the following intent: "tap butto
 ### Snapshot image
 
 No snapshot image is attached for this intent.
+
+### Previous steps
+
+#### Step 1
+- Intent: "navigate to login screen"
+- Generated code:
+\`\`\`
+await element(by.id("login")).tap();
+\`\`\`
+- Result: success
+
+#### Step 2
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+- Error occurred in your previous attempt. Try another approach to perform this step. Error message:
+\`\`\`
+could not find element
+\`\`\`
+
 
 ## Available Testing Framework API
 
@@ -800,21 +822,6 @@ element(by.id("uniqueId"))
 ##### Guidelines
 
 - Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
-
-## Semantic Matches from API Search
-
-Semantic Category Matches:
-1. Actions
-   - Match Confidence: High - Contains tap-related actions
-   - Context Notes: Direct interaction with buttons
-
-Semantic API Matches:
-1. tap(element: Element)
-   - Match Confidence: High - Direct semantic match for tapping
-   - Context Notes: Primary method for button interaction
-2. by.id(id: string)
-   - Match Confidence: Medium - Required for element selection
-   - Context Notes: Used to locate the target button
 
 ## Instructions
 
@@ -999,7 +1006,7 @@ await element(by.id('user-' + sharedContext.userId)).tap();
 Please provide your code below:"
 `;
 
-exports[`PromptCreator should not include API search results section when not provided 1`] = `
+exports[`PromptCreator should not include error if the error was not in the immediate previous step 1`] = `
 "# Test Code Generation
 
 You are an AI assistant tasked with generating test code for a specific test step using the mentioned testing framework.
@@ -1020,6 +1027,33 @@ Generate the minimal executable code to perform the following intent: "tap butto
 ### Snapshot image
 
 No snapshot image is attached for this intent.
+
+### Previous steps
+
+#### Step 1
+- Intent: "navigate to login screen"
+- Generated code:
+\`\`\`
+await element(by.id("login")).tap();
+\`\`\`
+- Result: success
+
+#### Step 2
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+
+
+#### Step 3
+- Intent: "enter username"
+- Generated code:
+\`\`\`
+await element(by.id("username")).typeText("john_doe");
+\`\`\`
+- Result: john doe
+
 
 ## Available Testing Framework API
 

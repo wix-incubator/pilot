@@ -118,48 +118,70 @@ describe("PromptCreator", () => {
     expect(prompt).toMatchSnapshot();
   });
 
-  it("should handle when no snapshot image is attached", () => {
-    const intent = "expect button to be visible";
-    const viewHierarchy =
-      '<View><Button testID="submit" title="Submit" /></View>';
-
-    const prompt = promptCreator.createPrompt(intent, viewHierarchy, false, []);
-
-    expect(prompt).toMatchSnapshot();
-  });
-
-  it("should include API search results when provided", () => {
+  it("should include error in the prompt if previous step failed", () => {
     const intent = "tap button";
+    const previousSteps: PreviousStep[] = [
+      {
+        step: "navigate to login screen",
+        code: 'await element(by.id("login")).tap();',
+        result: "success",
+      },
+      {
+        step: "enter username",
+        code: 'await element(by.id("username")).typeText("john_doe");',
+        error: "could not find element",
+      },
+    ];
     const viewHierarchy =
       '<View><Button testID="submit" title="Submit" /></View>';
-    const apiSearchResults = [
-      "Semantic Category Matches:",
-      "1. Actions",
-      "   - Match Confidence: High - Contains tap-related actions",
-      "   - Context Notes: Direct interaction with buttons",
-      "",
-      "Semantic API Matches:",
-      "1. tap(element: Element)",
-      "   - Match Confidence: High - Direct semantic match for tapping",
-      "   - Context Notes: Primary method for button interaction",
-      "2. by.id(id: string)",
-      "   - Match Confidence: Medium - Required for element selection",
-      "   - Context Notes: Used to locate the target button",
-    ].join("\n");
 
     const prompt = promptCreator.createPrompt(
       intent,
       viewHierarchy,
       false,
-      [],
-      apiSearchResults,
+      previousSteps,
     );
 
     expect(prompt).toMatchSnapshot();
+    expect(prompt).toContain("could not find element");
   });
 
-  it("should not include API search results section when not provided", () => {
+  it("should not include error if the error was not in the immediate previous step", () => {
     const intent = "tap button";
+    const previousSteps: PreviousStep[] = [
+      {
+        step: "navigate to login screen",
+        code: 'await element(by.id("login")).tap();',
+        result: "success",
+      },
+      {
+        step: "enter username",
+        code: 'await element(by.id("username")).typeText("john_doe");',
+        error: "could not find element",
+      },
+      {
+        step: "enter username",
+        code: 'await element(by.id("username")).typeText("john_doe");',
+        result: "john doe",
+      },
+    ];
+
+    const viewHierarchy =
+      '<View><Button testID="submit" title="Submit" /></View>';
+
+    const prompt = promptCreator.createPrompt(
+      intent,
+      viewHierarchy,
+      false,
+      previousSteps,
+    );
+
+    expect(prompt).toMatchSnapshot();
+    expect(prompt).not.toContain("could not find element");
+  });
+
+  it("should handle when no snapshot image is attached", () => {
+    const intent = "expect button to be visible";
     const viewHierarchy =
       '<View><Button testID="submit" title="Submit" /></View>';
 

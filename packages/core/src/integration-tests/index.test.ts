@@ -405,6 +405,21 @@ describe("Pilot Integration Tests", () => {
         pilot.perform("Action with write error"),
       ).resolves.not.toThrow();
     });
+
+    it("should add error and not add result for next perform step", async () => {
+      let promptParam: string = "";
+      mockPromptHandler.runPrompt
+        .mockResolvedValueOnce('throw new Error("Element not found");')
+        .mockImplementationOnce((prompt, _snapshot) => {
+          promptParam = prompt;
+          return Promise.resolve("// No operation");
+        });
+
+      await pilot.perform("Tap on a non-existent button");
+
+      expect(promptParam).toContain("Element not found");
+      expect(promptParam).toMatchSnapshot();
+    });
   });
 
   describe("Feature Support", () => {
@@ -610,58 +625,6 @@ describe("Pilot Integration Tests", () => {
 
       // Should call runPrompt twice since cache is disabled
       expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe("Analysis Modes", () => {
-    beforeEach(() => {
-      mockPromptHandler.runPrompt.mockResolvedValue("// No operation");
-    });
-
-    it("should perform fast analysis by default", async () => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
-
-      pilot.start();
-      await pilot.perform("Tap on the login button");
-      pilot.end();
-
-      expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(1);
-    });
-
-    it("should perform fast analysis when specified", async () => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-        options: {
-          analysisMode: "fast",
-        },
-      });
-
-      pilot.start();
-      await pilot.perform("Tap on the login button");
-      pilot.end();
-
-      expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(1);
-    });
-
-    it("should perform full analysis when specified", async () => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-        options: {
-          analysisMode: "full",
-        },
-      });
-
-      pilot.start();
-      await pilot.perform("Tap on the login button");
-      pilot.end();
-
-      // requires several prompts to be run
-      expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(3);
     });
   });
 });
