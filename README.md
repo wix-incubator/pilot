@@ -65,14 +65,17 @@ class CustomPromptHandler implements PromptHandler {
 Wix Pilot supports both [Puppeteer](https://pptr.dev/) and [Playwright](https://playwright.dev/) for web testing, for example:
 
 ```typescript
-import pilot from '@wix-pilot/core';
+import { Pilot } from '@wix-pilot/core';
 import puppeteer from 'puppeteer';
 // Import your preferred web driver
 import { PlaywrightFrameworkDriver } from '@wix-pilot/playwright';
 
 describe('Web Testing', () => {
+  let pilot;
+
   beforeAll(async () => {
-    pilot.init({
+    // Create a new Pilot instance
+    pilot = new Pilot({
       frameworkDriver: new PlaywrightFrameworkDriver(),
       promptHandler: new CustomPromptHandler(),
     });
@@ -83,12 +86,12 @@ describe('Web Testing', () => {
 
   // Perform a test with Pilot
   it('should search for a domain', async () => {
-    await pilot.perform([
+    await pilot.perform(
       'Open the URL https://www.wix.com/domains',
       'Type "my-domain.com" in the search input',
       'Click the "Search" button',
       'The domain availability message should appear'
-    ]);
+    );
   });
   
   // Perform an autonomous flow with AutoPilot
@@ -103,14 +106,16 @@ describe('Web Testing', () => {
 Wix Pilot supports both [Detox](https://wix.github.io/Detox/) and [Appium (WebdriverIO)](https://webdriver.io/docs/api/appium/) for mobile apps testing:
 
 ```typescript
-import pilot from '@wix-pilot/core';
+import { Pilot } from '@wix-pilot/core';
 // Import your preferred driver
 import { DetoxFrameworkDriver } from '@wix-pilot/detox';
 
 describe('Mobile App', () => {
+  let pilot;
+
   beforeAll(() => {
-    // Initialize with Detox
-    pilot.init({
+    // Create a new Pilot instance with Detox
+    pilot = new Pilot({
       frameworkDriver: new DetoxFrameworkDriver(),
       promptHandler: new CustomPromptHandler(),
     });
@@ -120,36 +125,39 @@ describe('Mobile App', () => {
   afterEach(() => pilot.end());
 
   it('should handle login flow', async () => {
-    await pilot.perform([
+    await pilot.perform(
       'Enter "test@example.com" in the email field',
       'Enter "password123" in the password field',
       'Tap the login button',
       'The dashboard should be visible'
-    ]);
+    );
   });
 });
 ```
 
 ## 🔧 API Overview
 
-The main interface for Pilot:
+The main Pilot class:
 
 ```typescript
-interface PilotFacade {
-  // Initialize Pilot with configuration
-  init(config: Config): void;
+class Pilot {
+  // Create a new Pilot instance with configuration
+  constructor(config: Config);
 
   // Start a new test flow
   start(): void;
 
-  // Execute test steps
-  perform(steps: string | string[]): Promise<any>;
+  // Execute test steps (accepts multiple steps)
+  perform(...steps: string[]): Promise<any>;
   
   // Execute a high-level test goal
   autopilot(goal: string): Promise<AutoReport>;
 
   // End current test flow
-  end(isCacheDisabled?: boolean): void;
+  end(shouldSaveInCache?: boolean): void;
+  
+  // Extend API catalog
+  extendAPICatalog(categories: TestingFrameworkAPICatalogCategory[], context?: any): void;
 }
 ```
 
@@ -173,13 +181,13 @@ Execute a series of test steps:
 
 ```typescript
 // Example usage:
-await pilot.perform([
+await pilot.perform(
   'Open the products catalog at https://www.example.com/products', 
   'Click the "Add to Cart" button on the first product',
   'Verify the cart icon shows "1" item',
   'Click the cart icon',
   'Verify the cart page shows the product added'
-]);
+);
 ```
 
 ### AutoPilot API
