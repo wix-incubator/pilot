@@ -5,6 +5,7 @@ import {
   TestingFrameworkAPICatalogItem,
 } from "@/types";
 import { APIFormatter } from "@/common/APIFormatter";
+import { truncateString} from "@/common/prompt-utils";
 
 export class StepPerformerPromptCreator {
   private apiFormatter: APIFormatter;
@@ -258,17 +259,9 @@ export class StepPerformerPromptCreator {
     if (previousStep.result && !previousStep.error)
       return `- Result: ${previousStep.result}`;
     if (isMostPreviousStep && previousStep.error) {
-      const truncatedError = this.truncateString(previousStep.error, 2000);
+      const truncatedError = truncateString(previousStep.error, 2000);
       return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
     }
     return "";
-  }
-
-  private truncateString(str: string, limit: number) {
-    if (str.length <= limit) {
-      return str;
-    } else {
-      return str.slice(0, limit) + "...";
-    }
   }
 }

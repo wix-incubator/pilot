@@ -1,4 +1,5 @@
 import { AutoPreviousStep, AutoReviewSectionType } from "@/types";
+import { truncateString } from "@/common/prompt-utils";
 
 export class AutoPerformerPromptCreator {
   constructor() {}
@@ -417,8 +418,8 @@ The 'Profile' icon may not be properly adapted for different locales.
     isMostPreviousStep: boolean,
   ): string | undefined {
     if (previousStep.error && isMostPreviousStep) {
-      //const truncatedError = this.truncateString(previousStep.error, 2000);
-      return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${previousStep.error}\n\`\`\``;
+      const truncatedError = truncateString(previousStep.error, 2000);
+      return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
     }
     return undefined;
   }
