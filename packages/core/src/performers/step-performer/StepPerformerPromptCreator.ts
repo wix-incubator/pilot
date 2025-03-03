@@ -5,7 +5,7 @@ import {
   TestingFrameworkAPICatalogItem,
 } from "@/types";
 import { APIFormatter } from "@/common/APIFormatter";
-import { truncateString} from "@/common/prompt-utils";
+import { truncateString } from "@/common/prompt-utils";
 
 export class StepPerformerPromptCreator {
   private apiFormatter: APIFormatter;
