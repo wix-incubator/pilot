@@ -66,7 +66,7 @@ describe("SnapshotManager", () => {
         },
       );
 
-      const resultPromise = snapshotManager.captureSnapshotImage(100);
+      const resultPromise = snapshotManager.captureSnapshotImage(true, 100);
 
       // Wait for the snapshots to be captured and compared
       await new Promise((resolve) => setTimeout(resolve, 300));
@@ -124,7 +124,7 @@ describe("SnapshotManager", () => {
 
       mockSnapshotComparator.compareSnapshot.mockReturnValue(false);
 
-      const resultPromise = snapshotManager.captureSnapshotImage(100, 250);
+      const resultPromise = snapshotManager.captureSnapshotImage(true, 100, 250);
 
       // Wait for the timeout to be reached
       await new Promise((resolve) => setTimeout(resolve, 300));
@@ -139,7 +139,7 @@ describe("SnapshotManager", () => {
     it("should handle undefined snapshots", async () => {
       mockDriver.captureSnapshotImage.mockResolvedValue(undefined);
 
-      const result = await snapshotManager.captureSnapshotImage();
+      const result = await snapshotManager.captureSnapshotImage(true);
 
       expect(result).toBeUndefined();
       expect(mockDriver.captureSnapshotImage).toHaveBeenCalledTimes(1);

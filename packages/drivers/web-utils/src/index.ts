@@ -109,8 +109,9 @@ export default class WebTestingFrameworkDriverHelper {
 
   /**
    * Captures a snapshot image.
+   * @param shouldHighlightSnapshot - Whether to highlight elements in the snapshot.
    */
-  async captureSnapshotImage(): Promise<string | undefined> {
+  async captureSnapshotImage(shouldHighlightSnapshot : boolean): Promise<string | undefined> {
     if (!this.currentPage) {
       return undefined;
     }
@@ -124,14 +125,17 @@ export default class WebTestingFrameworkDriverHelper {
       fs.mkdirSync(tempDir);
     }
 
-    await this.markImportantElements(this.currentPage);
-    await this.highlightMarkedElements(this.currentPage);
+    if (shouldHighlightSnapshot) {
+      await this.markImportantElements(this.currentPage);
+      await this.highlightMarkedElements(this.currentPage);
+    }
 
     await this.currentPage.screenshot({
       path: filePath,
     });
 
-    await this.removeMarkedElementsHighlights(this.currentPage);
+    shouldHighlightSnapshot && await this.removeMarkedElementsHighlights(this.currentPage);
+
     return filePath;
   }
 

@@ -27,7 +27,7 @@ describe("ScreenCapturer", () => {
       "view_hierarchy_data",
     );
 
-    const result = await screenCapturer.capture();
+    const result = await screenCapturer.capture(true);
 
     expect(mockPromptHandler.isSnapshotImageSupported).toHaveBeenCalled();
     expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalled();
@@ -46,7 +46,7 @@ describe("ScreenCapturer", () => {
       "view_hierarchy_data",
     );
 
-    const result = await screenCapturer.capture();
+    const result = await screenCapturer.capture(true);
 
     expect(mockPromptHandler.isSnapshotImageSupported).toHaveBeenCalled();
     expect(mockSnapshotManager.captureSnapshotImage).not.toHaveBeenCalled();
@@ -66,7 +66,7 @@ describe("ScreenCapturer", () => {
       "view_hierarchy_data",
     );
 
-    const result = await screenCapturer.capture();
+    const result = await screenCapturer.capture(true);
 
     expect(mockPromptHandler.isSnapshotImageSupported).toHaveBeenCalled();
     expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe("ScreenCapturer", () => {
     mockSnapshotManager.captureViewHierarchyString.mockRejectedValue(
       new Error("Failed to capture view hierarchy"),
     );
-    await expect(screenCapturer.capture()).rejects.toThrow(
+    await expect(screenCapturer.capture(true)).rejects.toThrow(
       "Failed to capture view hierarchy",
     );
 
