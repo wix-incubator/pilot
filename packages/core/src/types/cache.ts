@@ -90,4 +90,3 @@ export interface SnapshotHashing {
     threshold?: number,
   ): boolean;
 }
-

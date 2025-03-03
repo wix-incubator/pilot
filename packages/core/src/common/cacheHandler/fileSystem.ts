@@ -33,7 +33,7 @@ export function writeJsonFile(filePath: string, data: unknown): boolean {
   try {
     const dirPath = path.dirname(filePath);
     ensureDirectoryExists(dirPath);
-    
+
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), {
       flag: "w+",
     });

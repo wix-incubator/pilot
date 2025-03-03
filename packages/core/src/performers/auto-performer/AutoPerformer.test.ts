@@ -156,7 +156,7 @@ describe("AutoPerformer", () => {
     // Format matches the implementation in AutoPerformer.generateCacheKey
     const cacheKey = JSON.stringify({
       goal: GOAL,
-      steps: []
+      steps: [],
     });
 
     if (cacheExists) {
@@ -167,7 +167,9 @@ describe("AutoPerformer", () => {
       };
 
       // Mock the private generateCacheKey method by spying on its implementation
-      jest.spyOn(performer as any, 'generateCacheKey').mockReturnValue(cacheKey);
+      jest
+        .spyOn(performer as any, "generateCacheKey")
+        .mockReturnValue(cacheKey);
       mockSnapshotComparator.generateHashes.mockReturnValue(
         Promise.resolve({
           BlockHash: "hash",

@@ -157,27 +157,39 @@ describe("PilotStepPerformer", () => {
 
     const cacheKey = JSON.stringify({
       currentStep: intent,
-      previousSteps: previous.map(p => ({ step: p.step })),
+      previousSteps: previous.map((p) => ({ step: p.step })),
     });
 
     // Mock the private methods
-    jest.spyOn(stepPerformer as any, 'generateCacheKey').mockReturnValue(cacheKey);
+    jest
+      .spyOn(stepPerformer as any, "generateCacheKey")
+      .mockReturnValue(cacheKey);
 
     // Mock findCodeInCacheValues to return cached code directly if needed
     if (cacheExists) {
-      jest.spyOn(stepPerformer as any, 'findCodeInCacheValues').mockResolvedValue(PROMPT_RESULT);
+      jest
+        .spyOn(stepPerformer as any, "findCodeInCacheValues")
+        .mockResolvedValue(PROMPT_RESULT);
     } else {
-      jest.spyOn(stepPerformer as any, 'findCodeInCacheValues').mockResolvedValue(undefined);
+      jest
+        .spyOn(stepPerformer as any, "findCodeInCacheValues")
+        .mockResolvedValue(undefined);
     }
 
     // Mock the shared utilities by ensuring the utility methods return appropriate values
-    jest.doMock('@/common/cacheHandler/snapshots', () => ({
-      findCodeInCacheValues: jest.fn().mockResolvedValue(cacheExists ? PROMPT_RESULT : undefined),
-      generateCacheHashes: jest.fn().mockResolvedValue({
-        viewHierarchyHash: VIEW_HIERARCHY_HASH,
-        snapshotHash: { BlockHash: "hash" }
-      })
-    }), { virtual: true });
+    jest.doMock(
+      "@/common/cacheHandler/snapshots",
+      () => ({
+        findCodeInCacheValues: jest
+          .fn()
+          .mockResolvedValue(cacheExists ? PROMPT_RESULT : undefined),
+        generateCacheHashes: jest.fn().mockResolvedValue({
+          viewHierarchyHash: VIEW_HIERARCHY_HASH,
+          snapshotHash: { BlockHash: "hash" },
+        }),
+      }),
+      { virtual: true },
+    );
 
     mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
@@ -195,7 +207,10 @@ describe("PilotStepPerformer", () => {
 
   it("should perform an intent successfully with snapshot image support", async () => {
     // The setup mocks we created will force the mocked methods to work
-    const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
     mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
 
     setupMocks();
@@ -221,7 +236,10 @@ describe("PilotStepPerformer", () => {
 
   it("should perform an intent successfully without snapshot image support", async () => {
     // Mock the generateCode method for this test
-    const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
     mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
 
     setupMocks();
@@ -249,7 +267,10 @@ describe("PilotStepPerformer", () => {
 
   it("should perform an intent with undefined snapshot", async () => {
     // Mock the generateCode method for this test
-    const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
     mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
 
     setupMocks();
@@ -276,7 +297,10 @@ describe("PilotStepPerformer", () => {
 
   it("should perform an intent successfully with previous intents", async () => {
     // Mock the generateCode method for this test
-    const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
     mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
 
     setupMocks();
@@ -311,7 +335,10 @@ describe("PilotStepPerformer", () => {
 
   it("should throw an error if code evaluation fails", async () => {
     // Mock the generateCode method for this test
-    const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
     mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
 
     setupMocks();
@@ -337,11 +364,9 @@ describe("PilotStepPerformer", () => {
     setupMocks({ cacheExists: true });
 
     // Mock findCodeInCacheValues to return a cached result
-    jest.spyOn(stepPerformer as any, 'findCodeInCacheValues')
-        .mockResolvedValue(PROMPT_RESULT);
-
-    // Make sure generateCode still calls our mock but we can verify it's not used
-    const generateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    jest
+      .spyOn(stepPerformer as any, "findCodeInCacheValues")
+      .mockResolvedValue(PROMPT_RESULT);
 
     // Clear the mocks to ensure clean state for this test
     mockPromptCreator.createPrompt.mockClear();
@@ -353,12 +378,7 @@ describe("PilotStepPerformer", () => {
       isSnapshotImageAttached: true,
     };
 
-    const result = await stepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
 
@@ -374,7 +394,7 @@ describe("PilotStepPerformer", () => {
     // For this test we'll manually control the generateCode implementation
     // First time it's called, it will throw an error
     // Second time it's called, it will succeed
-    const generateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const generateCodeSpy = jest.spyOn(stepPerformer as any, "generateCode");
     generateCodeSpy
       .mockRejectedValueOnce(new Error("Code generation failed"))
       .mockResolvedValueOnce("retry generated code");
@@ -409,7 +429,7 @@ describe("PilotStepPerformer", () => {
     const firstError = new Error("First generation failed");
     const secondError = new Error("Second generation failed");
 
-    const generateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+    const generateCodeSpy = jest.spyOn(stepPerformer as any, "generateCode");
     generateCodeSpy
       .mockRejectedValueOnce(firstError)
       .mockRejectedValueOnce(secondError);
@@ -434,7 +454,10 @@ describe("PilotStepPerformer", () => {
 
   describe("extendJSContext", () => {
     it("should extend the context with the given object", async () => {
-      const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+      const mockGenerateCodeSpy = jest.spyOn(
+        stepPerformer as any,
+        "generateCode",
+      );
       mockGenerateCodeSpy.mockResolvedValue(PROMPT_RESULT);
 
       // Initial context
@@ -469,7 +492,10 @@ describe("PilotStepPerformer", () => {
     it("should log when a context key is overridden", async () => {
       const loggerSpy = jest.spyOn(logger, "warn").mockImplementation(() => {});
 
-      const mockGenerateCodeSpy = jest.spyOn(stepPerformer as any, 'generateCode');
+      const mockGenerateCodeSpy = jest.spyOn(
+        stepPerformer as any,
+        "generateCode",
+      );
       mockGenerateCodeSpy.mockResolvedValue(PROMPT_RESULT);
       stepPerformer.extendJSContext(dummyBarContext1);
       stepPerformer.extendJSContext(dummyBarContext2);

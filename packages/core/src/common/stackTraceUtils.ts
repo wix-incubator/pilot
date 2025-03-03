@@ -25,7 +25,9 @@ export function getCurrentJestTestFilePath(): string | undefined {
  * @param skipFrames Number of frames to skip from the top of the stack
  * @returns The file path that called the method, or undefined if it couldn't be determined
  */
-export function determineCalleeFilePath(skipFrames: number = 3): string | undefined {
+export function determineCalleeFilePath(
+  skipFrames: number = 3,
+): string | undefined {
   // First try to get from Jest globals
   const testData = getCurrentJestTestFilePath();
   if (testData) {
@@ -36,11 +38,11 @@ export function determineCalleeFilePath(skipFrames: number = 3): string | undefi
   try {
     const stackTraceLimit = Error.stackTraceLimit;
     Error.stackTraceLimit = 20;
-    const stack = new Error().stack || '';
+    const stack = new Error().stack || "";
     Error.stackTraceLimit = stackTraceLimit;
 
     // Skip frames which are within the framework..
-    const lines = stack.split('\n').slice(skipFrames);
+    const lines = stack.split("\n").slice(skipFrames);
 
     for (const line of lines) {
       // Check different stack trace formats to be more resilient
@@ -51,12 +53,19 @@ export function determineCalleeFilePath(skipFrames: number = 3): string | undefi
         match = line.match(/at (.+\.(?:js|ts|jsx|tsx)):(\d+):(\d+)/);
       }
 
-      if (match && !match[1].includes('node_modules') && !match[1].includes('/dist/')) {
+      if (
+        match &&
+        !match[1].includes("node_modules") &&
+        !match[1].includes("/dist/")
+      ) {
         return match[1];
       }
     }
   } catch (error) {
-    console.warn("Failed to determine caller file path from stack trace:", error);
+    console.warn(
+      "Failed to determine caller file path from stack trace:",
+      error,
+    );
   }
 
   return undefined;

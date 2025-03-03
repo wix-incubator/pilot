@@ -177,7 +177,6 @@ describe("CacheHandler", () => {
       }).toThrow("Cannot set empty test file path");
     });
 
-
     it("should fallback to __pilot_cache__/global.json when no test file path is set", () => {
       const handler = new CacheHandler();
       handler.loadCacheFromFile();

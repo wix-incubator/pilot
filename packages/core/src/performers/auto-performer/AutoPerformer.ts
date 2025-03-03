@@ -1,4 +1,4 @@
-import {AutoPerformerPromptCreator} from "./AutoPerformerPromptCreator";
+import { AutoPerformerPromptCreator } from "./AutoPerformerPromptCreator";
 import {
   AutoPreviousStep,
   AutoReport,
@@ -13,13 +13,19 @@ import {
   ScreenCapturerResult,
   SingleAutoPilotCacheValue,
 } from "@/types";
-import {extractTaggedOutputs, OUTPUTS_MAPPINGS,} from "@/common/extract/extractTaggedOutputs";
-import {StepPerformer} from "@/performers/step-performer/StepPerformer";
-import {ScreenCapturer} from "@/common/snapshot/ScreenCapturer";
+import {
+  extractTaggedOutputs,
+  OUTPUTS_MAPPINGS,
+} from "@/common/extract/extractTaggedOutputs";
+import { StepPerformer } from "@/performers/step-performer/StepPerformer";
+import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
-import {CacheHandler} from "@/common/cacheHandler/CacheHandler";
-import {SnapshotComparator} from "@/common/snapshot/comparator/SnapshotComparator";
-import {findInCachedValues, generateCacheHashes} from "@/common/cacheHandler/snapshots";
+import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
+import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
+import {
+  findInCachedValues,
+  generateCacheHashes,
+} from "@/common/cacheHandler/snapshots";
 
 export class AutoPerformer {
   constructor(
@@ -105,11 +111,11 @@ export class AutoPerformer {
 
     const cacheKeyData = {
       goal,
-      previous: previous.map(step => ({
+      previous: previous.map((step) => ({
         screenDescription: step.screenDescription,
         step: step.step,
-        hasReview: !!step.review
-      }))
+        hasReview: !!step.review,
+      })),
     };
 
     return JSON.stringify(cacheKeyData);
@@ -140,7 +146,8 @@ export class AutoPerformer {
     );
 
     try {
-      const { snapshot, viewHierarchy, isSnapshotImageAttached } = screenCapture;
+      const { snapshot, viewHierarchy, isSnapshotImageAttached } =
+        screenCapture;
 
       // Generate prompt and get AI response
       const prompt = this.promptCreator.createPrompt(
@@ -219,7 +226,7 @@ export class AutoPerformer {
           plan,
           review,
           goalAchieved,
-          summary
+          summary,
         );
         this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
       }
@@ -328,7 +335,7 @@ export class AutoPerformer {
     const { viewHierarchyHash, snapshotHash } = await generateCacheHashes(
       screenCapture.viewHierarchy,
       screenCapture.snapshot,
-      this.snapshotComparator
+      this.snapshotComparator,
     );
 
     return {
@@ -350,7 +357,7 @@ export class AutoPerformer {
       cachedValues,
       screenCapture.viewHierarchy,
       screenCapture.snapshot,
-      this.snapshotComparator
+      this.snapshotComparator,
     );
   }
 
@@ -367,9 +374,6 @@ export class AutoPerformer {
       return undefined;
     }
 
-    return await this.findInCachedValues(
-        cachedValues,
-        screenCapture
-    );
+    return await this.findInCachedValues(cachedValues, screenCapture);
   }
 }

@@ -15,7 +15,7 @@ export class AtomicOperationQueue {
     }
 
     this.isExecuting = true;
-    
+
     try {
       operation();
       this.processQueue();

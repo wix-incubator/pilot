@@ -2,7 +2,10 @@ import { StepPerformerPromptCreator } from "./StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
 import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotComparator";
-import { findCodeInCacheValues, generateCacheHashes } from "@/common/cacheHandler/snapshots";
+import {
+  findCodeInCacheValues,
+  generateCacheHashes,
+} from "@/common/cacheHandler/snapshots";
 import {
   CodeEvaluationResult,
   PreviousStep,
@@ -52,7 +55,7 @@ export class StepPerformer {
     const { viewHierarchyHash, snapshotHash } = await generateCacheHashes(
       viewHierarchy,
       snapshot,
-      this.snapshotComparator
+      this.snapshotComparator,
     );
 
     return {
@@ -71,7 +74,7 @@ export class StepPerformer {
       cacheValue,
       viewHierarchy,
       snapshot,
-      this.snapshotComparator
+      this.snapshotComparator,
     );
   }
 
@@ -85,9 +88,9 @@ export class StepPerformer {
 
     const cacheKeyData = {
       currentStep: step,
-      previousSteps: previous.map(prevStep => ({
-        step: prevStep.step
-      }))
+      previousSteps: previous.map((prevStep) => ({
+        step: prevStep.step,
+      })),
     };
 
     return JSON.stringify(cacheKeyData);
@@ -151,7 +154,7 @@ export class StepPerformer {
     return await this.findCodeInCacheValues(
       cachedValues,
       viewHierarchy,
-      snapshot
+      snapshot,
     );
   }
 

@@ -1,7 +1,12 @@
-import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
+import { CacheOptions } from "@/types";
 import { AtomicOperationQueue } from "./atomicFileOperations";
-import { ensureDirectoryExists, readJsonFile, writeJsonFile } from "./fileSystem";
+import {
+  ensureDirectoryExists,
+  readJsonFile,
+  writeJsonFile,
+} from "./fileSystem";
 import path from "path";
+import glob from "glob";
 
 export class CacheHandler {
   private cache: Map<string, unknown[]> = new Map();
@@ -32,12 +37,12 @@ export class CacheHandler {
       const testDir = path.dirname(this.callerFilePath);
       const testFilename = path.basename(
         this.callerFilePath,
-        path.extname(this.callerFilePath)
+        path.extname(this.callerFilePath),
       );
       return path.join(
         testDir,
         CacheHandler.CACHE_DIRECTORY,
-        `${testFilename}.json`
+        `${testFilename}.json`,
       );
     }
 
@@ -45,7 +50,7 @@ export class CacheHandler {
     return path.resolve(
       process.cwd(),
       CacheHandler.CACHE_DIRECTORY,
-      CacheHandler.DEFAULT_CACHE_FILENAME
+      CacheHandler.DEFAULT_CACHE_FILENAME,
     );
   }
 
@@ -66,7 +71,9 @@ export class CacheHandler {
     const cacheDir = path.dirname(this.cacheFilePath);
     ensureDirectoryExists(cacheDir);
 
-    const fileData = readJsonFile<Record<string, unknown[]>>(this.cacheFilePath);
+    const fileData = readJsonFile<Record<string, unknown[]>>(
+      this.cacheFilePath,
+    );
 
     if (fileData) {
       this.cache = new Map(Object.entries(fileData));
@@ -78,7 +85,7 @@ export class CacheHandler {
   private saveCacheToFile(): void {
     this.fileOperationQueue.execute(() => {
       this.cacheFilePath = this.getCacheFilePath();
-      
+
       // Simply write the current in-memory cache to file
       // without re-reading and merging with existing file content
       const jsonData = Object.fromEntries(this.cache);
@@ -124,7 +131,6 @@ export class CacheHandler {
     }
 
     try {
-      const glob = require("glob");
       return glob.sync(`${basePath}/**/${CacheHandler.CACHE_DIRECTORY}/*.json`);
     } catch (error) {
       console.warn("Error finding cache files:", error);

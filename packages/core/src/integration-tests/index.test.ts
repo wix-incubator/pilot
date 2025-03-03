@@ -370,13 +370,14 @@ describe("Pilot Integration Tests", () => {
       pilot.end();
 
       expect(mockedCacheFile).toEqual({
-        '{"currentStep":"New action","previousSteps":[]}': expect.arrayContaining([
-          expect.any(Object),
-          expect.objectContaining({
-            code: "// New action code",
-            snapshotHash: expect.any(Object),
-          }),
-        ]),
+        '{"currentStep":"New action","previousSteps":[]}':
+          expect.arrayContaining([
+            expect.any(Object),
+            expect.objectContaining({
+              code: "// New action code",
+              snapshotHash: expect.any(Object),
+            }),
+          ]),
       });
     });
 
