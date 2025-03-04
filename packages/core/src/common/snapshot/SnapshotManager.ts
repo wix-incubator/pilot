@@ -1,6 +1,5 @@
 import { TestingFrameworkDriver } from "@/types";
 import { SnapshotComparator } from "./comparator/SnapshotComparator";
-import crypto from "crypto";
 
 const DEFAULT_POLL_INTERVAL = 500; // ms
 const DEFAULT_TIMEOUT = 5000; // ms
@@ -29,20 +28,51 @@ export class SnapshotManager {
       if (!currentSnapshot) {
         return undefined;
       }
-
       if (lastSnapshot) {
         const isStable = await compareFunc(currentSnapshot, lastSnapshot);
         if (isStable) {
           return currentSnapshot;
         }
       }
-
       lastSnapshot = currentSnapshot;
       await new Promise((resolve) => setTimeout(resolve, pollInterval));
     }
 
     // Return the last snapshot if timeout is reached
     return lastSnapshot;
+  }
+
+  private async waitForStableStateWithObserver<T>(
+    captureFunc: () => Promise<T | undefined>,
+    stabilityDelay: number = DEFAULT_POLL_INTERVAL,
+    overallTimeout: number = DEFAULT_TIMEOUT,
+  ): Promise<T | undefined> {
+    let lastSnapshot: T | undefined = await captureFunc();
+    let stabilityTimer: ReturnType<typeof setTimeout>;
+
+    return new Promise<T | undefined>((resolve) => {
+      const observer = new MutationObserver(async () => {
+        if (stabilityTimer) clearTimeout(stabilityTimer);
+
+        lastSnapshot = await captureFunc();
+
+        stabilityTimer = setTimeout(() => {
+          observer.disconnect();
+          resolve(lastSnapshot);
+        }, stabilityDelay);
+      });
+
+      observer.observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
+
+      setTimeout(() => {
+        observer.disconnect();
+        resolve(lastSnapshot);
+      }, overallTimeout);
+    });
   }
 
   private async compareSnapshots(
@@ -52,19 +82,11 @@ export class SnapshotManager {
   ): Promise<boolean> {
     const currentHash = await this.snapshotComparator.generateHashes(current);
     const lastHash = await this.snapshotComparator.generateHashes(last);
-
     return this.snapshotComparator.compareSnapshot(
       currentHash,
       lastHash,
       stabilityThreshold,
     );
-  }
-
-  private compareViewHierarchies(current: string, last: string): boolean {
-    // Use MD5 for fast comparison of view hierarchies
-    const currentHash = crypto.createHash("md5").update(current).digest("hex");
-    const lastHash = crypto.createHash("md5").update(last).digest("hex");
-    return currentHash === lastHash;
   }
 
   private async captureDownscaledImage(): Promise<string | undefined> {
@@ -89,15 +111,11 @@ export class SnapshotManager {
     );
   }
 
-  async captureViewHierarchyString(
-    pollInterval?: number,
-    timeout?: number,
-  ): Promise<string> {
-    const result = await this.waitForStableState(
+  async captureViewHierarchyString(timeout?: number): Promise<string> {
+    const result = await this.waitForStableStateWithObserver(
       () => this.driver.captureViewHierarchyString(),
-      this.compareViewHierarchies,
-      pollInterval,
-      timeout,
+      DEFAULT_POLL_INTERVAL,
+      timeout || DEFAULT_TIMEOUT,
     );
     return result ?? "";
   }
