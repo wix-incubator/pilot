@@ -61,7 +61,7 @@ async function bundleUtil(
 
   const tempDir = path.resolve(__dirname, "./temp");
   try {
-    await fs.promises.rmdir(tempDir, { recursive: true });
+    await fs.promises.rm(tempDir, { recursive: true });
   } catch (err) {
     console.error(`Error deleting temporary directory: ${err}`);
   }
