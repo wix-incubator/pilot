@@ -3,7 +3,7 @@ import path from "path";
 import { Page } from "./types";
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
-type ElementMatchingCriteria = {
+export type ElementMatchingCriteria = {
   [K in AttributeKey]?: ReturnType<
     (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
   >;
@@ -27,6 +27,21 @@ export default class WebTestingFrameworkDriverHelper {
     const bundlePath = path.resolve(__dirname, bundleRelativePath);
     const bundleString = fs.readFileSync(bundlePath, "utf8");
     await page.evaluate((code: string) => eval(code), bundleString);
+  }
+
+  /**
+   * Extracts attributes from and object given a config
+   */
+  private toExtractMatchingAttributes<T extends ElementMatchingCriteria>(
+    obj: T,
+  ): ElementMatchingCriteria {
+    const result = {} as ElementMatchingCriteria;
+    for (const key in obj) {
+      if (key in ELEMENT_MATCHING_CONFIG) {
+        result[key as keyof T & AttributeKey] = obj[key];
+      }
+    }
+    return result;
   }
 
   /**
@@ -71,14 +86,16 @@ export default class WebTestingFrameworkDriverHelper {
   /**
    * Returns the closest element matching the given criteria.
    */
-  async findElement(
+  async findElement<T extends ElementMatchingCriteria>(
     page: Page,
-    matchingCriteria: ElementMatchingCriteria,
+    matchingCriteria: T,
   ): Promise<HTMLElement | null> {
+    const filteredCriteria: ElementMatchingCriteria =
+      this.toExtractMatchingAttributes(matchingCriteria);
     return (
       await page.evaluateHandle(
         (cretiria) => window.findElement(cretiria),
-        matchingCriteria,
+        filteredCriteria,
       )
     ).asElement() as HTMLElement | null;
   }

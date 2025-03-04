@@ -1,6 +1,6 @@
 import { Rect } from "./types";
 
-const compareUtils = {
+const comparators = {
   levenshtein(a: string, b: string): number {
     const m = a.length;
     const n = b.length;
@@ -38,7 +38,7 @@ const compareUtils = {
     const a = actual.trim().toLowerCase();
     const b = expected.trim().toLowerCase();
     if (a === b) return 0;
-    if (threshold > 0 && compareUtils.levenshtein(a, b) <= threshold) {
+    if (threshold > 0 && comparators.levenshtein(a, b) <= threshold) {
       return 0;
     }
     return 1;
@@ -60,4 +60,4 @@ const compareUtils = {
   },
 };
 
-export default compareUtils;
+export default comparators;

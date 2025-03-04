@@ -4,6 +4,7 @@ import {
 } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
+import type { ElementMatchingCriteria } from "@wix-pilot/web-utils";
 export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   private executablePath?: string;
   private driverUtils: WebTestingFrameworkDriverHelper;
@@ -33,8 +34,11 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   /**
    * return the closet element given page and element
    */
-  async findElement(page: puppeteer.Page, element: any): Promise<any> {
-    return await this.driverUtils.findElement(page, element);
+  async findElement<T extends ElementMatchingCriteria>(
+    page: puppeteer.Page,
+    matchingCriteria: T,
+  ): Promise<any> {
+    return await this.driverUtils.findElement(page, matchingCriteria);
   }
 
   /**
@@ -123,13 +127,13 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
           title: "Matchers",
           items: [
             {
-              signature: "findElement(page, element)",
+              signature: "findElement(page, matchingCriteria)",
               description:
                 "Selects the element that best matches the provided criteria based on thresholds and weighted comparisons. " +
                 "This utility examines attributes such as 'aria-label', 'aria-role', 'class', 'id', 'name', 'title', 'placeholder', and 'rect' to compute a match score.",
               example: `
               const page = getCurrentPage();
-              const closestElement = await findElement(page, 
+              const submitElement = await findElement(page, 
   {
     "aria-label": "Submit",
     "aria-role": "button",
@@ -139,14 +143,13 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
     title: "Submit",
     placeholder: "Submit",
     rect: { x: 100, y: 200 }
-  })
-);`,
+  });
+await submitElement.click();`,
+
               guidelines: [
                 "Each criterion is optional since not all elements will have all of these attributes.",
-                "Only the provided criteria will be used to compute the match score.",
                 "The utility returns the element with the lowest cumulative error across the specified criteria.",
-                "If an 'aria-label' is provided, the element with the exact match will be returned directly.",
-                "Matches are computed using weighted comparisons with configurable thresholds for each attribute.",
+                "You can use all properties included in the view hierarchy as a part of the cretiria",
               ],
             },
           ],
