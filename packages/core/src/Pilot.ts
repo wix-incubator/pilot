@@ -19,12 +19,22 @@ import downscaleImage from "@/common/snapshot/downscaleImage";
 
 /**
  * The main Pilot class that provides AI-assisted testing capabilities for a given underlying testing framework.
- * @note Originally, this class is designed to work with Detox, but it can be extended to work with other frameworks.
+ * Enables writing tests in natural language that are translated into precise testing actions.
+ *
+ * Usage:
+ * ```typescript
+ * const pilot = new Pilot({
+ *   frameworkDriver: new PuppeteerFrameworkDriver(),
+ *   promptHandler: new OpenAIHandler({ apiKey: process.env.OPENAI_API_KEY })
+ * });
+ *
+ * pilot.start();
+ * await pilot.perform('Navigate to the login page');
+ * await pilot.perform('Enter "user@example.com" in the email field');
+ * pilot.end();
+ * ```
  */
 export class Pilot {
-  // Singleton instance of Pilot
-  static instance?: Pilot;
-
   private readonly snapshotManager: SnapshotManager;
   private previousSteps: PreviousStep[] = [];
   private stepPerformerPromptCreator: StepPerformerPromptCreator;
@@ -35,7 +45,7 @@ export class Pilot {
   private screenCapturer: ScreenCapturer;
   private snapshotComparator: SnapshotComparator;
 
-  private constructor(config: Config) {
+  constructor(config: Config) {
     this.snapshotComparator = new SnapshotComparator();
 
     this.snapshotManager = new SnapshotManager(
@@ -82,44 +92,6 @@ export class Pilot {
   }
 
   /**
-   * Gets the singleton instance of Pilot.
-   * @returns The Pilot instance.
-   */
-  public static getInstance(): Pilot {
-    if (!Pilot.instance) {
-      throw new PilotError(
-        "Pilot has not been initialized. Please call the `init()` method before using it.",
-      );
-    }
-
-    return Pilot.instance;
-  }
-
-  /**
-   * Initializes Pilot with the provided configuration.
-   * Must be called before using any other methods.
-   * @param config The configuration options for Pilot.
-   * @throws Error if called multiple times
-   */
-  public static init(config: Config): void {
-    if (Pilot.instance) {
-      throw new PilotError(
-        "Pilot has already been initialized. Please call the `init()` method only once.",
-      );
-    }
-
-    Pilot.instance = new Pilot(config);
-  }
-
-  /**
-   * Checks if Pilot has been properly initialized.
-   * @returns true if initialized, false otherwise
-   */
-  public static isInitialized(): boolean {
-    return !!Pilot.instance;
-  }
-
-  /**
    * Checks if Pilot is currently running a test flow.
    * @returns true if running, false otherwise
    */
@@ -132,7 +104,8 @@ export class Pilot {
   }
 
   /**
-   * Starts Pilot by clearing the previous steps and temporary cache.
+   * Starts a new test flow session.
+   * Must be called before any test operations to ensure a clean state, as Pilot uses operation history for context.
    */
   public start(): void {
     if (this.running) {
@@ -147,8 +120,8 @@ export class Pilot {
   }
 
   /**
-   * Ends the Pilot test flow and optionally saves the temporary cache to the main cache.
-   * @param shouldSaveInCache - If true, the current test flow will be saved in cache
+   * Ends the current test flow session and handles cache management.
+   * @param shouldSaveInCache - If true, the current test flow will be saved in cache (default: true)
    */
   public end(shouldSaveInCache = true): void {
     if (!this.running) {
@@ -163,9 +136,23 @@ export class Pilot {
   }
 
   /**
-   * Enriches the API catalog by adding the provided categories and JS context.
-   * @param categories - The categories to register.
-   * @param context - (Optional) Additional JS context to register.
+   * Extends the testing framework's API capabilities.
+   * @param categories - Additional API categories to add
+   * @param context - Testing framework variables to expose (optional)
+   * @example
+   * pilot.extendAPICatalog([
+   *   {
+   *     title: 'Custom Actions',
+   *     items: [
+   *       {
+   *         signature: 'customAction(param: string)',
+   *         description: 'Performs a custom action',
+   *         example: 'await customAction("param")',
+   *         guidelines: ['Use this action for specific test scenarios']
+   *       }
+   *     ]
+   *   }
+   * ], { customAction });
    */
   extendAPICatalog(
     categories: TestingFrameworkAPICatalogCategory[],
@@ -176,11 +163,19 @@ export class Pilot {
   }
 
   /**
-   * Performs a single test step using the provided intent.
-   * @param step The intent describing the test step to perform.
-   * @returns The result of the test step.
+   * Performs one or more test steps using the provided intents.
+   * @param steps The intents describing the test steps to perform.
+   * @returns The result of the last executed step.
    */
-  async performStep(step: string): Promise<any> {
+  async perform(...steps: string[]): Promise<any> {
+    let result;
+    for await (const step of steps) {
+      result = await this.performStep(step);
+    }
+    return result;
+  }
+
+  private async performStep(step: string): Promise<any> {
     this.assertIsRunning();
 
     const screenCapture: ScreenCapturerResult =
