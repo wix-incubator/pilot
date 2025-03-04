@@ -1,6 +1,7 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import * as playwright from "playwright";
 import { expect as playwrightExpect } from "@playwright/test";
@@ -8,10 +9,13 @@ import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 
 export class PlaywrightFrameworkDriver implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
+  public driverConfig: TestingFrameworkDriverConfig;
+
   constructor() {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.driverUtils = new WebTestingFrameworkDriverHelper();
+    this.driverConfig = { shouldUseScreenSync: true };
   }
 
   /**

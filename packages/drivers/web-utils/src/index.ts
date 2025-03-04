@@ -62,6 +62,13 @@ export default class WebTestingFrameworkDriverHelper {
   }
 
   /**
+   * Waits for DOM to be stable.
+   */
+  async waitForStableDOM(page: Page): Promise<void> {
+    await this.executeBundledScript(page, "../dist/waitForDomStable.bundle.js");
+  }
+
+  /**
    * Captures a snapshot image.
    */
   async captureSnapshotImage(): Promise<string | undefined> {
@@ -99,7 +106,7 @@ export default class WebTestingFrameworkDriverHelper {
         "START A NEW ONE BASED ON THE ACTION NEED OR RAISE AN ERROR"
       );
     }
-
+    await this.waitForStableDOM(this.currentPage);
     await this.markImportantElements(this.currentPage);
     return await this.createMarkedViewHierarchy(this.currentPage);
   }

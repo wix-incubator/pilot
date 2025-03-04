@@ -42,6 +42,7 @@ describe("Pilot Integration Tests", () => {
         context: {},
         categories: [],
       },
+      driverConfig: { shouldUseScreenSync: true },
     };
 
     mockPromptHandler = {
@@ -189,7 +190,7 @@ describe("Pilot Integration Tests", () => {
       expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(6);
       expect(
         mockFrameworkDriver.captureViewHierarchyString,
-      ).toHaveBeenCalledTimes(6);
+      ).toHaveBeenCalledTimes(3);
     });
 
     it("should handle errors in multiple steps and stop execution", async () => {
@@ -213,7 +214,7 @@ describe("Pilot Integration Tests", () => {
       expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(6);
       expect(
         mockFrameworkDriver.captureViewHierarchyString,
-      ).toHaveBeenCalledTimes(6);
+      ).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -496,6 +497,7 @@ describe("Pilot Integration Tests", () => {
         },
         captureSnapshotImage: jest.fn(),
         captureViewHierarchyString: jest.fn(),
+        driverConfig: { shouldUseScreenSync: true },
       };
 
       Pilot.init({

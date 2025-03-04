@@ -1,6 +1,7 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import detox from "detox";
 import { expect } from "@jest/globals";
@@ -8,6 +9,12 @@ import * as fs from "fs";
 import * as path from "path";
 
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
+  public driverConfig: TestingFrameworkDriverConfig;
+
+  constructor() {
+    this.driverConfig = { shouldUseScreenSync: true };
+  }
+
   async captureViewHierarchyString(): Promise<string> {
     try {
       return await detox.device.generateViewHierarchyXml(true);

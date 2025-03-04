@@ -28,51 +28,20 @@ export class SnapshotManager {
       if (!currentSnapshot) {
         return undefined;
       }
+
       if (lastSnapshot) {
         const isStable = await compareFunc(currentSnapshot, lastSnapshot);
         if (isStable) {
           return currentSnapshot;
         }
       }
+
       lastSnapshot = currentSnapshot;
       await new Promise((resolve) => setTimeout(resolve, pollInterval));
     }
 
     // Return the last snapshot if timeout is reached
     return lastSnapshot;
-  }
-
-  private async waitForStableStateWithObserver<T>(
-    captureFunc: () => Promise<T | undefined>,
-    stabilityDelay: number = DEFAULT_POLL_INTERVAL,
-    overallTimeout: number = DEFAULT_TIMEOUT,
-  ): Promise<T | undefined> {
-    let lastSnapshot: T | undefined = await captureFunc();
-    let stabilityTimer: ReturnType<typeof setTimeout>;
-
-    return new Promise<T | undefined>((resolve) => {
-      const observer = new MutationObserver(async () => {
-        if (stabilityTimer) clearTimeout(stabilityTimer);
-
-        lastSnapshot = await captureFunc();
-
-        stabilityTimer = setTimeout(() => {
-          observer.disconnect();
-          resolve(lastSnapshot);
-        }, stabilityDelay);
-      });
-
-      observer.observe(document.body, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-
-      setTimeout(() => {
-        observer.disconnect();
-        resolve(lastSnapshot);
-      }, overallTimeout);
-    });
   }
 
   private async compareSnapshots(
@@ -82,6 +51,7 @@ export class SnapshotManager {
   ): Promise<boolean> {
     const currentHash = await this.snapshotComparator.generateHashes(current);
     const lastHash = await this.snapshotComparator.generateHashes(last);
+
     return this.snapshotComparator.compareSnapshot(
       currentHash,
       lastHash,
@@ -102,21 +72,18 @@ export class SnapshotManager {
     timeout?: number,
     stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
-    return this.waitForStableState(
-      async () => this.captureDownscaledImage(),
-      (current, last) =>
-        this.compareSnapshots(current, last, stabilityThreshold),
-      pollInterval,
-      timeout,
-    );
+    return this.driver.driverConfig.shouldUseScreenSync
+      ? this.waitForStableState(
+          async () => this.captureDownscaledImage(),
+          (current, last) =>
+            this.compareSnapshots(current, last, stabilityThreshold),
+          pollInterval,
+          timeout,
+        )
+      : await this.captureDownscaledImage();
   }
 
-  async captureViewHierarchyString(timeout?: number): Promise<string> {
-    const result = await this.waitForStableStateWithObserver(
-      () => this.driver.captureViewHierarchyString(),
-      DEFAULT_POLL_INTERVAL,
-      timeout || DEFAULT_TIMEOUT,
-    );
-    return result ?? "";
+  async captureViewHierarchyString(): Promise<string> {
+    return await this.driver.captureViewHierarchyString();
   }
 }

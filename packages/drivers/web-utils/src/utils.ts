@@ -1,6 +1,8 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
 import { ElementCategory } from "./types";
+const DEFAULT_POLL_INTERVAL = 500; // ms
+const DEFAULT_TIMEOUT = 5000; // ms
 
 declare global {
   interface Window {
@@ -212,6 +214,36 @@ export function removeMarkedElementsHighlights() {
   const container = document.getElementById("aria-pilot-overlay-container");
   style?.remove();
   container?.remove();
+}
+
+export function waitForDomStable(
+  stabilityDelay: number = DEFAULT_POLL_INTERVAL,
+  overallTimeout: number = DEFAULT_TIMEOUT,
+): Promise<void> {
+  return new Promise<void>((resolve) => {
+    let stabilityTimer: number | undefined;
+
+    const observer = new MutationObserver(() => {
+      if (stabilityTimer !== undefined) {
+        clearTimeout(stabilityTimer);
+      }
+      stabilityTimer = window.setTimeout(() => {
+        observer.disconnect();
+        resolve();
+      }, stabilityDelay);
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    window.setTimeout(() => {
+      observer.disconnect();
+      resolve();
+    }, overallTimeout);
+  });
 }
 
 if (typeof window !== "undefined") {

@@ -1,15 +1,6 @@
 import { SnapshotManager } from "./SnapshotManager";
 import { TestingFrameworkDriver } from "@/types";
 import { SnapshotComparator } from "./comparator/SnapshotComparator";
-import crypto from "crypto";
-
-// Mock the crypto module
-jest.mock("crypto", () => ({
-  createHash: jest.fn().mockReturnValue({
-    update: jest.fn().mockReturnThis(),
-    digest: jest.fn(),
-  }),
-}));
 
 describe("SnapshotManager", () => {
   let mockDriver: jest.Mocked<TestingFrameworkDriver>;
@@ -21,6 +12,7 @@ describe("SnapshotManager", () => {
     mockDriver = {
       captureSnapshotImage: jest.fn(),
       captureViewHierarchyString: jest.fn(),
+      driverConfig: { shouldUseScreenSync: true },
     } as any;
 
     mockSnapshotComparator = {
@@ -157,51 +149,18 @@ describe("SnapshotManager", () => {
   });
 
   describe("captureViewHierarchyString", () => {
-    it("should return stable view hierarchy when UI becomes stable", async () => {
-      const hierarchies = [
-        "<view>1</view>",
-        "<view>2</view>",
-        "<view>2</view>",
-      ];
-      let callCount = 0;
-
-      mockDriver.captureViewHierarchyString.mockImplementation(async () => {
-        return hierarchies[callCount++];
-      });
-
-      const mockDigest = jest.fn();
-      mockDigest
-        .mockReturnValueOnce("hash1")
-        .mockReturnValueOnce("hash2")
-        .mockReturnValueOnce("hash2")
-        .mockReturnValueOnce("hash2");
-
-      (crypto.createHash as jest.Mock).mockReturnValue({
-        update: jest.fn().mockReturnThis(),
-        digest: mockDigest,
-      });
-
-      const resultPromise = snapshotManager.captureViewHierarchyString(100);
-
-      // Wait for the view hierarchies to be captured and compared
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const result = await resultPromise;
-
+    it("should return view hierarchy when called", async () => {
+      mockDriver.captureViewHierarchyString.mockResolvedValue("<view>2</view>");
+      const result = await snapshotManager.captureViewHierarchyString();
       expect(result).toBe("<view>2</view>");
-      expect(mockDriver.captureViewHierarchyString).toHaveBeenCalledTimes(3);
-      expect(crypto.createHash).toHaveBeenCalledWith("md5");
-      expect(mockDigest).toHaveBeenCalledTimes(4);
+      expect(mockDriver.captureViewHierarchyString).toHaveBeenCalledTimes(1);
     });
 
     it("should handle empty view hierarchy", async () => {
       mockDriver.captureViewHierarchyString.mockResolvedValue("");
-
       const result = await snapshotManager.captureViewHierarchyString();
-
       expect(result).toBe("");
       expect(mockDriver.captureViewHierarchyString).toHaveBeenCalledTimes(1);
-      expect(crypto.createHash).not.toHaveBeenCalled();
     });
   });
 });

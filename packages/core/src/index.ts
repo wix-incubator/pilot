@@ -48,4 +48,5 @@ export {
   TestingFrameworkDriver,
   TestingFrameworkAPICatalog,
   TestingFrameworkAPICatalogItem,
+  TestingFrameworkDriverConfig,
 } from "./types";

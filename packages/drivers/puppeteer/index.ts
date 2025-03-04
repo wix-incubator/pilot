@@ -1,6 +1,7 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
@@ -8,14 +9,15 @@ import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   private executablePath?: string;
   private driverUtils: WebTestingFrameworkDriverHelper;
+  public driverConfig: TestingFrameworkDriverConfig;
 
   constructor(executablePath?: string) {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.executablePath = executablePath;
     this.driverUtils = new WebTestingFrameworkDriverHelper();
+    this.driverConfig = { shouldUseScreenSync: true };
   }
-
   /**
    * Gets the current page identifier
    */
