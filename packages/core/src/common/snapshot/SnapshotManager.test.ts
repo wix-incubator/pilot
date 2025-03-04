@@ -124,7 +124,11 @@ describe("SnapshotManager", () => {
 
       mockSnapshotComparator.compareSnapshot.mockReturnValue(false);
 
-      const resultPromise = snapshotManager.captureSnapshotImage(true, 100, 250);
+      const resultPromise = snapshotManager.captureSnapshotImage(
+        true,
+        100,
+        250,
+      );
 
       // Wait for the timeout to be reached
       await new Promise((resolve) => setTimeout(resolve, 300));

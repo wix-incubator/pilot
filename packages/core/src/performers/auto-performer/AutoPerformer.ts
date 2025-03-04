@@ -252,11 +252,12 @@ export class AutoPerformer {
     );
 
     for (let step = 0; step < maxSteps; step++) {
-      const screenCaptureWithoutHighlight = await this.screenCapturer.capture(false);
+      const screenCaptureWithoutHighlight =
+        await this.screenCapturer.capture(false);
       const stepReport = await this.analyseScreenAndCreatePilotStep(
         goal,
         [...previousSteps],
-          screenCaptureWithoutHighlight,
+        screenCaptureWithoutHighlight,
       );
 
       if (stepReport.goalAchieved) {
@@ -272,11 +273,12 @@ export class AutoPerformer {
         break;
       }
 
-      const screenCaptureWithHighlight = await this.screenCapturer.capture(true);
+      const screenCaptureWithHighlight =
+        await this.screenCapturer.capture(true);
       const { code, result } = await this.stepPerformer.perform(
         stepReport.plan.action,
         [...pilotSteps],
-          screenCaptureWithHighlight,
+        screenCaptureWithHighlight,
       );
 
       report.steps.push({ code, ...stepReport });

@@ -179,7 +179,9 @@ export class StepPerformer {
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
         const { snapshot, viewHierarchy, isSnapshotImageAttached } =
-          attempt == 1 ? screenCapture : await this.screenCapturer.capture(true);
+          attempt == 1
+            ? screenCapture
+            : await this.screenCapturer.capture(true);
 
         const code = await this.generateCode(
           step,

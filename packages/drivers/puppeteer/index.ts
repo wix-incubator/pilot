@@ -54,8 +54,9 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   /**
    * @inheritdoc
    */
-  async captureSnapshotImage(shouldHighlightSnapshot: boolean): Promise<string | undefined> {
-    return await this.driverUtils.captureSnapshotImage(shouldHighlightSnapshot);
+  async captureSnapshotImage(useHighlights: boolean,
+  ): Promise<string | undefined> {
+    return await this.driverUtils.captureSnapshotImage(useHighlights);
   }
 
   /**
