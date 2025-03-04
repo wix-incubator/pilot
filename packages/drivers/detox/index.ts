@@ -12,7 +12,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
   public driverConfig: TestingFrameworkDriverConfig;
 
   constructor() {
-    this.driverConfig = { shouldUseScreenSync: true };
+    this.driverConfig = { shouldUseScreenSync: false };
   }
 
   async captureViewHierarchyString(): Promise<string> {
