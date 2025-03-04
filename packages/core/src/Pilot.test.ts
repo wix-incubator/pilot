@@ -73,7 +73,7 @@ describe("Pilot", () => {
       code: "code",
       result: true,
     });
-    
+
     // Create a new pilot instance for each test
     pilot = new Pilot(mockConfig);
   });
@@ -123,7 +123,7 @@ describe("Pilot", () => {
         screenCapture,
       );
     });
-    
+
     it("should handle multiple steps in a single call", async () => {
       pilot.start();
       const intent1 = "tap button 1";
@@ -270,7 +270,7 @@ describe("Pilot", () => {
       ]);
     });
   });
-  
+
   describe("autopilot", () => {
     it("should execute an entire test flow using the provided goal", async () => {
       const goal = "test goal";
@@ -372,7 +372,9 @@ describe("Pilot", () => {
         review: pilotOutputSuccess.review,
       };
 
-      jest.spyOn(pilot["autoPerformer"], "perform").mockResolvedValue(expectedResult);
+      jest
+        .spyOn(pilot["autoPerformer"], "perform")
+        .mockResolvedValue(expectedResult);
 
       const result = await pilot.autopilot(goal);
 

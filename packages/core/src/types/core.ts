@@ -1,9 +1,5 @@
-import {
-  TestingFrameworkDriver,
-  TestingFrameworkAPICatalogCategory,
-} from "@/types/framework";
+import { TestingFrameworkDriver } from "@/types/framework";
 import { PromptHandler } from "@/types/prompt";
-import { AutoReport } from "@/types/auto";
 
 /**
  * Pilot behavior configuration options.

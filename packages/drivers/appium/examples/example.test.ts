@@ -9,7 +9,7 @@ describe("Example Test Suite", () => {
   before(async () => {
     const promptHandler: PromptHandler = new PromptHandler();
     frameworkDriver = new WebdriverIOAppiumFrameworkDriver();
-    
+
     pilot = new Pilot({
       frameworkDriver,
       promptHandler,

@@ -60,7 +60,7 @@ describe("Pilot Integration Tests", () => {
         digest: jest.fn().mockReturnValue("hash"),
       }),
     });
-    
+
     pilot = new Pilot({
       frameworkDriver: mockFrameworkDriver,
       promptHandler: mockPromptHandler,
@@ -492,7 +492,7 @@ describe("Pilot Integration Tests", () => {
           },
         },
       };
-      
+
       const spyPilotPerformerPerform = jest
         .spyOn(pilot["autoPerformer"], "perform")
         .mockResolvedValue(mockPilotReport);
@@ -507,14 +507,12 @@ describe("Pilot Integration Tests", () => {
     it("should handle errors from autoPerformer.perform", async () => {
       const goal = "Some goal that causes an error";
       const errorMessage = "Error during autopilot execution";
-      
+
       const spyPilotPerformerPerform = jest
         .spyOn(pilot["autoPerformer"], "perform")
         .mockRejectedValue(new Error(errorMessage));
 
-      await expect(pilot.autopilot(goal)).rejects.toThrow(
-        errorMessage,
-      );
+      await expect(pilot.autopilot(goal)).rejects.toThrow(errorMessage);
 
       expect(spyPilotPerformerPerform).toHaveBeenCalledTimes(1);
       expect(spyPilotPerformerPerform).toHaveBeenCalledWith(goal);
