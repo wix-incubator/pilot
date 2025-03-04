@@ -116,8 +116,8 @@ export class AutoPerformer {
     );
 
     let lastError: any = null;
-    let screenDescription = "";
-    let action = "";
+    let lastScreenDescription = "";
+    let lastAction = "";
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
@@ -141,10 +141,10 @@ export class AutoPerformer {
         });
 
         const { thoughts, ux, a11y, i18n } = outputs;
-        screenDescription = outputs.screenDescription;
-        action = outputs.action;
-        const plan: AutoStepPlan = { action, thoughts };
-        const goalAchieved = action === "success";
+        lastScreenDescription = outputs.screenDescription;
+        lastAction = outputs.action;
+        const plan: AutoStepPlan = { action: lastAction, thoughts };
+        const goalAchieved = lastAction === "success";
 
         analysisLoggerSpinner.stop("success", "💡 Next step ready", {
           message: plan.action,
@@ -166,7 +166,7 @@ export class AutoPerformer {
 
         if (review.ux || review.a11y || review.i18n) {
           logger.info({
-            message: `Conducting review for ${screenDescription}\n`,
+            message: `Conducting review for ${lastScreenDescription}\n`,
             isBold: true,
             color: "whiteBright",
           });
@@ -186,7 +186,7 @@ export class AutoPerformer {
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
           const cacheValue = await this.generateCacheValue(
             screenCapture,
-            screenDescription,
+            lastScreenDescription,
             plan,
             review,
             goalAchieved,
@@ -195,7 +195,7 @@ export class AutoPerformer {
           this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
         }
         return {
-          screenDescription,
+          screenDescription: lastScreenDescription,
           plan,
           review,
           goalAchieved,
@@ -214,8 +214,8 @@ export class AutoPerformer {
           previousSteps = [
             ...previousSteps,
             {
-              screenDescription,
-              step: action,
+              screenDescription: lastScreenDescription,
+              step: lastAction,
               error: errorMessage,
             },
           ];

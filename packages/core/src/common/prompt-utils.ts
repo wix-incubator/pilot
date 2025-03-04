@@ -1,8 +1,7 @@
-export function truncateString(str: string, limit: number) {
+export function truncateString(str: string, limit: number = 2000) {
   if (str.length <= limit) {
     return str;
   } else {
-    const safeStr = String(str);
-    return safeStr.slice(0, limit);
+    return str.slice(0, limit) + "...";
   }
 }

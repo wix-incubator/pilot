@@ -116,7 +116,7 @@ export class AutoPerformerPromptCreator {
               previousStep,
               index === previousSteps.length - 1,
             );
-            typeof error === "string" && stepDetails.push(error);
+            !!error && stepDetails.push(error);
 
             stepDetails.push("");
             return stepDetails;
@@ -418,7 +418,7 @@ The 'Profile' icon may not be properly adapted for different locales.
     isMostPreviousStep: boolean,
   ): string | undefined {
     if (previousStep.error && isMostPreviousStep) {
-      const truncatedError = truncateString(previousStep.error, 2000);
+      const truncatedError = truncateString(previousStep.error);
       return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
     }
     return undefined;

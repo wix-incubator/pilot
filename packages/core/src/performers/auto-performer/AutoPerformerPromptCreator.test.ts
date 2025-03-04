@@ -60,7 +60,7 @@ describe("PilotPromptCreator", () => {
       {
         screenDescription: "default 2",
         step: "enter username",
-        error: new Error("Failed to enter username"),
+        error: "Failed to enter username",
       },
     ];
 

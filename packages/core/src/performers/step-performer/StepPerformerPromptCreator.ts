@@ -259,7 +259,7 @@ export class StepPerformerPromptCreator {
     if (previousStep.result && !previousStep.error)
       return `- Result: ${previousStep.result}`;
     if (isMostPreviousStep && previousStep.error) {
-      const truncatedError = truncateString(previousStep.error, 2000);
+      const truncatedError = truncateString(previousStep.error);
       return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
     }
     return "";

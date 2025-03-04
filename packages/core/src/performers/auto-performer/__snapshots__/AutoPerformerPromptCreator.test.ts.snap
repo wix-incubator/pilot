@@ -40,7 +40,7 @@ No snapshot image is attached for this intent.
 - Intent: "enter username"
 - Error occurred in your previous attempt. Try another approach to perform this step. Error message:
 \`\`\`
-Error: Failed to enter username
+Failed to enter username
 \`\`\`
 
 

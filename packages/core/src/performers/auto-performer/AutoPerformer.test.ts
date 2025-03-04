@@ -575,7 +575,7 @@ describe("AutoPerformer", () => {
         {
           screenDescription: "",
           step: "",
-          error: expect.stringContaining("Failed to generate text"), // Matches even if "Error: " is missing
+          error: expect.stringContaining("Failed to generate text"),
         },
       ],
     );
