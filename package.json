@@ -1,60 +1,60 @@
 {
-    "name": "wix-pilot",
-    "private": true,
-    "version": "1.0.0",
-    "workspaces": [
-        "packages/*",
-        "packages/*/*"
+  "name": "wix-pilot",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*",
+    "packages/*/*"
+  ],
+  "scripts": {
+    "build": "npm run build:web-utils && npm run build:others",
+    "build:web-utils": "npm run build --workspace=@wix-pilot/web-utils",
+    "build:others": "npm run build --workspaces --if-present --exclude-workspace=@wix-pilot/web-utils",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "type-check": "npm run type-check --workspaces",
+    "watch": "node scripts/package-monitor.js"
+  },
+  "packageMonitor": {
+    "packages": {
+      "core": {
+        "path": "packages/core",
+        "buildCommand": "npm run build --workspace=@wix-pilot/core"
+      },
+      "web-utils": {
+        "path": "packages/drivers/web-utils",
+        "buildCommand": "npm run build --workspace=@wix-pilot/web-utils"
+      }
+    },
+    "watchPatterns": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.js",
+      "src/**/*.jsx"
     ],
-    "scripts": {
-        "build": "npm run build:web-utils && npm run build:others",
-        "build:web-utils": "npm run build --workspace=@wix-pilot/web-utils",
-        "build:others": "npm run build --workspaces --if-present --exclude-workspace=@wix-pilot/web-utils",
-        "test": "npm run test --workspaces",
-        "lint": "npm run lint --workspaces",
-        "lint:fix": "npm run lint:fix --workspaces",
-        "type-check": "npm run type-check --workspaces",
-        "watch": "node scripts/package-monitor.js"
-    },
-    "packageMonitor": {
-        "packages": {
-            "core": {
-                "path": "packages/core",
-                "buildCommand": "npm run build --workspace=@wix-pilot/core"
-            },
-            "web-utils": {
-                "path": "packages/drivers/web-utils",
-                "buildCommand": "npm run build --workspace=@wix-pilot/web-utils"
-            }
-        },
-        "watchPatterns": [
-            "src/**/*.ts",
-            "src/**/*.tsx",
-            "src/**/*.js",
-            "src/**/*.jsx"
-        ],
-        "ignorePatterns": [
-            "**/node_modules/**",
-            "**/dist/**",
-            "**/*.test.ts",
-            "**/*.test.tsx",
-            "**/*.test.js",
-            "**/*.test.jsx"
-        ],
-        "debounceMs": 300
-    },
-    "devDependencies": {
-        "@types/jest": "^29.5.12",
-        "@typescript-eslint/eslint-plugin": "^6.21.0",
-        "@typescript-eslint/parser": "^6.21.0",
-        "@wix-pilot/core": "^3.0.0",
-        "eslint": "^8.56.0",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint-plugin-prettier": "^5.1.3",
-        "jest": "^29.7.0",
-        "prettier": "^3.2.5",
-        "ts-jest": "^29.2.4",
-        "tsc-alias": "^1.8.10",
-        "typescript": "^5.3.3"
-    }
+    "ignorePatterns": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.test.js",
+      "**/*.test.jsx"
+    ],
+    "debounceMs": 300
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@wix-pilot/core": "^3.0.4",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.2.4",
+    "tsc-alias": "^1.8.10",
+    "typescript": "^5.3.3"
+  }
 }

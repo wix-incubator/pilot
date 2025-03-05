@@ -1,41 +1,41 @@
 {
-    "name": "@wix-pilot/puppeteer",
-    "version": "1.0.1",
-    "description": "Puppeteer driver for Wix Pilot usage",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/wix-incubator/pilot.git"
-    },
-    "scripts": {
-        "build": "tsc && tsc-alias",
-        "test": "echo No tests avialable for this package",
-        "test:example": "jest",
-        "release:patch": "node ../../../scripts/release-package.js patch",
-        "release:minor": "node ../../../scripts/release-package.js minor",
-        "release:major": "node ../../../scripts/release-package.js major",
-        "lint": "eslint . --ext .ts",
-        "lint:fix": "eslint . --ext .ts --fix",
-        "type-check": "tsc --noEmit"
-    },
-    "bugs": {
-        "url": "https://github.com/wix-incubator/pilot/issues"
-    },
-    "dependencies": {
-        "@wix-pilot/web-utils": "^1.0.0"
-    },
-    "devDependencies": {
-        "puppeteer": "^20.8.0",
-        "axios": "^1.7.9"
-    },
-    "peerDependencies": {
-        "@wix-pilot/core": "^3.0.0"
-    }
+  "name": "@wix-pilot/puppeteer",
+  "version": "1.0.1",
+  "description": "Puppeteer driver for Wix Pilot usage",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wix-incubator/pilot.git"
+  },
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "test": "echo No tests avialable for this package",
+    "test:example": "jest",
+    "release:patch": "node ../../../scripts/release-package.js patch",
+    "release:minor": "node ../../../scripts/release-package.js minor",
+    "release:major": "node ../../../scripts/release-package.js major",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/wix-incubator/pilot/issues"
+  },
+  "dependencies": {
+    "@wix-pilot/web-utils": "^1.0.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^20.8.0",
+    "axios": "^1.7.9"
+  },
+  "peerDependencies": {
+    "@wix-pilot/core": "^3.0.4"
+  }
 }
