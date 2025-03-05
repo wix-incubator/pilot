@@ -42,7 +42,7 @@ describe("Pilot Integration Tests", () => {
         context: {},
         categories: [],
       },
-      driverConfig: { shouldUseScreenSync: true },
+      driverConfig: { useSnapshotStabilitySync: true },
     };
 
     mockPromptHandler = {
@@ -497,7 +497,7 @@ describe("Pilot Integration Tests", () => {
         },
         captureSnapshotImage: jest.fn(),
         captureViewHierarchyString: jest.fn(),
-        driverConfig: { shouldUseScreenSync: true },
+        driverConfig: { useSnapshotStabilitySync: true },
       };
 
       Pilot.init({

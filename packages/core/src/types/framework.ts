@@ -28,10 +28,10 @@ export interface TestingFrameworkDriver {
 /**
  * Additional driver configuration.
  *
- * @property shouldUseScreenSync - Indicates whether the driver should use wait for screen stability.
+ * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
  */
 export type TestingFrameworkDriverConfig = {
-  shouldUseScreenSync: boolean;
+  useSnapshotStabilitySync: boolean;
 };
 
 /**

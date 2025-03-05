@@ -14,7 +14,7 @@ export class SnapshotManager {
     ) => Promise<string> = downscaleImage,
   ) {}
 
-  private async waitForStableState<T>(
+  private async captureSnapshotsUntilStable<T>(
     captureFunc: () => Promise<T | undefined>,
     compareFunc: (current: T, last: T) => Promise<boolean> | boolean,
     pollInterval: number = DEFAULT_POLL_INTERVAL,
@@ -72,8 +72,8 @@ export class SnapshotManager {
     timeout?: number,
     stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
-    return this.driver.driverConfig.shouldUseScreenSync
-      ? this.waitForStableState(
+    return this.driver.driverConfig.useSnapshotStabilitySync
+      ? this.captureSnapshotsUntilStable(
           async () => this.captureDownscaledImage(),
           (current, last) =>
             this.compareSnapshots(current, last, stabilityThreshold),

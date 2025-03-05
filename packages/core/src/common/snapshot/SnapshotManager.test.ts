@@ -12,7 +12,7 @@ describe("SnapshotManager", () => {
     mockDriver = {
       captureSnapshotImage: jest.fn(),
       captureViewHierarchyString: jest.fn(),
-      driverConfig: { shouldUseScreenSync: true },
+      driverConfig: { useSnapshotStabilitySync: true },
     } as any;
 
     mockSnapshotComparator = {
