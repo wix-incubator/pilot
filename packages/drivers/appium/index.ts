@@ -141,7 +141,7 @@ export class WebdriverIOAppiumFrameworkDriver
               await (await $('~loginButton')).waitForEnabled();
               await (await $('~loginButton')).click();`,
               guidelines: [
-                "Before clicking on an element make sure it is enabled",
+                "Allways use await (await $('~element')).waitForEnabled() before clicking on the element",
               ],
             },
             {
@@ -194,6 +194,15 @@ await (await $('~draggable')).dragAndDrop(
               example: `await expect(await $('~loginButton')).toBeDisplayed();`,
               guidelines: [
                 "Use this matcher to verify that the element is visible to the user.",
+              ],
+            },
+            {
+              signature: `.waitForEnabled()()`,
+              description:
+                "Waits until the element is enabled and ready to be clicked",
+              example: `await (await $('~usernameInput')).waitForEnabled();`,
+              guidelines: [
+                "Allways use this before clicking on an element",
               ],
             },
             {
@@ -305,31 +314,6 @@ await driver.setGeoLocation({
 });
               `,
             },
-            {
-              signature: `driver.getContext() / driver.switchContext(name: string)`,
-              description:
-                "Gets or switches the current context (NATIVE_APP or WEBVIEW_xxx).",
-              example: `
-const contexts = await driver.getContexts();
-await driver.switchContext(contexts[1]); // Switch to webview
-await driver.switchContext('NATIVE_APP'); // Switch back
-              `,
-            },
-            {
-              signature: `driver.rotate(params: { x: number; y: number; duration: number; radius: number; rotation: number; touchCount: number })`,
-              description:
-                "Simulates a rotation gesture on the device (iOS only).",
-              example: `
-await driver.rotate({
-  x: 100,
-  y: 100,
-  duration: 2,
-  radius: 50,
-  rotation: 180,
-  touchCount: 2
-});
-              `,
-            },
           ],
         },
         {
@@ -363,53 +347,6 @@ await driver.performTouchAction({
               signature: `driver.toggleAirplaneMode() (Android)`,
               description: "Toggles the Airplane mode on an Android device.",
               example: `await driver.toggleAirplaneMode();`,
-            },
-          ],
-        },
-        {
-          title: "Web APIs (Hybrid / Mobile Web)",
-          items: [
-            {
-              signature: `driver.switchContext('WEBVIEW')`,
-              description:
-                "Switches the context from native to web view (if a webview is present).",
-              example: `
-const contexts = await driver.getContexts();
-await driver.switchContext(contexts.find(c => c.includes('WEBVIEW')));
-              `,
-              guidelines: [
-                "Use this when your app has a webview or is a hybrid app.",
-              ],
-            },
-            {
-              signature: `$('css or xpath').click()`,
-              description:
-                "In a webview context, click (tap) a web element using CSS or XPath.",
-              example: `await (await $('button#login')).click();`,
-            },
-            {
-              signature: `$('selector').setValue('text')`,
-              description:
-                "In a webview context, sets text in a web input field.",
-              example: `await (await $('input#username')).setValue('myusername');`,
-            },
-            {
-              signature: `.getText()`,
-              description:
-                "Retrieves the visible text of a web element (hybrid/web context).",
-              example: `
-const text = await (await $('h1.main-title')).getText();
-expect(text).toBe('Welcome to My App');
-              `,
-            },
-            {
-              signature: `driver.executeScript(script: string, args?: any[])`,
-              description: "Executes JavaScript in the context of the webview.",
-              example: `
-await driver.executeScript("document.getElementById('hidden-button').click()");
-const title = await driver.executeScript('return document.title');
-expect(title).toBe('My Page Title');
-              `,
             },
           ],
         },
