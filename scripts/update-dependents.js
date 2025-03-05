@@ -26,6 +26,9 @@ const newVersion = versionParam.includes('@')
   ? versionParam.split('@').pop() 
   : versionParam;
 
+// Remove 'v' prefix if present
+const cleanVersion = newVersion.replace(/^v/, '');
+
 // Find all package.json files in the monorepo
 const findPackageJsonFiles = (dir, fileList = []) => {
   const files = fs.readdirSync(dir);
@@ -61,19 +64,19 @@ packageJsonFiles.forEach(filePath => {
   
   // Check and update dependencies
   if (packageJson.dependencies && packageJson.dependencies[packageName]) {
-    packageJson.dependencies[packageName] = `^${newVersion}`;
+    packageJson.dependencies[packageName] = `^${cleanVersion}`;
     updated = true;
   }
   
   // Check and update devDependencies
   if (packageJson.devDependencies && packageJson.devDependencies[packageName]) {
-    packageJson.devDependencies[packageName] = `^${newVersion}`;
+    packageJson.devDependencies[packageName] = `^${cleanVersion}`;
     updated = true;
   }
   
   // Check and update peerDependencies
   if (packageJson.peerDependencies && packageJson.peerDependencies[packageName]) {
-    packageJson.peerDependencies[packageName] = `^${newVersion}`;
+    packageJson.peerDependencies[packageName] = `^${cleanVersion}`;
     updated = true;
   }
   
@@ -86,14 +89,14 @@ packageJsonFiles.forEach(filePath => {
 
 // If any packages were updated, create a commit
 if (updatedPackages.length > 0) {
-  console.log(`Updated ${updatedPackages.length} dependent packages to use ${packageName}@${newVersion}`);
+  console.log(`Updated ${updatedPackages.length} dependent packages to use ${packageName}@${cleanVersion}`);
   
   try {
     // Add all updated package.json files to git
     execSync('git add ' + updatedPackages.join(' '), { stdio: 'inherit' });
     
     // Create a commit with the package updates
-    execSync(`git commit -m "chore: update dependents to use ${packageName}@${newVersion}"`, { stdio: 'inherit' });
+    execSync(`git commit -m "chore: update dependents to use ${packageName} v${cleanVersion}"`, { stdio: 'inherit' });
     
     console.log('Created commit with dependent package updates');
   } catch (error) {

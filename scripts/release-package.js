@@ -37,7 +37,7 @@ try {
 
   // Commit version bump
   console.log('Committing version bump...');
-  execSync(`git commit -am "chore: bump ${releaseType} version of ${packageName} to ${newVersion}"`, { stdio: 'inherit' });
+  execSync(`git commit -am "chore: bump ${releaseType} version of ${packageName} to v${newVersion}"`, { stdio: 'inherit' });
 
   // Build package
   console.log('Building package...');
@@ -49,7 +49,7 @@ try {
 
   // Update dependencies in other packages
   console.log('Updating dependent packages...');
-  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${packageName}@${newVersion}`, {
+  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${newVersion}`, {
     stdio: 'inherit',
   });
 
