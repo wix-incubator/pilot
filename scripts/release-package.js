@@ -34,7 +34,7 @@ try {
   // Bump version
   console.log(`Bumping ${releaseType} version...`);
   const versionOutput = execSync(`npm version ${releaseType} --no-git-tag-version`).toString().trim();
-  const newVersion = versionOutput.replace(/^v/, '');
+  const cleanVersion = versionOutput.split('\n').find(line => line.startsWith('v')).replace('v', '');
 
   // Build package
   console.log('Building package...');
@@ -42,7 +42,7 @@ try {
 
   // Commit version bump with consistent message format
   console.log('Committing version bump...');
-  execSync(`git commit -am "chore: bump ${releaseType} version of ${packageName} to v${newVersion}"`, { stdio: 'inherit' });
+  execSync(`git commit -am "chore: bump ${releaseType} version to v${cleanVersion}"`, { stdio: 'inherit' });
 
   // Check if we should skip publishing
   const skipPublish = process.env.SKIP_PUBLISH === 'true';
@@ -56,7 +56,7 @@ try {
 
   // Update dependencies in other packages
   console.log('Updating dependent packages...');
-  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${newVersion}`, {
+  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${cleanVersion}`, {
     stdio: 'inherit',
   });
 
@@ -64,7 +64,7 @@ try {
   console.log('Pushing changes to git...');
   execSync('git push', { stdio: 'inherit' });
 
-  console.log(`Successfully released ${packageName}@${newVersion}`);
+  console.log(`Successfully released ${packageName}@${cleanVersion}`);
 } catch (error) {
   console.error('Release failed:', error.message);
   process.exit(1);
