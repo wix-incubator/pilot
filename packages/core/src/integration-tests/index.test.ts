@@ -460,7 +460,6 @@ describe("Pilot Integration Tests", () => {
         driverConfig: { useSnapshotStabilitySync: true },
       };
 
-      Pilot.init({
       // Use the standard pilot instance
       pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
