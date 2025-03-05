@@ -115,7 +115,7 @@ export class AutoPerformer {
       },
     );
 
-    let lastError: any = null;
+    const lastError: any = null;
     let lastScreenDescription = "";
     let lastAction = "";
 
@@ -202,7 +202,6 @@ export class AutoPerformer {
           summary,
         };
       } catch (error) {
-        lastError = error;
         const errorMessage = error instanceof Error ? error.message : error;
         logger.warn(
           `💥 Auto-Pilot attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
@@ -219,15 +218,16 @@ export class AutoPerformer {
               error: errorMessage,
             },
           ];
+        } else {
+          analysisLoggerSpinner.stop(
+            "failure",
+            `😓 Auto-Pilot encountered an error: ${errorMessage}`,
+          );
+          throw lastError;
         }
       }
     }
-
-    analysisLoggerSpinner.stop(
-      "failure",
-      `😓 Auto-Pilot encountered an error: ${lastError instanceof Error ? lastError.message : String(lastError)}`,
-    );
-    throw lastError;
+    throw new Error("Auto-Pilot failed to reach a decision");
   }
 
   async perform(goal: string): Promise<AutoReport> {
