@@ -37,7 +37,7 @@ export class WebdriverIOAppiumFrameworkDriver
    * Captures a screenshot of the current device screen and saves it to a temp directory.
    * Returns the path to the saved screenshot if successful, or undefined otherwise.
    */
-  async captureSnapshotImage(): Promise<string | undefined> {
+  async captureSnapshotImage(_: boolean): Promise<string | undefined> {
     const tempDir = "temp";
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);

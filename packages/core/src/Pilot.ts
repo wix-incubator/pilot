@@ -179,7 +179,7 @@ export class Pilot {
     this.assertIsRunning();
 
     const screenCapture: ScreenCapturerResult =
-      await this.screenCapturer.capture();
+      await this.screenCapturer.capture(true);
 
     const { code, result } = await this.stepPerformer.perform(
       step,

@@ -59,8 +59,10 @@ export class SnapshotManager {
     );
   }
 
-  private async captureDownscaledImage(): Promise<string | undefined> {
-    const imagePath = await this.driver.captureSnapshotImage();
+  private async captureDownscaledImage(
+    useHighlights: boolean,
+  ): Promise<string | undefined> {
+    const imagePath = await this.driver.captureSnapshotImage(useHighlights);
     if (imagePath) {
       const downscaledImagePath = await this.downscaleImage(imagePath);
       return downscaledImagePath;
@@ -68,19 +70,20 @@ export class SnapshotManager {
   }
 
   async captureSnapshotImage(
+    useHighlights: boolean,
     pollInterval?: number,
     timeout?: number,
     stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
     return this.driver.driverConfig.useSnapshotStabilitySync
       ? this.captureSnapshotsUntilStable(
-          async () => this.captureDownscaledImage(),
+          async () => this.captureDownscaledImage(useHighlights),
           (current, last) =>
             this.compareSnapshots(current, last, stabilityThreshold),
           pollInterval,
           timeout,
         )
-      : await this.captureDownscaledImage();
+      : await this.captureDownscaledImage(useHighlights);
   }
 
   async captureViewHierarchyString(): Promise<string> {

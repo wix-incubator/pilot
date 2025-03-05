@@ -54,8 +54,10 @@ export class PlaywrightFrameworkDriver implements TestingFrameworkDriver {
   /**
    * @inheritdoc
    */
-  async captureSnapshotImage(): Promise<string | undefined> {
-    return await this.driverUtils.captureSnapshotImage();
+  async captureSnapshotImage(
+    useHighlights: boolean,
+  ): Promise<string | undefined> {
+    return await this.driverUtils.captureSnapshotImage(useHighlights);
   }
 
   /**
