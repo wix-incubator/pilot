@@ -1,94 +1,213 @@
-import fs from "fs";
+import { CacheOptions } from "@/types";
+import { AtomicOperationQueue } from "./atomicFileOperations";
+import {
+  ensureDirectoryExists,
+  readJsonFile,
+  writeJsonFile,
+} from "./fileSystem";
 import path from "path";
-import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
+import * as crypto from "crypto";
+import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
+import { SnapshotData, SnapshotHashObject } from "@/types/cache";
 
+/**
+ * Manages caching operations for performers, with file persistence and hash-based lookups
+ */
 export class CacheHandler {
-  private cache: Map<string, any> = new Map();
-  private temporaryCache: Map<string, any> = new Map();
-  private readonly cacheFilePath: string;
-  private cacheOptions?: CacheOptions;
+  private static readonly CACHE_DIRECTORY = "__pilot_cache__";
+  private static readonly DEFAULT_CACHE_FILENAME = "global.json";
 
-  constructor(
-    cacheOptions: CacheOptions = {},
-    cacheFileName: string = "wix_pilot_cache.json",
-  ) {
-    this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
-    this.cacheOptions = {
-      shouldUseCache: cacheOptions.shouldUseCache ?? true,
-      shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
+  private cache = new Map<string, unknown[]>();
+  private tempCache = new Map<string, unknown[]>();
+  private fileOperationQueue = new AtomicOperationQueue();
+  private callerFilePath?: string;
+  private readonly options: Required<CacheOptions>;
+
+  constructor(options: CacheOptions = {}) {
+    this.options = {
+      shouldUseCache: options.shouldUseCache ?? true,
+      shouldOverrideCache: options.shouldOverrideCache ?? false,
     };
+
+    this.loadCacheFromFile();
+  }
+
+  public setCallerFilePath(callerPath: string): void {
+    if (!callerPath) {
+      throw new Error("Cannot set empty test file path");
+    }
+
+    this.callerFilePath = path.resolve(callerPath);
+    this.loadCacheFromFile();
   }
 
   public loadCacheFromFile(): void {
-    try {
-      if (fs.existsSync(this.cacheFilePath)) {
-        const data = fs.readFileSync(this.cacheFilePath, "utf-8");
-        const json = JSON.parse(data);
-        this.cache = new Map(Object.entries(json));
-      } else {
-        this.cache.clear(); // Ensure cache is empty if file doesn't exist
-      }
-    } catch (error) {
-      console.warn("Error loading cache from file:", error);
-      this.cache.clear(); // Clear cache on error to avoid stale data
-    }
+    const cacheFilePath = this.getCacheFilePath();
+    ensureDirectoryExists(path.dirname(cacheFilePath));
+
+    const fileData = readJsonFile<Record<string, unknown[]>>(cacheFilePath);
+    this.cache = fileData ? new Map(Object.entries(fileData)) : new Map();
   }
 
-  private saveCacheToFile(): void {
-    try {
-      const json = Object.fromEntries(this.cache);
-      fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
-        flag: "w+",
-      });
-    } catch (error) {
-      console.error("Error saving cache to file:", error);
-    }
-  }
-
-  public getStepFromCache(key: string): any | undefined {
-    if (this.shouldOverrideCache()) {
+  public getStepFromCache(key: string): unknown[] | undefined {
+    if (this.options.shouldOverrideCache) {
       return undefined;
     }
     return this.cache.get(key);
   }
 
-  public addToTemporaryCache(key: string, value: any): void {
-    this.temporaryCache.set(key, [
-      ...(this.temporaryCache.get(key) ?? []),
-      value,
-    ]);
+  public addToTemporaryCache(key: string, value: unknown): void {
+    const existingValues = this.tempCache.get(key) ?? [];
+    this.tempCache.set(key, [...existingValues, value]);
   }
 
   public flushTemporaryCache(): void {
-    this.temporaryCache.forEach((value, key) => {
-      this.cache.set(key, value);
-    });
+    for (const [key, values] of this.tempCache.entries()) {
+      const existingValues = this.cache.get(key) ?? [];
+      this.cache.set(key, [...existingValues, ...values]);
+    }
+
     this.saveCacheToFile();
     this.clearTemporaryCache();
   }
 
   public clearTemporaryCache(): void {
-    this.temporaryCache.clear();
+    this.tempCache.clear();
   }
 
-  public generateCacheKey(
-    currentGoal: string,
-    previous: PreviousStep[] | AutoPreviousStep[],
+  public getCallerFilePath(): string | undefined {
+    return this.callerFilePath;
+  }
+
+  public isCacheInUse(): boolean {
+    return this.options.shouldUseCache;
+  }
+
+  private getCacheFilePath(): string {
+    return this.callerFilePath
+      ? this.getCallerCacheFilePath()
+      : this.getDefaultCacheFilePath();
+  }
+
+  private getCallerCacheFilePath(): string {
+    if (!this.callerFilePath) {
+      return this.getDefaultCacheFilePath();
+    }
+
+    const callerDir = path.dirname(this.callerFilePath);
+    const fileName = path.basename(
+      this.callerFilePath,
+      path.extname(this.callerFilePath),
+    );
+
+    return path.join(
+      callerDir,
+      CacheHandler.CACHE_DIRECTORY,
+      `${fileName}.json`,
+    );
+  }
+
+  private getDefaultCacheFilePath(): string {
+    return path.resolve(
+      process.cwd(),
+      CacheHandler.CACHE_DIRECTORY,
+      CacheHandler.DEFAULT_CACHE_FILENAME,
+    );
+  }
+
+  private saveCacheToFile(): void {
+    this.fileOperationQueue.execute(() => {
+      const cacheFilePath = this.getCacheFilePath();
+      const jsonData = Object.fromEntries(this.cache);
+      writeJsonFile(cacheFilePath, jsonData);
+    });
+  }
+
+  /**
+   * Generates a standardized cache key
+   */
+  public generateCacheKey<T>(
+    identifier: string,
+    previous: T[],
+    options: {
+      keyName: string;
+      previousKeyName: string;
+      mapFn: (item: T) => any;
+    },
   ): string | undefined {
     if (!this.isCacheInUse()) {
       return undefined;
     }
 
-    const cacheKeyData: any = { currentGoal, previous };
+    const cacheKeyData = {
+      [options.keyName]: identifier,
+      [options.previousKeyName]: previous.map(options.mapFn),
+    };
 
     return JSON.stringify(cacheKeyData);
   }
 
-  private shouldOverrideCache() {
-    return this.cacheOptions?.shouldOverrideCache;
+  public hashViewHierarchy(viewHierarchy: string): string {
+    return crypto.createHash("md5").update(viewHierarchy).digest("hex");
   }
 
-  public isCacheInUse() {
-    return this.cacheOptions?.shouldUseCache !== false;
+  public async generateSnapshotHash(
+    snapshot: string | undefined,
+    comparator: SnapshotComparator,
+  ): Promise<SnapshotHashObject | undefined> {
+    return snapshot ? comparator.generateHashes(snapshot) : undefined;
+  }
+
+  public async generateCacheHashes(
+    viewHierarchy: string,
+    snapshot: string | undefined,
+    comparator: SnapshotComparator,
+  ): Promise<{
+    viewHierarchyHash: string;
+    snapshotHash?: SnapshotHashObject;
+  }> {
+    return {
+      viewHierarchyHash: this.hashViewHierarchy(viewHierarchy),
+      snapshotHash: await this.generateSnapshotHash(snapshot, comparator),
+    };
+  }
+
+  /**
+   * Finds matching cache entry by comparing snapshots or view hierarchy hashes
+   */
+  public async findInCache<T extends SnapshotData>(
+    cachedValues: T[],
+    viewHierarchy: string,
+    snapshot: string | undefined,
+    comparator: SnapshotComparator,
+  ): Promise<T | undefined> {
+    if (snapshot) {
+      const snapshotHash = await this.generateSnapshotHash(
+        snapshot,
+        comparator,
+      );
+
+      const matchedBySnapshot = cachedValues.find(
+        (cachedValue) =>
+          cachedValue.snapshotHash &&
+          snapshotHash &&
+          comparator.compareSnapshot(snapshotHash, cachedValue.snapshotHash),
+      );
+
+      if (matchedBySnapshot) {
+        return matchedBySnapshot;
+      }
+    }
+
+    const viewHierarchyHash = this.hashViewHierarchy(viewHierarchy);
+    const matchedByViewHierarchy = cachedValues.find(
+      (cachedValue) => cachedValue.viewHierarchyHash === viewHierarchyHash,
+    );
+
+    if (matchedByViewHierarchy) {
+      return matchedByViewHierarchy;
+    }
+
+    return undefined;
   }
 }
