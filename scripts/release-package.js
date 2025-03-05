@@ -49,9 +49,8 @@ try {
 
   // Update dependencies in other packages
   console.log('Updating dependent packages...');
-  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${newVersion}`, {
+  execSync(`node ${path.join(__dirname, 'update-dependents.js')} ${packageName} ${packageName}@${newVersion}`, {
     stdio: 'inherit',
-    cwd: path.resolve(__dirname, '..'),
   });
 
   // Push changes to git

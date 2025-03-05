@@ -13,13 +13,18 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const [packageName, newVersion] = process.argv.slice(2);
+const [packageName, versionParam] = process.argv.slice(2);
 
-if (!packageName || !newVersion) {
-  console.error('Please provide package name and new version');
-  console.error('Usage: node update-dependents.js <package-name> <new-version>');
+if (!packageName || !versionParam) {
+  console.error('Please provide package name and version parameter');
+  console.error('Usage: node update-dependents.js <package-name> <package-name@new-version>');
   process.exit(1);
 }
+
+// Extract version from the package-name@version format
+const newVersion = versionParam.includes('@') 
+  ? versionParam.split('@').pop() 
+  : versionParam;
 
 // Find all package.json files in the monorepo
 const findPackageJsonFiles = (dir, fileList = []) => {
