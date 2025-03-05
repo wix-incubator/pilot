@@ -59,7 +59,9 @@ export class SnapshotManager {
     );
   }
 
-  private async captureDownscaledImage(useHighlights: boolean,): Promise<string | undefined> {
+  private async captureDownscaledImage(
+    useHighlights: boolean,
+  ): Promise<string | undefined> {
     const imagePath = await this.driver.captureSnapshotImage(useHighlights);
     if (imagePath) {
       const downscaledImagePath = await this.downscaleImage(imagePath);
