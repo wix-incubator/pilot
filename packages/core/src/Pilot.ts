@@ -16,6 +16,7 @@ import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotCompara
 import { SnapshotManager } from "@/common/snapshot/SnapshotManager";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import downscaleImage from "@/common/snapshot/downscaleImage";
+import { determineCalleeFilePath } from "@/common/stackTraceUtils";
 
 /**
  * The main Pilot class that provides AI-assisted testing capabilities for a given underlying testing framework.
@@ -112,6 +113,11 @@ export class Pilot {
       throw new PilotError(
         "Pilot was already started. Please call the `end()` method before starting a new test flow.",
       );
+    }
+
+    const callerFilePath = determineCalleeFilePath(4);
+    if (callerFilePath) {
+      this.cacheHandler.setCallerFilePath(callerFilePath);
     }
 
     this.running = true;

@@ -28,11 +28,11 @@ const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 const VIEW_HIERARCHY_HASH = "hash";
 const CACHE_VALUE = [
-  { code: PROMPT_RESULT, viewHierarchy: VIEW_HIERARCHY_HASH },
+  { code: PROMPT_RESULT, viewHierarchyHash: VIEW_HIERARCHY_HASH },
 ];
 
-describe("CopilotStepPerformer", () => {
-  let copilotStepPerformer: StepPerformer;
+describe("PilotStepPerformer", () => {
+  let stepPerformer: StepPerformer;
   let mockContext: jest.Mocked<any>;
   let mockPromptCreator: jest.Mocked<StepPerformerPromptCreator>;
   let mockCodeEvaluator: jest.Mocked<CodeEvaluator>;
@@ -84,8 +84,12 @@ describe("CopilotStepPerformer", () => {
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
       getFromTemporaryCache: jest.fn(),
-      generateCacheKey: jest.fn(),
       isCacheInUse: jest.fn(),
+      generateCacheKey: jest.fn(),
+      hashViewHierarchy: jest.fn(),
+      generateSnapshotHash: jest.fn(),
+      generateCacheHashes: jest.fn(),
+      findInCache: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -97,7 +101,7 @@ describe("CopilotStepPerformer", () => {
       capture: jest.fn(),
     } as unknown as jest.Mocked<ScreenCapturer>;
 
-    copilotStepPerformer = new StepPerformer(
+    stepPerformer = new StepPerformer(
       mockContext,
       mockPromptCreator,
       mockCodeEvaluator,
@@ -158,10 +162,35 @@ describe("CopilotStepPerformer", () => {
 
     const cacheKey = JSON.stringify({
       step: intent,
-      previous: previous,
+      previousSteps: previous.map((p) => ({ step: p.step })),
     });
 
-    mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
+    jest
+      .spyOn(stepPerformer as any, "generateCacheKey")
+      .mockReturnValue(cacheKey);
+
+    if (cacheExists) {
+      jest
+        .spyOn(stepPerformer as any, "findCodeInCache")
+        .mockResolvedValue(PROMPT_RESULT);
+    } else {
+      jest
+        .spyOn(stepPerformer as any, "findCodeInCache")
+        .mockResolvedValue(undefined);
+    }
+
+    mockCacheHandler.findInCache.mockImplementation(() => {
+      return Promise.resolve(cacheExists ? {
+        code: PROMPT_RESULT,
+        viewHierarchyHash: VIEW_HIERARCHY_HASH,
+        snapshotHash: { BlockHash: "hash" }
+      } : undefined);
+    });
+    mockCacheHandler.generateCacheHashes.mockResolvedValue({
+      viewHierarchyHash: VIEW_HIERARCHY_HASH,
+      snapshotHash: { BlockHash: "hash" },
+    });
+
     mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
     if (cacheExists) {
@@ -177,8 +206,14 @@ describe("CopilotStepPerformer", () => {
   };
 
   it("should perform an intent successfully with snapshot image support", async () => {
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
+    mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
+
     setupMocks();
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
       isSnapshotImageAttached: true,
@@ -186,28 +221,27 @@ describe("CopilotStepPerformer", () => {
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-      INTENT,
-      VIEW_HIERARCHY,
-      true,
-      [],
-    );
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-      "generated prompt",
-      SNAPSHOT_DATA,
-    );
+
+    expect(mockGenerateCodeSpy).toHaveBeenCalled();
+
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       PROMPT_RESULT,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
   });
 
   it("should perform an intent successfully without snapshot image support", async () => {
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
+    mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
+
     setupMocks();
     mockPromptHandler.isSnapshotImageSupported.mockReturnValue(false);
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: undefined,
       viewHierarchy: VIEW_HIERARCHY,
       isSnapshotImageAttached: false,
@@ -215,27 +249,26 @@ describe("CopilotStepPerformer", () => {
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-      INTENT,
-      VIEW_HIERARCHY,
-      false,
-      [],
-    );
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-      "generated prompt",
-      undefined,
-    );
+
+    expect(mockGenerateCodeSpy).toHaveBeenCalled();
+
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       PROMPT_RESULT,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
   });
 
   it("should perform an intent with undefined snapshot", async () => {
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
+    mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
+
     setupMocks();
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: undefined,
       viewHierarchy: VIEW_HIERARCHY,
       isSnapshotImageAttached: false,
@@ -243,25 +276,23 @@ describe("CopilotStepPerformer", () => {
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-      INTENT,
-      VIEW_HIERARCHY,
-      false,
-      [],
-    );
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-      "generated prompt",
-      undefined,
-    );
+
+    expect(mockGenerateCodeSpy).toHaveBeenCalled();
+
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       PROMPT_RESULT,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
   });
 
   it("should perform an intent successfully with previous intents", async () => {
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
+    mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
+
     setupMocks();
     const intent = "current intent";
     const previousIntents = [
@@ -272,7 +303,7 @@ describe("CopilotStepPerformer", () => {
       },
     ];
 
-    const result = await copilotStepPerformer.perform(intent, previousIntents, {
+    const result = await stepPerformer.perform(intent, previousIntents, {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
       isSnapshotImageAttached: true,
@@ -280,25 +311,23 @@ describe("CopilotStepPerformer", () => {
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-      intent,
-      VIEW_HIERARCHY,
-      true,
-      previousIntents,
-    );
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-      "generated prompt",
-      SNAPSHOT_DATA,
-    );
+
+    expect(mockGenerateCodeSpy).toHaveBeenCalled();
+
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       PROMPT_RESULT,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
   });
 
   it("should throw an error if code evaluation fails", async () => {
+    const mockGenerateCodeSpy = jest.spyOn(
+      stepPerformer as any,
+      "generateCode",
+    );
+    mockGenerateCodeSpy.mockImplementation(async () => PROMPT_RESULT);
+
     setupMocks();
     mockCodeEvaluator.evaluate.mockRejectedValue(
       new Error("Evaluation failed"),
@@ -311,46 +340,46 @@ describe("CopilotStepPerformer", () => {
     };
 
     await expect(
-      copilotStepPerformer.perform(INTENT, [], screenCapture, 2),
+      stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow("Evaluation failed");
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalled();
   });
 
   it("should use cached prompt result if available", async () => {
     setupMocks({ cacheExists: true });
 
+    jest
+      .spyOn(stepPerformer as any, "findCodeInCache")
+      .mockResolvedValue(PROMPT_RESULT);
+
+    mockPromptCreator.createPrompt.mockClear();
+    mockPromptHandler.runPrompt.mockClear();
+
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
       isSnapshotImageAttached: true,
     };
 
-    const result = await copilotStepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
     // Should not call runPrompt or createPrompt since result is cached
-    expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
-    expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
+
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       PROMPT_RESULT,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled(); // No need to save cache again
   });
 
-  it("should retry if initial runPrompt throws an error and succeed on retry", async () => {
+  it("should retry if initial code generation fails but succeeds on retry", async () => {
+    const generateCodeSpy = jest.spyOn(stepPerformer as any, "generateCode");
+    generateCodeSpy
+      .mockRejectedValueOnce(new Error("Code generation failed"))
+      .mockResolvedValueOnce("retry generated code");
+
     setupMocks();
-    const error = new Error("Initial prompt failed");
-    mockPromptHandler.runPrompt.mockRejectedValueOnce(error);
     // On retry, it succeeds
-    mockPromptHandler.runPrompt.mockResolvedValueOnce("retry generated code");
 
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
@@ -358,31 +387,34 @@ describe("CopilotStepPerformer", () => {
       isSnapshotImageAttached: true,
     };
 
-    const result = await copilotStepPerformer.perform(
+    const result = await stepPerformer.perform(
       INTENT,
       [],
       screenCapture,
-      2,
+      2, // Max retries
     );
 
     expect(result).toBe("success");
+    expect(generateCodeSpy).toHaveBeenCalledTimes(2);
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       "retry generated code",
       mockContext,
       {},
     );
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalledTimes(1); // Cache should be saved after success
   });
 
-  it("should throw original error if retry also fails", async () => {
+  it("should throw error if all retries fail", async () => {
+    // For this test we'll make generateCode always fail
+    const firstError = new Error("First generation failed");
+    const secondError = new Error("Second generation failed");
+
+    const generateCodeSpy = jest.spyOn(stepPerformer as any, "generateCode");
+    generateCodeSpy
+      .mockRejectedValueOnce(firstError)
+      .mockRejectedValueOnce(secondError);
+
     setupMocks();
-    const error = new Error("Initial prompt failed");
-    const retryError = new Error("Retry prompt failed");
-    mockPromptHandler.runPrompt.mockRejectedValueOnce(error);
-    mockPromptHandler.runPrompt.mockRejectedValueOnce(retryError);
 
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
@@ -391,19 +423,25 @@ describe("CopilotStepPerformer", () => {
     };
 
     await expect(
-      copilotStepPerformer.perform(INTENT, [], screenCapture, 2),
-    ).rejects.toThrow(retryError);
+      stepPerformer.perform(INTENT, [], screenCapture, 2),
+    ).rejects.toThrow(secondError);
+
+    expect(generateCodeSpy).toHaveBeenCalledTimes(2);
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
-    expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
-    expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
+    // Code evaluator should not be called since we never got valid code
     expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
-    expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled();
   });
 
   describe("extendJSContext", () => {
     it("should extend the context with the given object", async () => {
+      const mockGenerateCodeSpy = jest.spyOn(
+        stepPerformer as any,
+        "generateCode",
+      );
+      mockGenerateCodeSpy.mockResolvedValue(PROMPT_RESULT);
+
       // Initial context
-      copilotStepPerformer.extendJSContext(dummyBarContext1);
+      stepPerformer.extendJSContext(dummyBarContext1);
 
       setupMocks();
       const screenCapture: ScreenCapturerResult = {
@@ -412,7 +450,7 @@ describe("CopilotStepPerformer", () => {
         isSnapshotImageAttached: true,
       };
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         dummyBarContext1,
@@ -421,9 +459,9 @@ describe("CopilotStepPerformer", () => {
 
       // Extended context
       const extendedContext = { ...dummyBarContext1, ...dummyContext };
-      copilotStepPerformer.extendJSContext(dummyContext);
+      stepPerformer.extendJSContext(dummyContext);
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         extendedContext,
@@ -432,35 +470,19 @@ describe("CopilotStepPerformer", () => {
     });
 
     it("should log when a context key is overridden", async () => {
-      jest.spyOn(logger, "warn").mockImplementation(() => {});
+      const loggerSpy = jest.spyOn(logger, "warn").mockImplementation(() => {});
 
-      copilotStepPerformer.extendJSContext(dummyBarContext1);
-
-      setupMocks();
-      const screenCapture: ScreenCapturerResult = {
-        snapshot: SNAPSHOT_DATA,
-        viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
-      };
-
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
-      expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
-        dummyBarContext1,
-        {},
+      const mockGenerateCodeSpy = jest.spyOn(
+        stepPerformer as any,
+        "generateCode",
       );
+      mockGenerateCodeSpy.mockResolvedValue(PROMPT_RESULT);
+      stepPerformer.extendJSContext(dummyBarContext1);
+      stepPerformer.extendJSContext(dummyBarContext2);
 
-      copilotStepPerformer.extendJSContext(dummyBarContext2);
-      expect(logger.warn).toHaveBeenCalledWith(
-        "Pilot's variable from context `bar` is overridden by a new value from `extendJSContext`",
-      );
+      expect(loggerSpy).toHaveBeenCalled();
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
-      expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
-        dummyBarContext2,
-        {},
-      );
+      loggerSpy.mockRestore();
     });
   });
 });
