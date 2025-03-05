@@ -5,7 +5,7 @@ import {
 } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
-
+import type { ElementMatchingCriteria } from "@wix-pilot/web-utils";
 export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   private executablePath?: string;
   private driverUtils: WebTestingFrameworkDriverHelper;
@@ -13,6 +13,7 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   constructor(executablePath?: string) {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
+    this.findElement = this.findElement.bind(this);
     this.executablePath = executablePath;
     this.driverUtils = new WebTestingFrameworkDriverHelper();
   }
@@ -41,6 +42,16 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   }
 
   /**
+   * return the closet element given page and element
+   */
+  async findElement<T extends ElementMatchingCriteria>(
+    page: puppeteer.Page,
+    matchingCriteria: T,
+  ): Promise<any> {
+    return await this.driverUtils.findElement(page, matchingCriteria);
+  }
+
+  /**
    * @inheritdoc
    */
   async captureSnapshotImage(): Promise<string | undefined> {
@@ -65,6 +76,7 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
       context: {
         getCurrentPage: this.getCurrentPage,
         setCurrentPage: this.setCurrentPage,
+        findElement: this.findElement,
         puppeteer,
       },
       categories: [
@@ -125,15 +137,29 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
           title: "Matchers",
           items: [
             {
-              signature:
-                'document.querySelector(\'[aria-pilot-category="categoryName"][aria-pilot-index="index"]\')',
+              signature: "findElement(page, matchingCriteria)",
               description:
-                "Selects a specific element within a category based on its index.",
-              example: `const firstButton = await page.evaluate(() => document.querySelector('[aria-pilot-category="button"][aria-pilot-index="27"]');`,
+                "Selects the element that best matches the provided criteria based on thresholds and weighted comparisons. " +
+                "This utility examines attributes such as 'aria-label', 'aria-role', 'class', 'id', 'name', 'title', 'placeholder', and 'rect' to compute a match score.",
+              example: `
+              const page = getCurrentPage();
+              const submitElement = await findElement(page, 
+  {
+    "aria-label": "Submit",
+    "aria-role": "button",
+    class: "submit-button",
+    id: "submit123",
+    name: "submit",
+    title: "Submit",
+    placeholder: "Submit",
+    rect: { x: 100, y: 200 }
+  });
+await submitElement.click();`,
+
               guidelines: [
-                "Replace `categoryName` with the desired category and `index` with the specific index as a string.",
-                "Indexing is zero-based and increments per category as elements are found.",
-                "Use this to interact with or verify a specific instance of a category, ensuring the exact element is targeted.",
+                "Each criterion is optional since not all elements will have all of these attributes.",
+                "The utility returns the element with the lowest cumulative error across the specified criteria.",
+                "You can use all properties included in the view hierarchy as a part of the cretiria",
               ],
             },
           ],
