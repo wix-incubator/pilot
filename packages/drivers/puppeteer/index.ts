@@ -16,14 +16,14 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
     this.executablePath = executablePath;
     this.driverUtils = new WebTestingFrameworkDriverHelper();
   }
-  
+
   /**
- * Additional driver configuration.
- *
- * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
- */
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
   get driverConfig(): TestingFrameworkDriverConfig {
-    return { useSnapshotStabilitySync: true }
+    return { useSnapshotStabilitySync: true };
   }
 
   /**

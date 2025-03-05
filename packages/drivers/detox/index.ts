@@ -9,10 +9,8 @@ import * as fs from "fs";
 import * as path from "path";
 
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
-
-  
   get driverConfig(): TestingFrameworkDriverConfig {
-    return { useSnapshotStabilitySync: false }
+    return { useSnapshotStabilitySync: false };
   }
 
   async captureViewHierarchyString(): Promise<string> {

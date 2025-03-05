@@ -5,20 +5,20 @@ import {
 } from "@wix-pilot/core";
 import * as fs from "fs";
 import * as path from "path";
-import { waitForStableState } from "./utils/getStableViewHierarchy"
+import { waitForStableState } from "./utils/getStableViewHierarchy";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
 {
   constructor() {}
-  
+
   /**
- * Additional driver configuration.
- *
- * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
- */
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
   get driverConfig(): TestingFrameworkDriverConfig {
-    return { useSnapshotStabilitySync: true }
+    return { useSnapshotStabilitySync: true };
   }
   /**
    * Attempts to capture the current view hierarchy (source) of the mobile app as XML.

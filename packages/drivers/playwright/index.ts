@@ -15,14 +15,14 @@ export class PlaywrightFrameworkDriver implements TestingFrameworkDriver {
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.driverUtils = new WebTestingFrameworkDriverHelper();
   }
-  
+
   /**
- * Additional driver configuration.
- *
- * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
- */
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
   get driverConfig(): TestingFrameworkDriverConfig {
-    return { useSnapshotStabilitySync: true }
+    return { useSnapshotStabilitySync: true };
   }
 
   /**
