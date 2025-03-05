@@ -28,6 +28,7 @@ describe("Pilot", () => {
   let mockFrameworkDriver: any;
   let mockPilotPerformer: jest.Mocked<AutoPerformer>;
   let screenCapture: ScreenCapturerResult;
+  let pilot: Pilot;
 
   beforeEach(() => {
     mockPromptHandler = {
@@ -72,70 +73,20 @@ describe("Pilot", () => {
       code: "code",
       result: true,
     });
+
+    // Create a new pilot instance for each test
+    pilot = new Pilot(mockConfig);
   });
 
   afterEach(() => {
     jest.resetAllMocks();
     (console.error as jest.Mock).mockRestore();
-    (Pilot as any)["instance"] = undefined;
   });
 
-  describe("getInstance", () => {
-    it("should return the same instance after initialization", () => {
-      Pilot.init(mockConfig);
-
-      const instance1 = Pilot.getInstance();
-      const instance2 = Pilot.getInstance();
-
-      expect(instance1).toBe(instance2);
-    });
-
-    it("should throw PilotError if getInstance is called before init", () => {
-      expect(() => Pilot.getInstance()).toThrow(
-        "Pilot has not been initialized. Please call the `init()` method before using it.",
-      );
-    });
-  });
-
-  describe("init", () => {
-    it("should create a new instance of Pilot", () => {
-      Pilot.init(mockConfig);
-      expect(Pilot.getInstance()).toBeInstanceOf(Pilot);
-    });
-
-    it("should throw an error when trying to initialize Pilot multiple times", () => {
-      Pilot.init(mockConfig);
-
-      expect(() => Pilot.init(mockConfig)).toThrow(
-        "Pilot has already been initialized. Please call the `init()` method only once.",
-      );
-    });
-
-    it("should throw an error if config is invalid", () => {
-      const invalidConfig = {} as Config;
-
-      expect(() => Pilot.init(invalidConfig)).toThrow();
-    });
-  });
-
-  describe("isInitialized", () => {
-    it("should return false before initialization", () => {
-      expect(Pilot.isInitialized()).toBe(false);
-    });
-
-    it("should return true after initialization", () => {
-      Pilot.init(mockConfig);
-
-      expect(Pilot.isInitialized()).toBe(true);
-    });
-  });
-
-  describe("performStep", () => {
-    it("should call CopilotStepPerformer.perform with the given intent", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
-      await instance.performStep(INTENT);
+  describe("perform", () => {
+    it("should call StepPerformer.perform with the given intent", async () => {
+      pilot.start();
+      await pilot.perform(INTENT);
 
       expect(StepPerformer.prototype.perform).toHaveBeenCalledWith(
         INTENT,
@@ -144,27 +95,51 @@ describe("Pilot", () => {
       );
     });
 
-    it("should return the result from CopilotStepPerformer.perform", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+    it("should return the result from StepPerformer.perform", async () => {
+      pilot.start();
 
-      const result = await instance.performStep(INTENT);
+      const result = await pilot.perform(INTENT);
 
       expect(result).toBe(true);
     });
 
     it("should accumulate previous steps", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+      pilot.start();
       const intent1 = "tap button 1";
       const intent2 = "tap button 2";
 
-      await instance.performStep(intent1);
-      await instance.performStep(intent2);
+      await pilot.perform(intent1);
+      await pilot.perform(intent2);
 
       expect(StepPerformer.prototype.perform).toHaveBeenLastCalledWith(
+        intent2,
+        [
+          {
+            step: intent1,
+            code: "code",
+            result: true,
+          },
+        ],
+        screenCapture,
+      );
+    });
+
+    it("should handle multiple steps in a single call", async () => {
+      pilot.start();
+      const intent1 = "tap button 1";
+      const intent2 = "tap button 2";
+
+      await pilot.perform(intent1, intent2);
+
+      expect(StepPerformer.prototype.perform).toHaveBeenCalledTimes(2);
+      expect(StepPerformer.prototype.perform).toHaveBeenNthCalledWith(
+        1,
+        intent1,
+        [],
+        screenCapture,
+      );
+      expect(StepPerformer.prototype.perform).toHaveBeenNthCalledWith(
+        2,
         intent2,
         [
           {
@@ -180,16 +155,14 @@ describe("Pilot", () => {
 
   describe("start", () => {
     it("should clear previous steps", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+      pilot.start();
       const intent1 = "tap button 1";
       const intent2 = "tap button 2";
 
-      await instance.performStep(intent1);
-      instance.end(true);
-      instance.start();
-      await instance.performStep(intent2);
+      await pilot.perform(intent1);
+      pilot.end(true);
+      pilot.start();
+      await pilot.perform(intent2);
 
       expect(StepPerformer.prototype.perform).toHaveBeenLastCalledWith(
         intent2,
@@ -200,35 +173,28 @@ describe("Pilot", () => {
   });
 
   describe("start and end behavior", () => {
-    it("should not performStep before start", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-
-      await expect(instance.performStep(INTENT)).rejects.toThrowError(
+    it("should not perform steps before start", async () => {
+      await expect(pilot.perform(INTENT)).rejects.toThrowError(
         "Pilot is not running. Please call the `start()` method before performing a test step.",
       );
     });
 
     it("should not start without ending the previous flow (start->start)", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+      pilot.start();
 
-      await instance.performStep(INTENT);
+      await pilot.perform(INTENT);
 
-      expect(() => instance.start()).toThrowError(
+      expect(() => pilot.start()).toThrowError(
         "Pilot was already started. Please call the `end()` method before starting a new test flow.",
       );
     });
 
     it("should not end without starting a new flow (end->end)", () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+      pilot.start();
 
-      instance.end(true);
+      pilot.end(true);
 
-      expect(() => instance.end(true)).toThrowError(
+      expect(() => pilot.end(true)).toThrowError(
         "Pilot is not running. Please call the `start()` method before ending the test flow.",
       );
     });
@@ -238,12 +204,10 @@ describe("Pilot", () => {
     it("end with shouldSaveToCache=false should not save to cache", async () => {
       mockCache();
 
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-      instance.start();
+      pilot.start();
 
-      await instance.performStep(INTENT);
-      instance.end(false);
+      await pilot.perform(INTENT);
+      pilot.end(false);
 
       expect(mockedCacheFile).toBeUndefined();
     });
@@ -251,15 +215,12 @@ describe("Pilot", () => {
 
   describe("extend API catalog", () => {
     it("should extend the API catalog with a new category", () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-
       const spyCopilotStepPerformer = jest.spyOn(
-        instance["stepPerformer"],
+        pilot["stepPerformer"],
         "extendJSContext",
       );
 
-      instance.extendAPICatalog([barCategory1]);
+      pilot.extendAPICatalog([barCategory1]);
 
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
@@ -268,15 +229,12 @@ describe("Pilot", () => {
     });
 
     it("should extend the API catalog with a new category and context", () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-
       const spyCopilotStepPerformer = jest.spyOn(
-        instance["stepPerformer"],
+        pilot["stepPerformer"],
         "extendJSContext",
       );
 
-      instance.extendAPICatalog([barCategory1], dummyContext);
+      pilot.extendAPICatalog([barCategory1], dummyContext);
 
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
@@ -285,16 +243,13 @@ describe("Pilot", () => {
     });
 
     it("should extend the API catalog with an existing category", () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-
       const spyCopilotStepPerformer = jest.spyOn(
-        instance["stepPerformer"],
+        pilot["stepPerformer"],
         "extendJSContext",
       );
 
-      instance.extendAPICatalog([barCategory1]);
-      instance.extendAPICatalog([barCategory2], dummyContext);
+      pilot.extendAPICatalog([barCategory1]);
+      pilot.extendAPICatalog([barCategory2], dummyContext);
 
       expect(mockConfig.frameworkDriver.apiCatalog.categories.length).toEqual(
         1,
@@ -306,23 +261,20 @@ describe("Pilot", () => {
     });
 
     it("should extend the API catalog with multiple categories sequentially", () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
-
-      instance.extendAPICatalog([barCategory1]);
-      instance.extendAPICatalog([bazCategory]);
+      pilot.extendAPICatalog([barCategory1]);
+      pilot.extendAPICatalog([bazCategory]);
 
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
         bazCategory,
       ]);
     });
+  });
 
-    it("should pilot through steps successfully", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
+  describe("autopilot", () => {
+    it("should execute an entire test flow using the provided goal", async () => {
       const goal = "test goal";
-      instance.start();
+      pilot.start();
 
       const mockPilotResult = {
         summary: "Test completed successfully",
@@ -350,19 +302,17 @@ describe("Pilot", () => {
 
       mockPilotPerformer.perform.mockResolvedValue(mockPilotResult);
 
-      const pilotResult = await instance.autopilot(goal);
+      const pilotResult = await pilot.autopilot(goal);
 
-      expect(instance["autoPerformer"].perform).toHaveBeenCalledWith(goal);
+      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(goal);
       expect(pilotResult).toEqual(mockPilotResult);
     });
   });
 
-  describe("pilot", () => {
-    it("should perform an entire test flow using the provided goal", async () => {
-      Pilot.init(mockConfig);
-      const instance = Pilot.getInstance();
+  describe("autopilot with reviews", () => {
+    it("should perform an entire test flow using the provided goal and include reviews", async () => {
       const goal = "Test the login flow";
-      instance.start();
+      pilot.start();
 
       const pilotOutputStep1: AutoStepReport = {
         screenDescription: "Login Screen",
@@ -407,7 +357,7 @@ describe("Pilot", () => {
         summary: "All was good",
       };
 
-      jest.spyOn(instance["autoPerformer"], "perform").mockResolvedValue({
+      const expectedResult = {
         summary: pilotOutputSuccess.summary,
         goal: goal,
         steps: [
@@ -420,25 +370,16 @@ describe("Pilot", () => {
           },
         ],
         review: pilotOutputSuccess.review,
-      });
+      };
 
-      const result = await instance.autopilot(goal);
+      jest
+        .spyOn(pilot["autoPerformer"], "perform")
+        .mockResolvedValue(expectedResult);
 
-      expect(instance["autoPerformer"].perform).toHaveBeenCalledWith(goal);
-      expect(result).toEqual({
-        summary: pilotOutputSuccess.summary,
-        goal: goal,
-        steps: [
-          {
-            screenDescription: pilotOutputStep1.screenDescription,
-            plan: pilotOutputStep1.plan,
-            code: "code executed",
-            review: pilotOutputStep1.review,
-            goalAchieved: pilotOutputStep1.goalAchieved,
-          },
-        ],
-        review: pilotOutputSuccess.review,
-      });
+      const result = await pilot.autopilot(goal);
+
+      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(goal);
+      expect(result).toEqual(expectedResult);
     });
   });
 });

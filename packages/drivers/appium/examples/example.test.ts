@@ -1,14 +1,16 @@
-import pilot from "@wix-pilot/core";
+import { Pilot } from "@wix-pilot/core";
 import { PromptHandler } from "../utils/promptHandler";
 import { WebdriverIOAppiumFrameworkDriver } from "../index";
 
 describe("Example Test Suite", () => {
   let frameworkDriver: WebdriverIOAppiumFrameworkDriver;
+  let pilot: Pilot;
 
   before(async () => {
     const promptHandler: PromptHandler = new PromptHandler();
     frameworkDriver = new WebdriverIOAppiumFrameworkDriver();
-    pilot.init({
+
+    pilot = new Pilot({
       frameworkDriver,
       promptHandler,
     });
