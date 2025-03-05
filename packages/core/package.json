@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/core",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A flexible plugin that drives your tests with human-written commands, enhanced by the power of large language models (LLMs)",
   "keywords": [
     "pilot",
