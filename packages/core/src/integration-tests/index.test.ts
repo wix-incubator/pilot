@@ -1,6 +1,5 @@
-import pilot from "@/index";
-import fs from "fs";
 import { Pilot } from "@/Pilot";
+import fs from "fs";
 import {
   PromptHandler,
   TestingFrameworkDriver,
@@ -27,6 +26,7 @@ describe("Pilot Integration Tests", () => {
   let mockedCachedSnapshotHash: SnapshotHashObject;
   let mockFrameworkDriver: jest.Mocked<TestingFrameworkDriver>;
   let mockPromptHandler: jest.Mocked<PromptHandler>;
+  let pilot: Pilot;
 
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -60,49 +60,21 @@ describe("Pilot Integration Tests", () => {
         digest: jest.fn().mockReturnValue("hash"),
       }),
     });
+
+    pilot = new Pilot({
+      frameworkDriver: mockFrameworkDriver,
+      promptHandler: mockPromptHandler,
+    });
   });
 
-  afterEach(() => {
-    // It's generally not recommended to directly access private properties,
-    // but since Pilot is a singleton, we need to reset it between tests.
-    // If possible, consider adding a public reset method to the Pilot class.
-    (Pilot as any).instance = undefined;
-  });
-
-  describe("Initialization", () => {
-    it("should throw an error when perform is called before initialization", async () => {
-      await expect(pilot.perform("Some action")).rejects.toThrow();
-    });
-
-    it("should initialize successfully", () => {
-      expect(() => {
-        pilot.init({
-          frameworkDriver: mockFrameworkDriver,
-          promptHandler: mockPromptHandler,
-        });
-      }).not.toThrow();
-    });
-
-    it("should return false when isInitialized is called before initialization", () => {
-      expect(pilot.isInitialized()).toBe(false);
-    });
-
-    it("should return true when isInitialized is called after initialization", () => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
-
-      expect(pilot.isInitialized()).toBe(true);
+  describe("Basic Operations", () => {
+    it("should be properly instantiated", () => {
+      expect(pilot).toBeInstanceOf(Pilot);
     });
   });
 
   describe("Single Step Operations", () => {
     beforeEach(() => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
       pilot.start();
     });
 
@@ -166,10 +138,6 @@ describe("Pilot Integration Tests", () => {
 
   describe("Multiple Step Operations", () => {
     beforeEach(() => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
       pilot.start();
     });
 
@@ -219,10 +187,6 @@ describe("Pilot Integration Tests", () => {
 
   describe("Error Handling", () => {
     beforeEach(() => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
       pilot.start();
     });
 
@@ -257,10 +221,6 @@ describe("Pilot Integration Tests", () => {
 
   describe("Context Management", () => {
     beforeEach(() => {
-      pilot.init({
-        frameworkDriver: mockFrameworkDriver,
-        promptHandler: mockPromptHandler,
-      });
       pilot.start();
     });
 
@@ -311,7 +271,8 @@ describe("Pilot Integration Tests", () => {
 
   describe("Caching Behavior", () => {
     beforeEach(() => {
-      pilot.init({
+      // Create a new pilot instance with default cache options
+      pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
       });
@@ -424,7 +385,8 @@ describe("Pilot Integration Tests", () => {
 
   describe("Feature Support", () => {
     beforeEach(() => {
-      pilot.init({
+      // Create a new instance for each test
+      pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
       });
@@ -451,7 +413,8 @@ describe("Pilot Integration Tests", () => {
   describe("API Catalog Extension", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      pilot.init({
+      // Create new pilot instance
+      pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
       });
@@ -477,46 +440,25 @@ describe("Pilot Integration Tests", () => {
     });
   });
 
-  describe("Pilot Method", () => {
-    let mockFrameworkDriver: any;
-    let mockPromptHandler: jest.Mocked<PromptHandler>;
-
+  describe("Autopilot Method", () => {
     beforeEach(() => {
       jest.clearAllMocks();
-
-      mockPromptHandler = {
-        runPrompt: jest.fn(),
-        isSnapshotImageSupported: jest.fn(),
-      } as any;
-
-      mockFrameworkDriver = {
-        apiCatalog: {
-          context: {},
-          categories: [],
-        },
-        captureSnapshotImage: jest.fn(),
-        captureViewHierarchyString: jest.fn(),
-      };
-
-      Pilot.init({
+      // Use the standard pilot instance
+      pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
       });
-      Pilot.getInstance().start();
+      pilot.start();
     });
 
-    afterEach(() => {
-      (Pilot as any)["instance"] = undefined;
-    });
-
-    it("should perform pilot flow and return a pilot report", async () => {
+    it("should perform autopilot flow and return a pilot report", async () => {
       const goal = "Complete the login flow";
       const mockPilotReport: AutoReport = {
         summary: "All steps completed successfully",
         goal: goal,
         steps: [
           {
-            screenDescription: "Login Screen", // Added screenDescription
+            screenDescription: "Login Screen",
             plan: {
               thoughts: "First step thoughts",
               action: "Tap on login button",
@@ -550,12 +492,12 @@ describe("Pilot Integration Tests", () => {
           },
         },
       };
-      const copilotInstance = Pilot.getInstance();
+
       const spyPilotPerformerPerform = jest
-        .spyOn(copilotInstance["autoPerformer"], "perform")
+        .spyOn(pilot["autoPerformer"], "perform")
         .mockResolvedValue(mockPilotReport);
 
-      const result = await copilotInstance.autopilot(goal);
+      const result = await pilot.autopilot(goal);
 
       expect(spyPilotPerformerPerform).toHaveBeenCalledTimes(1);
       expect(spyPilotPerformerPerform).toHaveBeenCalledWith(goal);
@@ -564,16 +506,13 @@ describe("Pilot Integration Tests", () => {
 
     it("should handle errors from autoPerformer.perform", async () => {
       const goal = "Some goal that causes an error";
+      const errorMessage = "Error during autopilot execution";
 
-      const errorMessage = "Error during pilot execution";
-      const copilotInstance = Pilot.getInstance();
       const spyPilotPerformerPerform = jest
-        .spyOn(copilotInstance["autoPerformer"], "perform")
+        .spyOn(pilot["autoPerformer"], "perform")
         .mockRejectedValue(new Error(errorMessage));
 
-      await expect(copilotInstance.autopilot(goal)).rejects.toThrow(
-        errorMessage,
-      );
+      await expect(pilot.autopilot(goal)).rejects.toThrow(errorMessage);
 
       expect(spyPilotPerformerPerform).toHaveBeenCalledTimes(1);
       expect(spyPilotPerformerPerform).toHaveBeenCalledWith(goal);
@@ -586,14 +525,15 @@ describe("Pilot Integration Tests", () => {
     });
 
     it("should use full cache mode by default", async () => {
-      pilot.init({
+      // Create a new instance with default cache options
+      const cachePilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
       });
-      pilot.start();
+      cachePilot.start();
 
-      await pilot.perform("Tap on the login button");
-      pilot.end();
+      await cachePilot.perform("Tap on the login button");
+      cachePilot.end();
 
       const firstCacheValue = Object.values(
         (mockedCacheFile as Record<string, CacheValues>) || {},
@@ -605,23 +545,24 @@ describe("Pilot Integration Tests", () => {
     });
 
     it("should not use cache when cache mode is disabled", async () => {
-      pilot.init({
+      // Create a new instance with cache disabled
+      const noCachePilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
         promptHandler: mockPromptHandler,
         options: {
           cacheOptions: { shouldUseCache: false },
         },
       });
-      pilot.start();
+      noCachePilot.start();
 
       // First call
-      await pilot.perform("Tap on the login button");
-      pilot.end();
+      await noCachePilot.perform("Tap on the login button");
+      noCachePilot.end();
 
       // Second call with same intent
-      pilot.start();
-      await pilot.perform("Tap on the login button");
-      pilot.end();
+      noCachePilot.start();
+      await noCachePilot.perform("Tap on the login button");
+      noCachePilot.end();
 
       // Should call runPrompt twice since cache is disabled
       expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
