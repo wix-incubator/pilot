@@ -69,7 +69,7 @@ describe("ScreenCapturer", () => {
     const result = await screenCapturer.capture(true);
 
     expect(mockPromptHandler.isSnapshotImageSupported).toHaveBeenCalled();
-    expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalled();
+    expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalledWith(true);
     expect(mockSnapshotManager.captureViewHierarchyString).toHaveBeenCalled();
 
     expect(result).toEqual({
@@ -93,4 +93,28 @@ describe("ScreenCapturer", () => {
     expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalled();
     expect(mockSnapshotManager.captureViewHierarchyString).toHaveBeenCalled();
   });
+
+  it("should pass useHighlights = false to captureSnapshotImage", async () => {
+    mockPromptHandler.isSnapshotImageSupported.mockReturnValue(true);
+    mockSnapshotManager.captureSnapshotImage.mockResolvedValue("snapshot_data");
+    mockSnapshotManager.captureViewHierarchyString.mockResolvedValue(
+      "view_hierarchy_data",
+    );
+
+    await screenCapturer.capture(false);
+
+    expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalledWith(false);
+  });
+
+  it("should pass useHighlights = true to captureSnapshotImage", async () => {
+      mockPromptHandler.isSnapshotImageSupported.mockReturnValue(true);
+      mockSnapshotManager.captureSnapshotImage.mockResolvedValue("snapshot_data");
+      mockSnapshotManager.captureViewHierarchyString.mockResolvedValue(
+          "view_hierarchy_data",
+      );
+
+      await screenCapturer.capture(true);
+
+      expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalledWith(true);
+    });
 });

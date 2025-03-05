@@ -7,7 +7,9 @@ export interface TestingFrameworkDriver {
    * @returns Path to saved image, or undefined if imaging not supported
    * @param useHighlights - Whether to highlight elements in the snapshot
    */
-  captureSnapshotImage: (useHighlights: boolean) => Promise<string | undefined>;
+  captureSnapshotImage: (
+    useHighlightsIfSupported: boolean,
+  ) => Promise<string | undefined>;
 
   /**
    * Captures the current UI component hierarchy.

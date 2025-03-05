@@ -21,7 +21,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
     }
   }
 
-  async captureSnapshotImage(): Promise<string | undefined> {
+  async captureSnapshotImage(_: boolean): Promise<string | undefined> {
     const tempDir = "temp";
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
