@@ -89,6 +89,7 @@ export default class WebTestingFrameworkDriverHelper {
   async waitForStableDOM(page: Page): Promise<void> {
     await this.executeBundledScript(page, "../dist/waitForStableDOM.bundle.js");
   }
+
   /**
    * Returns the closest element matching the given criteria.
    */
