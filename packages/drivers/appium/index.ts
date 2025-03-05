@@ -201,9 +201,7 @@ await (await $('~draggable')).dragAndDrop(
               description:
                 "Waits until the element is enabled and ready to be clicked",
               example: `await (await $('~usernameInput')).waitForEnabled();`,
-              guidelines: [
-                "Allways use this before clicking on an element",
-              ],
+              guidelines: ["Allways use this before clicking on an element"],
             },
             {
               signature: `toExist()`,
