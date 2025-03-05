@@ -5,7 +5,7 @@ export interface TestingFrameworkDriver {
   /**
    * Captures the current UI state as an image.
    * @returns Path to saved image, or undefined if imaging not supported
-   * @param useHighlights - Whether to highlight elements in the snapshot
+   * @param useHighlightsIfSupported - Whether to highlight elements in the snapshot if supported by the framework driver
    */
   captureSnapshotImage: (
     useHighlightsIfSupported: boolean,

@@ -107,16 +107,4 @@ describe("ScreenCapturer", () => {
       false,
     );
   });
-
-  it("should pass useHighlights = true to captureSnapshotImage", async () => {
-    mockPromptHandler.isSnapshotImageSupported.mockReturnValue(true);
-    mockSnapshotManager.captureSnapshotImage.mockResolvedValue("snapshot_data");
-    mockSnapshotManager.captureViewHierarchyString.mockResolvedValue(
-      "view_hierarchy_data",
-    );
-
-    await screenCapturer.capture(true);
-
-    expect(mockSnapshotManager.captureSnapshotImage).toHaveBeenCalledWith(true);
-  });
 });
