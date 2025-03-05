@@ -1,8 +1,8 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
 import { ElementCategory } from "./types";
-const DEFAULT_POLL_INTERVAL = 500; // ms
-const DEFAULT_TIMEOUT = 5000; // ms
+const DEFAULT_DOM_STABILITY_THRESHOLD = 500; // ms
+const DEFAULT_MAX_WAIT_TIMEOUT = 5000; // ms
 
 declare global {
   interface Window {
@@ -216,9 +216,9 @@ export function removeMarkedElementsHighlights() {
   container?.remove();
 }
 
-export function waitForDomStable(
-  stabilityDelay: number = DEFAULT_POLL_INTERVAL,
-  overallTimeout: number = DEFAULT_TIMEOUT,
+export function waitForStableDOM(
+  stabilityThreshold: number = DEFAULT_DOM_STABILITY_THRESHOLD,
+  maxWaitTimeout: number = DEFAULT_MAX_WAIT_TIMEOUT,
 ): Promise<void> {
   return new Promise<void>((resolve) => {
     let stabilityTimer: number | undefined;
@@ -230,7 +230,7 @@ export function waitForDomStable(
       stabilityTimer = window.setTimeout(() => {
         observer.disconnect();
         resolve();
-      }, stabilityDelay);
+      }, stabilityThreshold);
     });
 
     observer.observe(document.body, {
@@ -242,7 +242,7 @@ export function waitForDomStable(
     window.setTimeout(() => {
       observer.disconnect();
       resolve();
-    }, overallTimeout);
+    }, maxWaitTimeout);
   });
 }
 

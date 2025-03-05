@@ -65,7 +65,7 @@ export default class WebTestingFrameworkDriverHelper {
    * Waits for DOM to be stable.
    */
   async waitForStableDOM(page: Page): Promise<void> {
-    await this.executeBundledScript(page, "../dist/waitForDomStable.bundle.js");
+    await this.executeBundledScript(page, "../dist/waitForStableDOM.bundle.js");
   }
 
   /**

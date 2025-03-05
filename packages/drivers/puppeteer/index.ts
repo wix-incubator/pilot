@@ -9,15 +9,23 @@ import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
   private executablePath?: string;
   private driverUtils: WebTestingFrameworkDriverHelper;
-  public driverConfig: TestingFrameworkDriverConfig;
 
   constructor(executablePath?: string) {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.executablePath = executablePath;
     this.driverUtils = new WebTestingFrameworkDriverHelper();
-    this.driverConfig = { shouldUseScreenSync: true };
   }
+  
+  /**
+ * Additional driver configuration.
+ *
+ * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+ */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return { useSnapshotStabilitySync: true }
+  }
+
   /**
    * Gets the current page identifier
    */

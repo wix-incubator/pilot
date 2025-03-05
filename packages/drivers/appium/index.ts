@@ -5,25 +5,28 @@ import {
 } from "@wix-pilot/core";
 import * as fs from "fs";
 import * as path from "path";
-import crypto from "crypto";
-const DEFAULT_POLL_INTERVAL = 500; // ms
-const DEFAULT_TIMEOUT = 5000; // ms
+import { waitForStableState } from "./utils/getStableViewHierarchy"
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
 {
-  public driverConfig: TestingFrameworkDriverConfig;
-  constructor() {
-    this.driverConfig = { shouldUseScreenSync: true };
+  constructor() {}
+  
+  /**
+ * Additional driver configuration.
+ *
+ * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+ */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return { useSnapshotStabilitySync: true }
   }
-
   /**
    * Attempts to capture the current view hierarchy (source) of the mobile app as XML.
    * If there's no active session or the app isn't running, returns an error message.
    */
   async captureViewHierarchyString(): Promise<string> {
     try {
-      const result = await this.waitForStableState();
+      const result = await waitForStableState();
       return result ?? "";
     } catch (_error) {
       return "NO ACTIVE APP FOUND, LAUNCH THE APP TO SEE THE VIEW HIERARCHY";
@@ -56,43 +59,6 @@ export class WebdriverIOAppiumFrameworkDriver
     }
   }
 
-  /** Waits till the view hierarchy is stable */
-  private async waitForStableState(
-    pollInterval: number = DEFAULT_POLL_INTERVAL,
-    timeout: number = DEFAULT_TIMEOUT,
-  ): Promise<string | undefined> {
-    const startTime = Date.now();
-    let lastSnapshot: string | undefined;
-
-    while (Date.now() - startTime < timeout) {
-      const currentSnapshot: string = (await driver.getPageSource()) || "";
-      if (!currentSnapshot) {
-        return undefined;
-      }
-
-      if (lastSnapshot) {
-        const isStable = this.compareViewHierarchies(
-          currentSnapshot,
-          lastSnapshot,
-        );
-        if (isStable) {
-          return currentSnapshot;
-        }
-      }
-
-      lastSnapshot = currentSnapshot;
-      await new Promise((resolve) => setTimeout(resolve, pollInterval));
-    }
-
-    // Return the last snapshot if timeout is reached
-    return lastSnapshot;
-  }
-  private compareViewHierarchies(current: string, last: string): boolean {
-    // Use MD5 for fast comparison of view hierarchies
-    const currentHash = crypto.createHash("md5").update(current).digest("hex");
-    const lastHash = crypto.createHash("md5").update(last).digest("hex");
-    return currentHash === lastHash;
-  }
   /**
    * Returns the API catalog describing the testing capabilities
    * (matchers, actions, assertions, device/system APIs, etc.)
