@@ -6,6 +6,7 @@ import {
   AutoReviewSection,
   AutoStepPlan,
   AutoStepReport,
+  CacheAutoPilotValues,
   LoggerMessageColor,
   PreviousStep,
   PromptHandler,
@@ -90,43 +91,17 @@ export class AutoPerformer {
     });
   }
 
-  private generateCacheKey(
-    goal: string,
-    previous: AutoPreviousStep[],
-  ): string | undefined {
-    return this.cacheHandler.generateCacheKey<AutoPreviousStep>(
-      goal,
-      previous,
-      {
-        keyName: "currentStep",
-        previousKeyName: "previousSteps",
-        mapFn: (step) => ({
-          screenDescription: step.screenDescription,
-          step: step.step,
-          hasReview: !!step.review,
-        }),
-      },
-    );
-  }
-
   async analyseScreenAndCreatePilotStep(
     goal: string,
     previousSteps: AutoPreviousStep[],
     screenCapture: ScreenCapturerResult,
   ): Promise<AutoStepReport> {
-    const cacheKey = this.generateCacheKey(goal, previousSteps);
+    const cacheKey = this.cacheHandler.generateCacheKey(goal, previousSteps);
 
-    // Check cache first
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cacheResult = await this.getValueFromCache(cacheKey, screenCapture);
-      if (cacheResult !== undefined) {
-        return {
-          screenDescription: cacheResult.screenDescription,
-          plan: cacheResult.plan,
-          review: cacheResult.review,
-          goalAchieved: cacheResult.goalAchieved,
-          summary: cacheResult.summary,
-        };
+      if (cacheResult) {
+        return cacheResult;
       }
     }
 
@@ -197,14 +172,6 @@ export class AutoPerformer {
           }).summary
         : undefined;
 
-      const stepReport = {
-        screenDescription,
-        plan,
-        review,
-        goalAchieved,
-        summary,
-      };
-
       if (this.cacheHandler.isCacheInUse() && cacheKey) {
         const cacheValue = await this.generateCacheValue(
           screenCapture,
@@ -216,8 +183,13 @@ export class AutoPerformer {
         );
         this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
       }
-
-      return stepReport;
+      return {
+        screenDescription,
+        plan,
+        review,
+        goalAchieved,
+        summary,
+      };
     } catch (error) {
       analysisLoggerSpinner.stop(
         "failure",
@@ -312,16 +284,11 @@ export class AutoPerformer {
     if (!this.cacheHandler.isCacheInUse()) {
       throw new Error("Cache is disabled");
     }
-
-    const { viewHierarchyHash, snapshotHash } =
-      await this.cacheHandler.generateCacheHashes(
-        screenCapture.viewHierarchy,
-        screenCapture.snapshot,
-        this.snapshotComparator,
-      );
-
+    const snapshotHash = await this.snapshotComparator.generateHashes(
+      screenCapture.snapshot,
+    );
     return {
-      viewHierarchyHash,
+      screenCapture,
       snapshotHash,
       screenDescription,
       plan,
@@ -331,24 +298,53 @@ export class AutoPerformer {
     };
   }
 
+  private async findInCachedValues(
+    cachedValues: CacheAutoPilotValues,
+    screenCapture: ScreenCapturerResult,
+  ) {
+    if (screenCapture.snapshot) {
+      const snapshotHash = await this.snapshotComparator.generateHashes(
+        screenCapture.snapshot,
+      );
+
+      const correctCachedValue = cachedValues.find(
+        //
+        (singleAutoPilotCachedValue) => {
+          return (
+            singleAutoPilotCachedValue.snapshotHash &&
+            this.snapshotComparator.compareSnapshot(
+              snapshotHash,
+              singleAutoPilotCachedValue.snapshotHash,
+            )
+          );
+        },
+      );
+
+      if (correctCachedValue) {
+        return correctCachedValue;
+      }
+    }
+  }
+
   private async getValueFromCache(
     cacheKey: string,
     screenCapture: ScreenCapturerResult,
-  ): Promise<SingleAutoPilotCacheValue | undefined> {
-    if (!this.cacheHandler.isCacheInUse() || !cacheKey) {
-      return undefined;
+  ) {
+    const cachedValues = await this.cacheHandler.getStepFromCache(cacheKey);
+    if (cachedValues) {
+      const cacheValue = await this.findInCachedValues(
+        cachedValues,
+        screenCapture,
+      );
+      if (cacheValue) {
+        return {
+          screenDescription: cacheValue.screenDescription,
+          plan: cacheValue.plan,
+          review: cacheValue.review,
+          goalAchieved: cacheValue.goalAchieved,
+          summary: cacheValue.summary,
+        };
+      }
     }
-
-    const cachedValues = this.cacheHandler.getStepFromCache(cacheKey);
-    if (!cachedValues) {
-      return undefined;
-    }
-
-    return await this.cacheHandler.findInCache<SingleAutoPilotCacheValue>(
-      cachedValues as SingleAutoPilotCacheValue[],
-      screenCapture.viewHierarchy,
-      screenCapture.snapshot,
-      this.snapshotComparator,
-    );
   }
 }

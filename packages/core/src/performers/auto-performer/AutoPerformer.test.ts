@@ -106,12 +106,8 @@ describe("AutoPerformer", () => {
       flushTemporaryCache: jest.fn(),
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
-      isCacheInUse: jest.fn(),
       generateCacheKey: jest.fn(),
-      hashViewHierarchy: jest.fn(),
-      generateSnapshotHash: jest.fn(),
-      generateCacheHashes: jest.fn(),
-      findInCache: jest.fn(),
+      isCacheInUse: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -129,33 +125,6 @@ describe("AutoPerformer", () => {
       mockSnapshotComparator,
     );
   });
-
-  const pilotOutputSuccess: AutoStepReport = {
-    screenDescription: "Screen 1",
-    plan: {
-      thoughts: "Completed successfully",
-      action: "success",
-    },
-    review: {
-      ux: {
-        summary: "UX review",
-        findings: [],
-        score: "9/10",
-      },
-      a11y: {
-        summary: "Accessibility review",
-        findings: [],
-        score: "9/10",
-      },
-      i18n: {
-        summary: "i18n review",
-        findings: [],
-        score: "8/10",
-      },
-    },
-    goalAchieved: false,
-    summary: "success",
-  };
 
   interface SetupMockOptions {
     isSnapshotSupported?: boolean;
@@ -185,10 +154,7 @@ describe("AutoPerformer", () => {
     mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
     mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
 
-    const cacheKey = JSON.stringify({
-      goal: GOAL,
-      previousSteps: [],
-    });
+    const cacheKey = JSON.stringify({ goal: GOAL, previousSteps: [] });
 
     if (cacheExists) {
       const screenCapturerResult: ScreenCapturerResult = {
@@ -197,9 +163,7 @@ describe("AutoPerformer", () => {
         isSnapshotImageAttached: true,
       };
 
-      jest
-        .spyOn(performer as any, "generateCacheKey")
-        .mockReturnValue(cacheKey);
+      mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
       mockSnapshotComparator.generateHashes.mockReturnValue(
         Promise.resolve({
           BlockHash: "hash",
@@ -207,21 +171,17 @@ describe("AutoPerformer", () => {
       );
       mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
       mockCacheHandler.isCacheInUse.mockReturnValue(true);
-      mockCacheHandler.generateCacheHashes.mockResolvedValue({
-        viewHierarchyHash: "hash",
-        snapshotHash: { BlockHash: "hash" },
-      });
 
       const cacheData: Map<string, any> = new Map();
       cacheData.set(cacheKey, [
         {
-          viewHierarchyHash: "hash",
+          screenCapturerResult: screenCapturerResult,
           snapshotHash: {
             BlockHash: "hash",
           },
           screenDescription: "Screen 1",
-          plan: pilotOutputSuccess.plan,
-          review: pilotOutputSuccess.review,
+          plan: undefined,
+          review: undefined,
           goalAchieved: false,
           summary: "success",
         },
@@ -229,22 +189,6 @@ describe("AutoPerformer", () => {
 
       mockCacheHandler.getStepFromCache.mockImplementation((key: string) => {
         return cacheData.get(key);
-      });
-
-      mockCacheHandler.findInCache.mockImplementation(async (_values, _viewHierarchy, snapshot) => {
-        if (snapshot) {
-          await mockSnapshotComparator.generateHashes(snapshot);
-        }
-
-        return Promise.resolve({
-          viewHierarchyHash: "hash",
-          snapshotHash: { BlockHash: "hash" },
-          screenDescription: "Screen 1",
-          plan: pilotOutputSuccess.plan,
-          review: pilotOutputSuccess.review,
-          goalAchieved: false,
-          summary: "success",
-        });
       });
     } else {
       mockCacheHandler.getStepFromCache.mockReturnValue(undefined);

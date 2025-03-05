@@ -286,50 +286,36 @@ describe("Pilot Integration Tests", () => {
       pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
-        '{"step":"Perform action","previousSteps":[]}':
+        '{"currentGoal":"Perform action","previous":[]}':
           expect.arrayContaining([
             expect.objectContaining({
               code: "// Perform action",
               snapshotHash: expect.any(Object),
+              viewHierarchy: expect.any(String),
             }),
           ]),
       });
     });
 
     it("should read from existing cache file", async () => {
-      // Reset mocks to ensure clean state
-      mockPromptHandler.runPrompt.mockClear();
-
-      // Simple mock of cache with the necessary data
       mockCache({
-        '{"step":"Cached action","previousSteps":[]}': [
-          {
-            code: "// Cached action code",
-            viewHierarchyHash: "hash",
-            snapshotHash: { BlockHash: "hash" }
-          },
+        '{"currentGoal":"Cached action","previous":[]}': [
+          { code: "// Cached action code", viewHierarchy: "hash" },
         ],
       });
 
-      // Direct mock of findInCache - this is the key method that should return cached code
-      // We're not testing HOW it finds the code, just that it returns the right value
-      const CacheHandler = require('@/common/cacheHandler/CacheHandler').CacheHandler;
-      jest.spyOn(CacheHandler.prototype, 'findInCache')
-        .mockResolvedValueOnce("// Cached action code");
-
       await pilot.perform("Cached action");
 
-      // The key assertion: if cache is working, the prompt handler should never be called
       expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
     });
 
     it("should use snapshot cache if available", async () => {
       mockCache({
-        '{"step":"Cached action","previousSteps":[]}': [
+        '{"currentGoal":"Cached action","previous":[]}': [
           {
             code: "// Cached action code",
+            viewHierarchy: "WrongHash",
             snapshotHash: mockedCachedSnapshotHash,
-            viewHierarchyHash: "hash",
           },
         ],
       });
@@ -340,32 +326,20 @@ describe("Pilot Integration Tests", () => {
     });
 
     it("should update cache file after performing new action", async () => {
-      // Start with a clean cache state
-      mockCache({});
-
-      // Simple mock of prompt handler with expected response
       mockPromptHandler.runPrompt.mockResolvedValue("// New action code");
-
-      // Mock the writeToCache method to capture what's being written
-      const CacheHandler = require('@/common/cacheHandler/CacheHandler').CacheHandler;
-      jest.spyOn(CacheHandler.prototype, 'writeToCache')
-        .mockImplementation(() => Promise.resolve());
 
       await pilot.perform("New action");
       pilot.end();
 
-      // Check that the cache has been updated with the right key
-      const expectedKey = '{"step":"New action","previousSteps":[]}';
-      expect(mockedCacheFile).toHaveProperty(expectedKey);
-
-      // Check that at least one entry has our code
-      if (mockedCacheFile && expectedKey in mockedCacheFile) {
-        const entries = mockedCacheFile[expectedKey];
-        expect(entries.some((entry: any) => entry.code === '// New action code')).toBe(true);
-      } else {
-        fail('Expected cache file to contain the key: ' + expectedKey);
-      }
-
+      expect(mockedCacheFile).toEqual({
+        '{"currentGoal":"New action","previous":[]}': expect.arrayContaining([
+          expect.any(Object),
+          expect.objectContaining({
+            code: "// New action code",
+            snapshotHash: expect.any(Object),
+            viewHierarchy: expect.any(String),
+          }),
+        ]),
       });
     });
 
@@ -394,25 +368,16 @@ describe("Pilot Integration Tests", () => {
     });
 
     it("should add error and not add result for next perform step", async () => {
-      // Setup mocks to capture the prompt
       let promptParam: string = "";
-
-      // First call will return code that throws an error
       mockPromptHandler.runPrompt
         .mockResolvedValueOnce('throw new Error("Element not found");')
-        // Second call will capture the prompt for inspection
         .mockImplementationOnce((prompt, _snapshot) => {
           promptParam = prompt;
           return Promise.resolve("// No operation");
         });
 
-      // Execute a step that will throw an error
       await pilot.perform("Tap on a non-existent button");
 
-      // Perform a second step that will capture the prompt
-      await pilot.perform("Second step");
-
-      // The prompt in the second step should contain the error from the first step
       expect(promptParam).toContain("Element not found");
       expect(promptParam).toMatchSnapshot();
     });
@@ -574,9 +539,9 @@ describe("Pilot Integration Tests", () => {
         (mockedCacheFile as Record<string, CacheValues>) || {},
       )[0][0];
 
+      expect(firstCacheValue).toHaveProperty("viewHierarchy");
       expect(firstCacheValue).toHaveProperty("code");
       expect(firstCacheValue).toHaveProperty("snapshotHash");
-      expect(firstCacheValue).toHaveProperty("viewHierarchyHash");
     });
 
     it("should not use cache when cache mode is disabled", async () => {

@@ -225,7 +225,7 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
       ]);
-      expect(spyStepPerformer).not.toHaveBeenCalled();
+      expect(spyCopilotStepPerformer).not.toHaveBeenCalled();
     });
 
     it("should extend the API catalog with a new category and context", () => {
@@ -239,7 +239,7 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories).toEqual([
         barCategory1,
       ]);
-      expect(spyStepPerformer).toHaveBeenCalledWith(dummyContext);
+      expect(spyCopilotStepPerformer).toHaveBeenCalledWith(dummyContext);
     });
 
     it("should extend the API catalog with an existing category", () => {
@@ -257,7 +257,7 @@ describe("Pilot", () => {
       expect(mockConfig.frameworkDriver.apiCatalog.categories[0].items).toEqual(
         [...barCategory1.items, ...barCategory2.items],
       );
-      expect(spyStepPerformer).toHaveBeenCalledWith(dummyContext);
+      expect(spyCopilotStepPerformer).toHaveBeenCalledWith(dummyContext);
     });
 
     it("should extend the API catalog with multiple categories sequentially", () => {

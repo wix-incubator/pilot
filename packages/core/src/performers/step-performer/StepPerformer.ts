@@ -10,6 +10,7 @@ import {
   type CacheValues,
   type SingleCacheValue,
 } from "@/types";
+import * as crypto from "crypto";
 import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
@@ -48,46 +49,52 @@ export class StepPerformer {
       throw new Error("Cache is disabled");
     }
 
-    const { viewHierarchyHash, snapshotHash } =
-      await this.cacheHandler.generateCacheHashes(
-        viewHierarchy,
-        snapshot,
-        this.snapshotComparator,
-      );
+    const snapshotHashes =
+      snapshot && (await this.snapshotComparator.generateHashes(snapshot));
 
     return {
       code,
-      viewHierarchyHash,
-      snapshotHash,
+      viewHierarchy: crypto
+        .createHash("md5")
+        .update(viewHierarchy)
+        .digest("hex"),
+      snapshotHash: snapshotHashes,
     };
   }
 
-  private async findCodeInCache(
-    cacheValues: CacheValues,
+  private async findCodeInCacheValues(
+    cacheValue: CacheValues,
     viewHierarchy: string,
     snapshot?: string,
   ): Promise<string | undefined> {
-    const values = await this.cacheHandler.findInCache<SingleCacheValue>(
-      cacheValues,
-      viewHierarchy,
-      snapshot,
-      this.snapshotComparator,
-    );
+    if (snapshot) {
+      const snapshotHash =
+        await this.snapshotComparator.generateHashes(snapshot);
 
-    return values?.code;
-  }
+      const correctCachedValue = cacheValue.find((singleCachedValue) => {
+        return (
+          singleCachedValue.snapshotHash &&
+          this.snapshotComparator.compareSnapshot(
+            snapshotHash,
+            singleCachedValue.snapshotHash,
+          )
+        );
+      });
 
-  private generateCacheKey(
-    step: string,
-    previous: PreviousStep[],
-  ): string | undefined {
-    return this.cacheHandler.generateCacheKey<PreviousStep>(step, previous, {
-      keyName: "step",
-      previousKeyName: "previousSteps",
-      mapFn: (prevStep) => ({
-        step: prevStep.step,
-      }),
-    });
+      if (correctCachedValue) {
+        return correctCachedValue?.code;
+      }
+    }
+
+    const viewHierarchyHash = crypto
+      .createHash("md5")
+      .update(viewHierarchy)
+      .digest("hex");
+    return cacheValue.find((cachedCode) => {
+      if (cachedCode.viewHierarchy === viewHierarchyHash) {
+        return cachedCode.code;
+      }
+    })?.code;
   }
 
   private async generateCode(
@@ -97,7 +104,7 @@ export class StepPerformer {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
   ): Promise<string> {
-    const cacheKey = this.generateCacheKey(step, previous);
+    const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const code = await this.getValueFromCache(
@@ -136,20 +143,20 @@ export class StepPerformer {
     viewHierarchy: string,
     snapshot: string | undefined,
   ): Promise<string | undefined> {
-    if (!this.cacheHandler.isCacheInUse() || !cacheKey) {
-      return undefined;
-    }
+    const cachedValues =
+      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
 
-    const cachedValues = this.cacheHandler.getStepFromCache(cacheKey);
-    if (!cachedValues) {
-      return undefined;
+    if (cachedValues) {
+      const code = await this.findCodeInCacheValues(
+        cachedValues,
+        viewHierarchy,
+        snapshot,
+      );
+      if (code) {
+        return code;
+      }
     }
-
-    return await this.findCodeInCache(
-      cachedValues as CacheValues,
-      viewHierarchy,
-      snapshot,
-    );
+    return undefined;
   }
 
   async perform(
