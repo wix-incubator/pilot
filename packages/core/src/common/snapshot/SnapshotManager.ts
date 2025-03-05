@@ -1,6 +1,5 @@
 import { TestingFrameworkDriver } from "@/types";
 import { SnapshotComparator } from "./comparator/SnapshotComparator";
-import crypto from "crypto";
 
 const DEFAULT_POLL_INTERVAL = 500; // ms
 const DEFAULT_TIMEOUT = 5000; // ms
@@ -15,7 +14,7 @@ export class SnapshotManager {
     ) => Promise<string> = downscaleImage,
   ) {}
 
-  private async waitForStableState<T>(
+  private async captureSnapshotsUntilStable<T>(
     captureFunc: () => Promise<T | undefined>,
     compareFunc: (current: T, last: T) => Promise<boolean> | boolean,
     pollInterval: number = DEFAULT_POLL_INTERVAL,
@@ -60,13 +59,6 @@ export class SnapshotManager {
     );
   }
 
-  private compareViewHierarchies(current: string, last: string): boolean {
-    // Use MD5 for fast comparison of view hierarchies
-    const currentHash = crypto.createHash("md5").update(current).digest("hex");
-    const lastHash = crypto.createHash("md5").update(last).digest("hex");
-    return currentHash === lastHash;
-  }
-
   private async captureDownscaledImage(): Promise<string | undefined> {
     const imagePath = await this.driver.captureSnapshotImage();
     if (imagePath) {
@@ -80,25 +72,18 @@ export class SnapshotManager {
     timeout?: number,
     stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
-    return this.waitForStableState(
-      async () => this.captureDownscaledImage(),
-      (current, last) =>
-        this.compareSnapshots(current, last, stabilityThreshold),
-      pollInterval,
-      timeout,
-    );
+    return this.driver.driverConfig.useSnapshotStabilitySync
+      ? this.captureSnapshotsUntilStable(
+          async () => this.captureDownscaledImage(),
+          (current, last) =>
+            this.compareSnapshots(current, last, stabilityThreshold),
+          pollInterval,
+          timeout,
+        )
+      : await this.captureDownscaledImage();
   }
 
-  async captureViewHierarchyString(
-    pollInterval?: number,
-    timeout?: number,
-  ): Promise<string> {
-    const result = await this.waitForStableState(
-      () => this.driver.captureViewHierarchyString(),
-      this.compareViewHierarchies,
-      pollInterval,
-      timeout,
-    );
-    return result ?? "";
+  async captureViewHierarchyString(): Promise<string> {
+    return await this.driver.captureViewHierarchyString();
   }
 }

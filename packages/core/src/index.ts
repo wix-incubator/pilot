@@ -10,5 +10,6 @@ export {
   TestingFrameworkDriver,
   TestingFrameworkAPICatalog,
   TestingFrameworkAPICatalogItem,
+  TestingFrameworkDriverConfig,
   AutoReport,
 } from "./types";

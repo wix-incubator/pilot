@@ -1,9 +1,11 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import * as fs from "fs";
 import * as path from "path";
+import { waitForStableState } from "./utils/getStableViewHierarchy";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
@@ -11,15 +13,21 @@ export class WebdriverIOAppiumFrameworkDriver
   constructor() {}
 
   /**
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return { useSnapshotStabilitySync: true };
+  }
+  /**
    * Attempts to capture the current view hierarchy (source) of the mobile app as XML.
    * If there's no active session or the app isn't running, returns an error message.
    */
   async captureViewHierarchyString(): Promise<string> {
     try {
-      // In WebdriverIO + Appium, you can retrieve the current page source (UI hierarchy) via:
-      // https://webdriver.io/docs/api/browser/getPageSource (driver is an alias for browser)
-      const pageSource = await driver.getPageSource();
-      return pageSource;
+      const result = await waitForStableState();
+      return result ?? "";
     } catch (_error) {
       return "NO ACTIVE APP FOUND, LAUNCH THE APP TO SEE THE VIEW HIERARCHY";
     }

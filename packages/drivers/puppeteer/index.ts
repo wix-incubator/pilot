@@ -1,6 +1,7 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
@@ -15,6 +16,15 @@ export class PuppeteerFrameworkDriver implements TestingFrameworkDriver {
     this.findElement = this.findElement.bind(this);
     this.executablePath = executablePath;
     this.driverUtils = new WebTestingFrameworkDriverHelper();
+  }
+
+  /**
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return { useSnapshotStabilitySync: true };
   }
 
   /**

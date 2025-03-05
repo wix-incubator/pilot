@@ -1,6 +1,8 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
 import { ElementCategory } from "./types";
+const DEFAULT_DOM_STABILITY_THRESHOLD = 500; // ms
+const DEFAULT_MAX_WAIT_TIMEOUT = 5000; // ms
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
 import {
   meetsSufficientCriteria,
@@ -265,6 +267,36 @@ export function removeMarkedElementsHighlights() {
   const container = document.getElementById("aria-pilot-overlay-container");
   style?.remove();
   container?.remove();
+}
+
+export function waitForStableDOM(
+  stabilityThreshold: number = DEFAULT_DOM_STABILITY_THRESHOLD,
+  maxWaitTimeout: number = DEFAULT_MAX_WAIT_TIMEOUT,
+): Promise<void> {
+  return new Promise<void>((resolve) => {
+    let stabilityTimer: number | undefined;
+
+    const observer = new MutationObserver(() => {
+      if (stabilityTimer !== undefined) {
+        clearTimeout(stabilityTimer);
+      }
+      stabilityTimer = window.setTimeout(() => {
+        observer.disconnect();
+        resolve();
+      }, stabilityThreshold);
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    window.setTimeout(() => {
+      observer.disconnect();
+      resolve();
+    }, maxWaitTimeout);
+  });
 }
 
 if (typeof window !== "undefined") {

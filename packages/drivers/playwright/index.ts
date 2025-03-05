@@ -1,6 +1,7 @@
 import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import * as playwright from "playwright";
 import { expect as playwrightExpect } from "@playwright/test";
@@ -9,11 +10,21 @@ import type { ElementMatchingCriteria } from "@wix-pilot/web-utils";
 
 export class PlaywrightFrameworkDriver implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
+
   constructor() {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.findElement = this.findElement.bind(this);
     this.driverUtils = new WebTestingFrameworkDriverHelper();
+  }
+
+  /**
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return { useSnapshotStabilitySync: true };
   }
 
   /**

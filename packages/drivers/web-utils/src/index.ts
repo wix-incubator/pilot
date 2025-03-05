@@ -84,6 +84,13 @@ export default class WebTestingFrameworkDriverHelper {
   }
 
   /**
+   * Waits for DOM to be stable.
+   */
+  async waitForStableDOM(page: Page): Promise<void> {
+    await this.executeBundledScript(page, "../dist/waitForStableDOM.bundle.js");
+  }
+
+  /**
    * Returns the closest element matching the given criteria.
    */
   async findElement<T extends ElementMatchingCriteria>(
@@ -138,7 +145,7 @@ export default class WebTestingFrameworkDriverHelper {
         "START A NEW ONE BASED ON THE ACTION NEED OR RAISE AN ERROR"
       );
     }
-
+    await this.waitForStableDOM(this.currentPage);
     await this.markImportantElements(this.currentPage);
     return await this.createMarkedViewHierarchy(this.currentPage);
   }

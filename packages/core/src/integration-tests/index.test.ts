@@ -42,6 +42,7 @@ describe("Pilot Integration Tests", () => {
         context: {},
         categories: [],
       },
+      driverConfig: { useSnapshotStabilitySync: true },
     };
 
     mockPromptHandler = {
@@ -157,7 +158,7 @@ describe("Pilot Integration Tests", () => {
       expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(6);
       expect(
         mockFrameworkDriver.captureViewHierarchyString,
-      ).toHaveBeenCalledTimes(6);
+      ).toHaveBeenCalledTimes(3);
     });
 
     it("should handle errors in multiple steps and stop execution", async () => {
@@ -181,7 +182,7 @@ describe("Pilot Integration Tests", () => {
       expect(mockFrameworkDriver.captureSnapshotImage).toHaveBeenCalledTimes(6);
       expect(
         mockFrameworkDriver.captureViewHierarchyString,
-      ).toHaveBeenCalledTimes(6);
+      ).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -443,6 +444,22 @@ describe("Pilot Integration Tests", () => {
   describe("Autopilot Method", () => {
     beforeEach(() => {
       jest.clearAllMocks();
+
+      mockPromptHandler = {
+        runPrompt: jest.fn(),
+        isSnapshotImageSupported: jest.fn(),
+      } as any;
+
+      mockFrameworkDriver = {
+        apiCatalog: {
+          context: {},
+          categories: [],
+        },
+        captureSnapshotImage: jest.fn(),
+        captureViewHierarchyString: jest.fn(),
+        driverConfig: { useSnapshotStabilitySync: true },
+      };
+
       // Use the standard pilot instance
       pilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
