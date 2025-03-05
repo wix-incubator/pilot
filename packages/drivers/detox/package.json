@@ -20,12 +20,9 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "type-check": "tsc --noEmit",
-    "bump-version:patch": "npm version patch && git commit -am 'chore: bump patch version' && git push",
-    "release:patch": "npm run test && npm run bump-version:patch && npm run build && npm publish --access public",
-    "bump-version:minor": "npm version minor && git commit -am 'chore: bump minor version' && git push",
-    "release:minor": "npm run test && npm run bump-version:minor && npm run build && npm publish --access public",
-    "bump-version:major": "npm version major && git commit -am 'chore: bump major version' && git push",
-    "release:major": "npm run test && npm run bump-version:major && npm run build && npm publish --access public"
+    "release:patch": "node ../../../scripts/release-package.js patch",
+    "release:minor": "node ../../../scripts/release-package.js minor",
+    "release:major": "node ../../../scripts/release-package.js major"
   },
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"

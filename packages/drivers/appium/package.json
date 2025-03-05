@@ -19,12 +19,9 @@
     "test": "echo No tests available for this package",
     "test:example": "wdio run examples/wdio.conf.ts",
     "build:app": "cd ../detox/ExampleApp &&  npm run build:ios",
-    "bump-version:patch": "npm version patch && git commit -am 'chore: bump patch version' && git push",
-    "release:patch": "npm run test && npm run bump-version:patch && npm run build && npm publish --access public",
-    "bump-version:minor": "npm version minor && git commit -am 'chore: bump minor version' && git push",
-    "release:minor": "npm run test && npm run bump-version:minor && npm run build && npm publish --access public",
-    "bump-version:major": "npm version major && git commit -am 'chore: bump major version' && git push",
-    "release:major": "npm run test && npm run bump-version:major && npm run build && npm publish --access public",
+    "release:patch": "node ../../../scripts/release-package.js patch",
+    "release:minor": "node ../../../scripts/release-package.js minor",
+    "release:major": "node ../../../scripts/release-package.js major",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "type-check": "tsc --noEmit"
@@ -32,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
- 
+
   "peerDependencies": {
     "@wdio/globals": ">=8.0.0",
     "@wix-pilot/core": "^3.0.0"
