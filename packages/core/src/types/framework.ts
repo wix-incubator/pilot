@@ -18,7 +18,21 @@ export interface TestingFrameworkDriver {
    * Available testing framework API methods.
    */
   apiCatalog: TestingFrameworkAPICatalog;
+
+  /**
+   * Additional driver configuration options.
+   */
+  driverConfig: TestingFrameworkDriverConfig;
 }
+
+/**
+ * Additional driver configuration.
+ *
+ * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+ */
+export type TestingFrameworkDriverConfig = {
+  useSnapshotStabilitySync: boolean;
+};
 
 /**
  * Testing framework API catalog structure.

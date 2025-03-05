@@ -1,16 +1,18 @@
-import pilot from "@wix-pilot/core";
+import { Pilot } from "@wix-pilot/core";
 import { PromptHandler } from "../utils/promptHandler";
 import { PlaywrightFrameworkDriver } from "../index";
+
 describe("Example Test Suite", () => {
   jest.setTimeout(300000);
 
   let frameworkDriver: PlaywrightFrameworkDriver;
+  let pilot: Pilot;
 
   beforeAll(async () => {
     const promptHandler: PromptHandler = new PromptHandler();
     frameworkDriver = new PlaywrightFrameworkDriver();
 
-    pilot.init({
+    pilot = new Pilot({
       frameworkDriver,
       promptHandler,
     });
