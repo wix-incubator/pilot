@@ -1,7 +1,13 @@
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
-import { ElementCategory, CandidateScore } from "./types";
+import { ElementCategory } from "./types";
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
+import {
+  meetsSufficientCriteria,
+  meetsMandatoryCriteria,
+  calculateWeightedError,
+} from "./criteriaUtils";
+
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
 type ElementMatchingCriteria = {
   [K in AttributeKey]?: ReturnType<
@@ -31,44 +37,31 @@ export function getInterestingAttributes(
   return attributes;
 }
 
-export function calcCandidateError(
-  candidate: HTMLElement,
-  criteria: ElementMatchingCriteria,
-): number {
-  return Object.entries(criteria).reduce((totalError, [key, expected]) => {
-    if (totalError === Infinity) return Infinity;
-    if (expected == null) return totalError;
-
-    const config = ELEMENT_MATCHING_CONFIG[key];
-    if (!config) return totalError;
-
-    const actual = config.extract(candidate);
-    const error = config.weight * config.compare(actual, expected);
-    if (config.critical && error > 0) return Infinity;
-
-    return totalError + error;
-  }, 0);
-}
-
 export function findElement(
   criteria: ElementMatchingCriteria,
 ): HTMLElement | null {
-  const maxErrorThreshold: number = 0.7;
+  const maxErrorThreshold = 0.7;
   const candidates = Array.from(
     document.querySelectorAll("*"),
   ) as HTMLElement[];
-  const candidateScores: CandidateScore[] = candidates.map((candidate) => ({
-    candidate,
-    errorScore: calcCandidateError(candidate, criteria),
-  }));
+  const sufficientCandidate = candidates.find((candidate) =>
+    meetsSufficientCriteria(candidate, criteria),
+  );
+  if (sufficientCandidate) return sufficientCandidate;
 
-  const bestCandidatePair = candidateScores.reduce<CandidateScore>(
-    (best, current) => (current.errorScore < best.errorScore ? current : best),
-    { candidate: null, errorScore: Infinity },
+  const mandatoryCandidates = candidates.filter((candidate) =>
+    meetsMandatoryCriteria(candidate, criteria),
+  );
+  const bestCandidate = mandatoryCandidates.reduce(
+    (best, candidate) => {
+      const errorScore = calculateWeightedError(candidate, criteria);
+      return errorScore < best.errorScore ? { candidate, errorScore } : best;
+    },
+    { candidate: null as HTMLElement | null, errorScore: Infinity },
   );
 
-  return bestCandidatePair.errorScore < maxErrorThreshold
-    ? bestCandidatePair.candidate
+  return bestCandidate.errorScore < maxErrorThreshold
+    ? bestCandidate.candidate
     : null;
 }
 
