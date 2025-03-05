@@ -95,6 +95,7 @@ export class AutoPerformer {
     goal: string,
     previousSteps: AutoPreviousStep[],
     screenCapture: ScreenCapturerResult,
+    maxAttempts: number = 2,
   ): Promise<AutoStepReport> {
     const cacheKey = this.cacheHandler.generateCacheKey(goal, previousSteps);
 
@@ -114,89 +115,119 @@ export class AutoPerformer {
       },
     );
 
-    try {
-      const { snapshot, viewHierarchy, isSnapshotImageAttached } =
-        screenCapture;
+    const lastError: any = null;
+    let lastScreenDescription = "";
+    let lastAction = "";
 
-      const prompt = this.promptCreator.createPrompt(
-        goal,
-        viewHierarchy,
-        isSnapshotImageAttached,
-        previousSteps,
-      );
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const { snapshot, viewHierarchy, isSnapshotImageAttached } =
+          screenCapture;
 
-      const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
-      const outputs = extractTaggedOutputs({
-        text: promptResult,
-        outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
-      });
+        const prompt = this.promptCreator.createPrompt(
+          goal,
+          viewHierarchy,
+          isSnapshotImageAttached,
+          previousSteps,
+        );
 
-      const { screenDescription, thoughts, action, ux, a11y, i18n } = outputs;
-      const plan: AutoStepPlan = { action, thoughts };
-      const goalAchieved = action === "success";
+        const promptResult = await this.promptHandler.runPrompt(
+          prompt,
+          snapshot,
+        );
+        const outputs = extractTaggedOutputs({
+          text: promptResult,
+          outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
+        });
 
-      analysisLoggerSpinner.stop("success", "💡 Next step ready", {
-        message: plan.action,
-        isBold: true,
-        color: "whiteBright",
-      });
+        const { thoughts, ux, a11y, i18n } = outputs;
+        lastScreenDescription = outputs.screenDescription;
+        lastAction = outputs.action;
+        const plan: AutoStepPlan = { action: lastAction, thoughts };
+        const goalAchieved = lastAction === "success";
 
-      logger.info({
-        message: `🤔 Thoughts: ${thoughts}`,
-        isBold: false,
-        color: "grey",
-      });
-
-      const review: AutoReview = {
-        ux: ux ? this.extractReviewOutput(ux) : undefined,
-        a11y: a11y ? this.extractReviewOutput(a11y) : undefined,
-        i18n: i18n ? this.extractReviewOutput(i18n) : undefined,
-      };
-
-      if (review.ux || review.a11y || review.i18n) {
-        logger.info({
-          message: `Conducting review for ${screenDescription}\n`,
+        analysisLoggerSpinner.stop("success", "💡 Next step ready", {
+          message: plan.action,
           isBold: true,
           color: "whiteBright",
         });
 
-        review.ux && this.logReviewSection(review.ux, "ux");
-        review.a11y && this.logReviewSection(review.a11y, "a11y");
-        review.i18n && this.logReviewSection(review.i18n, "i18n");
-      }
+        logger.info({
+          message: `🤔 Thoughts: ${thoughts}`,
+          isBold: false,
+          color: "grey",
+        });
 
-      const summary = goalAchieved
-        ? extractTaggedOutputs({
-            text: thoughts,
-            outputsMapper: OUTPUTS_MAPPINGS.PILOT_SUMMARY,
-          }).summary
-        : undefined;
+        const review: AutoReview = {
+          ux: ux ? this.extractReviewOutput(ux) : undefined,
+          a11y: a11y ? this.extractReviewOutput(a11y) : undefined,
+          i18n: i18n ? this.extractReviewOutput(i18n) : undefined,
+        };
 
-      if (this.cacheHandler.isCacheInUse() && cacheKey) {
-        const cacheValue = await this.generateCacheValue(
-          screenCapture,
-          screenDescription,
+        if (review.ux || review.a11y || review.i18n) {
+          logger.info({
+            message: `Conducting review for ${lastScreenDescription}\n`,
+            isBold: true,
+            color: "whiteBright",
+          });
+
+          review.ux && this.logReviewSection(review.ux, "ux");
+          review.a11y && this.logReviewSection(review.a11y, "a11y");
+          review.i18n && this.logReviewSection(review.i18n, "i18n");
+        }
+
+        const summary = goalAchieved
+          ? extractTaggedOutputs({
+              text: thoughts,
+              outputsMapper: OUTPUTS_MAPPINGS.PILOT_SUMMARY,
+            }).summary
+          : undefined;
+
+        if (this.cacheHandler.isCacheInUse() && cacheKey) {
+          const cacheValue = await this.generateCacheValue(
+            screenCapture,
+            lastScreenDescription,
+            plan,
+            review,
+            goalAchieved,
+            summary,
+          );
+          this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
+        }
+        return {
+          screenDescription: lastScreenDescription,
           plan,
           review,
           goalAchieved,
           summary,
+        };
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : error;
+        logger.warn(
+          `💥 Auto-Pilot attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
         );
-        this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
+
+        if (attempt < maxAttempts) {
+          logger.info(`Auto-Pilot retrying...`);
+
+          previousSteps = [
+            ...previousSteps,
+            {
+              screenDescription: lastScreenDescription,
+              step: lastAction,
+              error: errorMessage,
+            },
+          ];
+        } else {
+          analysisLoggerSpinner.stop(
+            "failure",
+            `😓 Auto-Pilot encountered an error: ${errorMessage}`,
+          );
+          throw lastError;
+        }
       }
-      return {
-        screenDescription,
-        plan,
-        review,
-        goalAchieved,
-        summary,
-      };
-    } catch (error) {
-      analysisLoggerSpinner.stop(
-        "failure",
-        `😓 Pilot encountered an error: ${error instanceof Error ? error.message : String(error)}`,
-      );
-      throw error;
     }
+    throw new Error("Auto-Pilot failed to reach a decision");
   }
 
   async perform(goal: string): Promise<AutoReport> {

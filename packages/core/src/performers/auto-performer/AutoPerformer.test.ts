@@ -533,4 +533,51 @@ describe("AutoPerformer", () => {
     expect(result.goalAchieved).toEqual(false);
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
   });
+
+  it("should retry if analysis fails", async () => {
+    setupMocks();
+    const goal = GOAL;
+    const previousSteps: AutoPreviousStep[] = [];
+    mockPromptHandler.runPrompt.mockRejectedValueOnce(
+      new Error("Failed to generate text"),
+    );
+
+    await performer.analyseScreenAndCreatePilotStep(
+      goal,
+      previousSteps,
+      mockCaptureResult,
+    );
+
+    expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
+    expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
+  });
+
+  it("should add error to previous step if analysis fails", async () => {
+    setupMocks();
+    const goal = GOAL;
+    const previousSteps: AutoPreviousStep[] = [];
+    mockPromptHandler.runPrompt.mockRejectedValueOnce(
+      new Error("Failed to generate text"),
+    );
+
+    await performer.analyseScreenAndCreatePilotStep(
+      goal,
+      previousSteps,
+      mockCaptureResult,
+    );
+
+    expect(mockPromptCreator.createPrompt).toHaveBeenNthCalledWith(
+      2,
+      goal,
+      VIEW_HIERARCHY,
+      true,
+      [
+        {
+          screenDescription: "",
+          step: "",
+          error: expect.stringContaining("Failed to generate text"),
+        },
+      ],
+    );
+  });
 });

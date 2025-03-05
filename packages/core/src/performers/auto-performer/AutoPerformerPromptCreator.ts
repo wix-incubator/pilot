@@ -1,4 +1,5 @@
 import { AutoPreviousStep, AutoReviewSectionType } from "@/types";
+import { truncateString } from "@/common/prompt-utils";
 
 export class AutoPerformerPromptCreator {
   constructor() {}
@@ -111,6 +112,11 @@ export class AutoPerformerPromptCreator {
                 }
               }
             }
+            const error = this.isPreviousStepError(
+              previousStep,
+              index === previousSteps.length - 1,
+            );
+            !!error && stepDetails.push(error);
 
             stepDetails.push("");
             return stepDetails;
@@ -405,5 +411,16 @@ The 'Profile' icon may not be properly adapted for different locales.
       "If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.",
     ];
     return steps;
+  }
+
+  private isPreviousStepError(
+    previousStep: AutoPreviousStep,
+    isMostPreviousStep: boolean,
+  ): string | undefined {
+    if (previousStep.error && isMostPreviousStep) {
+      const truncatedError = truncateString(previousStep.error);
+      return `- Error occurred in your previous attempt. Try another approach to perform this step. Error message:\n\`\`\`\n${truncatedError}\n\`\`\``;
+    }
+    return undefined;
   }
 }
