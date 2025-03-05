@@ -32,11 +32,10 @@
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
-  "dependencies": {
-    "@wix-pilot/core": "^3.0.0"
-  },
+ 
   "peerDependencies": {
-    "@wdio/globals": ">=8.0.0"
+    "@wdio/globals": ">=8.0.0",
+    "@wix-pilot/core": "^3.0.0"
   },
   "devDependencies": {
     "@wdio/globals": "^9.9.1",
