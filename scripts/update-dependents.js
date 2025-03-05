@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * This script updates all dependent packages in the monorepo when a package is published.
- * It's designed to be run after a package is published, to ensure that all packages
- * that depend on it are updated to use the latest version.
+ * This script updates all dependent packages in the monorepo when a package version is bumped.
+ * It ensures that all packages that depend on it are updated to use the latest version,
+ * whether the package was actually published or not.
  * 
  * Usage: node update-dependents.js <package-name> <new-version>
  * Example: node update-dependents.js @wix-pilot/core 3.1.0
@@ -13,21 +13,21 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const [packageName, versionParam] = process.argv.slice(2);
+// Get arguments
+const [packageName, newVersion] = process.argv.slice(2);
 
-if (!packageName || !versionParam) {
-  console.error('Please provide package name and version parameter');
-  console.error('Usage: node update-dependents.js <package-name> <package-name@new-version>');
+if (!packageName || !newVersion) {
+  console.error('Please provide package name and version');
+  console.error('Usage: node update-dependents.js <package-name> <new-version>');
+  console.error('Example: node update-dependents.js @wix-pilot/core 3.1.0');
   process.exit(1);
 }
 
-// Extract version from the package-name@version format
-const newVersion = versionParam.includes('@') 
-  ? versionParam.split('@').pop() 
-  : versionParam;
-
 // Remove 'v' prefix if present
 const cleanVersion = newVersion.replace(/^v/, '');
+
+// Get root directory of the monorepo
+const rootDir = path.resolve(__dirname, '..');
 
 // Find all package.json files in the monorepo
 const findPackageJsonFiles = (dir, fileList = []) => {
@@ -47,10 +47,8 @@ const findPackageJsonFiles = (dir, fileList = []) => {
   return fileList;
 };
 
-// Get the root directory of the monorepo
-const rootDir = path.resolve(__dirname, '..');
 const packageJsonFiles = findPackageJsonFiles(rootDir);
-const updatedPackages = [];
+const updatedFiles = [];
 
 // Update dependencies in each package.json
 packageJsonFiles.forEach(filePath => {
@@ -83,22 +81,25 @@ packageJsonFiles.forEach(filePath => {
   if (updated) {
     // Write the updated package.json back to disk
     fs.writeFileSync(filePath, JSON.stringify(packageJson, null, 2) + '\n');
-    updatedPackages.push(path.relative(rootDir, filePath));
+    updatedFiles.push(path.relative(rootDir, filePath));
   }
 });
 
 // If any packages were updated, create a commit
-if (updatedPackages.length > 0) {
-  console.log(`Updated ${updatedPackages.length} dependent packages to use ${packageName}@${cleanVersion}`);
+if (updatedFiles.length > 0) {
+  console.log(`Updated ${updatedFiles.length} dependent packages to use ${packageName}@${cleanVersion}`);
   
   try {
     // Add all updated package.json files to git
-    execSync('git add ' + updatedPackages.join(' '), { stdio: 'inherit' });
+    for (const file of updatedFiles) {
+      const fullPath = path.join(rootDir, file);
+      execSync(`git add "${fullPath}"`, { stdio: 'inherit' });
+    }
     
     // Create a commit with the package updates
-    execSync(`git commit -m "chore: update dependents to use ${packageName} v${cleanVersion}"`, { stdio: 'inherit' });
+    execSync(`git commit -m "chore: update dependencies to use ${packageName}@${cleanVersion}"`, { stdio: 'inherit' });
     
-    console.log('Created commit with dependent package updates');
+    console.log('Created commit with dependency updates');
   } catch (error) {
     console.error('Failed to create commit:', error.message);
     process.exit(1);

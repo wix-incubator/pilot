@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Shared release script for all packages
+ * Shared release script for all packages in the monorepo
  *
  * Usage: node release-package.js [patch|minor|major]
  * Example: node release-package.js patch
@@ -22,8 +22,9 @@ if (!['patch', 'minor', 'major'].includes(releaseType)) {
 const packageJsonPath = path.resolve(process.cwd(), 'package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const packageName = packageJson.name;
+const currentVersion = packageJson.version;
 
-console.log(`Releasing ${releaseType} version of ${packageName}...`);
+console.log(`Releasing ${releaseType} version of ${packageName} (current: v${currentVersion})...`);
 
 try {
   // Run tests
@@ -35,17 +36,23 @@ try {
   const versionOutput = execSync(`npm version ${releaseType} --no-git-tag-version`).toString().trim();
   const newVersion = versionOutput.replace(/^v/, '');
 
-  // Commit version bump
-  console.log('Committing version bump...');
-  execSync(`git commit -am "chore: bump ${releaseType} version of ${packageName} to v${newVersion}"`, { stdio: 'inherit' });
-
   // Build package
   console.log('Building package...');
   execSync('npm run build', { stdio: 'inherit' });
 
-  // Publish package
-  console.log('Publishing package...');
-  execSync('npm publish --access public', { stdio: 'inherit' });
+  // Commit version bump with consistent message format
+  console.log('Committing version bump...');
+  execSync(`git commit -am "chore: bump ${releaseType} version of ${packageName} to v${newVersion}"`, { stdio: 'inherit' });
+
+  // Check if we should skip publishing
+  const skipPublish = process.env.SKIP_PUBLISH === 'true';
+  if (skipPublish) {
+    console.log('Skipping package publishing (SKIP_PUBLISH=true)');
+  } else {
+    // Publish package
+    console.log('Publishing package...');
+    execSync('npm publish --access public', { stdio: 'inherit' });
+  }
 
   // Update dependencies in other packages
   console.log('Updating dependent packages...');
