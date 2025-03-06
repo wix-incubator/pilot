@@ -42,6 +42,7 @@
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
+    "detox": ">=20.33.0",
     "@wix-pilot/core": "^3.0.4"
   }
 }
