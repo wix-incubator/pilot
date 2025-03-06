@@ -27,6 +27,9 @@ const currentVersion = packageJson.version;
 console.log(`Releasing ${releaseType} version of ${packageName} (current: v${currentVersion})...`);
 
 try {
+    // Run install
+  console.log('Running npm install...');
+  execSync('npm install', { stdio: 'inherit' });
   // Run tests
   console.log('Running tests...');
   execSync('npm test', { stdio: 'inherit' });
