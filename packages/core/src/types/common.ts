@@ -28,16 +28,15 @@ export interface SnapshotHashing {
   hashSnapshot(snapshot: any): Promise<string>;
 
   /**
-   * Checks if snapshots are similar enough.
+   * Checks if snapshots are similar enough according to algorithm-specific criteria.
+   * Each algorithm implementation determines its own similarity metrics internally.
    * @param hash1 - First snapshot hash
    * @param hash2 - Second snapshot hash
-   * @param threshold - Optional similarity threshold
    * @returns true if similar, false otherwise
    */
   areSnapshotsSimilar(
     hash1: string,
-    hash2: string,
-    threshold?: number,
+    hash2: string
   ): boolean;
 }
 
