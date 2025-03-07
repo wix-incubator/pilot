@@ -1,5 +1,3 @@
-import { AutoReview, AutoStepPlan } from "@/types/auto";
-
 /**
  * Screen capture output.
  */
@@ -13,48 +11,10 @@ export type ScreenCapturerResult = {
 };
 
 /** Snapshot hashing algorithm types */
-export type HashingAlgorithm = "BlockHash";
+export type HashingAlgorithm = "BlockHash" | "ViewHierarchyHash";
 
-/** Hash algorithm output format */
-export type SnapshotHashObject = Record<HashingAlgorithm, string>;
-
-/**
- * Single cache entry.
- */
-export type SingleCacheValue = {
-  /** UI snapshot hash */
-  snapshotHash?: SnapshotHashObject;
-  /** Component hierarchy */
-  viewHierarchy?: string;
-  /** Generated code */
-  code: string;
-};
-
-/**
- * Single auto pilot cache entry.
- */
-export type SingleAutoPilotCacheValue = {
-  /** Screen capture output */
-  screenCapture: ScreenCapturerResult;
-  /** UI snapshot hash */
-  snapshotHash?: SnapshotHashObject;
-  /** Screen description */
-  screenDescription: string;
-  /** Auto pilot step plan */
-  plan: AutoStepPlan;
-  /** Auto pilot step review */
-  review: AutoReview;
-  /** Goal achievement status */
-  goalAchieved: boolean;
-  /** Summary*/
-  summary?: string;
-};
-
-/** Cache entry array */
-export type CacheValues = SingleCacheValue[];
-
-/** Auto pilot cache entry array */
-export type CacheAutoPilotValues = SingleAutoPilotCacheValue[];
+/** Hash algorithms output format */
+export type SnapshotHashes = Record<HashingAlgorithm, string>;
 
 /**
  * Snapshot hashing operations interface.
@@ -80,3 +40,25 @@ export interface SnapshotHashing {
     threshold?: number,
   ): boolean;
 }
+
+/**
+ * Cache key structure, serving as a cache key for both StepPerformer and AutoPerformer.
+ * @param T - Cached step data type (input).
+ */
+export type CacheKey<T> = {
+  key: T;
+};
+
+/**
+ * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
+ * @param T - Cached step data type (result).
+ * @param SnapshotHashes - Snapshot hashes. Allows partial object for backward compatibility.
+ * @param creationTime - Cache entry creation time.
+ * @param lastAccessTime - Cache entry last access time.
+ */
+export type CacheValue<T> = {
+  value: T;
+  snapshotHashes: Partial<SnapshotHashes>;
+  creationTime: number;
+  lastAccessTime: number;
+};

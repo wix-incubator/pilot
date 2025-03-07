@@ -5,7 +5,7 @@ import {
   TestingFrameworkDriver,
   AutoReport,
   CacheValues,
-  SnapshotHashObject,
+  SnapshotHashes,
 } from "@/types";
 import * as crypto from "crypto";
 import { mockedCacheFile, mockCache } from "@/test-utils/cache";
@@ -23,7 +23,7 @@ jest.mock("crypto");
 jest.mock("fs");
 
 describe("Pilot Integration Tests", () => {
-  let mockedCachedSnapshotHash: SnapshotHashObject;
+  let mockedCachedSnapshotHash: SnapshotHashes;
   let mockFrameworkDriver: jest.Mocked<TestingFrameworkDriver>;
   let mockPromptHandler: jest.Mocked<PromptHandler>;
   let pilot: Pilot;

@@ -1,7 +1,7 @@
 import type {
   HashingAlgorithm,
   SnapshotHashing,
-  SnapshotHashObject,
+  SnapshotHashes,
 } from "@/types";
 import { BlockHash } from "./BlockHash";
 
@@ -13,9 +13,9 @@ export class SnapshotComparator {
     this.hashingAlgorithms.set("BlockHash", new BlockHash(16));
   }
 
-  public async generateHashes(snapshot: any): Promise<SnapshotHashObject> {
+  public async generateHashes(snapshot: any): Promise<SnapshotHashes> {
     if (!snapshot) {
-      return {} as SnapshotHashObject;
+      return {} as SnapshotHashes;
     }
     const hashPromises = Array.from(this.hashingAlgorithms.entries()).map(
       async ([algorithm, comparator]) => {
@@ -25,12 +25,12 @@ export class SnapshotComparator {
     );
 
     const hashEntries = await Promise.all(hashPromises);
-    return Object.fromEntries(hashEntries) as SnapshotHashObject;
+    return Object.fromEntries(hashEntries) as SnapshotHashes;
   }
 
   public compareSnapshot(
-    newSnapshot: SnapshotHashObject,
-    cachedSnapshot: SnapshotHashObject,
+    newSnapshot: SnapshotHashes,
+    cachedSnapshot: SnapshotHashes,
     threshold?: number,
   ): boolean {
     const comparisonPromises = Object.entries(cachedSnapshot).map(
