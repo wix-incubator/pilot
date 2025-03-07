@@ -53,12 +53,14 @@ export class BlockHash implements SnapshotHashing {
 
   areSnapshotsSimilar(
     snapshot1: string,
-    snapshot2: string,
-    threshold: number = 0.1,
+    snapshot2: string
   ): boolean {
+    // Default similarity threshold for BlockHash algorithm: 10% difference is acceptable
+    const SIMILARITY_THRESHOLD = 0.1;
+    
     const diff = this.calculateSnapshotDistance(snapshot1, snapshot2);
     const distance = diff / snapshot1.length;
 
-    return distance <= threshold;
+    return distance <= SIMILARITY_THRESHOLD;
   }
 }
