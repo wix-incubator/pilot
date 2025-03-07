@@ -68,14 +68,6 @@ export interface SnapshotHashing {
   hashSnapshot(snapshot: any): Promise<string>;
 
   /**
-   * Calculates difference between snapshot hashes.
-   * @param hash1 - First snapshot hash
-   * @param hash2 - Second snapshot hash
-   * @returns Numerical difference
-   */
-  calculateSnapshotDistance(hash1: string, hash2: string): number;
-
-  /**
    * Checks if snapshots are similar enough.
    * @param hash1 - First snapshot hash
    * @param hash2 - Second snapshot hash
