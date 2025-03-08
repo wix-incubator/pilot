@@ -3,6 +3,7 @@ import { mockCache, mockedCacheFile } from "../../test-utils/cache";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import type { ScreenCapturerResult } from "@/types";
 import fs from "fs";
+import * as jestUtils from "./jestUtils";
 
 jest.mock("fs");
 jest.mock("../snapshot/comparator/SnapshotComparator");
@@ -27,6 +28,11 @@ describe("CacheHandler", () => {
       generateHashes: jest.fn().mockResolvedValue(mockHashes),
       compareSnapshot: jest.fn().mockReturnValue(false),
     } as unknown as jest.Mocked<SnapshotComparator>;
+
+    // Mock the getCurrentJestTestFilePath to return undefined by default
+    jest
+      .spyOn(jestUtils, "getCurrentJestTestFilePath")
+      .mockReturnValue(undefined);
 
     cacheHandler = new CacheHandler(
       mockSnapshotComparator as unknown as SnapshotComparator,
@@ -293,6 +299,53 @@ describe("CacheHandler", () => {
         shouldUseCache: false,
       });
       expect(cacheHandler.isCacheInUse()).toBe(false);
+    });
+  });
+
+  describe("cache file path handling", () => {
+    beforeEach(() => {
+      jest.spyOn(jestUtils, "getCurrentJestTestFilePath").mockReset();
+    });
+
+    it("should use default cache path when no Jest test path is available", () => {
+      jest
+        .spyOn(jestUtils, "getCurrentJestTestFilePath")
+        .mockReturnValue(undefined);
+      (fs.existsSync as jest.Mock).mockReturnValue(false);
+
+      const newCacheHandler = new CacheHandler(mockSnapshotComparator);
+
+      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      expect(cacheFilePath).toContain("__pilot_cache__/global.json");
+    });
+
+    it("should use Jest test file path when available", () => {
+      const mockTestPath = "/path/to/test/myTest.test.ts";
+      jest
+        .spyOn(jestUtils, "getCurrentJestTestFilePath")
+        .mockReturnValue(mockTestPath);
+
+      const newCacheHandler = new CacheHandler(mockSnapshotComparator);
+
+      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      expect(cacheFilePath).toContain(
+        "/path/to/test/__pilot_cache__/myTest.test.json",
+      );
+    });
+
+    it("should use explicit cache file path when provided", () => {
+      const explicitPath = "/custom/path/cache.json";
+
+      const newCacheHandler = new CacheHandler(
+        mockSnapshotComparator,
+        {},
+        explicitPath,
+      );
+
+      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      expect(cacheFilePath).toContain(
+        "/custom/path/cache.json",
+      );
     });
   });
 });

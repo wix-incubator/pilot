@@ -8,24 +8,35 @@ import {
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
+import { getCurrentJestTestFilePath } from "./jestUtils";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
  * It works with the SnapshotComparator to compare snapshots and find matching cache entries.
  */
 export class CacheHandler {
+  private static CACHE_DIRECTORY = "__pilot_cache__";
+  private static DEFAULT_CACHE_FILENAME = "global.json";
+
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
+  private callerPath?: string;
 
+  /**
+   * Creates a new CacheHandler instance
+   * @param snapshotComparator The snapshot comparator to use for hash generation and comparison
+   * @param cacheOptions Cache configuration options
+   * @param cacheFilePath Optional explicit cache file path override
+   */
   constructor(
     snapshotComparator: SnapshotComparator,
     cacheOptions: CacheOptions = {},
-    cacheFileName: string = "wix_pilot_cache.json",
+    cacheFilePath?: string,
   ) {
-    this.cacheFilePath = path.resolve(process.cwd(), cacheFileName);
+    this.cacheFilePath = cacheFilePath || this.getCacheFilePath();
     this.cacheOptions = {
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
@@ -199,5 +210,44 @@ export class CacheHandler {
 
   public isCacheInUse() {
     return this.cacheOptions?.shouldUseCache !== false;
+  }
+
+  /**
+   * Determines the appropriate cache file path based on the caller path
+   * @returns The resolved cache file path
+   */
+  private getCacheFilePath(): string {
+    const callerPath = getCurrentJestTestFilePath();
+
+    return callerPath
+      ? this.getCallerCacheFilePath(callerPath)
+      : this.getDefaultCacheFilePath();
+  }
+
+  /**
+   * Gets the cache file path for a specific caller file (typically a Jest test)
+   * @param callerPath The path of the calling file
+   * @returns The resolved cache file path specific to the caller
+   */
+  private getCallerCacheFilePath(callerPath: string): string {
+    const testDir = path.dirname(callerPath);
+    const testFilename = path.basename(callerPath, path.extname(callerPath));
+    return path.join(
+      testDir,
+      CacheHandler.CACHE_DIRECTORY,
+      `${testFilename}.json`,
+    );
+  }
+
+  /**
+   * Gets the default global cache file path when no caller path is available
+   * @returns The resolved default cache file path
+   */
+  private getDefaultCacheFilePath(): string {
+    return path.resolve(
+      process.cwd(),
+      CacheHandler.CACHE_DIRECTORY,
+      CacheHandler.DEFAULT_CACHE_FILENAME,
+    );
   }
 }
