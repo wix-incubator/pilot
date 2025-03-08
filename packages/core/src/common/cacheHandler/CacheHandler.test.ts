@@ -343,9 +343,7 @@ describe("CacheHandler", () => {
       );
 
       const cacheFilePath = (newCacheHandler as any).cacheFilePath;
-      expect(cacheFilePath).toContain(
-        "/custom/path/cache.json",
-      );
+      expect(cacheFilePath).toContain("/custom/path/cache.json");
     });
   });
 });
