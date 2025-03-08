@@ -3,11 +3,9 @@
  */
 export type ScreenCapturerResult = {
   /** UI snapshot path */
-  snapshot: string | undefined;
+  snapshot?: string;
   /** Component hierarchy */
-  viewHierarchy: string;
-  /** Image capture support status */
-  isSnapshotImageAttached: boolean;
+  viewHierarchy?: string;
 };
 
 /** Snapshot hashing algorithm types */
@@ -22,10 +20,12 @@ export type SnapshotHashes = Record<HashingAlgorithm, string>;
 export interface SnapshotHashing {
   /**
    * Generates hash from UI snapshot.
-   * @param snapshot - UI snapshot to hash
-   * @returns Hash string
+   * @param screenCapture - Screen capture output to hash
+   * @returns Hash string or undefined if no relevant data
    */
-  hashSnapshot(snapshot: any): Promise<string>;
+  hashSnapshot(
+    screenCapture: ScreenCapturerResult,
+  ): Promise<string | undefined>;
 
   /**
    * Checks if snapshots are similar enough according to algorithm-specific criteria.
@@ -34,10 +34,7 @@ export interface SnapshotHashing {
    * @param hash2 - Second snapshot hash
    * @returns true if similar, false otherwise
    */
-  areSnapshotsSimilar(
-    hash1: string,
-    hash2: string
-  ): boolean;
+  areSnapshotsSimilar(hash1: string, hash2: string): boolean;
 }
 
 /**
@@ -57,7 +54,7 @@ export type CacheKey<T> = {
  */
 export type CacheValue<T> = {
   value: T;
-  snapshotHashes: Partial<SnapshotHashes>;
+  snapshotHashes?: Partial<SnapshotHashes>;
   creationTime: number;
   lastAccessTime: number;
 };

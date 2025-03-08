@@ -4,7 +4,7 @@ import {
   PromptHandler,
   TestingFrameworkDriver,
   AutoReport,
-  CacheValues,
+  CacheValue,
   SnapshotHashes,
 } from "@/types";
 import * as crypto from "crypto";
@@ -50,17 +50,18 @@ describe("Pilot Integration Tests", () => {
       isSnapshotImageSupported: jest.fn().mockReturnValue(true),
     };
 
-    mockedCachedSnapshotHash = await new SnapshotComparator().generateHashes(
-      getSnapshotImage("baseline"),
-    );
-
-    mockCache();
-
     (crypto.createHash as jest.Mock).mockReturnValue({
       update: jest.fn().mockReturnValue({
         digest: jest.fn().mockReturnValue("hash"),
       }),
     });
+
+    mockedCachedSnapshotHash = await new SnapshotComparator().generateHashes({
+      snapshot: getSnapshotImage("baseline"),
+      viewHierarchy: "<view><button>Login</button></view>",
+    });
+
+    mockCache();
 
     pilot = new Pilot({
       frameworkDriver: mockFrameworkDriver,
@@ -287,36 +288,29 @@ describe("Pilot Integration Tests", () => {
       pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
-        '{"currentGoal":"Perform action","previous":[]}':
+        '{"currentStep":"Perform action","previousSteps":[]}':
           expect.arrayContaining([
             expect.objectContaining({
-              code: "// Perform action",
-              snapshotHash: expect.any(Object),
-              viewHierarchy: expect.any(String),
+              snapshotHashes: {
+                BlockHash: expect.any(String),
+                ViewHierarchyHash: expect.any(String),
+              },
+              value: {
+                code: "// Perform action",
+              },
             }),
           ]),
       });
     });
 
-    it("should read from existing cache file", async () => {
-      mockCache({
-        '{"currentGoal":"Cached action","previous":[]}': [
-          { code: "// Cached action code", viewHierarchy: "hash" },
-        ],
-      });
-
-      await pilot.perform("Cached action");
-
-      expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
-    });
-
     it("should use snapshot cache if available", async () => {
       mockCache({
-        '{"currentGoal":"Cached action","previous":[]}': [
+        '{"currentStep":"Cached action","previousSteps":[]}': [
           {
-            code: "// Cached action code",
-            viewHierarchy: "WrongHash",
-            snapshotHash: mockedCachedSnapshotHash,
+            snapshotHashes: mockedCachedSnapshotHash,
+            value: {
+              code: "// Cached action code",
+            },
           },
         ],
       });
@@ -333,14 +327,17 @@ describe("Pilot Integration Tests", () => {
       pilot.end();
 
       expect(mockedCacheFile).toEqual({
-        '{"currentGoal":"New action","previous":[]}': expect.arrayContaining([
-          expect.any(Object),
+        '{"currentStep":"New action","previousSteps":[]}': [
           expect.objectContaining({
-            code: "// New action code",
-            snapshotHash: expect.any(Object),
-            viewHierarchy: expect.any(String),
+            snapshotHashes: {
+              BlockHash: expect.any(String),
+              ViewHierarchyHash: expect.any(String),
+            },
+            value: {
+              code: "// New action code",
+            },
           }),
-        ]),
+        ],
       });
     });
 
@@ -541,7 +538,7 @@ describe("Pilot Integration Tests", () => {
       mockPromptHandler.runPrompt.mockResolvedValue("// No operation");
     });
 
-    it("should use full cache mode by default", async () => {
+    it("should use cache by default", async () => {
       // Create a new instance with default cache options
       const cachePilot = new Pilot({
         frameworkDriver: mockFrameworkDriver,
@@ -553,12 +550,11 @@ describe("Pilot Integration Tests", () => {
       cachePilot.end();
 
       const firstCacheValue = Object.values(
-        (mockedCacheFile as Record<string, CacheValues>) || {},
+        (mockedCacheFile as Record<string, CacheValue<any>[]>) || {},
       )[0][0];
 
-      expect(firstCacheValue).toHaveProperty("viewHierarchy");
-      expect(firstCacheValue).toHaveProperty("code");
-      expect(firstCacheValue).toHaveProperty("snapshotHash");
+      expect(firstCacheValue).toHaveProperty("snapshotHashes");
+      expect(firstCacheValue).toHaveProperty("value");
     });
 
     it("should not use cache when cache mode is disabled", async () => {

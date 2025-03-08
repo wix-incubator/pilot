@@ -1,14 +1,27 @@
 import fs from "fs";
 import path from "path";
-import { AutoPreviousStep, CacheOptions, PreviousStep } from "@/types";
+import {
+  CacheOptions,
+  CacheValue,
+  ScreenCapturerResult,
+  SnapshotHashes,
+} from "@/types";
+import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
+import logger from "@/common/logger";
 
+/**
+ * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
+ * It works with the SnapshotComparator to compare snapshots and find matching cache entries.
+ */
 export class CacheHandler {
-  private cache: Map<string, any> = new Map();
-  private temporaryCache: Map<string, any> = new Map();
+  private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
+  private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly cacheFilePath: string;
   private cacheOptions?: CacheOptions;
+  private snapshotComparator: SnapshotComparator;
 
   constructor(
+    snapshotComparator: SnapshotComparator,
     cacheOptions: CacheOptions = {},
     cacheFileName: string = "wix_pilot_cache.json",
   ) {
@@ -17,6 +30,18 @@ export class CacheHandler {
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
+    this.snapshotComparator = snapshotComparator;
+  }
+
+  /**
+   * Generate hashes for a snapshot using all registered algorithms
+   * @param screenCapture The screen capture result
+   * @returns Object with hash values from each registered algorithm
+   */
+  public async generateHashes(
+    screenCapture: ScreenCapturerResult,
+  ): Promise<SnapshotHashes> {
+    return await this.snapshotComparator.generateHashes(screenCapture);
   }
 
   public loadCacheFromFile(): void {
@@ -26,11 +51,14 @@ export class CacheHandler {
         const json = JSON.parse(data);
         this.cache = new Map(Object.entries(json));
       } else {
-        this.cache.clear(); // Ensure cache is empty if file doesn't exist
+        this.cache.clear();
       }
     } catch (error) {
-      console.warn("Error loading cache from file:", error);
-      this.cache.clear(); // Clear cache on error to avoid stale data
+      logger.warn("Error loading cache from file:", {
+        message: String(error),
+        color: "yellow",
+      });
+      this.cache.clear();
     }
   }
 
@@ -40,48 +68,129 @@ export class CacheHandler {
       fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
         flag: "w+",
       });
+      logger.info("Pilot cache saved successfully");
     } catch (error) {
-      console.error("Error saving cache to file:", error);
+      logger.error("Error saving cache to file:", {
+        message: String(error),
+        color: "red",
+      });
     }
   }
 
-  public getStepFromCache(key: string): any | undefined {
+  /**
+   * Get cached values by key from the persistent cache
+   * @param cacheKey The cache key string
+   * @returns Array of cache values if found, undefined otherwise
+   */
+  public getFromPersistentCache<T>(
+    cacheKey: string,
+  ): Array<CacheValue<T>> | undefined {
     if (this.shouldOverrideCache()) {
+      logger.info("Cache disabled, generating new response");
       return undefined;
     }
-    return this.cache.get(key);
+
+    return this.cache.get(cacheKey) as Array<CacheValue<T>> | undefined;
   }
 
-  public addToTemporaryCache(key: string, value: any): void {
-    this.temporaryCache.set(key, [
-      ...(this.temporaryCache.get(key) ?? []),
+  /**
+   * Add value to temporary cache
+   * @param cacheKey The cache key string
+   * @param value The value to cache
+   * @param snapshotHashes Hash values for the current snapshot
+   */
+  public addToTemporaryCache<T>(
+    cacheKey: string,
+    value: T,
+    snapshotHashes?: Partial<SnapshotHashes>,
+  ): void {
+    logger.info("Saving result to cache for future use");
+
+    const cacheValue: CacheValue<T> = {
       value,
+      snapshotHashes: snapshotHashes || {},
+      creationTime: Date.now(),
+      lastAccessTime: Date.now(),
+    };
+
+    const existingValues = this.temporaryCache.get(cacheKey) || [];
+    this.temporaryCache.set(cacheKey, [
+      ...existingValues,
+      cacheValue as CacheValue<unknown>,
     ]);
   }
 
+  /**
+   * Persist temporary cache to permanent cache and save to file
+   */
   public flushTemporaryCache(): void {
-    this.temporaryCache.forEach((value, key) => {
-      this.cache.set(key, value);
+    const temporaryCacheSize = this.temporaryCache.size;
+
+    if (temporaryCacheSize === 0) {
+      return;
+    }
+
+    this.temporaryCache.forEach((values, key) => {
+      const existingValues = this.cache.get(key) || [];
+      this.cache.set(key, [...existingValues, ...values]);
     });
+
     this.saveCacheToFile();
     this.clearTemporaryCache();
   }
 
+  /**
+   * Clear the temporary cache without persisting it
+   */
   public clearTemporaryCache(): void {
     this.temporaryCache.clear();
   }
 
-  public generateCacheKey(
-    currentGoal: string,
-    previous: PreviousStep[] | AutoPreviousStep[],
-  ): string | undefined {
+  /**
+   * Find matching cache entry by comparing snapshot hashes
+   * @param cacheValues Array of cache values to search
+   * @param currentHashes Current snapshot hashes (complete with all algorithms)
+   * @returns Matching cache value if found, undefined otherwise
+   */
+  public findMatchingCacheEntry<T>(
+    cacheValues: Array<CacheValue<T>>,
+    currentHashes?: SnapshotHashes,
+  ): CacheValue<T> | undefined {
+    if (!cacheValues?.length || !currentHashes) {
+      return undefined;
+    }
+
+    return cacheValues.find((entry) => {
+      const isMatch = this.snapshotComparator.compareSnapshot(
+        currentHashes,
+        entry.snapshotHashes,
+      );
+      if (isMatch) {
+        // update last access time when a match is found
+        entry.lastAccessTime = Date.now();
+        return true;
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Generate a cache key from serializable data
+   * @param keyData The data to use as a cache key (must be JSON serializable)
+   * @returns Cache key string or undefined if cache is disabled
+   * @example
+   * // Generate a key for step performer
+   * const key = cacheHandler.generateCacheKey({ step, previousSteps });
+   *
+   * // Generate a key for auto performer
+   * const key = cacheHandler.generateCacheKey({ goal, previousSteps });
+   */
+  public generateCacheKey<T>(keyData: T): string | undefined {
     if (!this.isCacheInUse()) {
       return undefined;
     }
 
-    const cacheKeyData: any = { currentGoal, previous };
-
-    return JSON.stringify(cacheKeyData);
+    return JSON.stringify(keyData);
   }
 
   private shouldOverrideCache() {

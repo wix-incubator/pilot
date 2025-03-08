@@ -3,20 +3,19 @@ import { SnapshotComparator } from "./comparator/SnapshotComparator";
 
 const DEFAULT_POLL_INTERVAL = 500; // ms
 const DEFAULT_TIMEOUT = 5000; // ms
-const DEFAULT_STABILITY_THRESHOLD = 0.05;
 
 export class SnapshotManager {
   constructor(
     private driver: TestingFrameworkDriver,
     private snapshotComparator: SnapshotComparator,
-    private downscaleImage: (
+    private downscaleImage: (imagePath: string) => Promise<string> = (
       imagePath: string,
-    ) => Promise<string> = downscaleImage,
+    ) => Promise.resolve(imagePath),
   ) {}
 
   private async captureSnapshotsUntilStable<T>(
     captureFunc: () => Promise<T | undefined>,
-    compareFunc: (current: T, last: T) => Promise<boolean> | boolean,
+    compareFunc: (current: T, last: T) => Promise<boolean>,
     pollInterval: number = DEFAULT_POLL_INTERVAL,
     timeout: number = DEFAULT_TIMEOUT,
   ): Promise<T | undefined> {
@@ -47,16 +46,15 @@ export class SnapshotManager {
   private async compareSnapshots(
     current: string,
     last: string,
-    stabilityThreshold: number,
   ): Promise<boolean> {
-    const currentHash = await this.snapshotComparator.generateHashes(current);
-    const lastHash = await this.snapshotComparator.generateHashes(last);
+    const currentHash = await this.snapshotComparator.generateHashes({
+      snapshot: current,
+    });
+    const lastHash = await this.snapshotComparator.generateHashes({
+      snapshot: last,
+    });
 
-    return this.snapshotComparator.compareSnapshot(
-      currentHash,
-      lastHash,
-      stabilityThreshold,
-    );
+    return this.snapshotComparator.compareSnapshot(currentHash, lastHash);
   }
 
   private async captureDownscaledImage(
@@ -64,22 +62,21 @@ export class SnapshotManager {
   ): Promise<string | undefined> {
     const imagePath = await this.driver.captureSnapshotImage(useHighlights);
     if (imagePath) {
-      const downscaledImagePath = await this.downscaleImage(imagePath);
-      return downscaledImagePath;
+      return await this.downscaleImage(imagePath);
     }
+
+    return undefined;
   }
 
   async captureSnapshotImage(
     useHighlights: boolean,
     pollInterval?: number,
     timeout?: number,
-    stabilityThreshold: number = DEFAULT_STABILITY_THRESHOLD,
   ): Promise<string | undefined> {
     return this.driver.driverConfig.useSnapshotStabilitySync
-      ? this.captureSnapshotsUntilStable(
+      ? await this.captureSnapshotsUntilStable(
           async () => this.captureDownscaledImage(useHighlights),
-          (current, last) =>
-            this.compareSnapshots(current, last, stabilityThreshold),
+          async (current, last) => this.compareSnapshots(current, last),
           pollInterval,
           timeout,
         )

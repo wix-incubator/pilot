@@ -54,7 +54,10 @@ export class Pilot {
       downscaleImage,
     );
 
-    this.cacheHandler = new CacheHandler(config.options?.cacheOptions);
+    this.cacheHandler = new CacheHandler(
+      this.snapshotComparator,
+      config.options?.cacheOptions,
+    );
     this.stepPerformerPromptCreator = new StepPerformerPromptCreator(
       config.frameworkDriver.apiCatalog,
     );
@@ -70,7 +73,7 @@ export class Pilot {
       new CodeEvaluator(),
       config.promptHandler,
       this.cacheHandler,
-      new SnapshotComparator(),
+      this.snapshotComparator,
       this.screenCapturer,
     );
 
@@ -78,8 +81,6 @@ export class Pilot {
       this.snapshotManager,
       config.promptHandler,
     );
-
-    this.snapshotComparator = new SnapshotComparator();
 
     this.autoPerformer = new AutoPerformer(
       new AutoPerformerPromptCreator(),

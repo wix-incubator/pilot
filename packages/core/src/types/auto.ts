@@ -49,6 +49,23 @@ export type AutoStepPlan = {
 };
 
 /**
+ * Cache value for AutoPerformer.
+ * Contains all necessary data for an auto pilot step.
+ */
+export interface AutoPerformerCacheValue {
+  /** Screen description */
+  screenDescription: string;
+  /** Auto pilot step plan */
+  plan: AutoStepPlan;
+  /** Auto pilot step review */
+  review: AutoReview;
+  /** Goal achievement status */
+  goalAchieved: boolean;
+  /** Summary */
+  summary?: string;
+}
+
+/**
  * Review section content.
  */
 export type AutoReviewSection = {

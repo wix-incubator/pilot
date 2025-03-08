@@ -18,7 +18,7 @@ export class CodeEvaluator {
       const result = await asyncFunction();
 
       logger.info({
-        message: `\nCopilot evaluated the code: \n\`\`\`\n${code}\n\`\`\``,
+        message: `\nPilot evaluated the code: \n\`\`\`\n${code}\n\`\`\``,
         isBold: false,
         color: "gray",
       });
@@ -26,7 +26,7 @@ export class CodeEvaluator {
       return { code, result, sharedContext };
     } catch (error) {
       logger.error({
-        message: `\nCopilot failed to evaluate the code: \n\`\`\`\n${code}\n\`\`\``,
+        message: `\nPilot failed to evaluate the code: \n\`\`\`\n${code}\n\`\`\``,
         isBold: false,
         color: "gray",
       });

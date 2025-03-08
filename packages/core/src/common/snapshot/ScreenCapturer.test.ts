@@ -36,7 +36,6 @@ describe("ScreenCapturer", () => {
     expect(result).toEqual({
       snapshot: "snapshot_data",
       viewHierarchy: "view_hierarchy_data",
-      isSnapshotImageAttached: true,
     });
   });
 
@@ -55,7 +54,6 @@ describe("ScreenCapturer", () => {
     expect(result).toEqual({
       snapshot: undefined,
       viewHierarchy: "view_hierarchy_data",
-      isSnapshotImageAttached: false,
     });
   });
 
@@ -75,7 +73,6 @@ describe("ScreenCapturer", () => {
     expect(result).toEqual({
       snapshot: undefined,
       viewHierarchy: "view_hierarchy_data",
-      isSnapshotImageAttached: false,
     });
   });
 
