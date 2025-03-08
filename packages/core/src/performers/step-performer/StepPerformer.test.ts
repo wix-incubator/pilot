@@ -28,11 +28,19 @@ const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 const VIEW_HIERARCHY_HASH = "hash";
 const CACHE_VALUE = [
-  { code: PROMPT_RESULT, viewHierarchy: VIEW_HIERARCHY_HASH },
+  {
+    value: { code: PROMPT_RESULT, viewHierarchy: VIEW_HIERARCHY_HASH },
+    snapshotHashes: {
+      BlockHash: VIEW_HIERARCHY_HASH,
+      ViewHierarchyHash: VIEW_HIERARCHY_HASH,
+    },
+    creationTime: Date.now(),
+    lastAccessTime: Date.now(),
+  },
 ];
 
-describe("CopilotStepPerformer", () => {
-  let copilotStepPerformer: StepPerformer;
+describe("StepPerformer", () => {
+  let stepPerformer: StepPerformer;
   let mockContext: jest.Mocked<any>;
   let mockPromptCreator: jest.Mocked<StepPerformerPromptCreator>;
   let mockCodeEvaluator: jest.Mocked<CodeEvaluator>;
@@ -86,6 +94,9 @@ describe("CopilotStepPerformer", () => {
       getFromTemporaryCache: jest.fn(),
       generateCacheKey: jest.fn(),
       isCacheInUse: jest.fn(),
+      getFromPersistentCache: jest.fn(),
+      generateHashes: jest.fn(),
+      findMatchingCacheEntry: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -97,7 +108,7 @@ describe("CopilotStepPerformer", () => {
       capture: jest.fn(),
     } as unknown as jest.Mocked<ScreenCapturer>;
 
-    copilotStepPerformer = new StepPerformer(
+    stepPerformer = new StepPerformer(
       mockContext,
       mockPromptCreator,
       mockCodeEvaluator,
@@ -152,7 +163,6 @@ describe("CopilotStepPerformer", () => {
     mockCaptureResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     };
     mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
 
@@ -161,6 +171,11 @@ describe("CopilotStepPerformer", () => {
       previous: previous,
     });
 
+    const snapshotHashes = {
+      BlockHash: VIEW_HIERARCHY_HASH,
+      ViewHierarchyHash: VIEW_HIERARCHY_HASH,
+    };
+    mockCacheHandler.generateHashes.mockResolvedValue(snapshotHashes);
     mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
     mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
@@ -168,20 +183,23 @@ describe("CopilotStepPerformer", () => {
       const cacheData: Map<string, any> = new Map();
       cacheData.set(cacheKey, CACHE_VALUE);
 
-      mockCacheHandler.getStepFromCache.mockImplementation((key: string) => {
-        return cacheData.get(key);
-      });
+      mockCacheHandler.getFromPersistentCache.mockImplementation(
+        (key: string) => {
+          return cacheData.get(key);
+        },
+      );
+      mockCacheHandler.findMatchingCacheEntry.mockReturnValue(CACHE_VALUE[0]);
     } else {
-      mockCacheHandler.getStepFromCache.mockReturnValue(undefined);
+      mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
+      mockCacheHandler.findMatchingCacheEntry.mockReturnValue(undefined);
     }
   };
 
   it("should perform an intent successfully with snapshot image support", async () => {
     setupMocks();
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     });
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
@@ -201,16 +219,15 @@ describe("CopilotStepPerformer", () => {
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
   });
 
   it("should perform an intent successfully without snapshot image support", async () => {
     setupMocks();
     mockPromptHandler.isSnapshotImageSupported.mockReturnValue(false);
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: undefined,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: false,
     });
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
@@ -230,15 +247,14 @@ describe("CopilotStepPerformer", () => {
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
   });
 
   it("should perform an intent with undefined snapshot", async () => {
     setupMocks();
-    const result = await copilotStepPerformer.perform(INTENT, [], {
+    const result = await stepPerformer.perform(INTENT, [], {
       snapshot: undefined,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: false,
     });
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
@@ -258,7 +274,7 @@ describe("CopilotStepPerformer", () => {
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
   });
 
   it("should perform an intent successfully with previous intents", async () => {
@@ -272,10 +288,9 @@ describe("CopilotStepPerformer", () => {
       },
     ];
 
-    const result = await copilotStepPerformer.perform(intent, previousIntents, {
+    const result = await stepPerformer.perform(intent, previousIntents, {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     });
 
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
@@ -295,7 +310,7 @@ describe("CopilotStepPerformer", () => {
       mockContext,
       {},
     );
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
   });
 
   it("should throw an error if code evaluation fails", async () => {
@@ -307,11 +322,10 @@ describe("CopilotStepPerformer", () => {
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     };
 
     await expect(
-      copilotStepPerformer.perform(INTENT, [], screenCapture, 2),
+      stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow("Evaluation failed");
     expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalled();
   });
@@ -322,18 +336,12 @@ describe("CopilotStepPerformer", () => {
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     };
 
-    const result = await copilotStepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalled();
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
     // Should not call runPrompt or createPrompt since result is cached
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
@@ -355,15 +363,9 @@ describe("CopilotStepPerformer", () => {
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     };
 
-    const result = await copilotStepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
@@ -387,11 +389,10 @@ describe("CopilotStepPerformer", () => {
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
-      isSnapshotImageAttached: true,
     };
 
     await expect(
-      copilotStepPerformer.perform(INTENT, [], screenCapture, 2),
+      stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow(retryError);
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
@@ -403,16 +404,15 @@ describe("CopilotStepPerformer", () => {
   describe("extendJSContext", () => {
     it("should extend the context with the given object", async () => {
       // Initial context
-      copilotStepPerformer.extendJSContext(dummyBarContext1);
+      stepPerformer.extendJSContext(dummyBarContext1);
 
       setupMocks();
       const screenCapture: ScreenCapturerResult = {
         snapshot: SNAPSHOT_DATA,
         viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
       };
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         dummyBarContext1,
@@ -421,9 +421,9 @@ describe("CopilotStepPerformer", () => {
 
       // Extended context
       const extendedContext = { ...dummyBarContext1, ...dummyContext };
-      copilotStepPerformer.extendJSContext(dummyContext);
+      stepPerformer.extendJSContext(dummyContext);
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         extendedContext,
@@ -434,28 +434,27 @@ describe("CopilotStepPerformer", () => {
     it("should log when a context key is overridden", async () => {
       jest.spyOn(logger, "warn").mockImplementation(() => {});
 
-      copilotStepPerformer.extendJSContext(dummyBarContext1);
+      stepPerformer.extendJSContext(dummyBarContext1);
 
       setupMocks();
       const screenCapture: ScreenCapturerResult = {
         snapshot: SNAPSHOT_DATA,
         viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
       };
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         dummyBarContext1,
         {},
       );
 
-      copilotStepPerformer.extendJSContext(dummyBarContext2);
+      stepPerformer.extendJSContext(dummyBarContext2);
       expect(logger.warn).toHaveBeenCalledWith(
         "Pilot's variable from context `bar` is overridden by a new value from `extendJSContext`",
       );
 
-      await copilotStepPerformer.perform(INTENT, [], screenCapture, 2);
+      await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         PROMPT_RESULT,
         dummyBarContext2,

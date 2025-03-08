@@ -24,17 +24,18 @@ export class ScreenCapturer {
         this.snapshotManager.captureViewHierarchyString(),
       ]);
 
-      loggerSpinner.stop(
-        "success",
-        "Screen has reached a stable state, captured the screen",
-      );
+      loggerSpinner.stop("success", "Screen captured successfully");
 
       return {
         snapshot,
         viewHierarchy: viewHierarchy!,
-        isSnapshotImageAttached: snapshot != null && shouldCaptureSnapshot,
       };
     } catch (error) {
+      logger.info("Screen capture failed:", {
+        message: String(error),
+        color: "red",
+        isBold: false,
+      });
       loggerSpinner.stop("failure", "Failed to capture the screen");
       throw error;
     }

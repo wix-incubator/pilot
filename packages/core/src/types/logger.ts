@@ -29,7 +29,7 @@ export declare type LoggerMessageColor =
  */
 export type LoggerMessageComponent =
   | string
-  | { message: string; isBold: boolean; color: LoggerMessageColor };
+  | { message: string; isBold?: boolean; color: LoggerMessageColor };
 
 /**
  * Operation outcome type.

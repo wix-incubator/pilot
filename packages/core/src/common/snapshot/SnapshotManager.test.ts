@@ -52,16 +52,19 @@ describe("SnapshotManager", () => {
       };
 
       mockSnapshotComparator.generateHashes.mockImplementation(
-        async (snapshot: string) => {
+        async (screenCapture) => {
+          const snapshot = screenCapture.snapshot;
+          if (!snapshot) return { BlockHash: "", ViewHierarchyHash: "" };
           return {
             BlockHash: imagePathToHash[snapshot],
-            Phash: imagePathToHash[snapshot],
+            ViewHierarchyHash: imagePathToHash[snapshot],
           };
         },
       );
 
       mockSnapshotComparator.compareSnapshot.mockImplementation(
         (hash1, hash2) => {
+          if (!hash1 || !hash2) return false;
           return hash1.BlockHash === hash2.BlockHash;
         },
       );
@@ -114,10 +117,12 @@ describe("SnapshotManager", () => {
       };
 
       mockSnapshotComparator.generateHashes.mockImplementation(
-        async (snapshot: string) => {
+        async (screenCapture) => {
+          const snapshot = screenCapture.snapshot;
+          if (!snapshot) return { BlockHash: "", ViewHierarchyHash: "" };
           return {
             BlockHash: imagePathToHash[snapshot],
-            Phash: imagePathToHash[snapshot],
+            ViewHierarchyHash: imagePathToHash[snapshot],
           };
         },
       );

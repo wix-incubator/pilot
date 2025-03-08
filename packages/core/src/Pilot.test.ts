@@ -61,7 +61,6 @@ describe("Pilot", () => {
     screenCapture = {
       snapshot: "base64-encoded-image",
       viewHierarchy: '<View><Button title="Login" /></View>',
-      isSnapshotImageAttached: true,
     };
 
     jest.spyOn(console, "error").mockImplementation(() => {});
