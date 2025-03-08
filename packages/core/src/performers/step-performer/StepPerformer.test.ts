@@ -338,12 +338,7 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     };
 
-    const result = await stepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
     expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
@@ -370,12 +365,7 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     };
 
-    const result = await stepPerformer.perform(
-      INTENT,
-      [],
-      screenCapture,
-      2,
-    );
+    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
     expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();

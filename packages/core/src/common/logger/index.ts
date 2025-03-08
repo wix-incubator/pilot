@@ -62,7 +62,7 @@ class Logger {
 
         let coloredMessage = chalk[component.color](component.message);
 
-        if (!!component.isBold) {
+        if (component.isBold) {
           coloredMessage = chalk.bold(coloredMessage);
         }
 
@@ -83,7 +83,7 @@ class Logger {
 
         let message = component.message;
 
-        if (!!component.isBold) {
+        if (component.isBold) {
           message = `**${message}**`;
         }
 
