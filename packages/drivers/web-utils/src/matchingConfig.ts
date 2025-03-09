@@ -70,10 +70,18 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
   href: {
     extract: (el: HTMLElement): string | null => el.getAttribute("href"),
     compare: comparators.compareExactString,
-    importance: { type: "weighted", weight: 0.3 },
+    importance: { type: "weighted", weight: 0.4 },
   },
   src: {
     extract: (el: HTMLElement): string | null => el.getAttribute("src"),
+    compare: comparators.compareExactString,
+    importance: { type: "weighted", weight: 0.3 },
+  },
+  text: {
+    extract: (el: HTMLElement): string | null => {
+      const text = el.textContent?.trim() || null;
+      return text ? text.substring(0, 20) : null;
+    },
     compare: comparators.compareExactString,
     importance: { type: "weighted", weight: 0.3 },
   },
