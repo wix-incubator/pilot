@@ -1,5 +1,6 @@
 import { Rect } from "./types";
 import comparators from "./comparators";
+const DEFAULT_STRING_LENGTH = 20;
 
 type CriteriaImportance =
   | { type: "weighted"; weight: number }
@@ -70,7 +71,7 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
   href: {
     extract: (el: HTMLElement): string | null => el.getAttribute("href"),
     compare: comparators.compareExactString,
-    importance: { type: "weighted", weight: 0.4 },
+    importance: { type: "weighted", weight: 0.3 },
   },
   src: {
     extract: (el: HTMLElement): string | null => el.getAttribute("src"),
@@ -80,7 +81,7 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
   text: {
     extract: (el: HTMLElement): string | null => {
       const text = el.textContent?.trim() || null;
-      return text ? text.substring(0, 20) : null;
+      return text ? text.substring(0, DEFAULT_STRING_LENGTH) : null;
     },
     compare: comparators.compareExactString,
     importance: { type: "weighted", weight: 0.3 },
