@@ -338,17 +338,6 @@ export class AutoPerformer {
         snapshotHashes,
       );
 
-    if (matchingEntry) {
-      const value = matchingEntry.value;
-      return {
-        screenDescription: value.screenDescription,
-        plan: value.plan,
-        review: value.review,
-        goalAchieved: value.goalAchieved,
-        summary: value.summary,
-      };
-    }
-
-    return undefined;
+    return matchingEntry?.value as AutoStepReport;
   }
 }

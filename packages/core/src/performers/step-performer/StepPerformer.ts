@@ -113,7 +113,7 @@ export class StepPerformer {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        const screenCapturerResult =
+        const screenCaptureResult =
           attempt == 1
             ? screenCapture
             : await this.screenCapturer.capture(true);
@@ -121,7 +121,7 @@ export class StepPerformer {
         const code = await this.generateCode(
           step,
           previous,
-          screenCapturerResult,
+          screenCaptureResult,
         );
         lastCode = code;
 
