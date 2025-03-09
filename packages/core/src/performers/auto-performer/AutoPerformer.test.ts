@@ -108,6 +108,8 @@ describe("AutoPerformer", () => {
       getStepFromCache: jest.fn(),
       generateCacheKey: jest.fn(),
       isCacheInUse: jest.fn(),
+      getFromPersistentCache: jest.fn(),
+      findMatchingCacheEntry: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -145,7 +147,6 @@ describe("AutoPerformer", () => {
     mockCaptureResult = {
       snapshot: snapshotData !== null ? snapshotData : undefined,
       viewHierarchy: viewHierarchy,
-      isSnapshotImageAttached: isSnapshotSupported && snapshotData !== null,
     };
 
     // Mock the capture function to return mockCaptureResult
@@ -153,6 +154,9 @@ describe("AutoPerformer", () => {
 
     mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
     mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
+    mockPromptHandler.isSnapshotImageSupported.mockReturnValue(
+      isSnapshotSupported,
+    );
 
     const cacheKey = JSON.stringify({ goal: GOAL, previousSteps: [] });
 
@@ -160,13 +164,13 @@ describe("AutoPerformer", () => {
       const screenCapturerResult: ScreenCapturerResult = {
         snapshot: SNAPSHOT_DATA,
         viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
       };
 
       mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
       mockSnapshotComparator.generateHashes.mockReturnValue(
         Promise.resolve({
           BlockHash: "hash",
+          ViewHierarchyHash: "viewHash",
         }),
       );
       mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
@@ -187,11 +191,13 @@ describe("AutoPerformer", () => {
         },
       ]);
 
-      mockCacheHandler.getStepFromCache.mockImplementation((key: string) => {
-        return cacheData.get(key);
-      });
+      mockCacheHandler.getFromPersistentCache.mockImplementation(
+        (key: string) => {
+          return cacheData.get(key);
+        },
+      );
     } else {
-      mockCacheHandler.getStepFromCache.mockReturnValue(undefined);
+      mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
     }
   };
 
@@ -282,7 +288,7 @@ describe("AutoPerformer", () => {
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
       GOAL,
       VIEW_HIERARCHY,
-      false,
+      true,
       [],
     );
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
@@ -470,7 +476,6 @@ describe("AutoPerformer", () => {
       const screenCapturerResult: ScreenCapturerResult = {
         snapshot: SNAPSHOT_DATA,
         viewHierarchy: VIEW_HIERARCHY,
-        isSnapshotImageAttached: true,
       };
 
       // Mock capture to return ScreenCapturerResult on each call
@@ -513,6 +518,21 @@ describe("AutoPerformer", () => {
 
   it("should use cached value result if available", async () => {
     setupMocks({ cacheExists: true });
+
+    // Mock the findMatchingCacheEntry to return a valid cache entry
+    mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
+      value: {
+        screenDescription: "Screen 1",
+        plan: undefined,
+        review: undefined,
+        goalAchieved: false,
+        summary: "success",
+      },
+      snapshotHashes: { BlockHash: "hash" },
+      creationTime: Date.now(),
+      lastAccessTime: Date.now(),
+    });
+
     const goal = GOAL;
     const previousSteps: AutoPreviousStep[] = [];
     const result = await performer.analyseScreenAndCreatePilotStep(
@@ -521,7 +541,7 @@ describe("AutoPerformer", () => {
       mockCaptureResult,
     );
 
-    expect(mockCacheHandler.getStepFromCache).toHaveBeenCalledWith(
+    expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalledWith(
       JSON.stringify({
         goal: GOAL,
         previousSteps: [],
