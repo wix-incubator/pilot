@@ -10,7 +10,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
       </button>
       <div rect={"x":0,"y":15} class="kvKTn7 sYBnDO">
         <div rect={"x":0,"y":15} class="pEcvKh">
-          <a aria-label="Wix logo, homepage" href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="0" rect={"x":0,"y":36} aria-label="Wix logo, homepage" class="x1foPB" title="Wix" data-category="link" data-index="0">
+          <a aria-label="Wix logo, homepage" target="_self" aria-pilot-category="link" aria-pilot-index="0" rect={"x":0,"y":36} aria-label="Wix logo, homepage" class="x1foPB" title="Wix" href="https://www.wix.com/" data-category="link" data-index="0">
           </a>
         </div>
         <button aria-label="open navigation" aria-haspopup="true" aria-expanded="false" aria-pilot-category="button" aria-pilot-index="1" rect={"x":0,"y":56} aria-label="open navigation" class="JGX4kH" title="open navigation" data-category="button" data-index="1">
@@ -18,13 +18,13 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
         <nav aria-label="Main menu" aria-pilot-category="semantic" aria-pilot-index="1" rect={"x":0,"y":58} aria-label="Main menu" class="nolnRs Tu2daU" data-category="semantic" data-index="1">
           <div rect={"x":0,"y":58} class="NHxdK4">
             <div rect={"x":0,"y":74} class="KKuBN6">
-              <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" target="_self" aria-pilot-category="link" aria-pilot-index="1" rect={"x":46.6875,"y":74} class="WuI1GU" data-category="link" data-index="1">
+              <a target="_self" aria-pilot-category="link" aria-pilot-index="1" rect={"x":46.6875,"y":74} class="WuI1GU" href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" data-category="link" data-index="1">
               </a>
             </div>
           </div>
           <ul aria-pilot-category="list" aria-pilot-index="0" rect={"x":0,"y":85} class="hvP7MA hV6J2m" data-category="list" data-index="0">
             <li rect={"x":0,"y":85} class="lSccWn">
-              <a href="https://www.wix.com/my-account" target="_self" aria-pilot-category="link" aria-pilot-index="2" rect={"x":0,"y":85} class="egYndE LSQBkX" data-category="link" data-index="2">
+              <a target="_self" aria-pilot-category="link" aria-pilot-index="2" rect={"x":0,"y":85} class="egYndE LSQBkX" href="https://www.wix.com/my-account" data-category="link" data-index="2">
               </a>
             </li>
             <li rect={"x":0,"y":96} class="lSccWn">
@@ -39,15 +39,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":119} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="1" rect={"x":0,"y":130} class="h044KK" data-category="list" data-index="1">
                               <li rect={"x":0,"y":130} class="cFPZhD">
-                                <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-index="3" rect={"x":0,"y":130} class="yG9LMC" data-category="link" data-index="3">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="3" rect={"x":0,"y":130} class="yG9LMC" href="https://www.wix.com/website/design" data-category="link" data-index="3">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":152} class="cFPZhD">
-                                <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-index="4" rect={"x":0,"y":152} class="yG9LMC" data-category="link" data-index="4">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="4" rect={"x":0,"y":152} class="yG9LMC" href="https://www.wix.com/website/templates" data-category="link" data-index="4">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":174} class="cFPZhD">
-                                <a href="https://www.wix.com/ai-website-builder" target="_self" aria-pilot-category="link" aria-pilot-index="5" rect={"x":0,"y":174} class="yG9LMC" data-category="link" data-index="5">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="5" rect={"x":0,"y":174} class="yG9LMC" href="https://www.wix.com/ai-website-builder" data-category="link" data-index="5">
                                 </a>
                               </li>
                             </ul>
@@ -57,23 +57,23 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":196} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="2" rect={"x":0,"y":207} class="h044KK" data-category="list" data-index="2">
                               <li rect={"x":0,"y":207} class="cFPZhD">
-                                <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-index="6" rect={"x":0,"y":207} class="yG9LMC" data-category="link" data-index="6">
+                                <a target="_blank" aria-pilot-category="link" aria-pilot-index="6" rect={"x":0,"y":207} class="yG9LMC" href="https://www.wix.com/ecommerce/website" data-category="link" data-index="6">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":229} class="cFPZhD">
-                                <a href="https://www.wix.com/scheduling-software" target="_self" aria-pilot-category="link" aria-pilot-index="7" rect={"x":0,"y":229} class="yG9LMC" data-category="link" data-index="7">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="7" rect={"x":0,"y":229} class="yG9LMC" href="https://www.wix.com/scheduling-software" data-category="link" data-index="7">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":251} class="cFPZhD">
-                                <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-index="8" rect={"x":0,"y":251} class="yG9LMC" data-category="link" data-index="8">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="8" rect={"x":0,"y":251} class="yG9LMC" href="https://www.wix.com/restaurant/website" data-category="link" data-index="8">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":273} class="cFPZhD">
-                                <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-index="9" rect={"x":0,"y":273} class="yG9LMC" data-category="link" data-index="9">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="9" rect={"x":0,"y":273} class="yG9LMC" href="https://www.wix.com/start/blog" data-category="link" data-index="9">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":295} class="cFPZhD">
-                                <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-index="10" rect={"x":0,"y":295} class="yG9LMC" data-category="link" data-index="10">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="10" rect={"x":0,"y":295} class="yG9LMC" href="https://www.wix.com/portfolio-website" data-category="link" data-index="10">
                                 </a>
                               </li>
                             </ul>
@@ -84,15 +84,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         <div rect={"x":0,"y":317} class="qgFkpL">
                           <ul aria-pilot-category="list" aria-pilot-index="3" rect={"x":0,"y":328} class="h044KK" data-category="list" data-index="3">
                             <li rect={"x":0,"y":328} class="cFPZhD">
-                              <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="11" rect={"x":0,"y":328} class="yG9LMC" data-category="link" data-index="11">
+                              <a target="_self" aria-pilot-category="link" aria-pilot-index="11" rect={"x":0,"y":328} class="yG9LMC" href="https://www.wix.com/domains" data-category="link" data-index="11">
                               </a>
                             </li>
                             <li rect={"x":0,"y":350} class="cFPZhD">
-                              <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-index="12" rect={"x":0,"y":350} class="yG9LMC" data-category="link" data-index="12">
+                              <a target="_self" aria-pilot-category="link" aria-pilot-index="12" rect={"x":0,"y":350} class="yG9LMC" href="https://www.wix.com/free/web-hosting" data-category="link" data-index="12">
                               </a>
                             </li>
                             <li rect={"x":0,"y":372} class="cFPZhD">
-                              <a href="https://www.wix.com/website-security" target="_self" aria-pilot-category="link" aria-pilot-index="13" rect={"x":0,"y":372} class="yG9LMC" data-category="link" data-index="13">
+                              <a target="_self" aria-pilot-category="link" aria-pilot-index="13" rect={"x":0,"y":372} class="yG9LMC" href="https://www.wix.com/website-security" data-category="link" data-index="13">
                               </a>
                             </li>
                           </ul>
@@ -115,23 +115,23 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":417} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="4" rect={"x":0,"y":428} class="h044KK" data-category="list" data-index="4">
                               <li rect={"x":0,"y":428} class="cFPZhD">
-                                <a href="https://www.wix.com/payments" target="_self" aria-pilot-category="link" aria-pilot-index="14" rect={"x":0,"y":428} class="yG9LMC" data-category="link" data-index="14">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="14" rect={"x":0,"y":428} class="yG9LMC" href="https://www.wix.com/payments" data-category="link" data-index="14">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":450} class="cFPZhD">
-                                <a href="https://www.wix.com/mobile/wix-app" target="_self" aria-pilot-category="link" aria-pilot-index="15" rect={"x":0,"y":450} class="yG9LMC" data-category="link" data-index="15">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="15" rect={"x":0,"y":450} class="yG9LMC" href="https://www.wix.com/mobile/wix-app" data-category="link" data-index="15">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":472} class="cFPZhD">
-                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="16" rect={"x":0,"y":472} class="yG9LMC" data-category="link" data-index="16">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="16" rect={"x":0,"y":472} class="yG9LMC" href="https://www.wix.com/features/main" data-category="link" data-index="16">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":494} class="cFPZhD">
-                                <a href="https://www.wix.com/features/crm" target="_self" aria-pilot-category="link" aria-pilot-index="17" rect={"x":0,"y":494} class="yG9LMC" data-category="link" data-index="17">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="17" rect={"x":0,"y":494} class="yG9LMC" href="https://www.wix.com/features/crm" data-category="link" data-index="17">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":516} class="cFPZhD">
-                                <a href="https://www.wix.com/manage/analytics" target="_self" aria-pilot-category="link" aria-pilot-index="18" rect={"x":0,"y":516} class="yG9LMC" data-category="link" data-index="18">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="18" rect={"x":0,"y":516} class="yG9LMC" href="https://www.wix.com/manage/analytics" data-category="link" data-index="18">
                                 </a>
                               </li>
                             </ul>
@@ -141,15 +141,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":538} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="5" rect={"x":0,"y":549} class="h044KK" data-category="list" data-index="5">
                               <li rect={"x":0,"y":549} class="cFPZhD">
-                                <a href="https://www.wix.com/features/email-marketing" target="_self" aria-pilot-category="link" aria-pilot-index="19" rect={"x":0,"y":549} class="yG9LMC" data-category="link" data-index="19">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="19" rect={"x":0,"y":549} class="yG9LMC" href="https://www.wix.com/features/email-marketing" data-category="link" data-index="19">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":571} class="cFPZhD">
-                                <a href="https://www.wix.com/seo" target="_self" aria-pilot-category="link" aria-pilot-index="20" rect={"x":0,"y":571} class="yG9LMC" data-category="link" data-index="20">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="20" rect={"x":0,"y":571} class="yG9LMC" href="https://www.wix.com/seo" data-category="link" data-index="20">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":593} class="cFPZhD">
-                                <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="21" rect={"x":0,"y":593} class="yG9LMC" data-category="link" data-index="21">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="21" rect={"x":0,"y":593} class="yG9LMC" href="https://www.wix.com/features/main" data-category="link" data-index="21">
                                 </a>
                               </li>
                             </ul>
@@ -160,15 +160,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                         <div rect={"x":0,"y":615} class="qgFkpL">
                           <ul aria-pilot-category="list" aria-pilot-index="6" rect={"x":0,"y":626} class="h044KK" data-category="list" data-index="6">
                             <li rect={"x":0,"y":626} class="cFPZhD">
-                              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-index="22" rect={"x":0,"y":626} class="yG9LMC" data-category="link" data-index="22">
+                              <a target="_blank" aria-pilot-category="link" aria-pilot-index="22" rect={"x":0,"y":626} class="yG9LMC" href="https://www.wix.com/studio" data-category="link" data-index="22">
                               </a>
                             </li>
                             <li rect={"x":0,"y":648} class="cFPZhD">
-                              <a href="https://www.wix.com/studio/developers" target="_blank" aria-pilot-category="link" aria-pilot-index="23" rect={"x":0,"y":648} class="yG9LMC" data-category="link" data-index="23">
+                              <a target="_blank" aria-pilot-category="link" aria-pilot-index="23" rect={"x":0,"y":648} class="yG9LMC" href="https://www.wix.com/studio/developers" data-category="link" data-index="23">
                               </a>
                             </li>
                             <li rect={"x":0,"y":670} class="cFPZhD">
-                              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-index="24" rect={"x":0,"y":670} class="yG9LMC" data-category="link" data-index="24">
+                              <a target="_blank" aria-pilot-category="link" aria-pilot-index="24" rect={"x":0,"y":670} class="yG9LMC" href="https://www.wix.com/studio/enterprise" data-category="link" data-index="24">
                               </a>
                             </li>
                           </ul>
@@ -191,15 +191,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":715} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="7" rect={"x":0,"y":726} class="h044KK" data-category="list" data-index="7">
                               <li rect={"x":0,"y":726} class="cFPZhD">
-                                <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-index="25" rect={"x":0,"y":726} class="yG9LMC" data-category="link" data-index="25">
+                                <a target="_blank" aria-pilot-category="link" aria-pilot-index="25" rect={"x":0,"y":726} class="yG9LMC" href="https://www.wix.com/blog" data-category="link" data-index="25">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":748} class="cFPZhD">
-                                <a href="https://www.wix.com/features/ai" target="_self" aria-pilot-category="link" aria-pilot-index="26" rect={"x":0,"y":748} class="yG9LMC" data-category="link" data-index="26">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="26" rect={"x":0,"y":748} class="yG9LMC" href="https://www.wix.com/features/ai" data-category="link" data-index="26">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":770} class="cFPZhD">
-                                <a href="https://www.wix.com/explore/websites" target="_self" aria-pilot-category="link" aria-pilot-index="27" rect={"x":0,"y":770} class="yG9LMC" data-category="link" data-index="27">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="27" rect={"x":0,"y":770} class="yG9LMC" href="https://www.wix.com/explore/websites" data-category="link" data-index="27">
                                 </a>
                               </li>
                             </ul>
@@ -209,11 +209,11 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":792} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="8" rect={"x":0,"y":803} class="h044KK" data-category="list" data-index="8">
                               <li rect={"x":0,"y":803} class="cFPZhD">
-                                <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-index="28" rect={"x":0,"y":803} class="yG9LMC" data-category="link" data-index="28">
+                                <a target="_blank" aria-pilot-category="link" aria-pilot-index="28" rect={"x":0,"y":803} class="yG9LMC" href="https://support.wix.com/en" data-category="link" data-index="28">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":825} class="cFPZhD">
-                                <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-index="29" rect={"x":0,"y":825} class="yG9LMC" data-category="link" data-index="29">
+                                <a target="_blank" aria-pilot-category="link" aria-pilot-index="29" rect={"x":0,"y":825} class="yG9LMC" href="https://www.wix.com/marketplace" data-category="link" data-index="29">
                                 </a>
                               </li>
                             </ul>
@@ -223,15 +223,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                           <div rect={"x":0,"y":847} class="qgFkpL">
                             <ul aria-pilot-category="list" aria-pilot-index="9" rect={"x":0,"y":858} class="h044KK" data-category="list" data-index="9">
                               <li rect={"x":0,"y":858} class="cFPZhD">
-                                <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-index="30" rect={"x":0,"y":858} class="yG9LMC" data-category="link" data-index="30">
+                                <a target="_blank" aria-pilot-category="link" aria-pilot-index="30" rect={"x":0,"y":858} class="yG9LMC" href="https://www.wix.com/logo/maker" data-category="link" data-index="30">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":880} class="cFPZhD">
-                                <a href="https://www.wix.com/tools/business-name-generator" target="_self" aria-pilot-category="link" aria-pilot-index="31" rect={"x":0,"y":880} class="yG9LMC" data-category="link" data-index="31">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="31" rect={"x":0,"y":880} class="yG9LMC" href="https://www.wix.com/tools/business-name-generator" data-category="link" data-index="31">
                                 </a>
                               </li>
                               <li rect={"x":0,"y":902} class="cFPZhD">
-                                <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-index="32" rect={"x":0,"y":902} class="yG9LMC" data-category="link" data-index="32">
+                                <a target="_self" aria-pilot-category="link" aria-pilot-index="32" rect={"x":0,"y":902} class="yG9LMC" href="https://www.wix.com/tools" data-category="link" data-index="32">
                                 </a>
                               </li>
                             </ul>
@@ -240,7 +240,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                       </div>
                       <div rect={"x":0,"y":924} class="uKXKwR">
                         <div rect={"x":0,"y":924} class="hlfjhF">
-                          <a href="https://www.wix.com/blog/how-to-build-website-from-scratch-guide" target="_blank" aria-pilot-category="link" aria-pilot-index="33" rect={"x":97.4375,"y":924} class="xpD1wx" data-category="link" data-index="33">
+                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="33" rect={"x":97.4375,"y":924} class="xpD1wx" href="https://www.wix.com/blog/how-to-build-website-from-scratch-guide" data-category="link" data-index="33">
                           </a>
                         </div>
                       </div>
@@ -250,15 +250,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               </div>
             </li>
             <li rect={"x":0,"y":935} class="lSccWn">
-              <a href="https://www.wix.com/plans" target="_self" aria-pilot-category="link" aria-pilot-index="34" rect={"x":0,"y":935} class="egYndE LSQBkX" data-category="link" data-index="34">
+              <a target="_self" aria-pilot-category="link" aria-pilot-index="34" rect={"x":0,"y":935} class="egYndE LSQBkX" href="https://www.wix.com/plans" data-category="link" data-index="34">
               </a>
             </li>
             <li rect={"x":0,"y":946} class="lSccWn">
-              <a href="https://www.wix.com/studio" target="_blank" aria-pilot-category="link" aria-pilot-index="35" rect={"x":0,"y":946} class="egYndE LSQBkX" data-category="link" data-index="35">
+              <a target="_blank" aria-pilot-category="link" aria-pilot-index="35" rect={"x":0,"y":946} class="egYndE LSQBkX" href="https://www.wix.com/studio" data-category="link" data-index="35">
               </a>
             </li>
             <li rect={"x":0,"y":957} class="lSccWn">
-              <a href="https://www.wix.com/studio/enterprise" target="_blank" aria-pilot-category="link" aria-pilot-index="36" rect={"x":0,"y":957} class="egYndE LSQBkX" data-category="link" data-index="36">
+              <a target="_blank" aria-pilot-category="link" aria-pilot-index="36" rect={"x":0,"y":957} class="egYndE LSQBkX" href="https://www.wix.com/studio/enterprise" data-category="link" data-index="36">
               </a>
             </li>
           </ul>
@@ -271,15 +271,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
           <div role="group" aria-labelledby="main-menu-item-user-profile" rect={"x":0,"y":984} aria-role="group" class="nkEarD" aria-labelledby="main-menu-item-user-profile">
             <ul aria-pilot-category="list" aria-pilot-index="10" rect={"x":0,"y":984} class="Cb4735" data-category="list" data-index="10">
               <li rect={"x":0,"y":984} class="G3CITX">
-                <a href="https://www.wix.com/account/account-settings" aria-pilot-category="link" aria-pilot-index="37" rect={"x":0,"y":984} class="gc4ct1" data-category="link" data-index="37">
+                <a aria-pilot-category="link" aria-pilot-index="37" rect={"x":0,"y":984} class="gc4ct1" href="https://www.wix.com/account/account-settings" data-category="link" data-index="37">
                 </a>
               </li>
               <li rect={"x":0,"y":995} class="G3CITX">
-                <a href="https://www.wix.com/wix/api/PaymentConsole" aria-pilot-category="link" aria-pilot-index="38" rect={"x":0,"y":995} class="gc4ct1" data-category="link" data-index="38">
+                <a aria-pilot-category="link" aria-pilot-index="38" rect={"x":0,"y":995} class="gc4ct1" href="https://www.wix.com/wix/api/PaymentConsole" data-category="link" data-index="38">
                 </a>
               </li>
               <li rect={"x":0,"y":1006} class="G3CITX">
-                <a href="https://www.wix.com/account/vouchers" aria-pilot-category="link" aria-pilot-index="39" rect={"x":0,"y":1006} class="gc4ct1" data-category="link" data-index="39">
+                <a aria-pilot-category="link" aria-pilot-index="39" rect={"x":0,"y":1006} class="gc4ct1" href="https://www.wix.com/account/vouchers" data-category="link" data-index="39">
                 </a>
               </li>
               <li rect={"x":0,"y":1017} class="G3CITX">
@@ -287,7 +287,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                 </button>
               </li>
               <li rect={"x":0,"y":1044} class="G3CITX">
-                <a href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" aria-pilot-category="link" aria-pilot-index="40" rect={"x":0,"y":1044} class="gc4ct1" data-category="link" data-index="40">
+                <a aria-pilot-category="link" aria-pilot-index="40" rect={"x":0,"y":1044} class="gc4ct1" href="https://www.wix.com/signout?redirectTo=https%3A%2F%2Fwww.wix.com%2Fdomains" data-category="link" data-index="40">
                 </a>
               </li>
             </ul>
@@ -319,7 +319,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                       <nav aria-label="Second navigation" aria-pilot-category="semantic" aria-pilot-index="5" rect={"x":0,"y":0} aria-label="Second navigation" class="StylableHorizontalMenu3372578893__root StylableHorizontalMenu3372578893---menuMode-4-wrap comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y7u6-styleId__root comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y7u6-container wixui-horizontal-menu" data-category="semantic" data-index="5">
                                         <ul aria-pilot-category="list" aria-pilot-index="11" rect={"x":0,"y":0} class="StylableHorizontalMenu3372578893__menu" data-category="list" data-index="11">
                                           <li aria-current="true" rect={"x":0,"y":0} class="itemDepth02233374943__itemWrapper wixui-horizontal-menu__item" data-testid="menuItemDepth0">
-                                            <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="41" rect={"x":0,"y":0} class="itemDepth02233374943__root itemDepth02233374943--isCurrentPage StylableHorizontalMenu3372578893__menuItem" data-testid="linkElement" data-category="link" data-index="41">
+                                            <a target="_self" aria-pilot-category="link" aria-pilot-index="41" rect={"x":0,"y":0} class="itemDepth02233374943__root itemDepth02233374943--isCurrentPage StylableHorizontalMenu3372578893__menuItem" data-testid="linkElement" href="https://www.wix.com/domains" data-category="link" data-index="41">
                                             </a>
                                           </li>
                                           <li aria-current="false" rect={"x":0,"y":0} class="itemDepth02233374943__itemWrapper wixui-horizontal-menu__item" data-testid="menuItemDepth0">
@@ -330,11 +330,11 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                                 <div rect={"x":0,"y":0} class="submenu815198092__pageWrapper submenu815198092__overrideWidth">
                                                   <ul aria-pilot-category="list" aria-pilot-index="12" rect={"x":0,"y":0} class="itemDepth02233374943__list" data-category="list" data-index="12">
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/domain-name-search" target="_self" aria-pilot-category="link" aria-pilot-index="42" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="42">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="42" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/domain-name-search" data-category="link" data-index="42">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_self" aria-pilot-category="link" aria-pilot-index="43" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="43">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="43" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/domain-name-generator" data-category="link" data-index="43">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -350,19 +350,19 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                                 <div rect={"x":0,"y":0} class="submenu815198092__pageWrapper submenu815198092__overrideWidth">
                                                   <ul aria-pilot-category="list" aria-pilot-index="13" rect={"x":0,"y":0} class="itemDepth02233374943__list" data-category="list" data-index="13">
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/com-domain" target="_self" aria-pilot-category="link" aria-pilot-index="44" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="44">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="44" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/tld-list/tlds/com-domain" data-category="link" data-index="44">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/net-domain" target="_self" aria-pilot-category="link" aria-pilot-index="45" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="45">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="45" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/tld-list/tlds/net-domain" data-category="link" data-index="45">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/tld-list/tlds/org-domain" target="_self" aria-pilot-category="link" aria-pilot-index="46" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="46">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="46" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/tld-list/tlds/org-domain" data-category="link" data-index="46">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/tld-list" target="_self" aria-pilot-category="link" aria-pilot-index="47" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="47">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="47" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/tld-list" data-category="link" data-index="47">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -378,15 +378,15 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                                 <div rect={"x":0,"y":0} class="submenu815198092__pageWrapper submenu815198092__overrideWidth">
                                                   <ul aria-pilot-category="list" aria-pilot-index="14" rect={"x":0,"y":0} class="itemDepth02233374943__list" data-category="list" data-index="14">
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/business-email" target="_self" aria-pilot-category="link" aria-pilot-index="48" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="48">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="48" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/business-email" data-category="link" data-index="48">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/domains/whois" target="_self" aria-pilot-category="link" aria-pilot-index="49" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="49">
+                                                      <a target="_self" aria-pilot-category="link" aria-pilot-index="49" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/domains/whois" data-category="link" data-index="49">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://support.wix.com/en/transferring-domains" target="_blank" aria-pilot-category="link" aria-pilot-index="50" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="50">
+                                                      <a target="_blank" aria-pilot-category="link" aria-pilot-index="50" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://support.wix.com/en/transferring-domains" data-category="link" data-index="50">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -402,11 +402,11 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                                 <div rect={"x":0,"y":0} class="submenu815198092__pageWrapper submenu815198092__overrideWidth">
                                                   <ul aria-pilot-category="list" aria-pilot-index="15" rect={"x":0,"y":0} class="itemDepth02233374943__list" data-category="list" data-index="15">
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://www.wix.com/blog/explore/categories/domains-guide" target="_blank" aria-pilot-category="link" aria-pilot-index="51" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="51">
+                                                      <a target="_blank" aria-pilot-category="link" aria-pilot-index="51" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://www.wix.com/blog/explore/categories/domains-guide" data-category="link" data-index="51">
                                                       </a>
                                                     </li>
                                                     <li aria-current="false" rect={"x":0,"y":0} class="itemDepth12472627565__itemWrapper" data-testid="menuItemDepth1">
-                                                      <a href="https://support.wix.com/en/connecting-a-domain" target="_blank" aria-pilot-category="link" aria-pilot-index="52" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" data-category="link" data-index="52">
+                                                      <a target="_blank" aria-pilot-category="link" aria-pilot-index="52" rect={"x":0,"y":0} class="itemDepth12472627565__root submenu815198092__menuItem" data-testid="linkElement" href="https://support.wix.com/en/connecting-a-domain" data-category="link" data-index="52">
                                                       </a>
                                                     </li>
                                                   </ul>
@@ -419,7 +419,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     </div>
                                     <div role="" rect={"x":0,"y":0} class="rM7ckN YJEKQk comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y7z5-container comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y7z5 wixui-box">
                                       <div rect={"x":0,"y":0} class="comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y805">
-                                        <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-label="Create a Site" aria-pilot-category="link" aria-pilot-index="53" rect={"x":0,"y":0} aria-label="Create a Site" class="StylableButton2545352419__root StylableButton2545352419--isMaxContent comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y805-styleId__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="53">
+                                        <a target="_self" aria-label="Create a Site" aria-pilot-category="link" aria-pilot-index="53" rect={"x":0,"y":0} aria-label="Create a Site" class="StylableButton2545352419__root StylableButton2545352419--isMaxContent comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp91y805-styleId__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" data-category="link" data-index="53">
                                         </a>
                                       </div>
                                     </div>
@@ -434,7 +434,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                       </div>
                                       <div role="" rect={"x":654.125,"y":1064.890625} class="rM7ckN YJEKQk comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp95hj82-container comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp95hj82 wixui-box">
                                         <div rect={"x":664.125,"y":1064.890625} class="comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp95hj9">
-                                          <a href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" target="_self" aria-label="Create a Site" aria-pilot-category="link" aria-pilot-index="54" rect={"x":664.125,"y":1064.890625} aria-label="Create a Site" class="StylableButton2545352419__root StylableButton2545352419--isMaxContent comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp95hj9-styleId__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="54">
+                                          <a target="_self" aria-label="Create a Site" aria-pilot-category="link" aria-pilot-index="54" rect={"x":664.125,"y":1064.890625} aria-label="Create a Site" class="StylableButton2545352419__root StylableButton2545352419--isMaxContent comp-m5wb7wm4_r_comp-m5wb9tz9_r_comp-lvp95hj9-styleId__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin/signup/password?view=sign-up&sendEmail=true&loginCompName=SignUp_H&referralInfo=SignUp_H&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro%2F&postLogin=https%3A%2F%2Fmanage.wix.com%2Faccount%2Froute&loginDialogContext=signup&forceRender=true" data-category="link" data-index="54">
                                           </a>
                                         </div>
                                       </div>
@@ -483,7 +483,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   <p rect={"x":557.0625,"y":1628.859375} class="font_9 wixui-rich-text__text">
                                     <span rect={"x":557.0625,"y":1632.859375} class="wixui-rich-text__text">
                                       <span rect={"x":557.0625,"y":1632.859375} class="wixui-rich-text__text">
-                                        <a href="https://www.wix.com/plans" target="_blank" aria-pilot-category="link" aria-pilot-index="55" rect={"x":557.0625,"y":1632.859375} class="wixui-rich-text__text" data-category="link" data-index="55">
+                                        <a target="_blank" aria-pilot-category="link" aria-pilot-index="55" rect={"x":557.0625,"y":1632.859375} class="wixui-rich-text__text" href="https://www.wix.com/plans" data-category="link" data-index="55">
                                         </a>
                                       </span>
                                     </span>
@@ -567,7 +567,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                             </div>
                             <div role="" aria-pilot-category="button" aria-pilot-index="21" rect={"x":327.4375,"y":3229.203125} class="rM7ckN YJEKQk comp-lzlkrjje-container comp-lzlkrjje J6KGih wixui-box" data-category="button" data-index="21">
                               <div rect={"x":327.4375,"y":3229.265625} class="comp-lzlkrjji">
-                                <a href="https://www.wix.com/domains/tld-list" target="_blank" aria-label="See Full List" aria-pilot-category="link" aria-pilot-index="56" rect={"x":327.4375,"y":3229.265625} aria-label="See Full List" class="StylableButton2545352419__root style-lzlkrjjj2__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="56">
+                                <a target="_blank" aria-label="See Full List" aria-pilot-category="link" aria-pilot-index="56" rect={"x":327.4375,"y":3229.265625} aria-label="See Full List" class="StylableButton2545352419__root style-lzlkrjjj2__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/domains/tld-list" data-category="link" data-index="56">
                                 </a>
                               </div>
                             </div>
@@ -587,7 +587,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   <div role="" rect={"x":52,"y":3675.9375} class="rM7ckN YJEKQk comp-lzlmrwca-container comp-lzlmrwca wixui-box">
                                     <div role="" aria-pilot-category="button" aria-pilot-index="22" rect={"x":52,"y":3798.8125} class="rM7ckN YJEKQk comp-lzlmqwj4-container comp-lzlmqwj4 J6KGih wixui-box" data-category="button" data-index="22">
                                       <div rect={"x":52,"y":3798.875} class="comp-lzlmqwj7">
-                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_your_domain_get_started&loginCompName=domain_gate_your_domain_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=login&originUrl=https://www.wix.com/domain/names" target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="57" rect={"x":52,"y":3798.875} aria-label="Get Started" class="StylableButton2545352419__root style-lzlmqwj85__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="57">
+                                        <a target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="57" rect={"x":52,"y":3798.875} aria-label="Get Started" class="StylableButton2545352419__root style-lzlmqwj85__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin?referralInfo=domain_gate_your_domain_get_started&loginCompName=domain_gate_your_domain_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=login&originUrl=https://www.wix.com/domain/names" data-category="link" data-index="57">
                                         </a>
                                       </div>
                                     </div>
@@ -613,7 +613,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                             </div>
                             <div role="" aria-pilot-category="button" aria-pilot-index="24" rect={"x":37.5,"y":4500.453125} class="rM7ckN YJEKQk comp-lzmuhuli-container comp-lzmuhuli J6KGih wixui-box" data-category="button" data-index="24">
                               <div rect={"x":37.5,"y":4500.515625} class="comp-lzmuhulr">
-                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_full_domain_package_start_now&loginCompName=domain_gate_full_domain_package_start_now&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-label="Start Now" aria-pilot-category="link" aria-pilot-index="58" rect={"x":37.5,"y":4500.515625} aria-label="Start Now" class="StylableButton2545352419__root style-lzmuhult10__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="58">
+                                <a target="_blank" aria-label="Start Now" aria-pilot-category="link" aria-pilot-index="58" rect={"x":37.5,"y":4500.515625} aria-label="Start Now" class="StylableButton2545352419__root style-lzmuhult10__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin?referralInfo=domain_gate_full_domain_package_start_now&loginCompName=domain_gate_full_domain_package_start_now&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" data-category="link" data-index="58">
                                 </a>
                               </div>
                             </div>
@@ -629,7 +629,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                       <p rect={"x":380.9375,"y":4686} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":380.9375,"y":4688} class="wixui-rich-text__text">
                                           <span rect={"x":420.609375,"y":4688} class="wixui-rich-text__text">
-                                            <a href="https://www.wix.com/free/web-hosting" target="_blank" aria-pilot-category="link" aria-pilot-index="59" rect={"x":420.609375,"y":4688} class="wixui-rich-text__text" data-category="link" data-index="59">
+                                            <a target="_blank" aria-pilot-category="link" aria-pilot-index="59" rect={"x":420.609375,"y":4688} class="wixui-rich-text__text" href="https://www.wix.com/free/web-hosting" data-category="link" data-index="59">
                                             </a>
                                           </span>
                                         </span>
@@ -646,7 +646,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div rect={"x":380.9375,"y":4875.15625} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmuw9ya wixui-rich-text" data-testid="richTextElement">
                                       <p rect={"x":380.9375,"y":4875.15625} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":630.03125,"y":4920} class="wixui-rich-text__text">
-                                          <a href="https://www.wix.com/website-security" target="_blank" aria-pilot-category="link" aria-pilot-index="60" rect={"x":630.03125,"y":4920} class="wixui-rich-text__text" data-category="link" data-index="60">
+                                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="60" rect={"x":630.03125,"y":4920} class="wixui-rich-text__text" href="https://www.wix.com/website-security" data-category="link" data-index="60">
                                           </a>
                                         </span>
                                       </p>
@@ -662,7 +662,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div rect={"x":380.9375,"y":5085.734375} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmuw9ya wixui-rich-text" data-testid="richTextElement">
                                       <p rect={"x":380.9375,"y":5085.734375} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":483.25,"y":5087.734375} class="wixui-rich-text__text">
-                                          <a href="https://www.wix.com/manage/privacy-security-hub" target="_blank" aria-pilot-category="link" aria-pilot-index="61" rect={"x":483.25,"y":5087.734375} class="wixui-rich-text__text" data-category="link" data-index="61">
+                                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="61" rect={"x":483.25,"y":5087.734375} class="wixui-rich-text__text" href="https://www.wix.com/manage/privacy-security-hub" data-category="link" data-index="61">
                                           </a>
                                         </span>
                                       </p>
@@ -678,7 +678,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div rect={"x":380.9375,"y":5274.890625} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmuw9ya wixui-rich-text" data-testid="richTextElement">
                                       <p rect={"x":380.9375,"y":5274.890625} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":457.875,"y":5276.890625} class="wixui-rich-text__text">
-                                          <a href="https://support.wix.com/en/article/transferring-a-domain-purchased-elsewhere-to-wix" target="_blank" aria-pilot-category="link" aria-pilot-index="62" rect={"x":457.875,"y":5276.890625} class="wixui-rich-text__text" data-category="link" data-index="62">
+                                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="62" rect={"x":457.875,"y":5276.890625} class="wixui-rich-text__text" href="https://support.wix.com/en/article/transferring-a-domain-purchased-elsewhere-to-wix" data-category="link" data-index="62">
                                           </a>
                                         </span>
                                       </p>
@@ -694,7 +694,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div rect={"x":380.9375,"y":5464.046875} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmuw9ya wixui-rich-text" data-testid="richTextElement">
                                       <p rect={"x":380.9375,"y":5464.046875} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":449.15625,"y":5466.046875} class="wixui-rich-text__text">
-                                          <a href="https://support.wix.com/en/article/purchasing-a-domain-from-wix-3133977" target="_blank" aria-pilot-category="link" aria-pilot-index="63" rect={"x":449.15625,"y":5466.046875} class="wixui-rich-text__text" data-category="link" data-index="63">
+                                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="63" rect={"x":449.15625,"y":5466.046875} class="wixui-rich-text__text" href="https://support.wix.com/en/article/purchasing-a-domain-from-wix-3133977" data-category="link" data-index="63">
                                           </a>
                                         </span>
                                       </p>
@@ -710,7 +710,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                     <div rect={"x":380.9375,"y":5653.203125} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmuw9ya wixui-rich-text" data-testid="richTextElement">
                                       <p rect={"x":380.9375,"y":5653.203125} class="font_8 wixui-rich-text__text">
                                         <span rect={"x":453.921875,"y":5655.203125} class="wixui-rich-text__text">
-                                          <a href="https://support.wix.com/en" target="_blank" aria-pilot-category="link" aria-pilot-index="64" rect={"x":453.921875,"y":5655.203125} class="wixui-rich-text__text" data-category="link" data-index="64">
+                                          <a target="_blank" aria-pilot-category="link" aria-pilot-index="64" rect={"x":453.921875,"y":5655.203125} class="wixui-rich-text__text" href="https://support.wix.com/en" data-category="link" data-index="64">
                                           </a>
                                         </span>
                                       </p>
@@ -733,7 +733,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                 </div>
                                 <div role="" aria-pilot-category="button" aria-pilot-index="25" rect={"x":52.078125,"y":6181.40625} class="rM7ckN YJEKQk comp-lzmwg8wb-container comp-lzmwg8wb J6KGih wixui-box" data-category="button" data-index="25">
                                   <div rect={"x":52.078125,"y":6181.46875} class="comp-lzmwg8wk">
-                                    <a href="https://users.wix.com/signin?referralInfo=domain_gate_build_your_brand_get_started&loginCompName=domain_gate_build_your_brand_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="65" rect={"x":52.078125,"y":6181.46875} aria-label="Get Started" class="StylableButton2545352419__root style-lzmwg8wq2__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="65">
+                                    <a target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="65" rect={"x":52.078125,"y":6181.46875} aria-label="Get Started" class="StylableButton2545352419__root style-lzmwg8wq2__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin?referralInfo=domain_gate_build_your_brand_get_started&loginCompName=domain_gate_build_your_brand_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" data-category="link" data-index="65">
                                     </a>
                                   </div>
                                 </div>
@@ -746,7 +746,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                   <div role="" aria-pilot-category="button" aria-pilot-index="26" rect={"x":85.40625,"y":6485.75} class="rM7ckN YJEKQk comp-lzmws7yo-container comp-lzmws7yo J6KGih wixui-box" data-category="button" data-index="26">
                                     <div rect={"x":85.40625,"y":6485.8125} class="comp-lzmws7yt1">
-                                      <a href="https://www.wix.com/domains/business-email" target="_blank" aria-label="Get Your Email" aria-pilot-category="link" aria-pilot-index="66" rect={"x":85.40625,"y":6485.8125} aria-label="Get Your Email" class="StylableButton2545352419__root style-lzmws7yv11__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="66">
+                                      <a target="_blank" aria-label="Get Your Email" aria-pilot-category="link" aria-pilot-index="66" rect={"x":85.40625,"y":6485.8125} aria-label="Get Your Email" class="StylableButton2545352419__root style-lzmws7yv11__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/domains/business-email" data-category="link" data-index="66">
                                       </a>
                                     </div>
                                   </div>
@@ -763,18 +763,18 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               <div rect={"x":85.671875,"y":6682.109375} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmxkcpv8 wixui-rich-text" data-testid="richTextElement">
                                 <p rect={"x":85.671875,"y":6682.109375} class="font_8 wixui-rich-text__text">
                                   <span rect={"x":124.546875,"y":6685.109375} class="wixui-rich-text__text">
-                                    <a href="https://www.wix.com/tools/business-name-generator" target="_blank" aria-pilot-category="link" aria-pilot-index="67" rect={"x":124.546875,"y":6685.109375} class="wixui-rich-text__text" data-category="link" data-index="67">
+                                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="67" rect={"x":124.546875,"y":6685.109375} class="wixui-rich-text__text" href="https://www.wix.com/tools/business-name-generator" data-category="link" data-index="67">
                                     </a>
                                   </span>
                                   <span rect={"x":160.234375,"y":6707.953125} class="wixui-rich-text__text">
-                                    <a href="https://www.wix.com/tools/business-card-maker" target="_blank" aria-pilot-category="link" aria-pilot-index="68" rect={"x":160.234375,"y":6707.953125} class="wixui-rich-text__text" data-category="link" data-index="68">
+                                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="68" rect={"x":160.234375,"y":6707.953125} class="wixui-rich-text__text" href="https://www.wix.com/tools/business-card-maker" data-category="link" data-index="68">
                                     </a>
                                   </span>
                                 </p>
                               </div>
                               <div role="" aria-pilot-category="button" aria-pilot-index="27" rect={"x":85.671875,"y":6773.375} class="rM7ckN YJEKQk comp-lzmxkcpw15-container comp-lzmxkcpw15 J6KGih wixui-box" data-category="button" data-index="27">
                                 <div rect={"x":85.671875,"y":6773.4375} class="comp-lzmxkcpy7">
-                                  <a href="https://www.wix.com/logo/maker" target="_blank" aria-label="Start With a Logo" aria-pilot-category="link" aria-pilot-index="69" rect={"x":85.671875,"y":6773.4375} aria-label="Start With a Logo" class="StylableButton2545352419__root style-lzmxkcq1__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="69">
+                                  <a target="_blank" aria-label="Start With a Logo" aria-pilot-category="link" aria-pilot-index="69" rect={"x":85.671875,"y":6773.4375} aria-label="Start With a Logo" class="StylableButton2545352419__root style-lzmxkcq1__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/logo/maker" data-category="link" data-index="69">
                                   </a>
                                 </div>
                               </div>
@@ -789,14 +789,14 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               <div rect={"x":85.671875,"y":7003.234375} class="HcOXKn c9GqVL QxJLC3 lq2cno YQcXTT comp-lzmxs9qe wixui-rich-text" data-testid="richTextElement">
                                 <p rect={"x":85.671875,"y":7003.234375} class="font_8 wixui-rich-text__text">
                                   <span rect={"x":161.015625,"y":7005.234375} class="wixui-rich-text__text">
-                                    <a href="https://www.wix.com/seo" target="_blank" aria-pilot-category="link" aria-pilot-index="70" rect={"x":161.015625,"y":7005.234375} class="wixui-rich-text__text" data-category="link" data-index="70">
+                                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="70" rect={"x":161.015625,"y":7005.234375} class="wixui-rich-text__text" href="https://www.wix.com/seo" data-category="link" data-index="70">
                                     </a>
                                   </span>
                                 </p>
                               </div>
                               <div role="" aria-pilot-category="button" aria-pilot-index="28" rect={"x":85.671875,"y":7087.703125} class="rM7ckN YJEKQk comp-lzmxs9qf7-container comp-lzmxs9qf7 J6KGih wixui-box" data-category="button" data-index="28">
                                 <div rect={"x":85.671875,"y":7087.75} class="comp-lzmxs9qg6">
-                                  <a href="https://www.wix.com/manage/analytics" target="_blank" aria-label="Learn More" aria-pilot-category="link" aria-pilot-index="71" rect={"x":85.671875,"y":7087.75} aria-label="Learn More" class="StylableButton2545352419__root style-lzmxs9qh11__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="71">
+                                  <a target="_blank" aria-label="Learn More" aria-pilot-category="link" aria-pilot-index="71" rect={"x":85.671875,"y":7087.75} aria-label="Learn More" class="StylableButton2545352419__root style-lzmxs9qh11__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/manage/analytics" data-category="link" data-index="71">
                                   </a>
                                 </div>
                               </div>
@@ -817,13 +817,13 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   <div role="" rect={"x":52.015625,"y":7582.546875} class="rM7ckN YJEKQk comp-lzn3l5o6-container comp-lzn3l5o6 wixui-box">
                                     <div role="" aria-pilot-category="button" aria-pilot-index="29" rect={"x":52.015625,"y":7582.546875} class="rM7ckN YJEKQk comp-lzn2nioj13-container comp-lzn2nioj13 J6KGih wixui-box" data-category="button" data-index="29">
                                       <div rect={"x":52.015625,"y":7582.609375} class="comp-lzn2niok9">
-                                        <a href="https://users.wix.com/signin?referralInfo=domain_gate_how_to_section_get_started&loginCompName=domain_gate_how_to_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="72" rect={"x":52.015625,"y":7582.609375} aria-label="Get Started" class="StylableButton2545352419__root style-lzn2niol12__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="72">
+                                        <a target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="72" rect={"x":52.015625,"y":7582.609375} aria-label="Get Started" class="StylableButton2545352419__root style-lzn2niol12__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin?referralInfo=domain_gate_how_to_section_get_started&loginCompName=domain_gate_how_to_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" data-category="link" data-index="72">
                                         </a>
                                       </div>
                                     </div>
                                     <div role="" aria-pilot-category="button" aria-pilot-index="30" rect={"x":215.84375,"y":7597.578125} class="rM7ckN YJEKQk comp-lzn3koqx-container comp-lzn3koqx J6KGih wixui-box" data-category="button" data-index="30">
                                       <div rect={"x":215.84375,"y":7597.578125} class="comp-lzn3kora1">
-                                        <a href="https://www.wix.com/blog/how-to-register-a-domain-name" target="_blank" aria-label="Learn more" aria-pilot-category="link" aria-pilot-index="73" rect={"x":215.84375,"y":7597.578125} aria-label="Learn more" class="StylableButton2545352419__root style-lzn3korc__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="73">
+                                        <a target="_blank" aria-label="Learn more" aria-pilot-category="link" aria-pilot-index="73" rect={"x":215.84375,"y":7597.578125} aria-label="Learn more" class="StylableButton2545352419__root style-lzn3korc__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog/how-to-register-a-domain-name" data-category="link" data-index="73">
                                         </a>
                                       </div>
                                     </div>
@@ -882,7 +882,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                 <div role="listitem" aria-pilot-category="list" aria-pilot-index="36" rect={"x":114.5,"y":8715.640625} aria-role="listitem" class="rM7ckN YJEKQk comp-lzn5ew2e-container comp-lzn5ew2e wixui-repeater__item" data-category="list" data-index="36">
                                   <div role="" aria-pilot-category="button" aria-pilot-index="31" rect={"x":114.5,"y":8715.640625} class="rM7ckN YJEKQk comp-lzn5fcki-container comp-lzn5fcki J6KGih wixui-box" data-category="button" data-index="31">
                                     <div rect={"x":114.5,"y":8715.75} class="comp-lzn5fckl8">
-                                      <a href="https://www.wix.com/domains/domain-name-search" target="_blank" aria-label="Domain Name Search" aria-pilot-category="link" aria-pilot-index="74" rect={"x":114.5,"y":8715.75} aria-label="Domain Name Search" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="74">
+                                      <a target="_blank" aria-label="Domain Name Search" aria-pilot-category="link" aria-pilot-index="74" rect={"x":114.5,"y":8715.75} aria-label="Domain Name Search" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/domains/domain-name-search" data-category="link" data-index="74">
                                       </a>
                                     </div>
                                   </div>
@@ -890,7 +890,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                 <div role="listitem" aria-pilot-category="list" aria-pilot-index="37" rect={"x":114.5,"y":8785.375} aria-role="listitem" class="rM7ckN YJEKQk comp-lzn5ew2e-container comp-lzn5ew2e wixui-repeater__item" data-category="list" data-index="37">
                                   <div role="" aria-pilot-category="button" aria-pilot-index="32" rect={"x":114.5,"y":8785.375} class="rM7ckN YJEKQk comp-lzn5fcki-container comp-lzn5fcki J6KGih wixui-box" data-category="button" data-index="32">
                                     <div rect={"x":114.5,"y":8785.5} class="comp-lzn5fckl8">
-                                      <a href="https://www.wix.com/domains/domain-name-generator" target="_blank" aria-label="Domain Name Generator" aria-pilot-category="link" aria-pilot-index="75" rect={"x":114.5,"y":8785.5} aria-label="Domain Name Generator" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="75">
+                                      <a target="_blank" aria-label="Domain Name Generator" aria-pilot-category="link" aria-pilot-index="75" rect={"x":114.5,"y":8785.5} aria-label="Domain Name Generator" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/domains/domain-name-generator" data-category="link" data-index="75">
                                       </a>
                                     </div>
                                   </div>
@@ -898,7 +898,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                 <div role="listitem" aria-pilot-category="list" aria-pilot-index="38" rect={"x":114.5,"y":8855.125} aria-role="listitem" class="rM7ckN YJEKQk comp-lzn5ew2e-container comp-lzn5ew2e wixui-repeater__item" data-category="list" data-index="38">
                                   <div role="" aria-pilot-category="button" aria-pilot-index="33" rect={"x":114.5,"y":8855.125} class="rM7ckN YJEKQk comp-lzn5fcki-container comp-lzn5fcki J6KGih wixui-box" data-category="button" data-index="33">
                                     <div rect={"x":114.5,"y":8855.25} class="comp-lzn5fckl8">
-                                      <a href="https://www.wix.com/domains/whois" target="_blank" aria-label="WHOIS Domain Lookup" aria-pilot-category="link" aria-pilot-index="76" rect={"x":114.5,"y":8855.25} aria-label="WHOIS Domain Lookup" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="76">
+                                      <a target="_blank" aria-label="WHOIS Domain Lookup" aria-pilot-category="link" aria-pilot-index="76" rect={"x":114.5,"y":8855.25} aria-label="WHOIS Domain Lookup" class="StylableButton2545352419__root style-lzn5fckn8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/domains/whois" data-category="link" data-index="76">
                                       </a>
                                     </div>
                                   </div>
@@ -920,7 +920,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                               </div>
                               <div role="" aria-pilot-category="button" aria-pilot-index="34" rect={"x":40,"y":9442.1875} class="rM7ckN YJEKQk comp-lzn6tc5k-container comp-lzn6tc5k J6KGih wixui-box" data-category="button" data-index="34">
                                 <div rect={"x":40,"y":9442.1875} class="comp-lzn6tc5l6">
-                                  <a href="https://www.wix.com/blog" target="_blank" aria-label="Explore the Blog" aria-pilot-category="link" aria-pilot-index="77" rect={"x":40,"y":9442.1875} aria-label="Explore the Blog" class="StylableButton2545352419__root style-lzn6tc5o8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="77">
+                                  <a target="_blank" aria-label="Explore the Blog" aria-pilot-category="link" aria-pilot-index="77" rect={"x":40,"y":9442.1875} aria-label="Explore the Blog" class="StylableButton2545352419__root style-lzn6tc5o8__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog" data-category="link" data-index="77">
                                   </a>
                                 </div>
                               </div>
@@ -942,7 +942,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div rect={"x":40,"y":9554.234375} class="comp-lzn6tc6414">
-                                  <a href="https://www.wix.com/blog/what-is-a-domain" target="_blank" aria-label="What is a domain name?" aria-pilot-category="link" aria-pilot-index="78" rect={"x":40,"y":9554.234375} aria-label="What is a domain name?" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="78">
+                                  <a target="_blank" aria-label="What is a domain name?" aria-pilot-category="link" aria-pilot-index="78" rect={"x":40,"y":9554.234375} aria-label="What is a domain name?" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog/what-is-a-domain" data-category="link" data-index="78">
                                   </a>
                                 </div>
                               </div>
@@ -960,7 +960,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div rect={"x":412,"y":9554.234375} class="comp-lzn6tc6414">
-                                  <a href="https://www.wix.com/blog/types-of-domains" target="_blank" aria-label="The different types of domains" aria-pilot-category="link" aria-pilot-index="79" rect={"x":412,"y":9554.234375} aria-label="The different types of domains" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="79">
+                                  <a target="_blank" aria-label="The different types of domains" aria-pilot-category="link" aria-pilot-index="79" rect={"x":412,"y":9554.234375} aria-label="The different types of domains" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog/types-of-domains" data-category="link" data-index="79">
                                   </a>
                                 </div>
                               </div>
@@ -978,7 +978,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div rect={"x":40,"y":9880.421875} class="comp-lzn6tc6414">
-                                  <a href="https://www.wix.com/blog/how-much-does-a-domain-name-cost" target="_blank" aria-label="Breaking down the cost of domains " aria-pilot-category="link" aria-pilot-index="80" rect={"x":40,"y":9880.421875} aria-label="Breaking down the cost of domains " class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="80">
+                                  <a target="_blank" aria-label="Breaking down the cost of domains " aria-pilot-category="link" aria-pilot-index="80" rect={"x":40,"y":9880.421875} aria-label="Breaking down the cost of domains " class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog/how-much-does-a-domain-name-cost" data-category="link" data-index="80">
                                   </a>
                                 </div>
                               </div>
@@ -996,7 +996,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                                   </div>
                                 </div>
                                 <div rect={"x":412,"y":9880.421875} class="comp-lzn6tc6414">
-                                  <a href="https://www.wix.com/blog/domain-hosting-vs-web-hosting" target="_blank" aria-label="Domain hosting vs web hosting" aria-pilot-category="link" aria-pilot-index="81" rect={"x":412,"y":9880.421875} aria-label="Domain hosting vs web hosting" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="81">
+                                  <a target="_blank" aria-label="Domain hosting vs web hosting" aria-pilot-category="link" aria-pilot-index="81" rect={"x":412,"y":9880.421875} aria-label="Domain hosting vs web hosting" class="StylableButton2545352419__root style-lzn6tc6516__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://www.wix.com/blog/domain-hosting-vs-web-hosting" data-category="link" data-index="81">
                                   </a>
                                 </div>
                               </div>
@@ -1149,7 +1149,7 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
                             </div>
                             <div role="" aria-pilot-category="button" aria-pilot-index="45" rect={"x":315.859375,"y":10611.515625} class="rM7ckN YJEKQk comp-lwhndq7s1-container comp-lwhndq7s1 J6KGih wixui-box" data-category="button" data-index="45">
                               <div rect={"x":315.859375,"y":10611.59375} class="comp-lwhndq7u">
-                                <a href="https://users.wix.com/signin?referralInfo=domain_gate_send_off_section_get_started&loginCompName=domain_gate_send_off_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="82" rect={"x":315.859375,"y":10611.59375} aria-label="Get Started" class="StylableButton2545352419__root style-lwhndq7y9__root wixui-button StylableButton2545352419__link" data-testid="linkElement" data-category="link" data-index="82">
+                                <a target="_blank" aria-label="Get Started" aria-pilot-category="link" aria-pilot-index="82" rect={"x":315.859375,"y":10611.59375} aria-label="Get Started" class="StylableButton2545352419__root style-lwhndq7y9__root wixui-button StylableButton2545352419__link" data-testid="linkElement" href="https://users.wix.com/signin?referralInfo=domain_gate_send_off_section_get_started&loginCompName=domain_gate_send_off_section_get_started&postSignUp=https://www.wix.com/new/intro&postLogin=https://wix.com/my-account/sites&overrideLocale=&loginDialogContext=signup&originUrl=https://www.wix.com/domain/names" data-category="link" data-index="82">
                                 </a>
                               </div>
                             </div>
@@ -1205,39 +1205,39 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":11871.6875} class="C2Sjqd">
                 <ul aria-pilot-category="list" aria-pilot-index="55" rect={"x":0,"y":11882.6875} class="BWy7Sp " data-category="list" data-index="55">
                   <li rect={"x":0,"y":11882.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/website/templates" target="_self" aria-pilot-category="link" aria-pilot-index="83" rect={"x":0,"y":11882.6875} class="KuIaYs" data-category="link" data-index="83">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="83" rect={"x":0,"y":11882.6875} class="KuIaYs" href="https://www.wix.com/website/templates" data-category="link" data-index="83">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11893.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="84" rect={"x":0,"y":11893.6875} class="KuIaYs" data-category="link" data-index="84">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="84" rect={"x":0,"y":11893.6875} class="KuIaYs" href="https://www.wix.com/" data-category="link" data-index="84">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11904.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/website/design" target="_self" aria-pilot-category="link" aria-pilot-index="85" rect={"x":0,"y":11904.6875} class="KuIaYs" data-category="link" data-index="85">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="85" rect={"x":0,"y":11904.6875} class="KuIaYs" href="https://www.wix.com/website/design" data-category="link" data-index="85">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11915.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/features/main" target="_self" aria-pilot-category="link" aria-pilot-index="86" rect={"x":0,"y":11915.6875} class="KuIaYs" data-category="link" data-index="86">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="86" rect={"x":0,"y":11915.6875} class="KuIaYs" href="https://www.wix.com/features/main" data-category="link" data-index="86">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11926.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/app-market" target="_blank" aria-pilot-category="link" aria-pilot-index="87" rect={"x":0,"y":11926.6875} class="KuIaYs" data-category="link" data-index="87">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="87" rect={"x":0,"y":11926.6875} class="KuIaYs" href="https://www.wix.com/app-market" data-category="link" data-index="87">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11937.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/free/web-hosting" target="_self" aria-pilot-category="link" aria-pilot-index="88" rect={"x":0,"y":11937.6875} class="KuIaYs" data-category="link" data-index="88">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="88" rect={"x":0,"y":11937.6875} class="KuIaYs" href="https://www.wix.com/free/web-hosting" data-category="link" data-index="88">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11948.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/domains" target="_self" aria-pilot-category="link" aria-pilot-index="89" rect={"x":0,"y":11948.6875} class="KuIaYs" data-category="link" data-index="89">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="89" rect={"x":0,"y":11948.6875} class="KuIaYs" href="https://www.wix.com/domains" data-category="link" data-index="89">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11959.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/accessibility" target="_self" aria-pilot-category="link" aria-pilot-index="90" rect={"x":0,"y":11959.6875} class="KuIaYs" data-category="link" data-index="90">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="90" rect={"x":0,"y":11959.6875} class="KuIaYs" href="https://www.wix.com/accessibility" data-category="link" data-index="90">
                     </a>
                   </li>
                   <li rect={"x":0,"y":11970.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/app-builder" target="_self" aria-pilot-category="link" aria-pilot-index="91" rect={"x":0,"y":11970.6875} class="KuIaYs" data-category="link" data-index="91">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="91" rect={"x":0,"y":11970.6875} class="KuIaYs" href="https://www.wix.com/app-builder" data-category="link" data-index="91">
                     </a>
                   </li>
                 </ul>
@@ -1245,47 +1245,47 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":11981.6875} class="C2Sjqd">
                 <ul aria-pilot-category="list" aria-pilot-index="56" rect={"x":0,"y":11992.6875} class="BWy7Sp " data-category="list" data-index="56">
                   <li rect={"x":0,"y":11992.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/ecommerce/online-store" target="_blank" aria-pilot-category="link" aria-pilot-index="92" rect={"x":0,"y":11992.6875} class="KuIaYs" data-category="link" data-index="92">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="92" rect={"x":0,"y":11992.6875} class="KuIaYs" href="https://www.wix.com/ecommerce/online-store" data-category="link" data-index="92">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12003.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/scheduling-software" target="_blank" aria-pilot-category="link" aria-pilot-index="93" rect={"x":0,"y":12003.6875} class="KuIaYs" data-category="link" data-index="93">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="93" rect={"x":0,"y":12003.6875} class="KuIaYs" href="https://www.wix.com/scheduling-software" data-category="link" data-index="93">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12014.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/restaurant/website" target="_self" aria-pilot-category="link" aria-pilot-index="94" rect={"x":0,"y":12014.6875} class="KuIaYs" data-category="link" data-index="94">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="94" rect={"x":0,"y":12014.6875} class="KuIaYs" href="https://www.wix.com/restaurant/website" data-category="link" data-index="94">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12025.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/start/blog" target="_self" aria-pilot-category="link" aria-pilot-index="95" rect={"x":0,"y":12025.6875} class="KuIaYs" data-category="link" data-index="95">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="95" rect={"x":0,"y":12025.6875} class="KuIaYs" href="https://www.wix.com/start/blog" data-category="link" data-index="95">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12036.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/portfolio-website" target="_self" aria-pilot-category="link" aria-pilot-index="96" rect={"x":0,"y":12036.6875} class="KuIaYs" data-category="link" data-index="96">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="96" rect={"x":0,"y":12036.6875} class="KuIaYs" href="https://www.wix.com/portfolio-website" data-category="link" data-index="96">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12047.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/ecommerce/website" target="_blank" aria-pilot-category="link" aria-pilot-index="97" rect={"x":0,"y":12047.6875} class="KuIaYs" data-category="link" data-index="97">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="97" rect={"x":0,"y":12047.6875} class="KuIaYs" href="https://www.wix.com/ecommerce/website" data-category="link" data-index="97">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12058.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/studio" target="_self" aria-pilot-category="link" aria-pilot-index="98" rect={"x":0,"y":12058.6875} class="KuIaYs" data-category="link" data-index="98">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="98" rect={"x":0,"y":12058.6875} class="KuIaYs" href="https://www.wix.com/studio" data-category="link" data-index="98">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12069.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/studio/enterprise" target="_self" aria-pilot-category="link" aria-pilot-index="99" rect={"x":0,"y":12069.6875} class="KuIaYs" data-category="link" data-index="99">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="99" rect={"x":0,"y":12069.6875} class="KuIaYs" href="https://www.wix.com/studio/enterprise" data-category="link" data-index="99">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12080.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/students" target="_self" aria-pilot-category="link" aria-pilot-index="100" rect={"x":0,"y":12080.6875} class="KuIaYs" data-category="link" data-index="100">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="100" rect={"x":0,"y":12080.6875} class="KuIaYs" href="https://www.wix.com/students" data-category="link" data-index="100">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12091.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/tools" target="_self" aria-pilot-category="link" aria-pilot-index="101" rect={"x":0,"y":12091.6875} class="KuIaYs" data-category="link" data-index="101">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="101" rect={"x":0,"y":12091.6875} class="KuIaYs" href="https://www.wix.com/tools" data-category="link" data-index="101">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12102.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/logo/maker" target="_blank" aria-pilot-category="link" aria-pilot-index="102" rect={"x":0,"y":12102.6875} class="KuIaYs" data-category="link" data-index="102">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="102" rect={"x":0,"y":12102.6875} class="KuIaYs" href="https://www.wix.com/logo/maker" data-category="link" data-index="102">
                     </a>
                   </li>
                 </ul>
@@ -1293,19 +1293,19 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":12113.6875} class="C2Sjqd">
                 <ul aria-pilot-category="list" aria-pilot-index="57" rect={"x":0,"y":12124.6875} class="BWy7Sp " data-category="list" data-index="57">
                   <li rect={"x":0,"y":12124.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/blog" target="_blank" aria-pilot-category="link" aria-pilot-index="103" rect={"x":0,"y":12124.6875} class="KuIaYs" data-category="link" data-index="103">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="103" rect={"x":0,"y":12124.6875} class="KuIaYs" href="https://www.wix.com/blog" data-category="link" data-index="103">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12135.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/manage/privacy-security-hub" target="_self" aria-pilot-category="link" aria-pilot-index="104" rect={"x":0,"y":12135.6875} class="KuIaYs" data-category="link" data-index="104">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="104" rect={"x":0,"y":12135.6875} class="KuIaYs" href="https://www.wix.com/manage/privacy-security-hub" data-category="link" data-index="104">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12146.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/seo/learn" target="_blank" aria-pilot-category="link" aria-pilot-index="105" rect={"x":0,"y":12146.6875} class="KuIaYs" data-category="link" data-index="105">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="105" rect={"x":0,"y":12146.6875} class="KuIaYs" href="https://www.wix.com/seo/learn" data-category="link" data-index="105">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12157.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/encyclopedia" target="_blank" aria-pilot-category="link" aria-pilot-index="106" rect={"x":0,"y":12157.6875} class="KuIaYs" data-category="link" data-index="106">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="106" rect={"x":0,"y":12157.6875} class="KuIaYs" href="https://www.wix.com/encyclopedia" data-category="link" data-index="106">
                     </a>
                   </li>
                 </ul>
@@ -1313,19 +1313,19 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":12168.6875} class="C2Sjqd">
                 <ul aria-pilot-category="list" aria-pilot-index="58" rect={"x":0,"y":12179.6875} class="BWy7Sp " data-category="list" data-index="58">
                   <li rect={"x":0,"y":12179.6875} class="LjUlS_">
-                    <a href="https://support.wix.com/en" target="_self" aria-pilot-category="link" aria-pilot-index="107" rect={"x":0,"y":12179.6875} class="KuIaYs" data-category="link" data-index="107">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="107" rect={"x":0,"y":12179.6875} class="KuIaYs" href="https://support.wix.com/en" data-category="link" data-index="107">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12190.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/marketplace" target="_blank" aria-pilot-category="link" aria-pilot-index="108" rect={"x":0,"y":12190.6875} class="KuIaYs" data-category="link" data-index="108">
+                    <a target="_blank" aria-pilot-category="link" aria-pilot-index="108" rect={"x":0,"y":12190.6875} class="KuIaYs" href="https://www.wix.com/marketplace" data-category="link" data-index="108">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12201.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/abuse" target="_self" aria-pilot-category="link" aria-pilot-index="109" rect={"x":0,"y":12201.6875} class="KuIaYs" data-category="link" data-index="109">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="109" rect={"x":0,"y":12201.6875} class="KuIaYs" href="https://www.wix.com/abuse" data-category="link" data-index="109">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12212.6875} class="LjUlS_">
-                    <a href="https://status.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="110" rect={"x":0,"y":12212.6875} class="KuIaYs" data-category="link" data-index="110">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="110" rect={"x":0,"y":12212.6875} class="KuIaYs" href="https://status.wix.com/" data-category="link" data-index="110">
                     </a>
                   </li>
                 </ul>
@@ -1333,46 +1333,46 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":12223.6875} class="C2Sjqd">
                 <ul aria-pilot-category="list" aria-pilot-index="59" rect={"x":0,"y":12234.6875} class="BWy7Sp " data-category="list" data-index="59">
                   <li rect={"x":0,"y":12234.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/press-room/home" target="_self" aria-pilot-category="link" aria-pilot-index="111" rect={"x":0,"y":12234.6875} class="KuIaYs" data-category="link" data-index="111">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="111" rect={"x":0,"y":12234.6875} class="KuIaYs" href="https://www.wix.com/press-room/home" data-category="link" data-index="111">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12245.6875} class="LjUlS_">
-                    <a href="https://investors.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="112" rect={"x":0,"y":12245.6875} class="KuIaYs" data-category="link" data-index="112">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="112" rect={"x":0,"y":12245.6875} class="KuIaYs" href="https://investors.wix.com/" data-category="link" data-index="112">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12256.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/wix-capital" target="_self" aria-pilot-category="link" aria-pilot-index="113" rect={"x":0,"y":12256.6875} class="KuIaYs" data-category="link" data-index="113">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="113" rect={"x":0,"y":12256.6875} class="KuIaYs" href="https://www.wix.com/wix-capital" data-category="link" data-index="113">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12267.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/about/terms-accessibility" target="_self" aria-pilot-category="link" aria-pilot-index="114" rect={"x":0,"y":12267.6875} class="KuIaYs" data-category="link" data-index="114">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="114" rect={"x":0,"y":12267.6875} class="KuIaYs" href="https://www.wix.com/about/terms-accessibility" data-category="link" data-index="114">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12278.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/about/patent-notice" target="_self" aria-pilot-category="link" aria-pilot-index="115" rect={"x":0,"y":12278.6875} class="KuIaYs" data-category="link" data-index="115">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="115" rect={"x":0,"y":12278.6875} class="KuIaYs" href="https://www.wix.com/about/patent-notice" data-category="link" data-index="115">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12289.6875} class="LjUlS_">
-                    <a href="https://www.wix.com/about/sitemap" target="_self" aria-pilot-category="link" aria-pilot-index="116" rect={"x":0,"y":12289.6875} class="KuIaYs" data-category="link" data-index="116">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="116" rect={"x":0,"y":12289.6875} class="KuIaYs" href="https://www.wix.com/about/sitemap" data-category="link" data-index="116">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12300.6875} class="LjUlS_">
-                    <a href="https://careers.wix.com/" target="_self" aria-pilot-category="link" aria-pilot-index="117" rect={"x":0,"y":12300.6875} class="KuIaYs" data-category="link" data-index="117">
+                    <a target="_self" aria-pilot-category="link" aria-pilot-index="117" rect={"x":0,"y":12300.6875} class="KuIaYs" href="https://careers.wix.com/" data-category="link" data-index="117">
                     </a>
                   </li>
                 </ul>
               </div>
             </div>
             <div rect={"x":0,"y":12311.6875} class="qSmvZl">
-              <a aria-label="Wix logo, homepage" href="https://www.wix.com/" aria-pilot-category="link" aria-pilot-index="118" rect={"x":0,"y":12330.6875} aria-label="Wix logo, homepage" class="LtfG6S" title="Wix.com" data-category="link" data-index="118">
+              <a aria-label="Wix logo, homepage" aria-pilot-category="link" aria-pilot-index="118" rect={"x":0,"y":12330.6875} aria-label="Wix logo, homepage" class="LtfG6S" title="Wix.com" href="https://www.wix.com/" data-category="link" data-index="118">
               </a>
               <ul aria-pilot-category="list" aria-pilot-index="60" rect={"x":0,"y":12363.6875} class="uLHFcA" data-category="list" data-index="60">
                 <li rect={"x":0,"y":12363.6875}>
-                  <a href="https://www.wix.com/about/us" target="_self" aria-pilot-category="link" aria-pilot-index="119" rect={"x":0,"y":12363.6875} class="PlWjyD" data-category="link" data-index="119">
+                  <a target="_self" aria-pilot-category="link" aria-pilot-index="119" rect={"x":0,"y":12363.6875} class="PlWjyD" href="https://www.wix.com/about/us" data-category="link" data-index="119">
                   </a>
                 </li>
                 <li rect={"x":0,"y":12374.6875}>
-                  <a href="https://www.wix.com/about/contact-us" target="_self" aria-pilot-category="link" aria-pilot-index="120" rect={"x":0,"y":12374.6875} class="PlWjyD" data-category="link" data-index="120">
+                  <a target="_self" aria-pilot-category="link" aria-pilot-index="120" rect={"x":0,"y":12374.6875} class="PlWjyD" href="https://www.wix.com/about/contact-us" data-category="link" data-index="120">
                   </a>
                 </li>
               </ul>
@@ -1383,42 +1383,42 @@ exports[`Wix Domains Page Testing should generate the expected clean view struct
               <div rect={"x":0,"y":12385.6875} class="JwIlOl">
                 <ul aria-pilot-category="list" aria-pilot-index="61" rect={"x":0,"y":12385.6875} class="SUCknL NDAvlW" data-category="list" data-index="61">
                   <li rect={"x":0,"y":12385.6875}>
-                    <a href="https://www.facebook.com/wix" target="_blank" aria-label="facebook" aria-pilot-category="link" aria-pilot-index="121" rect={"x":0,"y":12396.6875} aria-label="facebook" class="ACLKzf" title="Facebook" data-category="link" data-index="121">
+                    <a target="_blank" aria-label="facebook" aria-pilot-category="link" aria-pilot-index="121" rect={"x":0,"y":12396.6875} aria-label="facebook" class="ACLKzf" title="Facebook" href="https://www.facebook.com/wix" data-category="link" data-index="121">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12407.6875}>
-                    <a href="https://www.youtube.com/user/Wix" target="_blank" aria-label="youtube" aria-pilot-category="link" aria-pilot-index="122" rect={"x":0,"y":12418.6875} aria-label="youtube" class="ACLKzf" title="Youtube" data-category="link" data-index="122">
+                    <a target="_blank" aria-label="youtube" aria-pilot-category="link" aria-pilot-index="122" rect={"x":0,"y":12418.6875} aria-label="youtube" class="ACLKzf" title="Youtube" href="https://www.youtube.com/user/Wix" data-category="link" data-index="122">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12429.6875}>
-                    <a href="https://www.instagram.com/wix" target="_blank" aria-label="instagram" aria-pilot-category="link" aria-pilot-index="123" rect={"x":0,"y":12440.6875} aria-label="instagram" class="ACLKzf" title="Instagram" data-category="link" data-index="123">
+                    <a target="_blank" aria-label="instagram" aria-pilot-category="link" aria-pilot-index="123" rect={"x":0,"y":12440.6875} aria-label="instagram" class="ACLKzf" title="Instagram" href="https://www.instagram.com/wix" data-category="link" data-index="123">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12451.6875}>
-                    <a href="https://www.tiktok.com/@wix" target="_blank" aria-label="tiktok" aria-pilot-category="link" aria-pilot-index="124" rect={"x":0,"y":12462.6875} aria-label="tiktok" class="ACLKzf" title="TikTok" data-category="link" data-index="124">
+                    <a target="_blank" aria-label="tiktok" aria-pilot-category="link" aria-pilot-index="124" rect={"x":0,"y":12462.6875} aria-label="tiktok" class="ACLKzf" title="TikTok" href="https://www.tiktok.com/@wix" data-category="link" data-index="124">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12473.6875}>
-                    <a href="https://www.pinterest.com/wixcom" target="_blank" aria-label="pinterest" aria-pilot-category="link" aria-pilot-index="125" rect={"x":0,"y":12484.6875} aria-label="pinterest" class="ACLKzf" title="Pinterest" data-category="link" data-index="125">
+                    <a target="_blank" aria-label="pinterest" aria-pilot-category="link" aria-pilot-index="125" rect={"x":0,"y":12484.6875} aria-label="pinterest" class="ACLKzf" title="Pinterest" href="https://www.pinterest.com/wixcom" data-category="link" data-index="125">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12495.6875}>
-                    <a href="https://twitter.com/wix" target="_blank" aria-label="twitter" aria-pilot-category="link" aria-pilot-index="126" rect={"x":0,"y":12506.6875} aria-label="twitter" class="ACLKzf" title="Twitter" data-category="link" data-index="126">
+                    <a target="_blank" aria-label="twitter" aria-pilot-category="link" aria-pilot-index="126" rect={"x":0,"y":12506.6875} aria-label="twitter" class="ACLKzf" title="Twitter" href="https://twitter.com/wix" data-category="link" data-index="126">
                     </a>
                   </li>
                   <li rect={"x":0,"y":12517.6875}>
-                    <a href="https://www.linkedin.com/company/wix-com?trk=biz-companies-cym" target="_blank" aria-label="linkedin" aria-pilot-category="link" aria-pilot-index="127" rect={"x":0,"y":12528.6875} aria-label="linkedin" class="ACLKzf" title="Linkedin" data-category="link" data-index="127">
+                    <a target="_blank" aria-label="linkedin" aria-pilot-category="link" aria-pilot-index="127" rect={"x":0,"y":12528.6875} aria-label="linkedin" class="ACLKzf" title="Linkedin" href="https://www.linkedin.com/company/wix-com?trk=biz-companies-cym" data-category="link" data-index="127">
                     </a>
                   </li>
                 </ul>
                 <div rect={"x":0,"y":12539.6875} class="waU9GL">
                   <ul aria-pilot-category="list" aria-pilot-index="62" rect={"x":0,"y":12539.6875} class="fLy152" data-category="list" data-index="62">
                     <li rect={"x":0,"y":12539.6875}>
-                      <a href="https://www.wix.com/about/terms-of-use" target="_self" aria-pilot-category="link" aria-pilot-index="128" rect={"x":0,"y":12539.6875} class="FzJOdO" data-category="link" data-index="128">
+                      <a target="_self" aria-pilot-category="link" aria-pilot-index="128" rect={"x":0,"y":12539.6875} class="FzJOdO" href="https://www.wix.com/about/terms-of-use" data-category="link" data-index="128">
                       </a>
                     </li>
                     <li rect={"x":0,"y":12550.6875}>
-                      <a href="https://www.wix.com/about/privacy" target="_self" aria-pilot-category="link" aria-pilot-index="129" rect={"x":0,"y":12550.6875} class="FzJOdO" data-category="link" data-index="129">
+                      <a target="_self" aria-pilot-category="link" aria-pilot-index="129" rect={"x":0,"y":12550.6875} class="FzJOdO" href="https://www.wix.com/about/privacy" data-category="link" data-index="129">
                       </a>
                     </li>
                   </ul>

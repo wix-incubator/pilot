@@ -67,4 +67,14 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
     compare: comparators.compareExactString,
     importance: { type: "mandatory" },
   },
+  href: {
+    extract: (el: HTMLElement): string | null => el.getAttribute("href"),
+    compare: comparators.compareExactString,
+    importance: { type: "weighted", weight: 0.3 },
+  },
+  src: {
+    extract: (el: HTMLElement): string | null => el.getAttribute("src"),
+    compare: comparators.compareExactString,
+    importance: { type: "weighted", weight: 0.3 },
+  },
 };
