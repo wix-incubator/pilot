@@ -51,6 +51,7 @@ const tagToCategory: Record<
   ul: (el) => (hasListChildren(el) ? "list" : undefined),
   ol: (el) => (hasListChildren(el) ? "list" : undefined),
   table: (el) => (hasTableStructure(el) ? "table" : undefined),
+  img: (el) => (isInteractiveSemantic(el) ? "button" : undefined),
 
   // Headers
   h1: "header",
@@ -75,6 +76,29 @@ const tagToCategory: Record<
 };
 
 export const tags = Object.keys(tagToCategory);
+
+// NEW EVENT LISTENER INTEGRATION
+const clickListenerRegistry = new WeakSet<Element>();
+
+if (typeof Element !== "undefined") {
+  (function () {
+    const originalAddEventListener = Element.prototype.addEventListener;
+    Element.prototype.addEventListener = function (
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ) {
+      if (type === "click") {
+        clickListenerRegistry.add(this);
+      }
+      return originalAddEventListener.call(this, type, listener, options);
+    };
+  })();
+}
+
+function hasClickListener(el: Element): boolean {
+  return clickListenerRegistry.has(el);
+}
 
 function getElementCategory(el: Element): ElementCategory | undefined {
   const role = el.getAttribute("role")?.toLowerCase();
@@ -158,6 +182,7 @@ function isCustomInteractiveElement(el: Element): boolean {
     (el.tabIndex >= 0 ||
       el.hasAttribute("onclick") ||
       el.getAttribute("role") === "button" ||
+      hasClickListener(el) ||
       pointerCursor)
   );
 }

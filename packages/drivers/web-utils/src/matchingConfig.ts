@@ -1,5 +1,6 @@
 import { Rect } from "./types";
 import comparators from "./comparators";
+
 const DEFAULT_STRING_LENGTH = 20;
 
 type CriteriaImportance =
@@ -58,16 +59,6 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
     compare: comparators.compareExactString,
     importance: { type: "mandatory" },
   },
-  "data-test-id": {
-    extract: (el: HTMLElement) => el.getAttribute("data-test-id"),
-    compare: comparators.compareExactString,
-    importance: { type: "mandatory" },
-  },
-  "data-testid": {
-    extract: (el: HTMLElement) => el.getAttribute("data-testid"),
-    compare: comparators.compareExactString,
-    importance: { type: "mandatory" },
-  },
   href: {
     extract: (el: HTMLElement): string | null => el.getAttribute("href"),
     compare: comparators.compareExactString,
@@ -85,5 +76,31 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
     },
     compare: comparators.compareExactString,
     importance: { type: "weighted", weight: 0.3 },
+  },
+  "nth-child": {
+    extract: (el: HTMLElement): string | null => {
+      const parent = el.parentElement;
+      if (!parent) return null;
+      return String(Array.from(parent.children).indexOf(el) + 1);
+    },
+    compare: comparators.compareExactString,
+    importance: { type: "weighted", weight: 0.1 },
+  },
+  "data-attributes": {
+    extract: (el: HTMLElement): Record<string, string | null> => {
+      const result: Record<string, string | null> = {};
+      Array.from(el.attributes).forEach((attr) => {
+        if (/^data[-_].*id$/i.test(attr.name)) {
+          result[attr.name] = attr.value;
+        }
+      });
+      return result;
+    },
+    compare: (actual, expected, threshold?: number) => {
+      const actualStr = JSON.stringify(actual);
+      const expectedStr = JSON.stringify(expected);
+      return comparators.compareExactString(actualStr, expectedStr, threshold);
+    },
+    importance: { type: "mandatory" },
   },
 };
