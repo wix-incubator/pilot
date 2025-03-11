@@ -4,11 +4,29 @@ import {
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import detox from "detox";
-import { expect } from "@jest/globals";
 import * as fs from "fs";
 import * as path from "path";
 
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
+  private _jestExpect: any;
+
+  constructor() {
+    this._jestExpect = null;
+  }
+
+  private get jestExpect() {
+    if (!this._jestExpect) {
+      try {
+        this._jestExpect = require("@jest/globals").expect;
+      } catch (error) {
+        console.warn(
+          "Could not load @jest/globals. This may cause issues if Jest assertions are used.",
+        );
+      }
+    }
+    return this._jestExpect;
+  }
+
   get driverConfig(): TestingFrameworkDriverConfig {
     return { useSnapshotStabilitySync: false };
   }
@@ -45,7 +63,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
         "Detox is a gray box end-to-end testing and automation library for mobile apps.",
       context: {
         ...detox,
-        jestExpect: expect,
+        jestExpect: this.jestExpect,
       },
       categories: [
         {
