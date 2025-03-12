@@ -3,15 +3,16 @@ import {
   TestingFrameworkDriver,
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
-import detox from "detox";
 import * as fs from "fs";
 import * as path from "path";
 
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
   private _jestExpect: any;
+  readonly detox: any;
 
-  constructor() {
+  constructor(detox: any) {
     this._jestExpect = null;
+    this.detox = detox;
   }
 
   private get jestExpect() {
@@ -33,7 +34,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
 
   async captureViewHierarchyString(): Promise<string> {
     try {
-      return await detox.device.generateViewHierarchyXml(true);
+      return await this.detox.device.generateViewHierarchyXml(true);
     } catch (_error) {
       return "NO ACTIVE APP FOUND, LAUNCH THE APP TO SEE THE VIEW HIERARCHY";
     }
@@ -47,7 +48,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
 
     const fileName = `snapshot_detox_${Date.now()}.png`;
     try {
-      const screenshotPath = await detox.device.takeScreenshot(fileName);
+      const screenshotPath = await this.detox.device.takeScreenshot(fileName);
       const tempPath = path.join(tempDir, fileName);
       fs.renameSync(screenshotPath, tempPath);
       return tempPath;
@@ -62,7 +63,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
       description:
         "Detox is a gray box end-to-end testing and automation library for mobile apps.",
       context: {
-        ...detox,
+        ...this.detox,
         jestExpect: this.jestExpect,
       },
       categories: [

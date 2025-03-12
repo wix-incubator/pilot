@@ -11,7 +11,7 @@ describe('ExampleApp Detox Test Suite', () => {
 
     beforeAll(async () => {
         const promptHandler: PromptHandler = new PromptHandler();
-        frameworkDriver = new DetoxFrameworkDriver();
+        frameworkDriver = new DetoxFrameworkDriver(detox);
 
         pilot = new Pilot({
             frameworkDriver,
