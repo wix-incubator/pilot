@@ -18,7 +18,9 @@ import {
 // -------------------------------------------------------
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
 type ElementMatchingCriteria = {
-  [K in AttributeKey]?: ReturnType<(typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]>;
+  [K in AttributeKey]?: ReturnType<
+    (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
+  >;
 };
 
 declare global {
@@ -73,24 +75,18 @@ function isContained(r1: DOMRect, r2: DOMRect): boolean {
   );
 }
 
-/** For label overlap checks, returns center [cx, cy] of a DOMRect. */
-function getRectCenterForLabels(r: DOMRect): [number, number] {
-  return [r.left + r.width / 2, r.top + r.height / 2];
-}
-
-/** Euclidean distance for label overlap checking. */
-function distanceForLabels(ax: number, ay: number, bx: number, by: number): number {
-  const dx = ax - bx;
-  const dy = ay - by;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
 /**
  * Returns the area of the intersection between two DOMRect objects.
  */
 function getIntersectionArea(r1: DOMRect, r2: DOMRect): number {
-  const xOverlap = Math.max(0, Math.min(r1.right, r2.right) - Math.max(r1.left, r2.left));
-  const yOverlap = Math.max(0, Math.min(r1.bottom, r2.bottom) - Math.max(r1.top, r2.top));
+  const xOverlap = Math.max(
+    0,
+    Math.min(r1.right, r2.right) - Math.max(r1.left, r2.left),
+  );
+  const yOverlap = Math.max(
+    0,
+    Math.min(r1.bottom, r2.bottom) - Math.max(r1.top, r2.top),
+  );
   return xOverlap * yOverlap;
 }
 
@@ -101,22 +97,24 @@ export function findElement(
   criteria: ElementMatchingCriteria,
 ): HTMLElement | null {
   const maxErrorThreshold = 0.7;
-  const candidates = Array.from(document.querySelectorAll("*")) as HTMLElement[];
+  const candidates = Array.from(
+    document.querySelectorAll("*"),
+  ) as HTMLElement[];
 
   const sufficientCandidate = candidates.find((candidate) =>
-    meetsSufficientCriteria(candidate, criteria)
+    meetsSufficientCriteria(candidate, criteria),
   );
   if (sufficientCandidate) return sufficientCandidate;
 
   const mandatoryCandidates = candidates.filter((candidate) =>
-    meetsMandatoryCriteria(candidate, criteria)
+    meetsMandatoryCriteria(candidate, criteria),
   );
   const bestCandidate = mandatoryCandidates.reduce(
     (best, candidate) => {
       const errorScore = calculateWeightedError(candidate, criteria);
       return errorScore < best.errorScore ? { candidate, errorScore } : best;
     },
-    { candidate: null as HTMLElement | null, errorScore: Infinity }
+    { candidate: null as HTMLElement | null, errorScore: Infinity },
   );
 
   return bestCandidate.errorScore < maxErrorThreshold
@@ -148,7 +146,9 @@ const CATEGORY_COLORS: Record<ElementCategory, [string, string]> = {
  */
 export function markImportantElements(options?: { includeHidden?: boolean }) {
   const selector = tags.join(",");
-  const elements = Array.from(document.querySelectorAll(selector)) as HTMLElement[];
+  const elements = Array.from(
+    document.querySelectorAll(selector),
+  ) as HTMLElement[];
 
   interface Candidate {
     element: HTMLElement;
@@ -188,7 +188,7 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
   const CENTER_DISTANCE_THRESHOLD = 10; // px
   const winners: Candidate[] = [];
 
-  for (const [category, group] of byCategory.entries()) {
+  for (const group of byCategory.values()) {
     const clusters: Candidate[][] = [];
 
     for (const candidate of group) {
@@ -197,7 +197,7 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
         const clusterCenter = cluster[0].center;
         const dist = Math.sqrt(
           (candidate.center[0] - clusterCenter[0]) ** 2 +
-            (candidate.center[1] - clusterCenter[1]) ** 2
+            (candidate.center[1] - clusterCenter[1]) ** 2,
         );
         if (dist < CENTER_DISTANCE_THRESHOLD) {
           cluster.push(candidate);
@@ -265,8 +265,8 @@ export function createMarkedViewHierarchy() {
           (attr) =>
             attr.name.match(/^aria-/i) ||
             ["target", "alt", "type", "name", "value", "role"].includes(
-              attr.name.toLowerCase()
-            )
+              attr.name.toLowerCase(),
+            ),
         )
         .forEach((attr) => {
           structure += ` ${attr.name}="${attr.value}"`;
@@ -300,8 +300,8 @@ export function createMarkedViewHierarchy() {
 // -------------------------------------------------------
 //  Highlighting (Drawing bounding boxes + labels)
 // -------------------------------------------------------
-/** 
- * We store each highlight's bounding box, label, and original z-index, 
+/**
+ * We store each highlight's bounding box, label, and original z-index,
  * so we can remove partial overlaps after they're placed.
  */
 interface HighlightItem {
@@ -311,9 +311,9 @@ interface HighlightItem {
   zIndex: number;
 }
 
-/** 
+/**
  * Data structure for labels to handle label overlap logic:
- * we compare each label’s bounding box and prefer whichever is closer 
+ * we compare each label’s bounding box and prefer whichever is closer
  * to its underlying element’s center.
  */
 interface LabeledItem {
@@ -322,7 +322,7 @@ interface LabeledItem {
 }
 
 /**
- * Removes highlights that partially overlap each other, but only if the 
+ * Removes highlights that partially overlap each other, but only if the
  * overlapping (intersection) area is at least 40% of one of the boxes.
  * In that case, the box with the larger area is removed.
  * If one box is fully contained within the other, both are kept.
@@ -345,7 +345,10 @@ function removeOverlappingBoxes(highlights: HighlightItem[]) {
           continue;
         } else {
           // Compute intersection area and overlap ratios.
-          const interArea = getIntersectionArea(h1.boundingRect, h2.boundingRect);
+          const interArea = getIntersectionArea(
+            h1.boundingRect,
+            h2.boundingRect,
+          );
           const area1 = h1.boundingRect.width * h1.boundingRect.height;
           const area2 = h2.boundingRect.width * h2.boundingRect.height;
           const overlapRatio1 = interArea / area1;
@@ -378,49 +381,7 @@ function removeOverlappingBoxes(highlights: HighlightItem[]) {
 }
 
 /**
- * For label overlap, if two labels overlap, keep whichever label is 
- * closer to its own element’s center, remove the other.
- */
-function removeCloseLabels(labeledItems: LabeledItem[]) {
-  for (let i = 0; i < labeledItems.length; i++) {
-    const itemA = labeledItems[i];
-    if (!itemA) continue;
-
-    const labelA = itemA.label;
-    const rectA = labelA.getBoundingClientRect();
-    const [cxA, cyA] = getRectCenterForLabels(rectA);
-    const [exA, eyA] = getRectCenterForLabels(itemA.elementRect);
-    const distA = distanceForLabels(cxA, cyA, exA, eyA);
-
-    for (let j = i + 1; j < labeledItems.length; j++) {
-      const itemB = labeledItems[j];
-      if (!itemB) continue;
-
-      const labelB = itemB.label;
-      const rectB = labelB.getBoundingClientRect();
-
-      if (isOverlapping(rectA, rectB)) {
-        const [cxB, cyB] = getRectCenterForLabels(rectB);
-        const [exB, eyB] = getRectCenterForLabels(itemB.elementRect);
-        const distB = distanceForLabels(cxB, cyB, exB, eyB);
-
-        if (distA < distB) {
-          labelB.remove();
-          labeledItems.splice(j, 1);
-          j--;
-        } else {
-          labelA.remove();
-          labeledItems.splice(i, 1);
-          i--;
-          break;
-        }
-      }
-    }
-  }
-}
-
-/**
- * Highlights all elements that have aria-pilot-category by drawing 
+ * Highlights all elements that have aria-pilot-category by drawing
  * bounding boxes & labels in an external overlay using the element's full size.
  * Then removes partially overlapping bounding boxes (only if the overlap is at least 40%),
  * and also removes overlapping labels using distance checks.
@@ -459,8 +420,9 @@ export function highlightMarkedElements() {
     if (!category || !index) return;
 
     const rect = el.getBoundingClientRect();
-    const [primaryColor, textColor] =
-      CATEGORY_COLORS[category as ElementCategory] || ["#000000", "#ffffff"];
+    const [primaryColor, textColor] = CATEGORY_COLORS[
+      category as ElementCategory
+    ] || ["#000000", "#ffffff"];
 
     const left = rect.left + window.scrollX;
     const top = rect.top + window.scrollY;
@@ -501,7 +463,7 @@ export function highlightMarkedElements() {
     overlay.appendChild(label);
 
     const labelHeight = label.offsetHeight;
-    label.style.top = (top - labelHeight) + "px";
+    label.style.top = top - labelHeight + "px";
 
     const boundingRect = new DOMRect(left, top, width, height);
     const zIndex = getZIndex(el as HTMLElement);
@@ -524,7 +486,7 @@ export function highlightMarkedElements() {
 
       const currentLabelHeight = label.offsetHeight;
       label.style.left = newLeft + "px";
-      label.style.top = (newTop - currentLabelHeight) + "px";
+      label.style.top = newTop - currentLabelHeight + "px";
 
       const updatedRect = new DOMRect(newLeft, newTop, newWidth, newHeight);
       const highlightItem = highlightItems.find((h) => h.label === label);
@@ -556,7 +518,7 @@ export function removeMarkedElementsHighlights() {
 // -------------------------------------------------------
 export function waitForStableDOM(
   stabilityThreshold: number = DEFAULT_DOM_STABILITY_THRESHOLD,
-  maxWaitTimeout: number = DEFAULT_MAX_WAIT_TIMEOUT
+  maxWaitTimeout: number = DEFAULT_MAX_WAIT_TIMEOUT,
 ): Promise<void> {
   return new Promise<void>((resolve) => {
     let stabilityTimer: number | undefined;
