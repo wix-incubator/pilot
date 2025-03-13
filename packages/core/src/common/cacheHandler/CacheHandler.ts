@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import {
   CacheOptions,
   CacheValue,
@@ -17,13 +18,13 @@ import { getCurrentJestTestFilePath } from "./jestUtils";
 export class CacheHandler {
   private static CACHE_DIRECTORY = "__pilot_cache__";
   private static DEFAULT_CACHE_FILENAME = "global.json";
+  private static APP_NAME = "PilotAutomation";
 
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
-  private callerPath?: string;
 
   /**
    * Creates a new CacheHandler instance
@@ -75,6 +76,11 @@ export class CacheHandler {
 
   private saveCacheToFile(): void {
     try {
+      const dirPath = path.dirname(this.cacheFilePath);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+
       const json = Object.fromEntries(this.cache);
       fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
         flag: "w+",
@@ -213,6 +219,33 @@ export class CacheHandler {
   }
 
   /**
+   * Gets the OS-specific user data directory path for the application
+   * @returns The appropriate application data directory for the current OS
+   */
+  private getUserDataDir(): string {
+    const platform = process.platform;
+    const appName = CacheHandler.APP_NAME;
+
+    switch (platform) {
+      case "darwin":
+        return path.join(
+          os.homedir(),
+          "Library",
+          "Application Support",
+          appName,
+        );
+      case "win32":
+        return process.env.APPDATA
+          ? path.join(process.env.APPDATA, appName)
+          : path.join(os.homedir(), "AppData", "Roaming", appName);
+      case "linux":
+        return path.join(os.homedir(), ".config", appName);
+      default:
+        return path.join(os.homedir(), ".local", "share", appName);
+    }
+  }
+
+  /**
    * Determines the appropriate cache file path based on the caller path
    * @returns The resolved cache file path
    */
@@ -244,8 +277,8 @@ export class CacheHandler {
    * @returns The resolved default cache file path
    */
   private getDefaultCacheFilePath(): string {
-    return path.resolve(
-      process.cwd(),
+    return path.join(
+      this.getUserDataDir(),
       CacheHandler.CACHE_DIRECTORY,
       CacheHandler.DEFAULT_CACHE_FILENAME,
     );
