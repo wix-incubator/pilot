@@ -101,6 +101,6 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
       const expectedStr = JSON.stringify(expected);
       return comparators.compareExactString(actualStr, expectedStr, threshold);
     },
-    importance: { type: "mandatory" },
+    importance: { type: "weighted", weight: 0.4 },
   },
 };

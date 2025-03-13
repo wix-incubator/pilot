@@ -395,9 +395,6 @@ export function waitForStableDOM(
   });
 }
 
-// -------------------------------------------------------
-//  Attach our methods to window (optional)
-// -------------------------------------------------------
 if (typeof window !== "undefined") {
   window.createMarkedViewHierarchy = createMarkedViewHierarchy;
   window.findElement = findElement;
