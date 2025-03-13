@@ -75,6 +75,11 @@ export class CacheHandler {
 
   private saveCacheToFile(): void {
     try {
+      const dirPath = path.dirname(this.cacheFilePath);
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+
       const json = Object.fromEntries(this.cache);
       fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
         flag: "w+",
