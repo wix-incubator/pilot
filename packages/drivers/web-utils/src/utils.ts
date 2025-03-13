@@ -9,7 +9,7 @@ import {
   meetsMandatoryCriteria,
   calculateWeightedError,
 } from "./criteriaUtils";
-import { getZIndex, removeOverlappingBoxes } from "./domUtils";
+import { getZIndex, removeOverlappingBoxes } from "./rectUtils";
 
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
 type ElementMatchingCriteria = {
