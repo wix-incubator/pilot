@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import os from "os";
 import {
   CacheOptions,
   CacheValue,
@@ -17,13 +18,13 @@ import { getCurrentJestTestFilePath } from "./jestUtils";
 export class CacheHandler {
   private static CACHE_DIRECTORY = "__pilot_cache__";
   private static DEFAULT_CACHE_FILENAME = "global.json";
+  private static APP_NAME = "PilotAutomation";
 
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
-  private callerPath?: string;
 
   /**
    * Creates a new CacheHandler instance
@@ -32,9 +33,9 @@ export class CacheHandler {
    * @param cacheFilePath Optional explicit cache file path override
    */
   constructor(
-    snapshotComparator: SnapshotComparator,
-    cacheOptions: CacheOptions = {},
-    cacheFilePath?: string,
+      snapshotComparator: SnapshotComparator,
+      cacheOptions: CacheOptions = {},
+      cacheFilePath?: string,
   ) {
     this.cacheFilePath = cacheFilePath || this.getCacheFilePath();
     this.cacheOptions = {
@@ -50,7 +51,7 @@ export class CacheHandler {
    * @returns Object with hash values from each registered algorithm
    */
   public async generateHashes(
-    screenCapture: ScreenCapturerResult,
+      screenCapture: ScreenCapturerResult,
   ): Promise<SnapshotHashes> {
     return await this.snapshotComparator.generateHashes(screenCapture);
   }
@@ -99,7 +100,7 @@ export class CacheHandler {
    * @returns Array of cache values if found, undefined otherwise
    */
   public getFromPersistentCache<T>(
-    cacheKey: string,
+      cacheKey: string,
   ): Array<CacheValue<T>> | undefined {
     if (this.shouldOverrideCache()) {
       logger.info("Cache disabled, generating new response");
@@ -116,9 +117,9 @@ export class CacheHandler {
    * @param snapshotHashes Hash values for the current snapshot
    */
   public addToTemporaryCache<T>(
-    cacheKey: string,
-    value: T,
-    snapshotHashes?: Partial<SnapshotHashes>,
+      cacheKey: string,
+      value: T,
+      snapshotHashes?: Partial<SnapshotHashes>,
   ): void {
     logger.info("Saving result to cache for future use");
 
@@ -169,8 +170,8 @@ export class CacheHandler {
    * @returns Matching cache value if found, undefined otherwise
    */
   public findMatchingCacheEntry<T>(
-    cacheValues: Array<CacheValue<T>>,
-    currentHashes?: SnapshotHashes,
+      cacheValues: Array<CacheValue<T>>,
+      currentHashes?: SnapshotHashes,
   ): CacheValue<T> | undefined {
     if (!cacheValues?.length || !currentHashes) {
       return undefined;
@@ -178,8 +179,8 @@ export class CacheHandler {
 
     return cacheValues.find((entry) => {
       const isMatch = this.snapshotComparator.compareSnapshot(
-        currentHashes,
-        entry.snapshotHashes,
+          currentHashes,
+          entry.snapshotHashes,
       );
       if (isMatch) {
         // update last access time when a match is found
@@ -218,6 +219,28 @@ export class CacheHandler {
   }
 
   /**
+   * Gets the OS-specific user data directory path for the application
+   * @returns The appropriate application data directory for the current OS
+   */
+  private getUserDataDir(): string {
+    const platform = process.platform;
+    const appName = CacheHandler.APP_NAME;
+
+    switch (platform) {
+      case 'darwin':
+        return path.join(os.homedir(), 'Library', 'Application Support', appName);
+      case 'win32':
+        return process.env.APPDATA
+            ? path.join(process.env.APPDATA, appName)
+            : path.join(os.homedir(), 'AppData', 'Roaming', appName);
+      case 'linux':
+        return path.join(os.homedir(), '.config', appName);
+      default:
+        return path.join(os.homedir(), '.local', 'share', appName);
+    }
+  }
+
+  /**
    * Determines the appropriate cache file path based on the caller path
    * @returns The resolved cache file path
    */
@@ -225,8 +248,8 @@ export class CacheHandler {
     const callerPath = getCurrentJestTestFilePath();
 
     return callerPath
-      ? this.getCallerCacheFilePath(callerPath)
-      : this.getDefaultCacheFilePath();
+        ? this.getCallerCacheFilePath(callerPath)
+        : this.getDefaultCacheFilePath();
   }
 
   /**
@@ -238,9 +261,9 @@ export class CacheHandler {
     const testDir = path.dirname(callerPath);
     const testFilename = path.basename(callerPath, path.extname(callerPath));
     return path.join(
-      testDir,
-      CacheHandler.CACHE_DIRECTORY,
-      `${testFilename}.json`,
+        testDir,
+        CacheHandler.CACHE_DIRECTORY,
+        `${testFilename}.json`,
     );
   }
 
@@ -249,10 +272,10 @@ export class CacheHandler {
    * @returns The resolved default cache file path
    */
   private getDefaultCacheFilePath(): string {
-    return path.resolve(
-      process.cwd(),
-      CacheHandler.CACHE_DIRECTORY,
-      CacheHandler.DEFAULT_CACHE_FILENAME,
+    return path.join(
+        this.getUserDataDir(),
+        CacheHandler.CACHE_DIRECTORY,
+        CacheHandler.DEFAULT_CACHE_FILENAME,
     );
   }
 }
