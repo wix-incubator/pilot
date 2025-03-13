@@ -1,21 +1,16 @@
-// domPilot.ts
 import getElementCategory, { tags } from "./getElementCategory";
 import isElementHidden from "./isElementHidden";
-import { ElementCategory } from "./types";
-
+import { ElementCategory, HighlightItem, CandidateToBeMarked } from "./types";
 const DEFAULT_DOM_STABILITY_THRESHOLD = 500; // ms
 const DEFAULT_MAX_WAIT_TIMEOUT = 5000; // ms
-
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
 import {
   meetsSufficientCriteria,
   meetsMandatoryCriteria,
   calculateWeightedError,
 } from "./criteriaUtils";
+import { getZIndex, removeOverlappingBoxes } from "./domUtils";
 
-// -------------------------------------------------------
-//  Type definitions
-// -------------------------------------------------------
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
 type ElementMatchingCriteria = {
   [K in AttributeKey]?: ReturnType<
@@ -46,48 +41,6 @@ export function getInterestingAttributes(
     attributes[key] = config.extract(element);
   }
   return attributes;
-}
-
-/** Returns an integer z-index or 0 if non-numeric/auto. */
-function getZIndex(el: HTMLElement): number {
-  const zStr = window.getComputedStyle(el).zIndex;
-  const zVal = parseInt(zStr, 10);
-  return Number.isNaN(zVal) ? 0 : zVal;
-}
-
-/** Checks if two DOMRect objects overlap (partial or fully). */
-function isOverlapping(r1: DOMRect, r2: DOMRect): boolean {
-  return !(
-    r1.right < r2.left ||
-    r1.left > r2.right ||
-    r1.bottom < r2.top ||
-    r1.top > r2.bottom
-  );
-}
-
-/** Returns true if r1 is fully contained inside r2. */
-function isContained(r1: DOMRect, r2: DOMRect): boolean {
-  return (
-    r1.left >= r2.left &&
-    r1.right <= r2.right &&
-    r1.top >= r2.top &&
-    r1.bottom <= r2.bottom
-  );
-}
-
-/**
- * Returns the area of the intersection between two DOMRect objects.
- */
-function getIntersectionArea(r1: DOMRect, r2: DOMRect): number {
-  const xOverlap = Math.max(
-    0,
-    Math.min(r1.right, r2.right) - Math.max(r1.left, r2.left),
-  );
-  const yOverlap = Math.max(
-    0,
-    Math.min(r1.bottom, r2.bottom) - Math.max(r1.top, r2.top),
-  );
-  return xOverlap * yOverlap;
 }
 
 // -------------------------------------------------------
@@ -150,14 +103,7 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
     document.querySelectorAll(selector),
   ) as HTMLElement[];
 
-  interface Candidate {
-    element: HTMLElement;
-    category: ElementCategory;
-    center: [number, number];
-    zIndex: number;
-    area: number; // computed as width * height of the element's bounding box
-  }
-  const candidates: Candidate[] = [];
+  const candidates: CandidateToBeMarked[] = [];
 
   for (const el of elements) {
     if (!options?.includeHidden && isElementHidden(el)) {
@@ -177,7 +123,7 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
     candidates.push({ element: el, category, center, zIndex, area });
   }
 
-  const byCategory = new Map<ElementCategory, Candidate[]>();
+  const byCategory = new Map<ElementCategory, CandidateToBeMarked[]>();
   for (const c of candidates) {
     if (!byCategory.has(c.category)) {
       byCategory.set(c.category, []);
@@ -185,11 +131,11 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
     byCategory.get(c.category)!.push(c);
   }
 
-  const CENTER_DISTANCE_THRESHOLD = 10; // px
-  const winners: Candidate[] = [];
+  const CENTER_DISTANCE_THRESHOLD = 10;
+  const winners: CandidateToBeMarked[] = [];
 
   for (const group of byCategory.values()) {
-    const clusters: Candidate[][] = [];
+    const clusters: CandidateToBeMarked[][] = [];
 
     for (const candidate of group) {
       let placed = false;
@@ -297,96 +243,10 @@ export function createMarkedViewHierarchy() {
   return processElement(root);
 }
 
-// -------------------------------------------------------
-//  Highlighting (Drawing bounding boxes + labels)
-// -------------------------------------------------------
-/**
- * We store each highlight's bounding box, label, and original z-index,
- * so we can remove partial overlaps after they're placed.
- */
-interface HighlightItem {
-  outlineDiv: HTMLDivElement;
-  label: HTMLDivElement;
-  boundingRect: DOMRect;
-  zIndex: number;
-}
-
-/**
- * Data structure for labels to handle label overlap logic:
- * we compare each label’s bounding box and prefer whichever is closer
- * to its underlying element’s center.
- */
-interface LabeledItem {
-  label: HTMLElement;
-  elementRect: DOMRect; // The full boundingRect of the original element
-}
-
-/**
- * Removes highlights that partially overlap each other, but only if the
- * overlapping (intersection) area is at least 40% of one of the boxes.
- * In that case, the box with the larger area is removed.
- * If one box is fully contained within the other, both are kept.
- */
-function removeOverlappingBoxes(highlights: HighlightItem[]) {
-  for (let i = 0; i < highlights.length; i++) {
-    const h1 = highlights[i];
-    if (!h1) continue;
-
-    for (let j = i + 1; j < highlights.length; j++) {
-      const h2 = highlights[j];
-      if (!h2) continue;
-
-      if (isOverlapping(h1.boundingRect, h2.boundingRect)) {
-        const contained12 = isContained(h1.boundingRect, h2.boundingRect);
-        const contained21 = isContained(h2.boundingRect, h1.boundingRect);
-
-        // If one is fully inside the other, keep both.
-        if (contained12 || contained21) {
-          continue;
-        } else {
-          // Compute intersection area and overlap ratios.
-          const interArea = getIntersectionArea(
-            h1.boundingRect,
-            h2.boundingRect,
-          );
-          const area1 = h1.boundingRect.width * h1.boundingRect.height;
-          const area2 = h2.boundingRect.width * h2.boundingRect.height;
-          const overlapRatio1 = interArea / area1;
-          const overlapRatio2 = interArea / area2;
-
-          // Only remove if the overlap is significant (>= 40% for at least one box)
-          if (overlapRatio1 < 0.3 && overlapRatio2 < 0.3) {
-            continue;
-          }
-
-          // Remove the box with the larger area.
-          if (area1 <= area2) {
-            // h1 wins; remove h2.
-            h2.outlineDiv.remove();
-            h2.label.remove();
-            highlights.splice(j, 1);
-            j--;
-          } else {
-            // h2 wins; remove h1.
-            h1.outlineDiv.remove();
-            h1.label.remove();
-            highlights.splice(i, 1);
-            i--;
-            break;
-          }
-        }
-      }
-    }
-  }
-}
-
 /**
  * Highlights all elements that have aria-pilot-category by drawing
  * bounding boxes & labels in an external overlay using the element's full size.
  * Then removes partially overlapping bounding boxes (only if the overlap is at least 40%),
- * and also removes overlapping labels using distance checks.
- *
- * Notable: The label's bottom is placed exactly at the bounding box's top.
  */
 export function highlightMarkedElements() {
   const overlayId = "aria-pilot-outline-overlay";
@@ -410,9 +270,6 @@ export function highlightMarkedElements() {
   document.body.appendChild(overlay);
 
   const highlightItems: HighlightItem[] = [];
-  const labeledItems: LabeledItem[] = [];
-
-  // Use full bounding box dimensions (no shrinkage)
   const elements = document.querySelectorAll("[aria-pilot-category]");
   elements.forEach((el) => {
     const category = el.getAttribute("aria-pilot-category");
@@ -450,7 +307,7 @@ export function highlightMarkedElements() {
     Object.assign(label.style, {
       position: "absolute",
       left: left + "px",
-      top: "0px", // will adjust after measuring label height
+      top: "0px",
       background: `${primaryColor}CC`,
       color: textColor,
       font: "10px monospace",
@@ -468,7 +325,6 @@ export function highlightMarkedElements() {
     const boundingRect = new DOMRect(left, top, width, height);
     const zIndex = getZIndex(el as HTMLElement);
     highlightItems.push({ outlineDiv, label, boundingRect, zIndex });
-    labeledItems.push({ label, elementRect: rect });
 
     const updatePosition = () => {
       const newRect = el.getBoundingClientRect();
@@ -492,10 +348,6 @@ export function highlightMarkedElements() {
       const highlightItem = highlightItems.find((h) => h.label === label);
       if (highlightItem) {
         highlightItem.boundingRect = updatedRect;
-      }
-      const labeledItem = labeledItems.find((li) => li.label === label);
-      if (labeledItem) {
-        labeledItem.elementRect = newRect;
       }
     };
 

@@ -13,6 +13,21 @@ export type CandidateScore = {
   errorScore: number;
 };
 
+export type HighlightItem = {
+  outlineDiv: HTMLDivElement;
+  label: HTMLDivElement;
+  boundingRect: DOMRect;
+  zIndex: number;
+};
+
+export type CandidateToBeMarked = {
+  element: HTMLElement;
+  category: ElementCategory;
+  center: [number, number];
+  zIndex: number;
+  area: number;
+};
+
 export type Rect = {
   x: number;
   y: number;
