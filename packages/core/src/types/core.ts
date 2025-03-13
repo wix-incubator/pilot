@@ -41,3 +41,12 @@ export type PreviousStep = {
   /** Step execution error */
   error?: any;
 };
+
+/**
+ * Cache value for StepPerformer.
+ * Contains the generated code for a step.
+ */
+export interface StepPerformerCacheValue {
+  /** Generated code */
+  code: string;
+}

@@ -8,7 +8,7 @@ describe("extractOutputs", () => {
         <THOUGHTS>
         I think this is great
         </THOUGHTS>
-        This is the action the copilot should perform:
+        This is the action the pilot should perform:
          <ACTION>
          Tap on GREAT button
         </ACTION>`;
@@ -32,7 +32,7 @@ describe("extractOutputs", () => {
         <THOUGHTS>
         I think this is great
         </THOUGHTS>
-        This is the action the copilot should perform:
+        This is the action the pilot should perform:
          <ACTION>
          Tap on GREAT button
         </ACTION>
@@ -59,7 +59,7 @@ describe("extractOutputs", () => {
         <THOUGHTS>
         I think this is great
         </THOUGHTS>
-        This is the action the copilot should perform:
+        This is the action the pilot should perform:
          <ACTION>
          Tap on GREAT button
         </ACTION>`;
@@ -79,7 +79,7 @@ describe("extractOutputs", () => {
         <THOUGHTS>
         I think this is great
         </THOUGHTS>
-        This is the action the copilot should perform:
+        This is the action the pilot should perform:
          <ACTION>
          Tap on GREAT button
         </ACTION>`;

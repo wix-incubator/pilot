@@ -1,4 +1,4 @@
-import { SnapshotHashing } from "@/types";
+import { ScreenCapturerResult, SnapshotHashing } from "@/types";
 import { bmvbhash } from "blockhash-core";
 import { createCanvas, loadImage } from "canvas";
 import type { ImageData as CanvasImageData } from "canvas";
@@ -6,8 +6,14 @@ import type { ImageData as CanvasImageData } from "canvas";
 export class BlockHash implements SnapshotHashing {
   constructor(private bits: number = 16) {}
 
-  async hashSnapshot(snapshot: any): Promise<string> {
-    const snapshotData = await this.getImageData(snapshot);
+  async hashSnapshot(
+    screenCapture: ScreenCapturerResult,
+  ): Promise<string | undefined> {
+    if (!screenCapture.snapshot) {
+      return undefined;
+    }
+
+    const snapshotData = await this.getImageData(screenCapture.snapshot);
     return bmvbhash(snapshotData, this.bits);
   }
 
@@ -51,14 +57,13 @@ export class BlockHash implements SnapshotHashing {
     return distance;
   }
 
-  areSnapshotsSimilar(
-    snapshot1: string,
-    snapshot2: string,
-    threshold: number = 0.1,
-  ): boolean {
+  areSnapshotsSimilar(snapshot1: string, snapshot2: string): boolean {
+    // Default similarity threshold for BlockHash algorithm: 10% difference is acceptable
+    const SIMILARITY_THRESHOLD = 0.1;
+
     const diff = this.calculateSnapshotDistance(snapshot1, snapshot2);
     const distance = diff / snapshot1.length;
 
-    return distance <= threshold;
+    return distance <= SIMILARITY_THRESHOLD;
   }
 }

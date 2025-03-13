@@ -7,10 +7,8 @@ import {
   PreviousStep,
   PromptHandler,
   ScreenCapturerResult,
-  type CacheValues,
-  type SingleCacheValue,
+  StepPerformerCacheValue,
 } from "@/types";
-import * as crypto from "crypto";
 import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
@@ -40,123 +38,60 @@ export class StepPerformer {
     this.context = { ...this.context, ...newContext };
   }
 
-  private async generateCacheValue(
-    code: string,
-    viewHierarchy: string,
-    snapshot: any,
-  ): Promise<SingleCacheValue | undefined> {
-    if (!this.cacheHandler.isCacheInUse()) {
-      throw new Error("Cache is disabled");
-    }
-
-    const snapshotHashes =
-      snapshot && (await this.snapshotComparator.generateHashes(snapshot));
-
-    return {
-      code,
-      viewHierarchy: crypto
-        .createHash("md5")
-        .update(viewHierarchy)
-        .digest("hex"),
-      snapshotHash: snapshotHashes,
-    };
-  }
-
-  private async findCodeInCacheValues(
-    cacheValue: CacheValues,
-    viewHierarchy: string,
-    snapshot?: string,
-  ): Promise<string | undefined> {
-    if (snapshot) {
-      const snapshotHash =
-        await this.snapshotComparator.generateHashes(snapshot);
-
-      const correctCachedValue = cacheValue.find((singleCachedValue) => {
-        return (
-          singleCachedValue.snapshotHash &&
-          this.snapshotComparator.compareSnapshot(
-            snapshotHash,
-            singleCachedValue.snapshotHash,
-          )
-        );
-      });
-
-      if (correctCachedValue) {
-        return correctCachedValue?.code;
-      }
-    }
-
-    const viewHierarchyHash = crypto
-      .createHash("md5")
-      .update(viewHierarchy)
-      .digest("hex");
-    return cacheValue.find((cachedCode) => {
-      if (cachedCode.viewHierarchy === viewHierarchyHash) {
-        return cachedCode.code;
-      }
-    })?.code;
-  }
-
   private async generateCode(
-    step: string,
-    previous: PreviousStep[],
-    snapshot: string | undefined,
-    viewHierarchy: string,
-    isSnapshotImageAttached: boolean,
+    currentStep: string,
+    previousSteps: PreviousStep[],
+    screenCapture: ScreenCapturerResult,
   ): Promise<string> {
-    const cacheKey = this.cacheHandler.generateCacheKey(step, previous);
+    const cacheKey = this.cacheHandler.generateCacheKey({
+      currentStep,
+      previousSteps,
+    });
+    const snapshotHashes =
+      await this.cacheHandler.generateHashes(screenCapture);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      const code = await this.getValueFromCache(
-        cacheKey,
-        viewHierarchy,
-        snapshot,
-      );
-      if (code) {
-        return code;
+    if (this.cacheHandler.isCacheInUse() && cacheKey && snapshotHashes) {
+      const cachedValues =
+        this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
+          cacheKey,
+        );
+      if (cachedValues) {
+        const matchingEntry =
+          this.cacheHandler.findMatchingCacheEntry<StepPerformerCacheValue>(
+            cachedValues,
+            snapshotHashes,
+          );
+
+        if (matchingEntry) {
+          return matchingEntry.value.code;
+        }
       }
     }
 
+    // No cache match found, generate new code
     const prompt = this.promptCreator.createPrompt(
-      step,
-      viewHierarchy,
-      isSnapshotImageAttached,
-      previous,
+      currentStep,
+      screenCapture.viewHierarchy ?? "Unknown view hierarchy",
+      !!screenCapture.snapshot,
+      previousSteps,
     );
 
-    const promptResult = await this.promptHandler.runPrompt(prompt, snapshot);
+    const promptResult = await this.promptHandler.runPrompt(
+      prompt,
+      screenCapture.snapshot,
+    );
     const code = extractCodeBlock(promptResult);
-    if (this.cacheHandler.isCacheInUse()) {
-      const newCacheValue = await this.generateCacheValue(
-        code,
-        viewHierarchy,
-        snapshot,
+
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
+      const cacheValue: StepPerformerCacheValue = { code };
+      this.cacheHandler.addToTemporaryCache(
+        cacheKey,
+        cacheValue,
+        snapshotHashes,
       );
-      this.cacheHandler.addToTemporaryCache(cacheKey!, newCacheValue);
     }
 
     return code;
-  }
-
-  async getValueFromCache(
-    cacheKey: string,
-    viewHierarchy: string,
-    snapshot: string | undefined,
-  ): Promise<string | undefined> {
-    const cachedValues =
-      cacheKey && this.cacheHandler.getStepFromCache(cacheKey);
-
-    if (cachedValues) {
-      const code = await this.findCodeInCacheValues(
-        cachedValues,
-        viewHierarchy,
-        snapshot,
-      );
-      if (code) {
-        return code;
-      }
-    }
-    return undefined;
   }
 
   async perform(
@@ -178,7 +113,7 @@ export class StepPerformer {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        const { snapshot, viewHierarchy, isSnapshotImageAttached } =
+        const screenCaptureResult =
           attempt == 1
             ? screenCapture
             : await this.screenCapturer.capture(true);
@@ -186,9 +121,7 @@ export class StepPerformer {
         const code = await this.generateCode(
           step,
           previous,
-          snapshot,
-          viewHierarchy,
-          isSnapshotImageAttached,
+          screenCaptureResult,
         );
         lastCode = code;
 

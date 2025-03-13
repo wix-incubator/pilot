@@ -1,17 +1,18 @@
 import { AutoPerformerPromptCreator } from "./AutoPerformerPromptCreator";
 import {
+  AutoPerformerCacheValue,
   AutoPreviousStep,
   AutoReport,
   AutoReview,
   AutoReviewSection,
   AutoStepPlan,
   AutoStepReport,
-  CacheAutoPilotValues,
+} from "@/types/auto";
+import {
   LoggerMessageColor,
   PreviousStep,
   PromptHandler,
   ScreenCapturerResult,
-  SingleAutoPilotCacheValue,
 } from "@/types";
 import {
   extractTaggedOutputs,
@@ -97,7 +98,10 @@ export class AutoPerformer {
     screenCapture: ScreenCapturerResult,
     maxAttempts: number = 2,
   ): Promise<AutoStepReport> {
-    const cacheKey = this.cacheHandler.generateCacheKey(goal, previousSteps);
+    const cacheKey = this.cacheHandler.generateCacheKey({
+      goal,
+      previousSteps,
+    });
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cacheResult = await this.getValueFromCache(cacheKey, screenCapture);
@@ -121,20 +125,18 @@ export class AutoPerformer {
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
-        const { snapshot, viewHierarchy, isSnapshotImageAttached } =
-          screenCapture;
-
         const prompt = this.promptCreator.createPrompt(
           goal,
-          viewHierarchy,
-          isSnapshotImageAttached,
+          screenCapture.viewHierarchy ?? "Unknown view hierarchy",
+          !!screenCapture.snapshot,
           previousSteps,
         );
 
         const promptResult = await this.promptHandler.runPrompt(
           prompt,
-          snapshot,
+          screenCapture.snapshot,
         );
+
         const outputs = extractTaggedOutputs({
           text: promptResult,
           outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
@@ -184,16 +186,24 @@ export class AutoPerformer {
           : undefined;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
-          const cacheValue = await this.generateCacheValue(
-            screenCapture,
-            lastScreenDescription,
+          const snapshotHashes =
+            await this.cacheHandler.generateHashes(screenCapture);
+
+          const cacheValue: AutoPerformerCacheValue = {
+            screenDescription: lastScreenDescription,
             plan,
             review,
             goalAchieved,
             summary,
+          };
+
+          this.cacheHandler.addToTemporaryCache(
+            cacheKey,
+            cacheValue,
+            snapshotHashes,
           );
-          this.cacheHandler.addToTemporaryCache(cacheKey, cacheValue);
         }
+
         return {
           screenDescription: lastScreenDescription,
           plan,
@@ -307,78 +317,27 @@ export class AutoPerformer {
     return report;
   }
 
-  private async generateCacheValue(
-    screenCapture: ScreenCapturerResult,
-    screenDescription: string,
-    plan: AutoStepPlan,
-    review: AutoReview,
-    goalAchieved: boolean,
-    summary?: string,
-  ): Promise<SingleAutoPilotCacheValue | undefined> {
-    if (!this.cacheHandler.isCacheInUse()) {
-      throw new Error("Cache is disabled");
-    }
-    const snapshotHash = await this.snapshotComparator.generateHashes(
-      screenCapture.snapshot,
-    );
-    return {
-      screenCapture,
-      snapshotHash,
-      screenDescription,
-      plan,
-      review,
-      goalAchieved,
-      summary,
-    };
-  }
-
-  private async findInCachedValues(
-    cachedValues: CacheAutoPilotValues,
-    screenCapture: ScreenCapturerResult,
-  ) {
-    if (screenCapture.snapshot) {
-      const snapshotHash = await this.snapshotComparator.generateHashes(
-        screenCapture.snapshot,
-      );
-
-      const correctCachedValue = cachedValues.find(
-        //
-        (singleAutoPilotCachedValue) => {
-          return (
-            singleAutoPilotCachedValue.snapshotHash &&
-            this.snapshotComparator.compareSnapshot(
-              snapshotHash,
-              singleAutoPilotCachedValue.snapshotHash,
-            )
-          );
-        },
-      );
-
-      if (correctCachedValue) {
-        return correctCachedValue;
-      }
-    }
-  }
-
   private async getValueFromCache(
     cacheKey: string,
     screenCapture: ScreenCapturerResult,
-  ) {
-    const cachedValues = await this.cacheHandler.getStepFromCache(cacheKey);
-    if (cachedValues) {
-      const cacheValue = await this.findInCachedValues(
-        cachedValues,
-        screenCapture,
+  ): Promise<AutoStepReport | undefined> {
+    const cachedValues =
+      this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
+        cacheKey,
       );
-      if (cacheValue) {
-        return {
-          screenDescription: cacheValue.screenDescription,
-          plan: cacheValue.plan,
-          review: cacheValue.review,
-          goalAchieved: cacheValue.goalAchieved,
-          summary: cacheValue.summary,
-        };
-      }
+    if (!cachedValues) {
+      return undefined;
     }
+
+    const snapshotHashes =
+      await this.snapshotComparator.generateHashes(screenCapture);
+
+    const matchingEntry =
+      this.cacheHandler.findMatchingCacheEntry<AutoPerformerCacheValue>(
+        cachedValues,
+        snapshotHashes,
+      );
+
+    return matchingEntry?.value as AutoStepReport;
   }
 }
