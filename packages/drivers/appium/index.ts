@@ -6,6 +6,7 @@ import {
 import * as fs from "fs";
 import * as path from "path";
 import { waitForStableState } from "./utils/getStableViewHierarchy";
+import os from "os";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
@@ -38,7 +39,7 @@ export class WebdriverIOAppiumFrameworkDriver
    * Returns the path to the saved screenshot if successful, or undefined otherwise.
    */
   async captureSnapshotImage(_: boolean): Promise<string | undefined> {
-    const tempDir = "temp";
+    const tempDir = path.resolve(os.tmpdir(), "pilot-snapshot");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
     }

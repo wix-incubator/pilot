@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Page } from "./types";
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
+import os from "os";
 type AttributeKey = keyof typeof ELEMENT_MATCHING_CONFIG;
 export type ElementMatchingCriteria = {
   [K in AttributeKey]?: ReturnType<
@@ -118,7 +119,7 @@ export default class WebTestingFrameworkDriverHelper {
       return undefined;
     }
 
-    const tempDir = "temp";
+    const tempDir = path.resolve(os.tmpdir(), "pilot-snapshot");
     const fileName = `snapshot_${Date.now()}.png`;
     const filePath = path.resolve(tempDir, fileName);
 

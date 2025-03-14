@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { expect as jestExpect } from "expect";
+import os from "os";
 
 /**
  * Pilot driver for the Detox testing framework.
@@ -50,15 +51,16 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
   }
 
   async captureSnapshotImage(_: boolean): Promise<string | undefined> {
-    const tempDir = "temp";
+    const tempDir = path.resolve(os.tmpdir(), "pilot-snapshot");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
     }
 
-    const fileName = `snapshot_detox_${Date.now()}.png`;
+    const fileName = `snapshot_detox_${Date.now()}`;
     try {
       const screenshotPath = await this.detox.device.takeScreenshot(fileName);
-      const tempPath = path.join(tempDir, fileName);
+      const screenshotFileName = path.basename(screenshotPath);
+      const tempPath = path.join(tempDir, screenshotFileName);
       fs.renameSync(screenshotPath, tempPath);
       return tempPath;
     } catch (_error) {
