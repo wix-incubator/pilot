@@ -6,26 +6,35 @@ import {
 import * as fs from "fs";
 import * as path from "path";
 
-export class DetoxFrameworkDriver implements TestingFrameworkDriver {
-  private _jestExpect: any;
-  readonly detox: any;
+import { expect as jestExpect } from "expect";
 
-  constructor(detox: any) {
-    this._jestExpect = null;
-    this.detox = detox;
+/**
+ * Pilot driver for the Detox testing framework.
+ */
+export class DetoxFrameworkDriver implements TestingFrameworkDriver {
+  private _detox: any;
+
+  /**
+   * Creates a new Detox driver instance.
+   * @param detox optional Detox instance to use, if not provided, it will be imported from the
+   *  `detox` package (peer dependency). The reason for this parameter is to allow usage from the Detox package itself.
+   */
+  constructor(detox?: any) {
+    this._detox = detox;
   }
 
-  private get jestExpect() {
-    if (!this._jestExpect) {
+  private get detox() {
+    if (!this._detox) {
       try {
-        this._jestExpect = require("@jest/globals").expect;
+        this._detox = require("detox");
       } catch (error) {
-        console.warn(
-          "Could not load @jest/globals. This may cause issues if Jest assertions are used.",
+        throw new Error(
+          "Detox is not installed. Please install Detox to use this driver.",
         );
       }
     }
-    return this._jestExpect;
+
+    return this._detox;
   }
 
   get driverConfig(): TestingFrameworkDriverConfig {
@@ -64,7 +73,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
         "Detox is a gray box end-to-end testing and automation library for mobile apps.",
       context: {
         ...this.detox,
-        jestExpect: this.jestExpect,
+        jestExpect,
       },
       categories: [
         {
