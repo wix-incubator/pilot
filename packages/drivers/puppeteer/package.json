@@ -29,7 +29,7 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "@wix-pilot/web-utils": "^2.0.1"
+    "@wix-pilot/web-utils": "^2.0.2"
   },
   "devDependencies": {
     "puppeteer": "^20.8.0",
