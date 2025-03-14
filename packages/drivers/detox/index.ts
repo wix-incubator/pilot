@@ -3,19 +3,47 @@ import {
   TestingFrameworkDriver,
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
-import detox from "detox";
-import { expect } from "@jest/globals";
 import * as fs from "fs";
 import * as path from "path";
 
+import { expect as jestExpect } from "expect";
+
+/**
+ * Pilot driver for the Detox testing framework.
+ */
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
+  private _detox: any;
+
+  /**
+   * Creates a new Detox driver instance.
+   * @param detox optional Detox instance to use, if not provided, it will be imported from the
+   *  `detox` package (peer dependency). The reason for this parameter is to allow usage from the Detox package itself.
+   */
+  constructor(detox?: any) {
+    this._detox = detox;
+  }
+
+  private get detox() {
+    if (!this._detox) {
+      try {
+        this._detox = require("detox");
+      } catch (error) {
+        throw new Error(
+          "Detox is not installed. Please install Detox to use this driver.",
+        );
+      }
+    }
+
+    return this._detox;
+  }
+
   get driverConfig(): TestingFrameworkDriverConfig {
     return { useSnapshotStabilitySync: false };
   }
 
   async captureViewHierarchyString(): Promise<string> {
     try {
-      return await detox.device.generateViewHierarchyXml(true);
+      return await this.detox.device.generateViewHierarchyXml(true);
     } catch (_error) {
       return "NO ACTIVE APP FOUND, LAUNCH THE APP TO SEE THE VIEW HIERARCHY";
     }
@@ -29,7 +57,7 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
 
     const fileName = `snapshot_detox_${Date.now()}.png`;
     try {
-      const screenshotPath = await detox.device.takeScreenshot(fileName);
+      const screenshotPath = await this.detox.device.takeScreenshot(fileName);
       const tempPath = path.join(tempDir, fileName);
       fs.renameSync(screenshotPath, tempPath);
       return tempPath;
@@ -44,8 +72,8 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
       description:
         "Detox is a gray box end-to-end testing and automation library for mobile apps.",
       context: {
-        ...detox,
-        jestExpect: expect,
+        ...this.detox,
+        jestExpect,
       },
       categories: [
         {
