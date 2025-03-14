@@ -28,6 +28,9 @@
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
+  "dependencies": {
+    "@wix-pilot/web-utils": "^2.0.2"
+  },
   "peerDependencies": {
     "@wix-pilot/core": "^3.1.1"
   },
