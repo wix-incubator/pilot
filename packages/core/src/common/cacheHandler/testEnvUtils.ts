@@ -7,10 +7,10 @@
  * @returns The current Jest test file path, or undefined if not in Jest or the path is not available
  */
 export function getCurrentTestFilePath(): string | undefined {
-  return getCurrentJestTestFilePathFrom() || getCurrentTestFileFromStackTrace();
+  return getCurrentJestTestFilePath() || getCurrentTestFileFromStackTrace();
 }
 
-function getCurrentJestTestFilePathFrom(): string | undefined {
+function getCurrentJestTestFilePath(): string | undefined {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { expect } = require("expect");
