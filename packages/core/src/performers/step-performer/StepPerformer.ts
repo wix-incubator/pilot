@@ -105,9 +105,6 @@ export class StepPerformer {
       isBold: true,
       color: "whiteBright",
     });
-
-    this.cacheHandler.loadCacheFromFile();
-
     let lastError: any = null;
     let lastCode: string | undefined;
 

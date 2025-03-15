@@ -311,9 +311,15 @@ describe("Pilot Integration Tests", () => {
             value: {
               code: "// Cached action code",
             },
+            creationTime: Date.now(),
+            lastAccessTime: Date.now(),
           },
         ],
       });
+
+      // restart pilot to reload cache file
+      pilot.end();
+      pilot.start();
 
       await pilot.perform("Cached action");
 

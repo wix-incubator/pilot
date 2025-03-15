@@ -44,5 +44,13 @@
     "ora": "^5.4.1",
     "png-js": "^1.0.0",
     "winston": "^3.17.0"
+  },
+  "peerDependencies": {
+    "expect": "*"
+  },
+  "peerDependenciesMeta": {
+    "expect": {
+      "optional": true
+    }
   }
 }
