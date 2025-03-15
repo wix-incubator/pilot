@@ -1,16 +1,30 @@
 export type ElementCategory =
   | "button"
-  | "link"
   | "input"
-  | "list"
   | "table"
   | "header"
   | "semantic"
-  | "scrollable";
+  | "scrollable"
+  | "draggable";
 
 export type CandidateScore = {
   candidate: HTMLElement | null;
   errorScore: number;
+};
+
+export type HighlightItem = {
+  outlineDiv: HTMLDivElement;
+  label: HTMLDivElement;
+  boundingRect: DOMRect;
+  zIndex: number;
+};
+
+export type CandidateToBeMarked = {
+  element: HTMLElement;
+  category: ElementCategory;
+  center: [number, number];
+  zIndex: number;
+  area: number;
 };
 
 export type Rect = {
