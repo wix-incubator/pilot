@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/detox",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Detox driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
