@@ -386,8 +386,13 @@ await device.launchApp({ launchArgs: { someLaunchArg: 1234 } });`,
             },
             {
               signature: "device.reloadReactNative()",
-              description: "Reloads the React Native JS bundle.",
+              description:
+                "Restarts the React Native app by reloading the React Native JavaScript bundle. This is useful for resetting the app state.",
               example: "await device.reloadReactNative();",
+              guidelines: [
+                "Use this method to reset the app state in the beginning of a test.",
+                "Reload can be also be referred to as 'reboot', 'restart', or 'reset'.",
+              ],
             },
             {
               signature: "device.setOrientation(orientation: string)",
