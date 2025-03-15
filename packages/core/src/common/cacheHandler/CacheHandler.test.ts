@@ -3,7 +3,7 @@ import { mockCache, mockedCacheFile } from "../../test-utils/cache";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import type { ScreenCapturerResult } from "@/types";
 import fs from "fs";
-import * as jestUtils from "./jestUtils";
+import * as testEnvUtils from "./testEnvUtils";
 
 jest.mock("fs");
 jest.mock("../snapshot/comparator/SnapshotComparator");
@@ -31,7 +31,7 @@ describe("CacheHandler", () => {
 
     // Mock the getCurrentJestTestFilePath to return undefined by default
     jest
-      .spyOn(jestUtils, "getCurrentJestTestFilePath")
+      .spyOn(testEnvUtils, "getCurrentTestFilePath")
       .mockReturnValue(undefined);
 
     cacheHandler = new CacheHandler(
@@ -219,6 +219,7 @@ describe("CacheHandler", () => {
         cacheValues,
         undefined,
       );
+
       expect(result).toBeUndefined();
     });
 
@@ -238,6 +239,7 @@ describe("CacheHandler", () => {
         cacheValues,
         mockHashes,
       );
+
       expect(result).toBe(cacheValues[0]);
       expect(mockSnapshotComparator.compareSnapshot).toHaveBeenCalledWith(
         mockHashes,
@@ -304,12 +306,12 @@ describe("CacheHandler", () => {
 
   describe("cache file path handling", () => {
     beforeEach(() => {
-      jest.spyOn(jestUtils, "getCurrentJestTestFilePath").mockReset();
+      jest.spyOn(testEnvUtils, "getCurrentTestFilePath").mockReset();
     });
 
     it("should use default cache path when no Jest test path is available", () => {
       jest
-        .spyOn(jestUtils, "getCurrentJestTestFilePath")
+        .spyOn(testEnvUtils, "getCurrentTestFilePath")
         .mockReturnValue(undefined);
       (fs.existsSync as jest.Mock).mockReturnValue(false);
 
@@ -322,7 +324,7 @@ describe("CacheHandler", () => {
     it("should use Jest test file path when available", () => {
       const mockTestPath = "/path/to/test/myTest.test.ts";
       jest
-        .spyOn(jestUtils, "getCurrentJestTestFilePath")
+        .spyOn(testEnvUtils, "getCurrentTestFilePath")
         .mockReturnValue(mockTestPath);
 
       const newCacheHandler = new CacheHandler(mockSnapshotComparator);

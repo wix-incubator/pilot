@@ -9,7 +9,7 @@ import {
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
-import { getCurrentJestTestFilePath } from "./jestUtils";
+import { getCurrentTestFilePath } from "./testEnvUtils";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
@@ -22,7 +22,8 @@ export class CacheHandler {
 
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
-  private readonly cacheFilePath: string;
+  private readonly overrideCacheFilePath: string | undefined;
+  private cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
 
@@ -37,12 +38,23 @@ export class CacheHandler {
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
-    this.cacheFilePath = cacheFilePath || this.getCacheFilePath();
-    this.cacheOptions = {
+    this.overrideCacheFilePath = cacheFilePath;
+    this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
+    this.snapshotComparator = snapshotComparator;
+    this.cacheFilePath = this.determineCurrentCacheFilePath();
+  }
+
+  private createCacheOptionsWithDefaults(
+    cacheOptions: CacheOptions,
+  ): CacheOptions {
+    return {
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
-    this.snapshotComparator = snapshotComparator;
+  }
+
+  private determineCurrentCacheFilePath() {
+    return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
   /**
@@ -57,6 +69,8 @@ export class CacheHandler {
   }
 
   public loadCacheFromFile(): void {
+    this.cacheFilePath = this.determineCurrentCacheFilePath();
+
     try {
       if (fs.existsSync(this.cacheFilePath)) {
         const data = fs.readFileSync(this.cacheFilePath, "utf-8");
@@ -250,7 +264,7 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private getCacheFilePath(): string {
-    const callerPath = getCurrentJestTestFilePath();
+    const callerPath = getCurrentTestFilePath();
 
     return callerPath
       ? this.getCallerCacheFilePath(callerPath)

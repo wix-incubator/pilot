@@ -117,7 +117,9 @@ export class Pilot {
 
     this.running = true;
     this.previousSteps = [];
+
     this.cacheHandler.clearTemporaryCache();
+    this.cacheHandler.loadCacheFromFile();
   }
 
   /**
