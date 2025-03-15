@@ -1,12 +1,11 @@
 export type ElementCategory =
   | "button"
-  | "link"
   | "input"
-  | "list"
   | "table"
   | "header"
   | "semantic"
-  | "scrollable";
+  | "scrollable"
+  | "draggable";
 
 export type CandidateScore = {
   candidate: HTMLElement | null;

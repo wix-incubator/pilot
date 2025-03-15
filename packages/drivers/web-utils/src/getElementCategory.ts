@@ -6,7 +6,6 @@ const roleToCategory: Record<string, ElementCategory> = {
   checkbox: "input",
   radio: "input",
   switch: "input",
-  link: "link",
   textbox: "input",
   searchbox: "input",
   combobox: "input",
@@ -15,8 +14,6 @@ const roleToCategory: Record<string, ElementCategory> = {
   spinbutton: "input",
 
   // Structural roles
-  list: "list",
-  listitem: "list",
   table: "table",
   grid: "table",
   treegrid: "table",
@@ -42,14 +39,11 @@ const tagToCategory: Record<
 > = {
   // Interactive elements
   button: "button",
-  a: (el) => (el.hasAttribute("href") ? "link" : undefined),
   input: "input",
   select: "input",
   textarea: "input",
 
   // Structural elements
-  ul: (el) => (hasListChildren(el) ? "list" : undefined),
-  ol: (el) => (hasListChildren(el) ? "list" : undefined),
   table: (el) => (hasTableStructure(el) ? "table" : undefined),
   img: (el) => (isInteractiveSemantic(el) ? "button" : undefined),
 
@@ -97,6 +91,44 @@ function hasPointerCursor(
   return false;
 }
 
+function isDraggable(
+  element: HTMLElement,
+  simulateHover: boolean = true,
+): boolean {
+  if (element.getAttribute("draggable") === "true" || element.draggable) {
+    return true;
+  }
+  if (typeof element.ondragstart === "function") {
+    return true;
+  }
+  if (
+    element.classList.contains("draggable") ||
+    element.classList.contains("ui-draggable")
+  ) {
+    return true;
+  }
+  const computedStyle = window.getComputedStyle(element);
+  if (
+    computedStyle.cursor === "move" ||
+    computedStyle.cursor === "all-scroll"
+  ) {
+    return true;
+  }
+  if (simulateHover) {
+    const originalClasses = element.className;
+    const hoverClass = "simulated-hover";
+    element.classList.add(hoverClass);
+    const hoverStyle = window.getComputedStyle(element);
+    const hasDraggableCursor =
+      hoverStyle.cursor === "move" || hoverStyle.cursor === "all-scroll";
+    element.className = originalClasses;
+    if (hasDraggableCursor) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function getElementCategory(
   el: Element,
   simulateHover: boolean = false,
@@ -119,6 +151,10 @@ function getElementCategory(
     return categoryResolver;
   }
 
+  if (el instanceof HTMLElement && isDraggable(el, simulateHover)) {
+    return "draggable";
+  }
+
   if (el instanceof HTMLElement && hasPointerCursor(el, simulateHover)) {
     return "button";
   }
@@ -135,13 +171,6 @@ function isInteractiveSemantic(el: Element): boolean {
   return isCustomInteractiveElement(el);
 }
 
-/** Heuristic: Only consider lists with visible children */
-function hasListChildren(el: Element): boolean {
-  return Array.from(el.children).some((child) => {
-    const style = window.getComputedStyle(child);
-    return style.display !== "none" && style.visibility !== "hidden";
-  });
-}
 /** Heuristic: Verify table has proper structure */
 function hasTableStructure(el: Element): boolean {
   return el.querySelector("thead, tbody, tfoot, tr, td, th") !== null;

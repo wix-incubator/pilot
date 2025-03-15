@@ -3,6 +3,7 @@ import isElementHidden from "./isElementHidden";
 import { ElementCategory, HighlightItem, CandidateToBeMarked } from "./types";
 const DEFAULT_DOM_STABILITY_THRESHOLD = 500; // ms
 const DEFAULT_MAX_WAIT_TIMEOUT = 5000; // ms
+const CENTER_DISTANCE_THRESHOLD = 10;
 import { ELEMENT_MATCHING_CONFIG } from "./matchingConfig";
 import {
   meetsSufficientCriteria,
@@ -83,9 +84,8 @@ const ESSENTIAL_ELEMENTS = ["HTML", "HEAD", "BODY"];
 /** Define category -> color mapping ([outlineColor, labelTextColor]). */
 const CATEGORY_COLORS: Record<ElementCategory, [string, string]> = {
   button: ["#ff0000", "#ffffff"],
-  link: ["#0aff0a", "#000000"],
+  draggable: ["#0aff0a", "#000000"],
   input: ["#0000ff", "#ffffff"],
-  list: ["#ff00ff", "#000000"],
   table: ["#ff6a02", "#ffffff"],
   header: ["#00c2ff", "#000000"],
   semantic: ["#bababa", "#000000"],
@@ -130,8 +130,6 @@ export function markImportantElements(options?: { includeHidden?: boolean }) {
     }
     byCategory.get(c.category)!.push(c);
   }
-
-  const CENTER_DISTANCE_THRESHOLD = 10;
   const winners: CandidateToBeMarked[] = [];
 
   for (const group of byCategory.values()) {
