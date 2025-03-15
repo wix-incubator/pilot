@@ -35,7 +35,6 @@ const CACHE_VALUE = [
       ViewHierarchyHash: VIEW_HIERARCHY_HASH,
     },
     creationTime: Date.now(),
-    lastAccessTime: Date.now(),
   },
 ];
 

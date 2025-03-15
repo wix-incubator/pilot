@@ -312,7 +312,6 @@ describe("Pilot Integration Tests", () => {
               code: "// Cached action code",
             },
             creationTime: Date.now(),
-            lastAccessTime: Date.now(),
           },
         ],
       });

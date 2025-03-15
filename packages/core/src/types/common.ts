@@ -50,11 +50,9 @@ export type CacheKey<T> = {
  * @param T - Cached step data type (result).
  * @param SnapshotHashes - Snapshot hashes. Allows partial object for backward compatibility.
  * @param creationTime - Cache entry creation time.
- * @param lastAccessTime - Cache entry last access time.
  */
 export type CacheValue<T> = {
   value: T;
   snapshotHashes?: Partial<SnapshotHashes>;
   creationTime: number;
-  lastAccessTime: number;
 };

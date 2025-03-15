@@ -44,7 +44,6 @@ describe("CacheHandler", () => {
       const cacheValue = {
         value: "test-value",
         creationTime: Date.now(),
-        lastAccessTime: Date.now(),
         snapshotHashes: mockHashes,
       };
 
@@ -210,7 +209,6 @@ describe("CacheHandler", () => {
         {
           value: "test-value",
           creationTime: Date.now(),
-          lastAccessTime: Date.now(),
           snapshotHashes: mockHashes,
         },
       ];
@@ -228,7 +226,6 @@ describe("CacheHandler", () => {
         {
           value: "test-value",
           creationTime: Date.now(),
-          lastAccessTime: Date.now(),
           snapshotHashes: mockHashes,
         },
       ];
@@ -245,30 +242,6 @@ describe("CacheHandler", () => {
         mockHashes,
         cacheValues[0].snapshotHashes,
       );
-    });
-
-    it("should update lastAccessTime when a match is found", () => {
-      const now = Date.now();
-      const oldTime = now - 1000;
-
-      const cacheValues = [
-        {
-          value: "test-value",
-          creationTime: oldTime,
-          lastAccessTime: oldTime,
-          snapshotHashes: mockHashes,
-        },
-      ];
-
-      mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
-
-      jest.spyOn(Date, "now").mockReturnValue(now);
-
-      const result = cacheHandler.findMatchingCacheEntry(
-        cacheValues,
-        mockHashes,
-      );
-      expect(result?.lastAccessTime).toBe(now);
     });
   });
 

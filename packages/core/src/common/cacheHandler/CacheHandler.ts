@@ -141,7 +141,6 @@ export class CacheHandler {
       value,
       snapshotHashes: snapshotHashes || {},
       creationTime: Date.now(),
-      lastAccessTime: Date.now(),
     };
 
     const existingValues = this.temporaryCache.get(cacheKey) || [];
@@ -186,16 +185,10 @@ export class CacheHandler {
     }
 
     return cacheValues.find((entry) => {
-      const isMatch = this.snapshotComparator.compareSnapshot(
+      return this.snapshotComparator.compareSnapshot(
         currentHashes,
         entry.snapshotHashes,
       );
-      if (isMatch) {
-        // update last access time when a match is found
-        entry.lastAccessTime = Date.now();
-        return true;
-      }
-      return false;
     });
   }
 

@@ -530,7 +530,6 @@ describe("AutoPerformer", () => {
       },
       snapshotHashes: { BlockHash: "hash" },
       creationTime: Date.now(),
-      lastAccessTime: Date.now(),
     });
 
     const goal = GOAL;
