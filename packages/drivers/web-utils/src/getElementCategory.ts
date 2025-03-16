@@ -6,7 +6,6 @@ const roleToCategory: Record<string, ElementCategory> = {
   checkbox: "input",
   radio: "input",
   switch: "input",
-  link: "link",
   textbox: "input",
   searchbox: "input",
   combobox: "input",
@@ -15,8 +14,6 @@ const roleToCategory: Record<string, ElementCategory> = {
   spinbutton: "input",
 
   // Structural roles
-  list: "list",
-  listitem: "list",
   table: "table",
   grid: "table",
   treegrid: "table",
@@ -42,15 +39,13 @@ const tagToCategory: Record<
 > = {
   // Interactive elements
   button: "button",
-  a: (el) => (el.hasAttribute("href") ? "link" : undefined),
   input: "input",
   select: "input",
   textarea: "input",
 
   // Structural elements
-  ul: (el) => (hasListChildren(el) ? "list" : undefined),
-  ol: (el) => (hasListChildren(el) ? "list" : undefined),
   table: (el) => (hasTableStructure(el) ? "table" : undefined),
+  img: (el) => (isInteractiveSemantic(el) ? "button" : undefined),
 
   // Headers
   h1: "header",
@@ -76,7 +71,68 @@ const tagToCategory: Record<
 
 export const tags = Object.keys(tagToCategory);
 
-function getElementCategory(el: Element): ElementCategory | undefined {
+function hasPointerCursor(
+  element: HTMLElement,
+  simulateHover: boolean = true,
+): boolean {
+  const computedStyle = window.getComputedStyle(element);
+  if (computedStyle.cursor === "pointer") {
+    return true;
+  }
+  if (simulateHover) {
+    const originalClasses = element.className;
+    const hoverClass = "simulated-hover";
+    element.classList.add(hoverClass);
+    const hoverStyle = window.getComputedStyle(element);
+    const hasPointerOnHover = hoverStyle.cursor === "pointer";
+    element.className = originalClasses;
+    return hasPointerOnHover;
+  }
+  return false;
+}
+
+function isDraggable(
+  element: HTMLElement,
+  simulateHover: boolean = true,
+): boolean {
+  if (element.getAttribute("draggable") === "true" || element.draggable) {
+    return true;
+  }
+  if (typeof element.ondragstart === "function") {
+    return true;
+  }
+  if (
+    element.classList.contains("draggable") ||
+    element.classList.contains("ui-draggable")
+  ) {
+    return true;
+  }
+  const computedStyle = window.getComputedStyle(element);
+  if (
+    computedStyle.cursor === "move" ||
+    computedStyle.cursor === "all-scroll"
+  ) {
+    return true;
+  }
+  if (simulateHover) {
+    const originalClasses = element.className;
+    const hoverClass = "simulated-hover";
+    element.classList.add(hoverClass);
+    const hoverStyle = window.getComputedStyle(element);
+    const hasDraggableCursor =
+      hoverStyle.cursor === "move" || hoverStyle.cursor === "all-scroll";
+    element.className = originalClasses;
+    if (hasDraggableCursor) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getElementCategory(
+  el: Element,
+  simulateHover: boolean = false,
+): ElementCategory | undefined {
   const role = el.getAttribute("role")?.toLowerCase();
   if (role && roleToCategory[role]) {
     return roleToCategory[role];
@@ -88,12 +144,19 @@ function getElementCategory(el: Element): ElementCategory | undefined {
 
   if (typeof categoryResolver === "function") {
     const category = categoryResolver(el);
-    if (category === undefined) {
-      return _isScrollable ? "scrollable" : undefined;
+    if (category) {
+      return category;
     }
-    return category;
   } else if (categoryResolver) {
     return categoryResolver;
+  }
+
+  if (el instanceof HTMLElement && isDraggable(el, simulateHover)) {
+    return "draggable";
+  }
+
+  if (el instanceof HTMLElement && hasPointerCursor(el, simulateHover)) {
+    return "button";
   }
 
   return isCustomInteractiveElement(el)
@@ -103,36 +166,9 @@ function getElementCategory(el: Element): ElementCategory | undefined {
       : undefined;
 }
 
-function isParentMarkedAsButton(el: Element, depth = 0, maxDepth = 2): boolean {
-  if (depth > maxDepth) {
-    // Check for depth limit
-    return false;
-  }
-  const parent = el.parentElement;
-  if (parent) {
-    const ariaPilotCategory = parent.getAttribute("aria-pilot-category");
-    const clickableCategories = ["button", "link", "input"]; // Include other clickable categories as needed
-    if (clickableCategories.includes(ariaPilotCategory ?? "")) {
-      return true;
-    }
-    return isParentMarkedAsButton(parent, depth++, maxDepth);
-  }
-  return false;
-}
-
 /** Heuristic: Only consider interactive semantics */
 function isInteractiveSemantic(el: Element): boolean {
-  const isInteractive = isCustomInteractiveElement(el);
-  const isParentAlreadyMarked = isParentMarkedAsButton(el);
-  return isInteractive && !isParentAlreadyMarked;
-}
-
-/** Heuristic: Only consider lists with visible children */
-function hasListChildren(el: Element): boolean {
-  return Array.from(el.children).some((child) => {
-    const style = window.getComputedStyle(child);
-    return style.display !== "none" && style.visibility !== "hidden";
-  });
+  return isCustomInteractiveElement(el);
 }
 
 /** Heuristic: Verify table has proper structure */
@@ -140,53 +176,25 @@ function hasTableStructure(el: Element): boolean {
   return el.querySelector("thead, tbody, tfoot, tr, td, th") !== null;
 }
 
-function hasPointerCursor(el: Element): boolean {
-  const cursorStyle = window.getComputedStyle(el).cursor;
-  if (cursorStyle === "pointer") {
-    const isParentAlreadyMarked = isParentMarkedAsButton(el);
-    return !isParentAlreadyMarked;
-  } else {
-    return false;
-  }
-}
-
-/** Detect web components with button-like behavior */
 function isCustomInteractiveElement(el: Element): boolean {
-  const pointerCursor = hasPointerCursor(el);
   return (
     el instanceof HTMLElement &&
     (el.tabIndex >= 0 ||
       el.hasAttribute("onclick") ||
-      el.getAttribute("role") === "button" ||
-      pointerCursor)
+      el.getAttribute("role") === "button")
   );
 }
 
-// Helper function to check if an element is scrollable
 function isScrollable(el: Element): boolean {
-  // Check for specific CSS classes that indicate scrollability
-  const scrollableClasses = ["scrollable", "overflow-auto"]; // Customize these classes per your project
-  for (const className of scrollableClasses) {
-    if (el.classList.contains(className)) {
-      return true; // Element is explicitly marked as scrollable
-    }
-  }
-
-  // Get computed styles
   const overflowX = getComputedStyle(el).overflowX;
   const overflowY = getComputedStyle(el).overflowY;
-
-  // Check if this element has a scrollable style
   const isScrollableByStyle =
     overflowX === "scroll" ||
     overflowY === "scroll" ||
     overflowX === "auto" ||
     overflowY === "auto";
-
-  // Check the element's dimensions and content to avoid false positives
   const hasScrollableContent =
     el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth;
-
   return isScrollableByStyle && hasScrollableContent;
 }
 
