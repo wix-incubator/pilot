@@ -1,13 +1,20 @@
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 import type { ElementMatchingCriteria, Page } from "@wix-pilot/web-utils";
-import type { TestingFrameworkAPICatalog } from "@wix-pilot/core";
+import type {
+  TestingFrameworkAPICatalog,
+  TestingFrameworkDriver,
+  TestingFrameworkDriverConfig,
+} from "@wix-pilot/core";
 import { baseDriverCategories } from "./baseDriverCategories";
 import { extendAPICategories } from "./extendApiCatalog";
 
-export class BaseWebDriver {
+export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
 
-  constructor() {
+  constructor(
+    private frameworkApiCatalog: TestingFrameworkAPICatalog,
+    private frameworkDriverConfig: TestingFrameworkDriverConfig,
+  ) {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.findElement = this.findElement.bind(this);
@@ -17,23 +24,23 @@ export class BaseWebDriver {
   /**
    * Gets the current page identifier
    */
-  getCurrentPage(): Page | undefined {
-    return this.driverUtils.getCurrentPage() as Page | undefined;
+  getCurrentPage(): T | undefined {
+    return this.driverUtils.getCurrentPage() as T | undefined;
   }
 
   /**
    * Sets the current page identifier, must be set if the driver needs to interact with a specific page
    */
-  setCurrentPage(page: Page): void {
+  setCurrentPage(page: T): void {
     this.driverUtils.setCurrentPage(page);
   }
 
   /**
    * return the closet element given page and element
    */
-  async findElement<T extends ElementMatchingCriteria>(
-    page: Page,
-    matchingCriteria: T,
+  async findElement<M extends ElementMatchingCriteria>(
+    page: T,
+    matchingCriteria: M,
   ): Promise<any> {
     return await this.driverUtils.findElement(page, matchingCriteria);
   }
@@ -57,18 +64,28 @@ export class BaseWebDriver {
   /**
    * Extends a base web api catalog with framework specific methods
    */
-  createApiCatalog(
-    apiCatalog: TestingFrameworkAPICatalog,
-  ): TestingFrameworkAPICatalog {
+  get apiCatalog(): TestingFrameworkAPICatalog {
     return {
-      ...apiCatalog,
+      ...this.frameworkApiCatalog,
       context: {
-        ...apiCatalog.context,
+        ...this.frameworkApiCatalog.context,
         getCurrentPage: this.getCurrentPage,
         setCurrentPage: this.setCurrentPage,
         findElement: this.findElement,
       },
-      categories: extendAPICategories(apiCatalog, baseDriverCategories),
+      categories: extendAPICategories(
+        this.frameworkApiCatalog,
+        baseDriverCategories,
+      ),
     };
+  }
+
+  /**
+   * Additional driver configuration.
+   *
+   * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
+   */
+  get driverConfig(): TestingFrameworkDriverConfig {
+    return this.frameworkDriverConfig;
   }
 }
