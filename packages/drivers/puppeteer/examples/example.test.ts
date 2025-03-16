@@ -3,6 +3,7 @@ import puppeteer from "puppeteer";
 import * as puppeteerCore from "puppeteer-core";
 import { PromptHandler } from "../utils/promptHandler";
 import { PuppeteerFrameworkDriver } from "../index";
+import { apiCatalog } from "../frameworkCatalog";
 
 describe("Example Test Suite", () => {
   jest.setTimeout(300000);
@@ -12,7 +13,9 @@ describe("Example Test Suite", () => {
 
   beforeAll(async () => {
     const promptHandler: PromptHandler = new PromptHandler();
-    frameworkDriver = new PuppeteerFrameworkDriver(puppeteer.executablePath());
+    frameworkDriver = new PuppeteerFrameworkDriver(
+      apiCatalog(puppeteer.executablePath()),
+    );
 
     pilot = new Pilot({
       frameworkDriver,
