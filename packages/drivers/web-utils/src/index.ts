@@ -9,7 +9,7 @@ export type ElementMatchingCriteria = {
     (typeof ELEMENT_MATCHING_CONFIG)[K]["extract"]
   >;
 };
-
+export type { Page };
 export default class WebTestingFrameworkDriverHelper {
   protected currentPage?: Page;
 

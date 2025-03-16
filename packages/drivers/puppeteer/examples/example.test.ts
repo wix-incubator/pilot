@@ -1,5 +1,6 @@
 import { Pilot } from "@wix-pilot/core";
 import puppeteer from "puppeteer";
+import * as puppeteerCore from "puppeteer-core";
 import { PromptHandler } from "../utils/promptHandler";
 import { PuppeteerFrameworkDriver } from "../index";
 
@@ -20,7 +21,9 @@ describe("Example Test Suite", () => {
   });
 
   afterAll(async () => {
-    await frameworkDriver.getCurrentPage()?.browser().close();
+    await (frameworkDriver.getCurrentPage() as puppeteerCore.Page)
+      ?.browser()
+      .close();
   });
 
   beforeEach(async () => {
