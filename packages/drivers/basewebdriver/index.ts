@@ -2,7 +2,7 @@ import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 import type { ElementMatchingCriteria, Page } from "@wix-pilot/web-utils";
 import type { TestingFrameworkAPICatalog } from "@wix-pilot/core";
 import { baseDriverCategories } from "./baseDriverCategories";
-import { extendAPICategories } from "extandApiCatalog";
+import { extendAPICategories } from "./extendApiCatalog";
 
 export class BaseWebDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
