@@ -186,12 +186,6 @@ function isCustomInteractiveElement(el: Element): boolean {
 }
 
 function isScrollable(el: Element): boolean {
-  const scrollableClasses = ["scrollable", "overflow-auto"];
-  for (const className of scrollableClasses) {
-    if (el.classList.contains(className)) {
-      return true;
-    }
-  }
   const overflowX = getComputedStyle(el).overflowX;
   const overflowY = getComputedStyle(el).overflowY;
   const isScrollableByStyle =
