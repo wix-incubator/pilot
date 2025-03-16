@@ -401,6 +401,7 @@ The 'Profile' icon may not be properly adapted for different locales.
       "Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').",
       `Consider the elements present in the view hierarchy${isSnapshotImageAttached ? " and the snapshot image" : ""} to determine possible next actions.`,
       "Determine the optimal next action the user should take to move closer to their goal.",
+      "Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.",
       "Ensure the action is directly related to available elements in the view hierarchy.",
       "Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.",
       "Generate a one-line string that precisely describes this next action, enclosed within `<ACTION>` tags.",
