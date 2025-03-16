@@ -117,6 +117,7 @@ export class Pilot {
 
     this.running = true;
     this.previousSteps = [];
+
     this.cacheHandler.clearTemporaryCache();
   }
 
@@ -169,6 +170,8 @@ export class Pilot {
    * @returns The result of the last executed step.
    */
   async perform(...steps: string[]): Promise<any> {
+    this.loadCache();
+
     let result;
     for await (const step of steps) {
       result = await this.performStep(step);
@@ -209,7 +212,15 @@ export class Pilot {
    * @returns pilot report with info about the actions thoughts etc ...
    */
   async autopilot(goal: string): Promise<AutoReport> {
+    this.loadCache();
     this.assertIsRunning();
     return await this.autoPerformer.perform(goal);
+  }
+
+  /**
+   * Loads the cache from the cache file.
+   */
+  private loadCache(): void {
+    this.cacheHandler.loadCacheFromFile();
   }
 }

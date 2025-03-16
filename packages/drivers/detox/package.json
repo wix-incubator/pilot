@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/detox",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "description": "Detox driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,6 +43,7 @@
   },
   "peerDependencies": {
     "detox": ">=20.33.0",
-    "@wix-pilot/core": "^3.1.0"
+    "expect": ">=29.7.0",
+    "@wix-pilot/core": "^3.1.4"
   }
 }

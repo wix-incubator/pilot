@@ -35,7 +35,6 @@ const CACHE_VALUE = [
       ViewHierarchyHash: VIEW_HIERARCHY_HASH,
     },
     creationTime: Date.now(),
-    lastAccessTime: Date.now(),
   },
 ];
 
@@ -202,7 +201,6 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     });
 
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
       INTENT,
@@ -230,7 +228,6 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     });
 
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
       INTENT,
@@ -257,7 +254,6 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     });
 
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
       INTENT,
@@ -293,7 +289,6 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     });
 
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(result).toBe("success");
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
       intent,
@@ -368,7 +363,6 @@ describe("StepPerformer", () => {
     const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(result).toBe("success");
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
@@ -394,7 +388,6 @@ describe("StepPerformer", () => {
     await expect(
       stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow(retryError);
-    expect(mockCacheHandler.loadCacheFromFile).toHaveBeenCalled();
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();

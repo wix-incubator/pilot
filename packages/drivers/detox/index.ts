@@ -3,34 +3,64 @@ import {
   TestingFrameworkDriver,
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
-import detox from "detox";
-import { expect } from "@jest/globals";
 import * as fs from "fs";
 import * as path from "path";
 
+import { expect as jestExpect } from "expect";
+import os from "os";
+
+/**
+ * Pilot driver for the Detox testing framework.
+ */
 export class DetoxFrameworkDriver implements TestingFrameworkDriver {
+  private _detox: any;
+
+  /**
+   * Creates a new Detox driver instance.
+   * @param detox optional Detox instance to use, if not provided, it will be imported from the
+   *  `detox` package (peer dependency). The reason for this parameter is to allow usage from the Detox package itself.
+   */
+  constructor(detox?: any) {
+    this._detox = detox;
+  }
+
+  private get detox() {
+    if (!this._detox) {
+      try {
+        this._detox = require("detox");
+      } catch (error) {
+        throw new Error(
+          "Detox is not installed. Please install Detox to use this driver.",
+        );
+      }
+    }
+
+    return this._detox;
+  }
+
   get driverConfig(): TestingFrameworkDriverConfig {
     return { useSnapshotStabilitySync: false };
   }
 
   async captureViewHierarchyString(): Promise<string> {
     try {
-      return await detox.device.generateViewHierarchyXml(true);
+      return await this.detox.device.generateViewHierarchyXml(true);
     } catch (_error) {
       return "NO ACTIVE APP FOUND, LAUNCH THE APP TO SEE THE VIEW HIERARCHY";
     }
   }
 
   async captureSnapshotImage(_: boolean): Promise<string | undefined> {
-    const tempDir = "temp";
+    const tempDir = path.resolve(os.tmpdir(), "pilot-snapshot");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir);
     }
 
-    const fileName = `snapshot_detox_${Date.now()}.png`;
+    const fileName = `snapshot_detox_${Date.now()}`;
     try {
-      const screenshotPath = await detox.device.takeScreenshot(fileName);
-      const tempPath = path.join(tempDir, fileName);
+      const screenshotPath = await this.detox.device.takeScreenshot(fileName);
+      const screenshotFileName = path.basename(screenshotPath);
+      const tempPath = path.join(tempDir, screenshotFileName);
       fs.renameSync(screenshotPath, tempPath);
       return tempPath;
     } catch (_error) {
@@ -44,8 +74,8 @@ export class DetoxFrameworkDriver implements TestingFrameworkDriver {
       description:
         "Detox is a gray box end-to-end testing and automation library for mobile apps.",
       context: {
-        ...detox,
-        jestExpect: expect,
+        ...this.detox,
+        jestExpect,
       },
       categories: [
         {
@@ -356,8 +386,13 @@ await device.launchApp({ launchArgs: { someLaunchArg: 1234 } });`,
             },
             {
               signature: "device.reloadReactNative()",
-              description: "Reloads the React Native JS bundle.",
+              description:
+                "Restarts the React Native app by reloading the React Native JavaScript bundle. This is useful for resetting the app state.",
               example: "await device.reloadReactNative();",
+              guidelines: [
+                "Use this method to reset the app state in the beginning of a test.",
+                "Reload can be also be referred to as 'reboot', 'restart', or 'reset'.",
+              ],
             },
             {
               signature: "device.setOrientation(orientation: string)",

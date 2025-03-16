@@ -246,8 +246,6 @@ export class AutoPerformer {
     let pilotSteps: PreviousStep[] = [];
     const report: AutoReport = { goal, steps: [] };
 
-    this.cacheHandler.loadCacheFromFile();
-
     logger.info(
       {
         message: `🛫 Pilot is about to reach goal:\n`,
