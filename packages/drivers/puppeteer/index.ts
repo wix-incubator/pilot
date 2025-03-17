@@ -1,15 +1,13 @@
-import {
-  TestingFrameworkDriverConfig,
-  TestingFrameworkAPICatalog,
-} from "@wix-pilot/core";
+import { TestingFrameworkDriverConfig } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 import { BaseWebDriver } from "@wix-pilot/basewebdriver";
+import { createAPICatalog } from "./frameworkCatalog";
 
 export class PuppeteerFrameworkDriver extends BaseWebDriver<puppeteer.Page> {
-  constructor(apiCatalog: TestingFrameworkAPICatalog) {
+  constructor(executablePath: string) {
     const driverConfig: TestingFrameworkDriverConfig = {
       useSnapshotStabilitySync: true,
     };
-    super(apiCatalog, driverConfig);
+    super(createAPICatalog(executablePath), driverConfig);
   }
 }

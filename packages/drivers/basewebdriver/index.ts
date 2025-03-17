@@ -6,7 +6,7 @@ import type {
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
 import { baseDriverCategories } from "./baseDriverCategories";
-import { extendAPICategories } from "./extendApiCatalog";
+import extendAPICategories from "./extendAPICategories";
 
 export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;

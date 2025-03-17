@@ -1,7 +1,7 @@
 import { TestingFrameworkAPICatalog } from "@wix-pilot/core";
 import * as puppeteer from "puppeteer-core";
 
-export const apiCatalog = (
+export const createAPICatalog = (
   executablePath: string,
 ): TestingFrameworkAPICatalog => ({
   name: "Puppeteer",

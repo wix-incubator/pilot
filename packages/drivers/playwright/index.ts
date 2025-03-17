@@ -1,15 +1,13 @@
-import {
-  TestingFrameworkAPICatalog,
-  TestingFrameworkDriverConfig,
-} from "@wix-pilot/core";
+import { TestingFrameworkDriverConfig } from "@wix-pilot/core";
 import * as playwright from "playwright";
 import { BaseWebDriver } from "@wix-pilot/basewebdriver";
+import { createAPICatalog } from "./frameworkCatalog";
 
 export class PlaywrightFrameworkDriver extends BaseWebDriver<playwright.Page> {
-  constructor(apiCatalog: TestingFrameworkAPICatalog) {
+  constructor() {
     const driverConfig: TestingFrameworkDriverConfig = {
       useSnapshotStabilitySync: true,
     };
-    super(apiCatalog, driverConfig);
+    super(createAPICatalog, driverConfig);
   }
 }

@@ -4,7 +4,7 @@ import type {
 } from "@wix-pilot/core";
 import type { TestingFrameworkAPICatalogCategory } from "./types";
 
-export function extendAPICategories(
+export default function extendAPICategories(
   frameworkApiCatalog: TestingFrameworkAPICatalog,
   baseCategories: TestingFrameworkAPICatalogCategory[],
 ): TestingFrameworkAPICatalogCategory[] {

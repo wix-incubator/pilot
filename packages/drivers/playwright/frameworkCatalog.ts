@@ -2,7 +2,7 @@ import type { TestingFrameworkAPICatalog } from "@wix-pilot/core";
 import * as playwright from "playwright";
 import { expect as playwrightExpect } from "@playwright/test";
 
-export const apiCatalog: TestingFrameworkAPICatalog = {
+export const createAPICatalog: TestingFrameworkAPICatalog = {
   name: "Playwright",
   description:
     "Playwright is a Node library which provides a high-level API to control browsers over the DevTools Protocol.\nYou can assume that playwright and playwrightExpect are already imported.",
