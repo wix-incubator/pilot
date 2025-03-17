@@ -60,14 +60,15 @@ Your tasks are as follows:
 2. Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').
 3. Consider the elements present in the view hierarchy to determine possible next actions.
 4. Determine the optimal next action the user should take to move closer to their goal.
-5. Ensure the action is directly related to available elements in the view hierarchy.
-6. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
-7. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-8. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-9. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-10. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
-11. Ensure each section is clearly labeled and formatted as shown in the examples.
-12. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+5. Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.
+6. Ensure the action is directly related to available elements in the view hierarchy.
+7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
+8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
+10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+11. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
+12. Ensure each section is clearly labeled and formatted as shown in the examples.
+13. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -339,14 +340,15 @@ Your tasks are as follows:
 2. Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').
 3. Consider the elements present in the view hierarchy and the snapshot image to determine possible next actions.
 4. Determine the optimal next action the user should take to move closer to their goal.
-5. Ensure the action is directly related to available elements in the view hierarchy.
-6. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
-7. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-8. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-9. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-10. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
-11. Ensure each section is clearly labeled and formatted as shown in the examples.
-12. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+5. Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.
+6. Ensure the action is directly related to available elements in the view hierarchy.
+7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
+8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
+10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+11. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
+12. Ensure each section is clearly labeled and formatted as shown in the examples.
+13. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -618,14 +620,15 @@ Your tasks are as follows:
 2. Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').
 3. Consider the elements present in the view hierarchy to determine possible next actions.
 4. Determine the optimal next action the user should take to move closer to their goal.
-5. Ensure the action is directly related to available elements in the view hierarchy.
-6. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
-7. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-8. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-9. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-10. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
-11. Ensure each section is clearly labeled and formatted as shown in the examples.
-12. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+5. Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.
+6. Ensure the action is directly related to available elements in the view hierarchy.
+7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
+8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
+10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+11. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
+12. Ensure each section is clearly labeled and formatted as shown in the examples.
+13. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -908,14 +911,15 @@ Your tasks are as follows:
 2. Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').
 3. Consider the elements present in the view hierarchy to determine possible next actions.
 4. Determine the optimal next action the user should take to move closer to their goal.
-5. Ensure the action is directly related to available elements in the view hierarchy.
-6. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
-7. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-8. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-9. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-10. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
-11. Ensure each section is clearly labeled and formatted as shown in the examples.
-12. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+5. Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.
+6. Ensure the action is directly related to available elements in the view hierarchy.
+7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
+8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
+10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+11. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
+12. Ensure each section is clearly labeled and formatted as shown in the examples.
+13. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -1198,14 +1202,15 @@ Your tasks are as follows:
 2. Check if there are any active loaders, spinners, animations, or partially rendered content in the view hierarchy - if so, the next action should be to wait for 3 seconds ('wait 3000').
 3. Consider the elements present in the view hierarchy to determine possible next actions.
 4. Determine the optimal next action the user should take to move closer to their goal.
-5. Ensure the action is directly related to available elements in the view hierarchy.
-6. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
-7. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-8. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-9. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-10. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
-11. Ensure each section is clearly labeled and formatted as shown in the examples.
-12. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+5. Always describe the next action using plain, natural language rather than technical terms. Avoid using elements like coordinates or test IDs.
+6. Ensure the action is directly related to available elements in the view hierarchy.
+7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
+8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
+10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings. Also, provide comprehensive overall UX, Accessibility, and Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+11. For each applicable review section (\`UX\`, \`Accessibility\`, \`Internationalization\`), create a comprehensive report enclosed within corresponding tags (e.g., \`<UX>\`, \`<ACCESSIBILITY>\`, \`<INTERNATIONALIZATION>\`), including a summary, findings, and a score out of 10.
+12. Ensure each section is clearly labeled and formatted as shown in the examples.
+13. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
