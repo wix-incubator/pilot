@@ -11,10 +11,7 @@ import extendAPICategories from "./extendAPICategories";
 export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
 
-  constructor(
-    private frameworkApiCatalog: TestingFrameworkAPICatalog,
-    private frameworkDriverConfig: TestingFrameworkDriverConfig,
-  ) {
+  constructor(private frameworkApiCatalog: TestingFrameworkAPICatalog) {
     this.setCurrentPage = this.setCurrentPage.bind(this);
     this.getCurrentPage = this.getCurrentPage.bind(this);
     this.findElement = this.findElement.bind(this);
@@ -86,6 +83,6 @@ export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
    * @property useSnapshotStabilitySync - Indicates whether the driver should use wait for screen stability.
    */
   get driverConfig(): TestingFrameworkDriverConfig {
-    return this.frameworkDriverConfig;
+    return { useSnapshotStabilitySync: true };
   }
 }

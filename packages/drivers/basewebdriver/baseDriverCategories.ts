@@ -1,3 +1,5 @@
+import { MATCHING_CONFIG } from "@wix-pilot/web-utils";
+
 export const baseDriverCategories = [
   {
     title: "Current page management",
@@ -22,27 +24,19 @@ export const baseDriverCategories = [
       {
         signature: "findElement(page, matchingCriteria)",
         description:
-          "Selects the element that best matches the provided criteria based on thresholds and weighted comparisons. " +
-          "This utility examines attributes such as 'aria-label', 'aria-role', 'class', 'id', 'name', 'title', 'placeholder', and 'rect' to compute a match score.",
+          "Selects the element that best matches the provided criteria",
         example: `
-        const page = getCurrentPage();
-        const submitElement = await findElement(page, 
+          const page = getCurrentPage();
+          const submitElement = await findElement(page, 
 {
 "aria-label": "Submit",
-"aria-role": "button",
-class: "submit-button",
-id: "submit123",
-name: "submit",
-title: "Submit",
-placeholder: "Submit",
-rect: { x: 100, y: 200 }
+// ... all the attributes from here: ${Object.keys(MATCHING_CONFIG).join(",")}
 });
 await submitElement.click();`,
-
         guidelines: [
-          "Each criterion is optional since not all elements will have all of these attributes.",
-          "The utility returns the element with the lowest cumulative error across the specified criteria.",
-          "You can use all properties included in the view hierarchy as a part of the cretiria",
+          `Use the attributes from this list: ${Object.keys(MATCHING_CONFIG).join(",")}.`,
+          "You must always detect and use all the attributes related to the element from the provided view",
+          "Make sure you are only adding attributes of the relevant element and no any other",
         ],
       },
     ],
