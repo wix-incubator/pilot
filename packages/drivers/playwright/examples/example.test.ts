@@ -1,6 +1,7 @@
 import { Pilot } from "@wix-pilot/core";
 import { PromptHandler } from "../utils/promptHandler";
 import { PlaywrightFrameworkDriver } from "../index";
+import * as playwright from "playwright";
 
 describe("Example Test Suite", () => {
   jest.setTimeout(300000);
@@ -21,7 +22,7 @@ describe("Example Test Suite", () => {
   afterAll(async () => {
     const page = frameworkDriver.getCurrentPage();
     if (page) {
-      await page.context().browser()?.close();
+      await (page as playwright.Page).context().browser()?.close();
     }
   });
 

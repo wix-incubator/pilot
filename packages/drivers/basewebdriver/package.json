@@ -1,7 +1,7 @@
 {
-  "name": "@wix-pilot/playwright",
-  "version": "1.0.2",
-  "description": "Playwright driver for Wix Pilot usage",
+  "name": "@wix-pilot/basewebdriver",
+  "version": "1.0.0",
+  "description": "Base web driver",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -29,13 +29,7 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "@wix-pilot/basewebdriver": "^1.0.0"
-  },
-  "peerDependencies": {
+    "@wix-pilot/web-utils": "^2.0.2",
     "@wix-pilot/core": "^3.1.4"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.50.0",
-    "axios": "^1.7.9"
   }
 }
