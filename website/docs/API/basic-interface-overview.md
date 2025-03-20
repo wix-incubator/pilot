@@ -148,10 +148,12 @@ const result = await pilot.perform(
 ### autopilot()
 
 ```typescript
-autopilot(goal: string): Promise<AutoReport>
+autopilot(goal: string, reviewTypes?: AutoReviewSectionType[]): Promise<AutoReport>
 ```
 
 Executes an entire test flow automatically based on a high-level goal. Instead of specifying individual steps, you describe the end goal and let Pilot figure out the necessary steps.
+Additionally, you can provide Pilot with an array containing `reviewTypes`. Along with the screen description, thoughts, and actions, Pilot will generate a review based on your specifications.
+For example, a review type can be Accessibility. By providing a description and guidelines, you can receive an accessibility review tailored to your needs.
 
 :::note
 Requires an active test flow (initiated by `start()`).
@@ -168,6 +170,24 @@ const report = await pilot.autopilot(
 const report = await pilot.autopilot(
   'Update the profile username to john_doe and verify the changes'
 );
+
+// Add an accessibility review section to the report
+const reviewTypes = [{
+    title: "Accessibility",
+    emoji: "👁️",
+    description: "The Accessibility Review ensures the product is usable by people with various disabilities. This includes checking compatibility with assistive technologies, color contrast, keyboard navigation, and screen reader support.",
+    guidelines: [
+        "Verify that all text has sufficient contrast against background colors.",
+        "Ensure that interactive elements are keyboard navigable.",
+        "Check for the correct use of ARIA (Accessible Rich Internet Applications) roles and labels.",
+        "Test screen reader compatibility, ensuring that all content is understandable.",
+        "Ensure visual elements have alternative descriptions (e.g., alt text for images)."
+    ]}]
+const report = await pilot.autopilot(
+    'Update the profile username to john_doe and verify the changes',
+    reviewTypes
+);
+
 ```
 
 ### end()
