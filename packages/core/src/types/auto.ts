@@ -1,9 +1,18 @@
-/** Review section types */
-export type AutoReviewSectionType = "ux" | "a11y" | "i18n";
+/** Autopilot review section type */
+export type AutoReviewSectionType = {
+    /** Title of the review section */
+    title: string;
+    /** Emoji for the review section */
+    emoji: string;
+    /** Description of the review section for the prompt creation */
+    description: string,
+    /** Guidelines for the review section for prompt creation*/
+    guidelines: string[]
+}
 
 /** Complete Autopilot review */
 export type AutoReview = {
-  [key in AutoReviewSectionType]?: AutoReviewSection;
+  [reviewType: string]: AutoReviewSection;
 };
 
 /**
