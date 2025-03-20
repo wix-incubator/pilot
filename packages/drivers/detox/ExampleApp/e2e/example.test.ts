@@ -2,12 +2,26 @@ import { Pilot } from '@wix-pilot/core';
 import { DetoxFrameworkDriver } from '../../index.ts';
 import { PromptHandler } from '../../utils/promptHandler.ts';
 import { device } from 'detox';
+import { AUTOPILOT_REVIEW_DEFAULTS } from "../../../../core/src/performers/auto-performer/reviews/reviewDefaults.ts";
 
 describe('ExampleApp Detox Test Suite', () => {
     jest.setTimeout(300000);
 
     let frameworkDriver: DetoxFrameworkDriver;
     let pilot: Pilot;
+
+    const reviewTypes = [{
+        title: "Layout Integrity",
+        emoji: "🏗️",
+        color: "light blue",
+        findingColor: "light blue",
+        description: "The Layout Integrity Review focuses on the overall layout and structure of the product. This review assesses the alignment, spacing, and visual hierarchy of the UI components.",
+        guidelines: [
+            "Check for consistent spacing between elements and sections.",
+            "Verify that the alignment of elements follows a grid or layout system.",
+            "Assess the visual hierarchy to ensure important elements stand out.",
+            "Look for any overlapping or misaligned elements that disrupt the layout integrity."]
+    }]
 
     beforeAll(async () => {
         const promptHandler: PromptHandler = new PromptHandler();
@@ -31,8 +45,8 @@ describe('ExampleApp Detox Test Suite', () => {
     });
 
     describe('Emoji Game', () => {
-        it('should get 10 point in the matching game', async () => {
-            await pilot.autopilot(`Drag emojis in the Emoji game, until you reach score 3. The transparent circles are the targets.`);
+        it.only('should get 10 point in the matching game', async () => {
+            await pilot.autopilot(`Drag emojis in the Emoji game, until you reach score 3. The transparent circles are the targets.`, reviewTypes);
         });
     });
 

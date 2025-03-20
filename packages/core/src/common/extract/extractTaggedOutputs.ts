@@ -1,9 +1,18 @@
+import {breakReviewArrayToOutputsMapping} from "@/performers/auto-performer/reviews/reviews-utils";
+import {AutoReviewSectionType} from "@/types";
+
 export type Output = {
   tag: string;
   isRequired: boolean;
 };
 
 export type OutputsMapping = Record<string, Output>;
+
+const BASE_PILOT_STEP = {
+    screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
+    thoughts: { tag: "THOUGHTS", isRequired: true },
+    action: { tag: "ACTION", isRequired: true },
+};
 
 export const OUTPUTS_MAPPINGS: Record<string, OutputsMapping> = {
   PILOT_REVIEW_SECTION: {
@@ -12,12 +21,7 @@ export const OUTPUTS_MAPPINGS: Record<string, OutputsMapping> = {
     score: { tag: "SCORE", isRequired: false },
   },
   PILOT_STEP: {
-    screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
-    thoughts: { tag: "THOUGHTS", isRequired: true },
-    action: { tag: "ACTION", isRequired: true },
-    ux: { tag: "UX", isRequired: false },
-    a11y: { tag: "ACCESSIBILITY", isRequired: false },
-    i18n: { tag: "INTERNATIONALIZATION", isRequired: false },
+    ...BASE_PILOT_STEP,
   },
   PILOT_SUMMARY: {
     summary: { tag: "SUMMARY", isRequired: true },
@@ -47,4 +51,19 @@ export function extractTaggedOutputs<M extends OutputsMapping>({
   }
 
   return outputs as { [K in keyof M]: string };
+}
+
+export function extractTaggedOutputsController(text: string, reviewTypes?: AutoReviewSectionType[]): {[K in keyof ReturnType<typeof breakReviewArrayToOutputsMapping>]: string} {
+    if (!reviewTypes){
+        return extractTaggedOutputs({
+            text,
+            outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
+        });
+    }
+    const review_sections = breakReviewArrayToOutputsMapping(reviewTypes);
+    const pilot_step = {...BASE_PILOT_STEP, ...review_sections};
+    return extractTaggedOutputs({
+        text,
+        outputsMapper: pilot_step,
+    });
 }
