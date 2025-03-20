@@ -5,17 +5,14 @@ import {
   AutoReport,
   AutoReview,
   AutoReviewSection,
+  AutoReviewSectionType,
   AutoStepPlan,
   AutoStepReport,
 } from "@/types/auto";
-import {
-  LoggerMessageColor,
-  PreviousStep,
-  PromptHandler,
-  ScreenCapturerResult,
-} from "@/types";
+import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
 import {
   extractTaggedOutputs,
+  extractTaggedOutputsController,
   OUTPUTS_MAPPINGS,
 } from "@/common/extract/extractTaggedOutputs";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
@@ -51,43 +48,19 @@ export class AutoPerformer {
 
   private logReviewSection(
     review: AutoReviewSection,
-    type: "ux" | "a11y" | "i18n",
+    typeObject: AutoReviewSectionType,
   ) {
-    const config: {
-      [key: string]: {
-        emoji: string;
-        color: LoggerMessageColor;
-        findingColor: LoggerMessageColor;
-      };
-    } = {
-      ux: {
-        emoji: "🎨",
-        color: "magentaBright",
-        findingColor: "magenta",
-      },
-      a11y: {
-        emoji: "👁️ ",
-        color: "yellowBright",
-        findingColor: "yellow",
-      },
-      i18n: {
-        emoji: "🌐",
-        color: "cyanBright",
-        findingColor: "cyan",
-      },
-    };
-
     logger.info({
-      message: `📝${config[type].emoji} Pilot ${type.toUpperCase()} review: ${review?.summary} (Score: ${review?.score})`,
+      message: `📝${typeObject.emoji} Pilot ${typeObject.title.toUpperCase()} review: ${review?.summary} (Score: ${review?.score})`,
       isBold: true,
-      color: config[type].color,
+      color: "blueBright",
     });
 
     review.findings?.forEach((finding) => {
       logger.info({
         message: `🔍 ${finding}`,
         isBold: false,
-        color: config[type].findingColor,
+        color: "blueBright",
       });
     });
   }
@@ -96,6 +69,7 @@ export class AutoPerformer {
     goal: string,
     previousSteps: AutoPreviousStep[],
     screenCapture: ScreenCapturerResult,
+    reviewSectionTypes?: AutoReviewSectionType[],
     maxAttempts: number = 2,
   ): Promise<AutoStepReport> {
     const cacheKey = this.cacheHandler.generateCacheKey({
@@ -130,6 +104,7 @@ export class AutoPerformer {
           screenCapture.viewHierarchy ?? "Unknown view hierarchy",
           !!screenCapture.snapshot,
           previousSteps,
+          reviewSectionTypes ? reviewSectionTypes : undefined,
         );
 
         const promptResult = await this.promptHandler.runPrompt(
@@ -137,12 +112,12 @@ export class AutoPerformer {
           screenCapture.snapshot,
         );
 
-        const outputs = extractTaggedOutputs({
-          text: promptResult,
-          outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
-        });
+        const outputs = extractTaggedOutputsController(
+          promptResult,
+          reviewSectionTypes ? reviewSectionTypes : undefined,
+        );
 
-        const { thoughts, ux, a11y, i18n } = outputs;
+        const thoughts = outputs.thoughts;
         lastScreenDescription = outputs.screenDescription;
         lastAction = outputs.action;
         const plan: AutoStepPlan = { action: lastAction, thoughts };
@@ -160,22 +135,36 @@ export class AutoPerformer {
           color: "grey",
         });
 
-        const review: AutoReview = {
-          ux: ux ? this.extractReviewOutput(ux) : undefined,
-          a11y: a11y ? this.extractReviewOutput(a11y) : undefined,
-          i18n: i18n ? this.extractReviewOutput(i18n) : undefined,
-        };
+        const review: AutoReview = {};
 
-        if (review.ux || review.a11y || review.i18n) {
+        if (reviewSectionTypes && reviewSectionTypes.length > 0) {
+          reviewSectionTypes.forEach((reviewType) => {
+            const reviewContent = outputs[reviewType.title];
+            if (reviewContent) {
+              review[reviewType.title] =
+                this.extractReviewOutput(reviewContent);
+            }
+          });
+        }
+
+        const hasReviews = Object.keys(review).length > 0;
+
+        if (hasReviews) {
           logger.info({
             message: `Conducting review for ${lastScreenDescription}\n`,
             isBold: true,
             color: "whiteBright",
           });
 
-          review.ux && this.logReviewSection(review.ux, "ux");
-          review.a11y && this.logReviewSection(review.a11y, "a11y");
-          review.i18n && this.logReviewSection(review.i18n, "i18n");
+          Object.keys(review).forEach((reviewType) => {
+            if (review[reviewType]) {
+              const reviewTypeConfig = reviewSectionTypes?.find(
+                (rt) => rt.title.toLowerCase() === reviewType.toLowerCase(),
+              );
+              if (reviewTypeConfig !== undefined)
+                this.logReviewSection(review[reviewType], reviewTypeConfig);
+            }
+          });
         }
 
         const summary = goalAchieved
@@ -240,7 +229,10 @@ export class AutoPerformer {
     throw new Error("Auto-Pilot failed to reach a decision");
   }
 
-  async perform(goal: string): Promise<AutoReport> {
+  async perform(
+    goal: string,
+    reviewSectionTypes?: AutoReviewSectionType[],
+  ): Promise<AutoReport> {
     const maxSteps = 100;
     let previousSteps: AutoPreviousStep[] = [];
     let pilotSteps: PreviousStep[] = [];
@@ -266,6 +258,7 @@ export class AutoPerformer {
         goal,
         [...previousSteps],
         screenCaptureWithoutHighlight,
+        reviewSectionTypes ? reviewSectionTypes : undefined,
       );
 
       if (stepReport.goalAchieved) {
