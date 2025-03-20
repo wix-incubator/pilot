@@ -1,18 +1,17 @@
-import {AutoPerformer} from "./AutoPerformer";
-import {AutoPerformerPromptCreator} from "./AutoPerformerPromptCreator";
-import {ScreenCapturer} from "../../common/snapshot/ScreenCapturer";
-import {CacheHandler} from "../../common/cacheHandler/CacheHandler";
-import {SnapshotComparator} from "../../common/snapshot/comparator/SnapshotComparator";
+import { AutoPerformer } from "./AutoPerformer";
+import { AutoPerformerPromptCreator } from "./AutoPerformerPromptCreator";
+import { ScreenCapturer } from "../../common/snapshot/ScreenCapturer";
+import { CacheHandler } from "../../common/cacheHandler/CacheHandler";
+import { SnapshotComparator } from "../../common/snapshot/comparator/SnapshotComparator";
 import {
-    AutoPreviousStep,
-    PromptHandler,
-    ScreenCapturerResult,
-    AutoStepReport,
-    AutoReport, AutoReviewSectionType,
+  AutoPreviousStep,
+  PromptHandler,
+  ScreenCapturerResult,
+  AutoStepReport,
+  AutoReport,
 } from "@/types";
-import {StepPerformer} from "../step-performer/StepPerformer";
-import {AUTOPILOT_REVIEW_DEFAULTS} from "./reviews/reviewDefaults";
-
+import { StepPerformer } from "../step-performer/StepPerformer";
+import { AUTOPILOT_REVIEW_DEFAULTS } from "./reviews/reviewDefaults";
 
 const GOAL = "tap button";
 const VIEW_HIERARCHY = "<view></view>";
@@ -69,483 +68,482 @@ The review of i18n
 const SNAPSHOT_DATA = "snapshot_data";
 
 describe("AutoPerformer", () => {
-    let performer: AutoPerformer;
-    let mockPromptCreator: jest.Mocked<AutoPerformerPromptCreator>;
-    let mockPromptHandler: jest.Mocked<PromptHandler>;
-    let mockStepPerformer: jest.Mocked<StepPerformer>;
-    let mockScreenCapturer: jest.Mocked<ScreenCapturer>;
-    let mockCaptureResult: ScreenCapturerResult;
-    let mockCacheHandler: jest.Mocked<CacheHandler>;
-    let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
+  let performer: AutoPerformer;
+  let mockPromptCreator: jest.Mocked<AutoPerformerPromptCreator>;
+  let mockPromptHandler: jest.Mocked<PromptHandler>;
+  let mockStepPerformer: jest.Mocked<StepPerformer>;
+  let mockScreenCapturer: jest.Mocked<ScreenCapturer>;
+  let mockCaptureResult: ScreenCapturerResult;
+  let mockCacheHandler: jest.Mocked<CacheHandler>;
+  let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
 
-    beforeEach(() => {
-        jest.resetAllMocks();
+  beforeEach(() => {
+    jest.resetAllMocks();
 
-        // Create mock instances of dependencies
-        mockPromptCreator = {
-            createPrompt: jest.fn(),
-        } as unknown as jest.Mocked<AutoPerformerPromptCreator>;
+    // Create mock instances of dependencies
+    mockPromptCreator = {
+      createPrompt: jest.fn(),
+    } as unknown as jest.Mocked<AutoPerformerPromptCreator>;
 
-        mockPromptHandler = {
-            runPrompt: jest.fn(),
-            isSnapshotImageSupported: jest.fn(),
-        } as jest.Mocked<PromptHandler>;
+    mockPromptHandler = {
+      runPrompt: jest.fn(),
+      isSnapshotImageSupported: jest.fn(),
+    } as jest.Mocked<PromptHandler>;
 
-        mockStepPerformer = {
-            perform: jest.fn(),
-        } as unknown as jest.Mocked<StepPerformer>;
+    mockStepPerformer = {
+      perform: jest.fn(),
+    } as unknown as jest.Mocked<StepPerformer>;
 
-        // Create mock for capture function
-        mockScreenCapturer = {
-            capture: jest.fn(),
-        } as unknown as jest.Mocked<ScreenCapturer>;
+    // Create mock for capture function
+    mockScreenCapturer = {
+      capture: jest.fn(),
+    } as unknown as jest.Mocked<ScreenCapturer>;
 
-        mockCacheHandler = {
-            loadCacheFromFile: jest.fn(),
-            saveCacheToFile: jest.fn(),
-            existInCache: jest.fn(),
-            addToTemporaryCache: jest.fn(),
-            flushTemporaryCache: jest.fn(),
-            clearTemporaryCache: jest.fn(),
-            getStepFromCache: jest.fn(),
-            generateCacheKey: jest.fn(),
-            isCacheInUse: jest.fn(),
-            getFromPersistentCache: jest.fn(),
-            findMatchingCacheEntry: jest.fn(),
-        } as unknown as jest.Mocked<CacheHandler>;
+    mockCacheHandler = {
+      loadCacheFromFile: jest.fn(),
+      saveCacheToFile: jest.fn(),
+      existInCache: jest.fn(),
+      addToTemporaryCache: jest.fn(),
+      flushTemporaryCache: jest.fn(),
+      clearTemporaryCache: jest.fn(),
+      getStepFromCache: jest.fn(),
+      generateCacheKey: jest.fn(),
+      isCacheInUse: jest.fn(),
+      getFromPersistentCache: jest.fn(),
+      findMatchingCacheEntry: jest.fn(),
+    } as unknown as jest.Mocked<CacheHandler>;
 
-        mockSnapshotComparator = {
-            generateHashes: jest.fn(),
-            compareSnapshot: jest.fn(),
-        } as unknown as jest.Mocked<SnapshotComparator>;
+    mockSnapshotComparator = {
+      generateHashes: jest.fn(),
+      compareSnapshot: jest.fn(),
+    } as unknown as jest.Mocked<SnapshotComparator>;
 
-        // Instantiate PilotPerformer with the mocks
-        performer = new AutoPerformer(
-            mockPromptCreator,
-            mockStepPerformer,
-            mockPromptHandler,
-            mockScreenCapturer,
-            mockCacheHandler,
-            mockSnapshotComparator,
-        );
-    });
+    // Instantiate PilotPerformer with the mocks
+    performer = new AutoPerformer(
+      mockPromptCreator,
+      mockStepPerformer,
+      mockPromptHandler,
+      mockScreenCapturer,
+      mockCacheHandler,
+      mockSnapshotComparator,
+    );
+  });
 
-    interface SetupMockOptions {
-        isSnapshotSupported?: boolean;
-        snapshotData?: string | null;
-        viewHierarchy?: string;
-        promptResult?: string;
-        cacheExists?: boolean;
-    }
+  interface SetupMockOptions {
+    isSnapshotSupported?: boolean;
+    snapshotData?: string | null;
+    viewHierarchy?: string;
+    promptResult?: string;
+    cacheExists?: boolean;
+  }
 
-    const setupMocks = ({
-                            isSnapshotSupported = true,
-                            snapshotData = SNAPSHOT_DATA,
-                            viewHierarchy = VIEW_HIERARCHY,
-                            promptResult = PROMPT_RESULT,
-                            cacheExists = false,
-                        }: SetupMockOptions = {}) => {
-        // Prepare the mockCaptureResult object
-        mockCaptureResult = {
-            snapshot: snapshotData !== null ? snapshotData : undefined,
-            viewHierarchy: viewHierarchy,
-        };
-
-        // Mock the capture function to return mockCaptureResult
-        mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
-
-        mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
-        mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
-        mockPromptHandler.isSnapshotImageSupported.mockReturnValue(
-            isSnapshotSupported,
-        );
-
-        const cacheKey = JSON.stringify({goal: GOAL, previousSteps: []});
-
-        if (cacheExists) {
-            const screenCapturerResult: ScreenCapturerResult = {
-                snapshot: SNAPSHOT_DATA,
-                viewHierarchy: VIEW_HIERARCHY,
-            };
-
-            mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
-            mockSnapshotComparator.generateHashes.mockReturnValue(
-                Promise.resolve({
-                    BlockHash: "hash",
-                    ViewHierarchyHash: "viewHash",
-                }),
-            );
-            mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
-            mockCacheHandler.isCacheInUse.mockReturnValue(true);
-
-            const cacheData: Map<string, any> = new Map();
-            cacheData.set(cacheKey, [
-                {
-                    screenCapturerResult: screenCapturerResult,
-                    snapshotHash: {
-                        BlockHash: "hash",
-                    },
-                    screenDescription: "Screen 1",
-                    plan: undefined,
-                    review: undefined,
-                    goalAchieved: false,
-                    summary: "success",
-                },
-            ]);
-
-            mockCacheHandler.getFromPersistentCache.mockImplementation(
-                (key: string) => {
-                    return cacheData.get(key);
-                },
-            );
-        } else {
-            mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
-        }
+  const setupMocks = ({
+    isSnapshotSupported = true,
+    snapshotData = SNAPSHOT_DATA,
+    viewHierarchy = VIEW_HIERARCHY,
+    promptResult = PROMPT_RESULT,
+    cacheExists = false,
+  }: SetupMockOptions = {}) => {
+    // Prepare the mockCaptureResult object
+    mockCaptureResult = {
+      snapshot: snapshotData !== null ? snapshotData : undefined,
+      viewHierarchy: viewHierarchy,
     };
 
-    describe("without review types", () => {
-        it("should perform an intent successfully with snapshot image support", async () => {
-            setupMocks();
+    // Mock the capture function to return mockCaptureResult
+    mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
 
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                GOAL,
-                [],
-                mockCaptureResult,
-            );
+    mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
+    mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
+    mockPromptHandler.isSnapshotImageSupported.mockReturnValue(
+      isSnapshotSupported,
+    );
 
-            const expectedResult = {
-                screenDescription: "default name",
-                plan: {
-                    thoughts: "I think this is great",
-                    action: "Tap on GREAT button",
-                },
-                review: {},
-                goalAchieved: false,
-            };
+    const cacheKey = JSON.stringify({ goal: GOAL, previousSteps: [] });
 
-            expect(result).toEqual(expectedResult);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-                GOAL,
-                VIEW_HIERARCHY,
-                true,
-                [],
-                undefined
-            );
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-                GENERATED_PROMPT,
-                SNAPSHOT_DATA,
-            );
-        });
+    if (cacheExists) {
+      const screenCapturerResult: ScreenCapturerResult = {
+        snapshot: SNAPSHOT_DATA,
+        viewHierarchy: VIEW_HIERARCHY,
+      };
 
-        it("should perform an intent successfully without snapshot image support", async () => {
-            setupMocks({isSnapshotSupported: false});
+      mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
+      mockSnapshotComparator.generateHashes.mockReturnValue(
+        Promise.resolve({
+          BlockHash: "hash",
+          ViewHierarchyHash: "viewHash",
+        }),
+      );
+      mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
+      mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                GOAL,
-                [],
-                mockCaptureResult,
-            );
+      const cacheData: Map<string, any> = new Map();
+      cacheData.set(cacheKey, [
+        {
+          screenCapturerResult: screenCapturerResult,
+          snapshotHash: {
+            BlockHash: "hash",
+          },
+          screenDescription: "Screen 1",
+          plan: undefined,
+          review: undefined,
+          goalAchieved: false,
+          summary: "success",
+        },
+      ]);
 
-            const expectedResult = {
-                screenDescription: "default name",
-                plan: {
-                    thoughts: "I think this is great",
-                    action: "Tap on GREAT button",
-                },
-                review: {},
-                goalAchieved: false,
-            };
+      mockCacheHandler.getFromPersistentCache.mockImplementation(
+        (key: string) => {
+          return cacheData.get(key);
+        },
+      );
+    } else {
+      mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
+    }
+  };
 
-            expect(result).toEqual(expectedResult);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-                GOAL,
-                VIEW_HIERARCHY,
-                true,
-                [],
-                undefined
-            );
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-                GENERATED_PROMPT,
-                SNAPSHOT_DATA,
-            );
-        });
+  describe("without review types", () => {
+    it("should perform an intent successfully with snapshot image support", async () => {
+      setupMocks();
 
-        it("should perform an intent with undefined snapshot", async () => {
-            setupMocks({snapshotData: null});
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        GOAL,
+        [],
+        mockCaptureResult,
+      );
 
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                GOAL,
-                [],
-                mockCaptureResult,
-            );
+      const expectedResult = {
+        screenDescription: "default name",
+        plan: {
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+        },
+        review: {},
+        goalAchieved: false,
+      };
 
-            const expectedResult = {
-                screenDescription: "default name",
-                plan: {
-                    thoughts: "I think this is great",
-                    action: "Tap on GREAT button",
-                },
-                review: {},
-                goalAchieved: false,
-            };
-
-            expect(result).toEqual(expectedResult);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-                GOAL,
-                VIEW_HIERARCHY,
-                false,
-                [],
-                undefined
-            );
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-                GENERATED_PROMPT,
-                undefined,
-            );
-        });
-
-        it("should perform an intent successfully with previous intents", async () => {
-            const intent = "current intent";
-            const previousIntents: AutoPreviousStep[] = [
-                {
-                    screenDescription: "default",
-                    step: "previous intent",
-                    review: {},
-                },
-            ];
-
-            setupMocks();
-
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                intent,
-                previousIntents,
-                mockCaptureResult,
-            );
-
-            const expectedResult = {
-                screenDescription: "default name",
-                plan: {
-                    thoughts: "I think this is great",
-                    action: "Tap on GREAT button",
-                },
-                review: {},
-                goalAchieved: false,
-            };
-
-            expect(result).toEqual(expectedResult);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-                intent,
-                VIEW_HIERARCHY,
-                true,
-                previousIntents,
-                undefined
-            );
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-                GENERATED_PROMPT,
-                SNAPSHOT_DATA,
-            );
-        });
-
-        describe("perform", () => {
-            it("should perform multiple steps until success is returned", async () => {
-                const pilotOutputStep1: AutoStepReport = {
-                    screenDescription: "Screen 1",
-                    plan: {
-                        thoughts: "Step 1 thoughts",
-                        action: "Tap on GREAT button",
-                    },
-                    review: {},
-                    goalAchieved: false,
-                };
-
-                const pilotOutputSuccess: AutoStepReport = {
-                    screenDescription: "Screen 2",
-                    plan: {
-                        thoughts: "Completed successfully",
-                        action: "success",
-                    },
-                    review: {},
-                    goalAchieved: true,
-                    summary: "all was good",
-                };
-
-                const screenCapturerResult: ScreenCapturerResult = {
-                    snapshot: SNAPSHOT_DATA,
-                    viewHierarchy: VIEW_HIERARCHY,
-                };
-
-                // Mock capture to return ScreenCapturerResult on each call
-                mockScreenCapturer.capture.mockResolvedValue(screenCapturerResult);
-
-                // Mock analyseScreenAndCreateCopilotStep to return pilotOutputStep1, then pilotOutputSuccess
-                const analyseScreenAndCreateCopilotStep = jest
-                    .spyOn(performer, "analyseScreenAndCreatePilotStep")
-                    .mockResolvedValueOnce(pilotOutputStep1)
-                    .mockResolvedValueOnce(pilotOutputSuccess);
-
-                jest.spyOn(mockStepPerformer, "perform").mockResolvedValue({
-                    code: "code executed",
-                    result: "result of execution",
-                });
-
-                const result = await performer.perform(GOAL);
-
-                expect(mockScreenCapturer.capture).toHaveBeenCalledTimes(3);
-                expect(analyseScreenAndCreateCopilotStep).toHaveBeenCalledTimes(2);
-
-                const expectedReport: AutoReport = {
-                    summary: "all was good",
-                    goal: GOAL,
-                    steps: [
-                        {
-                            screenDescription: "Screen 1",
-                            plan: pilotOutputStep1.plan,
-                            code: "code executed",
-                            review: pilotOutputStep1.review,
-                            goalAchieved: false,
-                        },
-                    ],
-                    review: {},
-                };
-
-                expect(result).toEqual(expectedReport);
-            });
-        });
-
-        it("should use cached value result if available", async () => {
-            setupMocks({cacheExists: true});
-
-            // Mock the findMatchingCacheEntry to return a valid cache entry
-            mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
-                value: {
-                    screenDescription: "Screen 1",
-                    plan: undefined,
-                    review: undefined,
-                    goalAchieved: false,
-                    summary: "success",
-                },
-                snapshotHashes: {BlockHash: "hash"},
-                creationTime: Date.now(),
-            });
-
-            const goal = GOAL;
-            const previousSteps: AutoPreviousStep[] = [];
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                goal,
-                previousSteps,
-                mockCaptureResult,
-            );
-
-            expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalledWith(
-                JSON.stringify({
-                    goal: GOAL,
-                    previousSteps: [],
-                }),
-            );
-
-            expect(mockSnapshotComparator.generateHashes).toHaveBeenCalled();
-            expect(result.summary).toEqual("success");
-            expect(result.goalAchieved).toEqual(false);
-            expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
-        });
-
-        it("should retry if analysis fails", async () => {
-            setupMocks();
-            const goal = GOAL;
-            const previousSteps: AutoPreviousStep[] = [];
-            mockPromptHandler.runPrompt.mockRejectedValueOnce(
-                new Error("Failed to generate text"),
-            );
-
-            await performer.analyseScreenAndCreatePilotStep(
-                goal,
-                previousSteps,
-                mockCaptureResult,
-            );
-
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
-        });
-
-        it("should add error to previous step if analysis fails", async () => {
-            setupMocks();
-            const goal = GOAL;
-            const previousSteps: AutoPreviousStep[] = [];
-            mockPromptHandler.runPrompt.mockRejectedValueOnce(
-                new Error("Failed to generate text"),
-            );
-
-            await performer.analyseScreenAndCreatePilotStep(
-                goal,
-                previousSteps,
-                mockCaptureResult,
-            );
-
-            expect(mockPromptCreator.createPrompt).toHaveBeenNthCalledWith(
-                2,
-                goal,
-                VIEW_HIERARCHY,
-                true,
-                [
-                    {
-                        screenDescription: "",
-                        step: "",
-                        error: expect.stringContaining("Failed to generate text"),
-                    },
-                ],
-                undefined
-            );
-        });
+      expect(result).toEqual(expectedResult);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
+        GOAL,
+        VIEW_HIERARCHY,
+        true,
+        [],
+        undefined,
+      );
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
+        GENERATED_PROMPT,
+        SNAPSHOT_DATA,
+      );
     });
-    describe("with review types", () => {
-        it("should perform an intent successfully with snapshot image support with review", async () => {
-            setupMocks();
 
-            const result = await performer.analyseScreenAndCreatePilotStep(
-                GOAL,
-                [],
-                mockCaptureResult,
-                AUTOPILOT_REVIEW_DEFAULTS,
-            );
+    it("should perform an intent successfully without snapshot image support", async () => {
+      setupMocks({ isSnapshotSupported: false });
 
-            const expectedResult = {
-                screenDescription: "default name",
-                plan: {
-                    thoughts: "I think this is great",
-                    action: "Tap on GREAT button",
-                },
-                review: {
-                    UX: {
-                        summary: "The review of UX",
-                        findings: ["UX finding one", "UX finding two"],
-                        score: "7/10",
-                    },
-                    Accessibility: {
-                        summary: "The review of accessibility",
-                        findings: ["ACC finding one", "ACC finding two"],
-                        score: "8/10",
-                    },
-                    Internationalization: {
-                        summary: "The review of i18n",
-                        findings: ["i18n finding one", "i18n finding two"],
-                        score: "6/10",
-                    },
-                },
-                goalAchieved: false,
-            };
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        GOAL,
+        [],
+        mockCaptureResult,
+      );
 
-            expect(result).toEqual(expectedResult);
-            expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
-                GOAL,
-                VIEW_HIERARCHY,
-                true,
-                [],
-                AUTOPILOT_REVIEW_DEFAULTS
-            );
-            expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
-                GENERATED_PROMPT,
-                SNAPSHOT_DATA,
-            );
+      const expectedResult = {
+        screenDescription: "default name",
+        plan: {
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+        },
+        review: {},
+        goalAchieved: false,
+      };
+
+      expect(result).toEqual(expectedResult);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
+        GOAL,
+        VIEW_HIERARCHY,
+        true,
+        [],
+        undefined,
+      );
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
+        GENERATED_PROMPT,
+        SNAPSHOT_DATA,
+      );
+    });
+
+    it("should perform an intent with undefined snapshot", async () => {
+      setupMocks({ snapshotData: null });
+
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        GOAL,
+        [],
+        mockCaptureResult,
+      );
+
+      const expectedResult = {
+        screenDescription: "default name",
+        plan: {
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+        },
+        review: {},
+        goalAchieved: false,
+      };
+
+      expect(result).toEqual(expectedResult);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
+        GOAL,
+        VIEW_HIERARCHY,
+        false,
+        [],
+        undefined,
+      );
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
+        GENERATED_PROMPT,
+        undefined,
+      );
+    });
+
+    it("should perform an intent successfully with previous intents", async () => {
+      const intent = "current intent";
+      const previousIntents: AutoPreviousStep[] = [
+        {
+          screenDescription: "default",
+          step: "previous intent",
+          review: {},
+        },
+      ];
+
+      setupMocks();
+
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        intent,
+        previousIntents,
+        mockCaptureResult,
+      );
+
+      const expectedResult = {
+        screenDescription: "default name",
+        plan: {
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+        },
+        review: {},
+        goalAchieved: false,
+      };
+
+      expect(result).toEqual(expectedResult);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
+        intent,
+        VIEW_HIERARCHY,
+        true,
+        previousIntents,
+        undefined,
+      );
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
+        GENERATED_PROMPT,
+        SNAPSHOT_DATA,
+      );
+    });
+
+    describe("perform", () => {
+      it("should perform multiple steps until success is returned", async () => {
+        const pilotOutputStep1: AutoStepReport = {
+          screenDescription: "Screen 1",
+          plan: {
+            thoughts: "Step 1 thoughts",
+            action: "Tap on GREAT button",
+          },
+          review: {},
+          goalAchieved: false,
+        };
+
+        const pilotOutputSuccess: AutoStepReport = {
+          screenDescription: "Screen 2",
+          plan: {
+            thoughts: "Completed successfully",
+            action: "success",
+          },
+          review: {},
+          goalAchieved: true,
+          summary: "all was good",
+        };
+
+        const screenCapturerResult: ScreenCapturerResult = {
+          snapshot: SNAPSHOT_DATA,
+          viewHierarchy: VIEW_HIERARCHY,
+        };
+
+        // Mock capture to return ScreenCapturerResult on each call
+        mockScreenCapturer.capture.mockResolvedValue(screenCapturerResult);
+
+        // Mock analyseScreenAndCreateCopilotStep to return pilotOutputStep1, then pilotOutputSuccess
+        const analyseScreenAndCreateCopilotStep = jest
+          .spyOn(performer, "analyseScreenAndCreatePilotStep")
+          .mockResolvedValueOnce(pilotOutputStep1)
+          .mockResolvedValueOnce(pilotOutputSuccess);
+
+        jest.spyOn(mockStepPerformer, "perform").mockResolvedValue({
+          code: "code executed",
+          result: "result of execution",
         });
 
+        const result = await performer.perform(GOAL);
+
+        expect(mockScreenCapturer.capture).toHaveBeenCalledTimes(3);
+        expect(analyseScreenAndCreateCopilotStep).toHaveBeenCalledTimes(2);
+
+        const expectedReport: AutoReport = {
+          summary: "all was good",
+          goal: GOAL,
+          steps: [
+            {
+              screenDescription: "Screen 1",
+              plan: pilotOutputStep1.plan,
+              code: "code executed",
+              review: pilotOutputStep1.review,
+              goalAchieved: false,
+            },
+          ],
+          review: {},
+        };
+
+        expect(result).toEqual(expectedReport);
+      });
     });
+
+    it("should use cached value result if available", async () => {
+      setupMocks({ cacheExists: true });
+
+      // Mock the findMatchingCacheEntry to return a valid cache entry
+      mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
+        value: {
+          screenDescription: "Screen 1",
+          plan: undefined,
+          review: undefined,
+          goalAchieved: false,
+          summary: "success",
+        },
+        snapshotHashes: { BlockHash: "hash" },
+        creationTime: Date.now(),
+      });
+
+      const goal = GOAL;
+      const previousSteps: AutoPreviousStep[] = [];
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        goal,
+        previousSteps,
+        mockCaptureResult,
+      );
+
+      expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalledWith(
+        JSON.stringify({
+          goal: GOAL,
+          previousSteps: [],
+        }),
+      );
+
+      expect(mockSnapshotComparator.generateHashes).toHaveBeenCalled();
+      expect(result.summary).toEqual("success");
+      expect(result.goalAchieved).toEqual(false);
+      expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
+    });
+
+    it("should retry if analysis fails", async () => {
+      setupMocks();
+      const goal = GOAL;
+      const previousSteps: AutoPreviousStep[] = [];
+      mockPromptHandler.runPrompt.mockRejectedValueOnce(
+        new Error("Failed to generate text"),
+      );
+
+      await performer.analyseScreenAndCreatePilotStep(
+        goal,
+        previousSteps,
+        mockCaptureResult,
+      );
+
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
+    });
+
+    it("should add error to previous step if analysis fails", async () => {
+      setupMocks();
+      const goal = GOAL;
+      const previousSteps: AutoPreviousStep[] = [];
+      mockPromptHandler.runPrompt.mockRejectedValueOnce(
+        new Error("Failed to generate text"),
+      );
+
+      await performer.analyseScreenAndCreatePilotStep(
+        goal,
+        previousSteps,
+        mockCaptureResult,
+      );
+
+      expect(mockPromptCreator.createPrompt).toHaveBeenNthCalledWith(
+        2,
+        goal,
+        VIEW_HIERARCHY,
+        true,
+        [
+          {
+            screenDescription: "",
+            step: "",
+            error: expect.stringContaining("Failed to generate text"),
+          },
+        ],
+        undefined,
+      );
+    });
+  });
+  describe("with review types", () => {
+    it("should perform an intent successfully with snapshot image support with review", async () => {
+      setupMocks();
+
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        GOAL,
+        [],
+        mockCaptureResult,
+        AUTOPILOT_REVIEW_DEFAULTS,
+      );
+
+      const expectedResult = {
+        screenDescription: "default name",
+        plan: {
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+        },
+        review: {
+          UX: {
+            summary: "The review of UX",
+            findings: ["UX finding one", "UX finding two"],
+            score: "7/10",
+          },
+          Accessibility: {
+            summary: "The review of accessibility",
+            findings: ["ACC finding one", "ACC finding two"],
+            score: "8/10",
+          },
+          Internationalization: {
+            summary: "The review of i18n",
+            findings: ["i18n finding one", "i18n finding two"],
+            score: "6/10",
+          },
+        },
+        goalAchieved: false,
+      };
+
+      expect(result).toEqual(expectedResult);
+      expect(mockPromptCreator.createPrompt).toHaveBeenCalledWith(
+        GOAL,
+        VIEW_HIERARCHY,
+        true,
+        [],
+        AUTOPILOT_REVIEW_DEFAULTS,
+      );
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledWith(
+        GENERATED_PROMPT,
+        SNAPSHOT_DATA,
+      );
+    });
+  });
 });

@@ -1,5 +1,5 @@
-import {breakReviewArrayToOutputsMapping} from "@/performers/auto-performer/reviews/reviews-utils";
-import {AutoReviewSectionType} from "@/types";
+import { breakReviewArrayToOutputsMapping } from "@/performers/auto-performer/reviews/reviews-utils";
+import { AutoReviewSectionType } from "@/types";
 
 export type Output = {
   tag: string;
@@ -9,9 +9,9 @@ export type Output = {
 export type OutputsMapping = Record<string, Output>;
 
 const BASE_PILOT_STEP = {
-    screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
-    thoughts: { tag: "THOUGHTS", isRequired: true },
-    action: { tag: "ACTION", isRequired: true },
+  screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
+  thoughts: { tag: "THOUGHTS", isRequired: true },
+  action: { tag: "ACTION", isRequired: true },
 };
 
 export const OUTPUTS_MAPPINGS: Record<string, OutputsMapping> = {
@@ -53,17 +53,22 @@ export function extractTaggedOutputs<M extends OutputsMapping>({
   return outputs as { [K in keyof M]: string };
 }
 
-export function extractTaggedOutputsController(text: string, reviewTypes?: AutoReviewSectionType[]): {[K in keyof ReturnType<typeof breakReviewArrayToOutputsMapping>]: string} {
-    if (!reviewTypes){
-        return extractTaggedOutputs({
-            text,
-            outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
-        });
-    }
-    const review_sections = breakReviewArrayToOutputsMapping(reviewTypes);
-    const pilot_step = {...BASE_PILOT_STEP, ...review_sections};
+export function extractTaggedOutputsController(
+  text: string,
+  reviewTypes?: AutoReviewSectionType[],
+): {
+  [K in keyof ReturnType<typeof breakReviewArrayToOutputsMapping>]: string;
+} {
+  if (!reviewTypes) {
     return extractTaggedOutputs({
-        text,
-        outputsMapper: pilot_step,
+      text,
+      outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
     });
+  }
+  const review_sections = breakReviewArrayToOutputsMapping(reviewTypes);
+  const pilot_step = { ...BASE_PILOT_STEP, ...review_sections };
+  return extractTaggedOutputs({
+    text,
+    outputsMapper: pilot_step,
+  });
 }

@@ -1,14 +1,14 @@
 /** Autopilot review section type */
 export type AutoReviewSectionType = {
-    /** Title of the review section */
-    title: string;
-    /** Emoji for the review section */
-    emoji: string;
-    /** Description of the review section for the prompt creation */
-    description: string,
-    /** Guidelines for the review section for prompt creation*/
-    guidelines: string[]
-}
+  /** Title of the review section */
+  title: string;
+  /** Emoji for the review section */
+  emoji: string;
+  /** Description of the review section for the prompt creation */
+  description: string;
+  /** Guidelines for the review section for prompt creation*/
+  guidelines: string[];
+};
 
 /** Complete Autopilot review */
 export type AutoReview = {
