@@ -1,5 +1,5 @@
-import { breakReviewArrayToOutputsMapping } from "@/performers/auto-performer/reviews/reviews-utils";
-import { AutoReviewSectionType } from "@/types";
+import { reviewConfigsToOutputsMapping } from "@/performers/auto-performer/reviews/reviews-utils";
+import { AutoReviewSectionConfig } from "@/types";
 
 export type Output = {
   tag: string;
@@ -14,21 +14,17 @@ const BASE_PILOT_STEP = {
   action: { tag: "ACTION", isRequired: true },
 };
 
-export const OUTPUTS_MAPPINGS: Record<string, OutputsMapping> = {
-  PILOT_REVIEW_SECTION: {
-    summary: { tag: "SUMMARY", isRequired: false },
-    findings: { tag: "FINDINGS", isRequired: false },
-    score: { tag: "SCORE", isRequired: false },
-  },
-  PILOT_STEP: {
-    ...BASE_PILOT_STEP,
-  },
-  PILOT_SUMMARY: {
-    summary: { tag: "SUMMARY", isRequired: true },
-  },
+const PILOT_REVIEW_SECTION = {
+  summary: { tag: "SUMMARY", isRequired: false },
+  findings: { tag: "FINDINGS", isRequired: false },
+  score: { tag: "SCORE", isRequired: false },
 };
 
-export function extractTaggedOutputs<M extends OutputsMapping>({
+const PILOT_SUMMARY = {
+  summary: { tag: "SUMMARY", isRequired: true },
+};
+
+function extractTaggedOutputs<M extends OutputsMapping>({
   text,
   outputsMapper,
 }: {
@@ -53,22 +49,25 @@ export function extractTaggedOutputs<M extends OutputsMapping>({
   return outputs as { [K in keyof M]: string };
 }
 
-export function extractTaggedOutputsController(
-  text: string,
-  reviewTypes?: AutoReviewSectionType[],
-): {
-  [K in keyof ReturnType<typeof breakReviewArrayToOutputsMapping>]: string;
+export function extractPilotSummaryOutputs(text: string): {
+  [K in keyof typeof PILOT_SUMMARY]: string;
 } {
-  if (!reviewTypes) {
-    return extractTaggedOutputs({
-      text,
-      outputsMapper: OUTPUTS_MAPPINGS.PILOT_STEP,
-    });
-  }
-  const review_sections = breakReviewArrayToOutputsMapping(reviewTypes);
-  const pilot_step = { ...BASE_PILOT_STEP, ...review_sections };
-  return extractTaggedOutputs({
-    text,
-    outputsMapper: pilot_step,
-  });
+  return extractTaggedOutputs({ text, outputsMapper: PILOT_SUMMARY });
+}
+
+export function extractReviewOutputs(text: string): {
+  [K in keyof typeof PILOT_REVIEW_SECTION]: string;
+} {
+  return extractTaggedOutputs({ text, outputsMapper: PILOT_REVIEW_SECTION });
+}
+
+export function extractAutoPilotStepOutputs(
+  text: string,
+  reviewTypes: AutoReviewSectionConfig[] = [],
+): {
+  [K in keyof ReturnType<typeof reviewConfigsToOutputsMapping>]: string;
+} {
+  const reviewSections = reviewConfigsToOutputsMapping(reviewTypes);
+  const outputsMapper = { ...BASE_PILOT_STEP, ...reviewSections };
+  return extractTaggedOutputs({ text, outputsMapper });
 }
