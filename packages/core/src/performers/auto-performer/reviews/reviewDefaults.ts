@@ -1,9 +1,8 @@
-import { AutoReviewSectionType } from "@/types";
+import { AutoReviewSectionConfig } from "@/types";
 
-const AUTOPILOT_REVIEW_DEFAULTS: AutoReviewSectionType[] = [
+const AUTOPILOT_REVIEW_DEFAULTS: AutoReviewSectionConfig[] = [
   {
     title: "UX",
-    emoji: "🎨",
     description:
       "The UX Review focuses on evaluating the user experience of the product. This review assesses the usability, design consistency, intuitive navigation, and overall user satisfaction.",
     guidelines: [
@@ -16,7 +15,6 @@ const AUTOPILOT_REVIEW_DEFAULTS: AutoReviewSectionType[] = [
   },
   {
     title: "Accessibility",
-    emoji: "👁️",
     description:
       "The Accessibility Review ensures the product is usable by people with various disabilities. This includes checking compatibility with assistive technologies, color contrast, keyboard navigation, and screen reader support.",
     guidelines: [
@@ -29,7 +27,6 @@ const AUTOPILOT_REVIEW_DEFAULTS: AutoReviewSectionType[] = [
   },
   {
     title: "Internationalization",
-    emoji: "🌐",
     description:
       "The Internationalization Review focuses on the product’s readiness for global markets. This includes evaluating language support, date formats, currency symbols, and overall localization flexibility.",
     guidelines: [

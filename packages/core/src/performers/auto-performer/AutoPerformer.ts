@@ -5,15 +5,15 @@ import {
   AutoReport,
   AutoReview,
   AutoReviewSection,
-  AutoReviewSectionType,
+  AutoReviewSectionConfig,
   AutoStepPlan,
   AutoStepReport,
 } from "@/types/auto";
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
 import {
-  extractTaggedOutputs,
-  extractTaggedOutputsController,
-  OUTPUTS_MAPPINGS,
+  extractReviewOutputs,
+  extractPilotSummaryOutputs,
+  extractAutoPilotStepOutputs,
 } from "@/common/extract/extractTaggedOutputs";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
@@ -32,10 +32,7 @@ export class AutoPerformer {
   ) {}
 
   private extractReviewOutput(text: string): AutoReviewSection {
-    const { summary, findings, score } = extractTaggedOutputs({
-      text,
-      outputsMapper: OUTPUTS_MAPPINGS.PILOT_REVIEW_SECTION,
-    });
+    const { summary, findings, score } = extractReviewOutputs(text);
 
     return {
       summary,
@@ -48,10 +45,10 @@ export class AutoPerformer {
 
   private logReviewSection(
     review: AutoReviewSection,
-    typeObject: AutoReviewSectionType,
+    typeObject: AutoReviewSectionConfig,
   ) {
     logger.info({
-      message: `📝${typeObject.emoji} Pilot ${typeObject.title.toUpperCase()} review: ${review?.summary} (Score: ${review?.score})`,
+      message: `📝 Pilot ${typeObject.title.toUpperCase()} review: ${review?.summary} (Score: ${review?.score})`,
       isBold: true,
       color: "blueBright",
     });
@@ -69,7 +66,7 @@ export class AutoPerformer {
     goal: string,
     previousSteps: AutoPreviousStep[],
     screenCapture: ScreenCapturerResult,
-    reviewSectionTypes?: AutoReviewSectionType[],
+    reviewSectionTypes?: AutoReviewSectionConfig[],
     maxAttempts: number = 2,
   ): Promise<AutoStepReport> {
     const cacheKey = this.cacheHandler.generateCacheKey({
@@ -104,7 +101,7 @@ export class AutoPerformer {
           screenCapture.viewHierarchy ?? "Unknown view hierarchy",
           !!screenCapture.snapshot,
           previousSteps,
-          reviewSectionTypes ? reviewSectionTypes : undefined,
+          reviewSectionTypes,
         );
 
         const promptResult = await this.promptHandler.runPrompt(
@@ -112,9 +109,9 @@ export class AutoPerformer {
           screenCapture.snapshot,
         );
 
-        const outputs = extractTaggedOutputsController(
+        const outputs = extractAutoPilotStepOutputs(
           promptResult,
-          reviewSectionTypes ? reviewSectionTypes : undefined,
+          reviewSectionTypes,
         );
 
         const thoughts = outputs.thoughts;
@@ -168,10 +165,7 @@ export class AutoPerformer {
         }
 
         const summary = goalAchieved
-          ? extractTaggedOutputs({
-              text: thoughts,
-              outputsMapper: OUTPUTS_MAPPINGS.PILOT_SUMMARY,
-            }).summary
+          ? extractPilotSummaryOutputs(thoughts).summary
           : undefined;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
@@ -231,7 +225,7 @@ export class AutoPerformer {
 
   async perform(
     goal: string,
-    reviewSectionTypes?: AutoReviewSectionType[],
+    reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoReport> {
     const maxSteps = 100;
     let previousSteps: AutoPreviousStep[] = [];
