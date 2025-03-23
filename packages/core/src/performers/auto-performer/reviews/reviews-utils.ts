@@ -1,8 +1,8 @@
-import { AutoReviewSectionType } from "@/types";
+import { AutoReviewSectionConfig } from "@/types";
 import { OutputsMapping } from "@/common/extract/extractTaggedOutputs";
 
-export function breakReviewArrayToOutputsMapping(
-  reviews: AutoReviewSectionType[],
+export function reviewConfigsToOutputsMapping(
+  reviews: AutoReviewSectionConfig[],
 ): OutputsMapping {
   return reviews.reduce((pilotStep, review) => {
     const { title } = review;
@@ -14,7 +14,7 @@ export function breakReviewArrayToOutputsMapping(
 }
 
 export function breakReviewArrayToItsTypes(
-  reviews: AutoReviewSectionType[],
+  reviews: AutoReviewSectionConfig[],
 ): string[] {
   return reviews.map((review) => review.title);
 }

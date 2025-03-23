@@ -1,14 +1,13 @@
 import { AUTOPILOT_REVIEW_DEFAULTS } from "./reviewDefaults";
 import { OutputsMapping } from "@/common/extract/extractTaggedOutputs";
 import {
-  breakReviewArrayToOutputsMapping,
+  reviewConfigsToOutputsMapping,
   breakReviewArrayToItsTypes,
 } from "./reviews-utils";
 
 const AUTOPILOT_REVIEW = [
   {
     title: "Performance Testing",
-    emoji: "🚀",
     description:
       "The Performance Testing Review focuses on the speed and responsiveness of the product. This review assesses the loading times, animations, and transitions of the UI components.",
     guidelines: [
@@ -27,9 +26,7 @@ describe("Reviews Utils", () => {
         Accessibility: { tag: "ACCESSIBILITY", isRequired: true },
         Internationalization: { tag: "INTERNATIONALIZATION", isRequired: true },
       };
-      const result = breakReviewArrayToOutputsMapping(
-        AUTOPILOT_REVIEW_DEFAULTS,
-      );
+      const result = reviewConfigsToOutputsMapping(AUTOPILOT_REVIEW_DEFAULTS);
       expect(result).toEqual(expected);
     });
 
@@ -40,7 +37,7 @@ describe("Reviews Utils", () => {
           isRequired: true,
         },
       };
-      const result = breakReviewArrayToOutputsMapping(AUTOPILOT_REVIEW);
+      const result = reviewConfigsToOutputsMapping(AUTOPILOT_REVIEW);
       expect(result).toEqual(expected);
     });
   });

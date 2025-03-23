@@ -13,8 +13,6 @@ describe('ExampleApp Detox Test Suite', () => {
     const reviewTypes = [{
         title: "Layout Integrity",
         emoji: "🏗️",
-        color: "light blue",
-        findingColor: "light blue",
         description: "The Layout Integrity Review focuses on the overall layout and structure of the product. This review assesses the alignment, spacing, and visual hierarchy of the UI components.",
         guidelines: [
             "Check for consistent spacing between elements and sections.",

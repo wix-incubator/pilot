@@ -1,4 +1,4 @@
-import { AutoPreviousStep, AutoReviewSectionType } from "@/types";
+import { AutoPreviousStep, AutoReviewSectionConfig } from "@/types";
 import { truncateString } from "@/common/prompt-utils";
 import { breakReviewArrayToItsTypes } from "@/performers/auto-performer/reviews/reviews-utils";
 
@@ -10,7 +10,7 @@ export class AutoPerformerPromptCreator {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
     previousSteps: AutoPreviousStep[],
-    reviewTypes?: AutoReviewSectionType[],
+    reviewTypes?: AutoReviewSectionConfig[],
   ): string {
     const reviewTypesArray = reviewTypes
       ? breakReviewArrayToItsTypes(reviewTypes)
@@ -86,7 +86,7 @@ export class AutoPerformerPromptCreator {
     viewHierarchy: string,
     isSnapshotImageAttached: boolean,
     previousSteps: AutoPreviousStep[],
-    reviewTypes?: AutoReviewSectionType[],
+    reviewTypes?: AutoReviewSectionConfig[],
   ): string[] {
     const context = [
       "## Context",
@@ -181,7 +181,9 @@ export class AutoPerformerPromptCreator {
       "",
       `2. **Thought Process**: Provide a detailed description (which can be more than one line) of your thought process while determining the next action.`,
       "",
-      `3. **Review Reports**: Create comprehensive review reports for each applicable section (e.g., UX, Accessibility, Internationalization) that include a summary, findings, and a score.`,
+      reviewTypesArray
+        ? `3. **Review Reports**: Create comprehensive review reports for each applicable section (e.g., ${reviewTypesArray.join(", ")}) that include a summary, findings, and a score.`
+        : "",
       "",
       "### Please follow these steps carefully:",
       "",
@@ -197,7 +199,7 @@ export class AutoPerformerPromptCreator {
       "",
       "### Examples for Answer Formats",
       "",
-      `Given goal: 'Add a product to the shopping cart and validate it was added correctly.' The review must contain ${reviewTypesArray} open and close tags.`,
+      `Given goal: 'Add a product to the shopping cart and validate it was added correctly.' The review must contain ${reviewTypesArray?.join(", ")} open and close tags.`,
       "",
       "#### Next Action with Thoughts:",
       "",
@@ -292,7 +294,7 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
       const reviewTypes = reviewTypesArray.join(", ");
       steps.push(
         `Also, provide comprehensive overall ${reviewTypes} reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.`,
-        "For each applicable review section (${reviewTypes), create a comprehensive report enclosed within corresponding tags (e.g., `<UX>`, `<ACCESSIBILITY>`, `<INTERNATIONALIZATION>`), including a summary, findings, and a score out of 10.",
+        `For each applicable review section (${reviewTypes}), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.`,
         "Ensure each section is clearly labeled and formatted as shown in the examples.",
         "If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.",
       );
