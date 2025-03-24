@@ -11,8 +11,8 @@ import {
 } from "@/types/auto";
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
 import {
-  extractReviewOutputs,
-  extractPilotSummaryOutputs,
+  extractAutoPilotReviewOutputs,
+  extractAutoPilotSummaryOutputs,
   extractAutoPilotStepOutputs,
 } from "@/common/extract/extractTaggedOutputs";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
@@ -32,7 +32,7 @@ export class AutoPerformer {
   ) {}
 
   private extractReviewOutput(text: string): AutoReviewSection {
-    const { summary, findings, score } = extractReviewOutputs(text);
+    const { summary, findings, score } = extractAutoPilotReviewOutputs(text);
 
     return {
       summary,
@@ -165,7 +165,7 @@ export class AutoPerformer {
         }
 
         const summary = goalAchieved
-          ? extractPilotSummaryOutputs(thoughts).summary
+          ? extractAutoPilotSummaryOutputs(thoughts).summary
           : undefined;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {

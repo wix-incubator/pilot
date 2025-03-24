@@ -8,19 +8,19 @@ export type Output = {
 
 export type OutputsMapping = Record<string, Output>;
 
-const BASE_PILOT_STEP = {
+const BASE_AUTOPILOT_STEP = {
   screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
   thoughts: { tag: "THOUGHTS", isRequired: true },
   action: { tag: "ACTION", isRequired: true },
 };
 
-const PILOT_REVIEW_SECTION = {
+const AUTOPILOT_REVIEW_SECTION = {
   summary: { tag: "SUMMARY", isRequired: false },
   findings: { tag: "FINDINGS", isRequired: false },
   score: { tag: "SCORE", isRequired: false },
 };
 
-const PILOT_SUMMARY = {
+const AUTOPILOT_SUMMARY = {
   summary: { tag: "SUMMARY", isRequired: true },
 };
 
@@ -49,16 +49,16 @@ function extractTaggedOutputs<M extends OutputsMapping>({
   return outputs as { [K in keyof M]: string };
 }
 
-export function extractPilotSummaryOutputs(text: string): {
-  [K in keyof typeof PILOT_SUMMARY]: string;
+export function extractAutoPilotSummaryOutputs(text: string): {
+  [K in keyof typeof AUTOPILOT_SUMMARY]: string;
 } {
-  return extractTaggedOutputs({ text, outputsMapper: PILOT_SUMMARY });
+  return extractTaggedOutputs({ text, outputsMapper: AUTOPILOT_SUMMARY });
 }
 
-export function extractReviewOutputs(text: string): {
-  [K in keyof typeof PILOT_REVIEW_SECTION]: string;
+export function extractAutoPilotReviewOutputs(text: string): {
+  [K in keyof typeof AUTOPILOT_REVIEW_SECTION]: string;
 } {
-  return extractTaggedOutputs({ text, outputsMapper: PILOT_REVIEW_SECTION });
+  return extractTaggedOutputs({ text, outputsMapper: AUTOPILOT_REVIEW_SECTION });
 }
 
 export function extractAutoPilotStepOutputs(
@@ -68,6 +68,6 @@ export function extractAutoPilotStepOutputs(
   [K in keyof ReturnType<typeof reviewConfigsToOutputsMapping>]: string;
 } {
   const reviewSections = reviewConfigsToOutputsMapping(reviewTypes);
-  const outputsMapper = { ...BASE_PILOT_STEP, ...reviewSections };
+  const outputsMapper = { ...BASE_AUTOPILOT_STEP, ...reviewSections };
   return extractTaggedOutputs({ text, outputsMapper });
 }

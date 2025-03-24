@@ -1,7 +1,7 @@
 import {
   extractAutoPilotStepOutputs,
-  extractReviewOutputs,
-  extractPilotSummaryOutputs,
+  extractAutoPilotReviewOutputs,
+  extractAutoPilotSummaryOutputs,
 } from "./extractTaggedOutputs";
 import { AutoReviewSectionConfig } from "@/types/auto";
 
@@ -103,7 +103,7 @@ describe("extractOutputs", () => {
         <SCORE>
         100
         </SCORE>`;
-      const outputs = extractReviewOutputs(textToBeParsed);
+      const outputs = extractAutoPilotReviewOutputs(textToBeParsed);
       expect(outputs).toEqual({
         summary: "This is the summary of the review",
         findings: "These are the findings of the review",
@@ -117,7 +117,7 @@ describe("extractOutputs", () => {
         <SUMMARY>
         This is the summary of the review
         </SUMMARY>`;
-      const outputs = extractReviewOutputs(textToBeParsed);
+      const outputs = extractAutoPilotReviewOutputs(textToBeParsed);
       expect(outputs).toEqual({
         summary: "This is the summary of the review",
         findings: "N/A",
@@ -133,7 +133,7 @@ describe("extractOutputs", () => {
         <SUMMARY>
         This is the summary of the review
         </SUMMARY>`;
-      const outputs = extractPilotSummaryOutputs(textToBeParsed);
+      const outputs = extractAutoPilotSummaryOutputs(textToBeParsed);
       expect(outputs).toEqual({
         summary: "This is the summary of the review",
       });
@@ -145,7 +145,7 @@ describe("extractOutputs", () => {
         <FINDINGS>
         These are the findings of the review
         </FINDINGS>`;
-      expect(() => extractPilotSummaryOutputs(textToBeParsed)).toThrowError(
+      expect(() => extractAutoPilotSummaryOutputs(textToBeParsed)).toThrowError(
         "Missing field for required tag <SUMMARY>",
       );
     });
