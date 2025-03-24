@@ -66,7 +66,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 13. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -196,10 +196,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -360,7 +360,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 13. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -490,10 +490,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -654,7 +654,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 13. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -784,10 +784,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -959,7 +959,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 13. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -1089,10 +1089,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -1264,7 +1264,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 13. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -1394,10 +1394,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -1556,7 +1556,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 
 ### Verify the Prompt
 
@@ -1602,10 +1602,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -1695,7 +1695,7 @@ Your tasks are as follows:
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
 9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a \`<SUMMARY>\` block inside the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+10. If the goal is achieved, add a separate\`<SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
 
 ### Verify the Prompt
 
@@ -1741,10 +1741,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>

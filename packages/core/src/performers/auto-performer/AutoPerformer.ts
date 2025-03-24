@@ -12,7 +12,6 @@ import {
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
 import {
   extractAutoPilotReviewOutputs,
-  extractAutoPilotSummaryOutputs,
   extractAutoPilotStepOutputs,
 } from "@/common/extract/extractTaggedOutputs";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
@@ -164,9 +163,7 @@ export class AutoPerformer {
           });
         }
 
-        const summary = goalAchieved
-          ? extractAutoPilotSummaryOutputs(thoughts).summary
-          : undefined;
+        const summary = goalAchieved ? outputs.summary : undefined;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
           const snapshotHashes =

@@ -12,16 +12,13 @@ const BASE_AUTOPILOT_STEP = {
   screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
   thoughts: { tag: "THOUGHTS", isRequired: true },
   action: { tag: "ACTION", isRequired: true },
+  summary: { tag: "SUMMARY", isRequired: true },
 };
 
 const AUTOPILOT_REVIEW_SECTION = {
   summary: { tag: "SUMMARY", isRequired: false },
   findings: { tag: "FINDINGS", isRequired: false },
   score: { tag: "SCORE", isRequired: false },
-};
-
-const AUTOPILOT_SUMMARY = {
-  summary: { tag: "SUMMARY", isRequired: true },
 };
 
 function extractTaggedOutputs<M extends OutputsMapping>({
@@ -32,7 +29,6 @@ function extractTaggedOutputs<M extends OutputsMapping>({
   outputsMapper: M;
 }): { [K in keyof M]: string } {
   const outputs: Partial<{ [K in keyof M]: string }> = {};
-
   for (const fieldName in outputsMapper) {
     const tag = outputsMapper[fieldName].tag;
     const regex = new RegExp(`<${tag}>(.*?)</${tag}>`, "s");
@@ -49,16 +45,13 @@ function extractTaggedOutputs<M extends OutputsMapping>({
   return outputs as { [K in keyof M]: string };
 }
 
-export function extractAutoPilotSummaryOutputs(text: string): {
-  [K in keyof typeof AUTOPILOT_SUMMARY]: string;
-} {
-  return extractTaggedOutputs({ text, outputsMapper: AUTOPILOT_SUMMARY });
-}
-
 export function extractAutoPilotReviewOutputs(text: string): {
   [K in keyof typeof AUTOPILOT_REVIEW_SECTION]: string;
 } {
-  return extractTaggedOutputs({ text, outputsMapper: AUTOPILOT_REVIEW_SECTION });
+  return extractTaggedOutputs({
+    text,
+    outputsMapper: AUTOPILOT_REVIEW_SECTION,
+  });
 }
 
 export function extractAutoPilotStepOutputs(

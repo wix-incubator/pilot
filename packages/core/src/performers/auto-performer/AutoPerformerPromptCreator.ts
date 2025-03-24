@@ -238,10 +238,10 @@ Shopping Cart Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
+</THOUGHTS>
 <SUMMARY>
 The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </SUMMARY>
-</THOUGHTS>
 <ACTION>
 success
 </ACTION>
@@ -288,7 +288,7 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
       "Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.",
       "Generate a one-line string that precisely describes this next action, enclosed within `<ACTION>` tags.",
       "Provide a detailed description of your thought process enclosed within `<THOUGHTS>` tags.",
-      "If the goal is achieved, add a `<SUMMARY>` block inside the `<THOUGHTS>` section, summarizing the overall flow and findings.",
+      "If the goal is achieved, add a separate`<SUMMARY>` block after the `<THOUGHTS>` section, summarizing the overall flow and findings.",
     ];
     if (reviewTypesArray) {
       const reviewTypes = reviewTypesArray.join(", ");

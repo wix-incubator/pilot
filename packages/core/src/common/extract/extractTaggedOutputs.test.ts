@@ -1,7 +1,6 @@
 import {
   extractAutoPilotStepOutputs,
   extractAutoPilotReviewOutputs,
-  extractAutoPilotSummaryOutputs,
 } from "./extractTaggedOutputs";
 import { AutoReviewSectionConfig } from "@/types/auto";
 
@@ -23,7 +22,10 @@ const TEXT = `
         This is the action the pilot should perform:
          <ACTION>
          Tap on GREAT button
-        </ACTION>`;
+        </ACTION>
+        <SUMMARY>
+        This is the summary of the review
+        </SUMMARY>`;
 
 describe("extractOutputs", () => {
   describe("extractAutoPilotStepOutputs", () => {
@@ -33,6 +35,7 @@ describe("extractOutputs", () => {
         expect(outputs).toEqual({
           screenDescription: "This is the screen with a button",
           thoughts: "I think this is great",
+          summary: "This is the summary of the review",
           action: "Tap on GREAT button",
         });
       }
@@ -48,6 +51,7 @@ describe("extractOutputs", () => {
         screenDescription: "This is the screen with a button",
         thoughts: "I think this is great",
         action: "Tap on GREAT button",
+        summary: "This is the summary of the review",
       });
     });
 
@@ -77,6 +81,7 @@ describe("extractOutputs", () => {
         screenDescription: "This is the screen with a button",
         thoughts: "I think this is great",
         action: "Tap on GREAT button",
+        summary: "This is the summary of the review",
         UX: "This is the UX review",
       });
     });
@@ -123,31 +128,6 @@ describe("extractOutputs", () => {
         findings: "N/A",
         score: "N/A",
       });
-    });
-  });
-
-  describe("extractPilotSummaryOutputs", () => {
-    it("should extract outputs from text", () => {
-      const textToBeParsed = `
-        This is the summary:
-        <SUMMARY>
-        This is the summary of the review
-        </SUMMARY>`;
-      const outputs = extractAutoPilotSummaryOutputs(textToBeParsed);
-      expect(outputs).toEqual({
-        summary: "This is the summary of the review",
-      });
-    });
-
-    it("should throw error if required output is missing", () => {
-      const textToBeParsed = `
-        These are the findings:
-        <FINDINGS>
-        These are the findings of the review
-        </FINDINGS>`;
-      expect(() => extractAutoPilotSummaryOutputs(textToBeParsed)).toThrowError(
-        "Missing field for required tag <SUMMARY>",
-      );
     });
   });
 });
