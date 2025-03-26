@@ -163,7 +163,7 @@ export class AutoPerformer {
           });
         }
 
-        const summary = goalAchieved ? outputs.summary : undefined;
+        const summary = goalAchieved ? outputs.goalSummary : undefined;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
           const snapshotHashes =
