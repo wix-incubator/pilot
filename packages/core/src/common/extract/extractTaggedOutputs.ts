@@ -1,6 +1,5 @@
 import { reviewConfigsToOutputsMapping } from "@/performers/auto-performer/reviews/reviews-utils";
 import { AutoReviewSectionConfig } from "@/types";
-import logger from "@/common/logger";
 
 export type Output = {
   tag: string;
@@ -42,7 +41,6 @@ function extractTaggedOutputs<M extends OutputsMapping>({
       throw new Error(`Missing field for required tag <${tag}>`);
     }
   }
-  logger.warn(`THIS IS THE OUTPUTS: ${JSON.stringify(outputs)}`);
   return outputs as { [K in keyof M]: string };
 }
 
@@ -61,7 +59,6 @@ export function extractAutoPilotStepOutputs(
 ): {
   [K in keyof ReturnType<typeof reviewConfigsToOutputsMapping>]: string;
 } {
-  logger.warn(`THIS IS THE TEXT: ${text}`);
   const reviewSections = reviewConfigsToOutputsMapping(reviewTypes);
   const outputsMapper = { ...BASE_AUTOPILOT_STEP, ...reviewSections };
   return extractTaggedOutputs({ text, outputsMapper });

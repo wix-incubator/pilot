@@ -23,9 +23,9 @@ const TEXT = `
          <ACTION>
          Tap on GREAT button
         </ACTION>
-        <SUMMARY>
+        <GOAL_SUMMARY>
         This is the summary of the review
-        </SUMMARY>`;
+        </GOAL_SUMMARY>`;
 
 describe("extractOutputs", () => {
   describe("extractAutoPilotStepOutputs", () => {
@@ -35,7 +35,7 @@ describe("extractOutputs", () => {
         expect(outputs).toEqual({
           screenDescription: "This is the screen with a button",
           thoughts: "I think this is great",
-          summary: "This is the summary of the review",
+          goalSummary: "This is the summary of the review",
           action: "Tap on GREAT button",
         });
       }
@@ -51,7 +51,7 @@ describe("extractOutputs", () => {
         screenDescription: "This is the screen with a button",
         thoughts: "I think this is great",
         action: "Tap on GREAT button",
-        summary: "This is the summary of the review",
+        goalSummary: "This is the summary of the review",
       });
     });
 
@@ -72,17 +72,25 @@ describe("extractOutputs", () => {
 
     it("should extract from text including additional review types", () => {
       const textToBeParsed = `${TEXT}
-        This is the yx review:
+        This is the ux review:
         <UX>
-        This is the UX review
+        <SUMMARY>
+          This is the ux review summary
+        </SUMMARY>
+        <FINDINGS>
+            These are the ux review findings
+        </FINDINGS>
+        <SCORE>
+            100
+        </SCORE>   
         </UX>`;
       const outputs = extractAutoPilotStepOutputs(textToBeParsed, [UX]);
       expect(outputs).toEqual({
         screenDescription: "This is the screen with a button",
         thoughts: "I think this is great",
         action: "Tap on GREAT button",
-        summary: "This is the summary of the review",
-        UX: "This is the UX review",
+        goalSummary: "This is the summary of the review",
+        UX: "<SUMMARY>\n          This is the ux review summary\n        </SUMMARY>\n        <FINDINGS>\n            These are the ux review findings\n        </FINDINGS>\n        <SCORE>\n            100\n        </SCORE>",
       });
     });
 
