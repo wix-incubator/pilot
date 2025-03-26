@@ -12,7 +12,7 @@ const BASE_AUTOPILOT_STEP = {
   screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
   thoughts: { tag: "THOUGHTS", isRequired: true },
   action: { tag: "ACTION", isRequired: true },
-  summary: { tag: "SUMMARY", isRequired: true },
+  summary: { tag: "SUMMARY", isRequired: false },
 };
 
 const AUTOPILOT_REVIEW_SECTION = {
