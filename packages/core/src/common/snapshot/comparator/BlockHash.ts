@@ -2,6 +2,7 @@ import { ScreenCapturerResult, SnapshotHashing } from "@/types";
 import { PNG } from "pngjs";
 import fs from "fs";
 import { createReadStream } from "fs";
+import logger from "@/common/logger";
 
 export class BlockHash implements SnapshotHashing {
   constructor(private bits: number = 16) {}
@@ -46,7 +47,8 @@ export class BlockHash implements SnapshotHashing {
     try {
       return await this.calculateBlockHash(screenCapture.snapshot);
     } catch (error) {
-      console.error("Error reading image file, returning mock hash", error);
+      const underlyingErrorMessage = (error as Error)?.message;
+      logger.error(`Error reading image file, returning mock hash ${underlyingErrorMessage}`);
       return "f".repeat(this.bits * this.bits / 4);
     }
   }
@@ -56,7 +58,8 @@ export class BlockHash implements SnapshotHashing {
       const image = await this.readPNG(filePath);
       return this.bmvbhash(image, this.bits);
     } catch (error) {
-      console.error("Error calculating BlockHash:", error);
+      const underlyingErrorMessage = (error as Error)?.message;
+      logger.error(`Error calculating BlockHash: ${underlyingErrorMessage}`);
       throw error;
     }
   }
@@ -76,7 +79,7 @@ export class BlockHash implements SnapshotHashing {
 
     const result: number[] = [];
     const blocks: number[][] = Array(bits).fill(0).map(() => Array(bits).fill(0));
-    
+
     const blockWidth = data.width / bits;
     const blockHeight = data.height / bits;
 
@@ -208,10 +211,10 @@ export class BlockHash implements SnapshotHashing {
     // Compare medians across four horizontal bands
     for (let i = 0; i < 4; i++) {
       const m = this.median(blocks.slice(i * bandsize, (i + 1) * bandsize));
-      
+
       for (let j = i * bandsize; j < (i + 1) * bandsize; j++) {
         const v = blocks[j];
-        
+
         // Output a 1 if the block is brighter than the median.
         // With images dominated by black or white, the median may
         // end up being 0 or the max value, and thus having a lot
@@ -228,17 +231,17 @@ export class BlockHash implements SnapshotHashing {
    */
   private bitsToHexhash(bitsArray: number[]): string {
     let hex = '';
-    
+
     for (let i = 0; i < bitsArray.length; i += 4) {
       const nibble = bitsArray.slice(i, i + 4);
       // Pad with zeros if we're at the end and don't have 4 full bits
       while (nibble.length < 4) {
         nibble.push(0);
       }
-      
+
       hex += parseInt(nibble.join(''), 2).toString(16);
     }
-    
+
     return hex;
   }
 
@@ -280,12 +283,12 @@ export class BlockHash implements SnapshotHashing {
     // For hex strings, we need to compare bit by bit after conversion
     let totalBits = 0;
     let differentBits = 0;
-    
+
     for (let i = 0; i < snapshot1.length; i++) {
       // Convert each hex character to 4 bits
       const bits1 = parseInt(snapshot1[i], 16).toString(2).padStart(4, '0');
       const bits2 = parseInt(snapshot2[i], 16).toString(2).padStart(4, '0');
-      
+
       // Compare each bit position
       for (let j = 0; j < bits1.length; j++) {
         totalBits++;

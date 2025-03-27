@@ -1,5 +1,6 @@
 import { BlockHash } from "./BlockHash";
 import { getSnapshotImage } from "@/test-utils/SnapshotComparatorTestImages/SnapshotImageGetter";
+import path from "path";
 
 describe("BlockHash algorithm", () => {
   const snapshotComparator = new BlockHash();
@@ -68,5 +69,27 @@ describe("BlockHash algorithm", () => {
     const similar = snapshotComparator.areSnapshotsSimilar(hash1!, hash2!);
     expect(hash1).not.toEqual(hash2);
     expect(similar).toBe(false);
+  });
+
+  it("should generate a valid hash for a real image", async () => {
+    // Use the test_img.png in the same directory
+    const testImgPath = path.join(__dirname, "test_img.png");
+    
+    // To bypass the mocked implementation in our test file, we will create a new instance
+    // and directly call the bmvbhash method
+    const blockHash = new BlockHash(16);
+    
+    // We will directly use the PNG synchronous read API since we know the path
+    // This is equivalent to calling hashSnapshot without the mock intercepts
+    const fs = require('fs');
+    const { PNG } = require('pngjs');
+    const pngData = fs.readFileSync(testImgPath);
+    const png = PNG.sync.read(pngData);
+    
+    // Access the private bmvbhash method using type casting
+    const hash = (blockHash as any).bmvbhash(png, 16);
+
+    // Store the hash as a snapshot so we can detect if the algorithm changes
+    expect(hash).toMatchInlineSnapshot(`"00000000060007e007e007e000c07ffc3ffc000006e007e0000007c000000000"`);
   });
 });
