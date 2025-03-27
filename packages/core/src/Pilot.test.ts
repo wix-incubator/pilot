@@ -303,7 +303,10 @@ describe("Pilot", () => {
 
       const pilotResult = await pilot.autopilot(goal);
 
-      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(goal);
+      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(
+        goal,
+        undefined,
+      );
       expect(pilotResult).toEqual(mockPilotResult);
     });
   });
@@ -377,7 +380,10 @@ describe("Pilot", () => {
 
       const result = await pilot.autopilot(goal);
 
-      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(goal);
+      expect(pilot["autoPerformer"].perform).toHaveBeenCalledWith(
+        goal,
+        undefined,
+      );
       expect(result).toEqual(expectedResult);
     });
   });

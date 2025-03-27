@@ -3,6 +3,7 @@ import {
   PreviousStep,
   ScreenCapturerResult,
   TestingFrameworkAPICatalogCategory,
+  AutoReviewSectionConfig,
 } from "@/types";
 import { PilotError } from "@/errors/PilotError";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
@@ -209,12 +210,16 @@ export class Pilot {
   /**
    * Performs an entire test flow using the provided goal.
    * @param goal A string which describes the flow should be executed.
+   * @param reviewConfigs Optional review types to include in the autopilot report.
    * @returns pilot report with info about the actions thoughts etc ...
    */
-  async autopilot(goal: string): Promise<AutoReport> {
+  async autopilot(
+    goal: string,
+    reviewConfigs?: AutoReviewSectionConfig[],
+  ): Promise<AutoReport> {
     this.loadCache();
     this.assertIsRunning();
-    return await this.autoPerformer.perform(goal);
+    return await this.autoPerformer.perform(goal, reviewConfigs);
   }
 
   /**
