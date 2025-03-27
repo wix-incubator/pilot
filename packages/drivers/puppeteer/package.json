@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/puppeteer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Puppeteer driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,7 +32,7 @@
     "@wix-pilot/basewebdriver": "^1.0.1"
   },
   "devDependencies": {
-    "puppeteer": "^20.8.0",
+    "puppeteer": "^22.15.0",
     "axios": "^1.7.9"
   },
   "peerDependencies": {
