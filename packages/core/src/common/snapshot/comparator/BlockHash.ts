@@ -17,12 +17,12 @@ export class BlockHash implements SnapshotHashing {
     // For testing purposes
     if (screenCapture.snapshot.includes("baseline")) {
       // Generate a consistent hex hash for baseline - all 'f's (all 1's in binary)
-      return "f".repeat(this.bits * this.bits / 4);
+      return "f".repeat((this.bits * this.bits) / 4);
     }
 
     if (screenCapture.snapshot.includes("with_text")) {
       // Generate a hex hash for with_text that's slightly different from baseline
-      const baselineHash = "f".repeat(this.bits * this.bits / 4);
+      const baselineHash = "f".repeat((this.bits * this.bits) / 4);
       const diffCount = Math.floor(baselineHash.length * 0.05);
 
       const withTextHash = baselineHash.split("");
@@ -41,15 +41,17 @@ export class BlockHash implements SnapshotHashing {
 
     if (screenCapture.snapshot.includes("different")) {
       // Generate a hex hash for different - all '0's
-      return "0".repeat(this.bits * this.bits / 4);
+      return "0".repeat((this.bits * this.bits) / 4);
     }
 
     try {
       return await this.calculateBlockHash(screenCapture.snapshot);
     } catch (error) {
       const underlyingErrorMessage = (error as Error)?.message;
-      logger.error(`Error reading image file, returning mock hash ${underlyingErrorMessage}`);
-      return "f".repeat(this.bits * this.bits / 4);
+      logger.error(
+        `Error reading image file, returning mock hash ${underlyingErrorMessage}`,
+      );
+      return "f".repeat((this.bits * this.bits) / 4);
     }
   }
 
@@ -78,7 +80,9 @@ export class BlockHash implements SnapshotHashing {
     }
 
     const result: number[] = [];
-    const blocks: number[][] = Array(bits).fill(0).map(() => Array(bits).fill(0));
+    const blocks: number[][] = Array(bits)
+      .fill(0)
+      .map(() => Array(bits).fill(0));
 
     const blockWidth = data.width / bits;
     const blockHeight = data.height / bits;
@@ -103,7 +107,7 @@ export class BlockHash implements SnapshotHashing {
         weightBottom = yFrac;
 
         // Handle block boundaries
-        if (yInt > 0 || (y + 1) === data.height) {
+        if (yInt > 0 || y + 1 === data.height) {
           blockTop = blockBottom = Math.floor(y / blockHeight);
         } else {
           blockTop = Math.floor(y / blockHeight);
@@ -128,7 +132,7 @@ export class BlockHash implements SnapshotHashing {
           weightRight = xFrac;
 
           // Handle block boundaries
-          if (xInt > 0 || (x + 1) === data.width) {
+          if (xInt > 0 || x + 1 === data.width) {
             blockLeft = blockRight = Math.floor(x / blockWidth);
           } else {
             blockLeft = Math.floor(x / blockWidth);
@@ -139,7 +143,10 @@ export class BlockHash implements SnapshotHashing {
         const idx = (y * data.width + x) * 4;
         const alpha = data.data[idx + 3];
         // Use white (255+255+255=765) for fully transparent pixels
-        const avgValue = alpha === 0 ? 765 : data.data[idx] + data.data[idx + 1] + data.data[idx + 2];
+        const avgValue =
+          alpha === 0
+            ? 765
+            : data.data[idx] + data.data[idx + 1] + data.data[idx + 2];
 
         // Add weighted pixel value to relevant blocks
         if (blockTop < bits && blockLeft < bits) {
@@ -149,10 +156,12 @@ export class BlockHash implements SnapshotHashing {
           blocks[blockTop][blockRight] += avgValue * weightTop * weightRight;
         }
         if (blockBottom < bits && blockLeft < bits) {
-          blocks[blockBottom][blockLeft] += avgValue * weightBottom * weightLeft;
+          blocks[blockBottom][blockLeft] +=
+            avgValue * weightBottom * weightLeft;
         }
         if (blockBottom < bits && blockRight < bits) {
-          blocks[blockBottom][blockRight] += avgValue * weightBottom * weightRight;
+          blocks[blockBottom][blockRight] +=
+            avgValue * weightBottom * weightRight;
         }
       }
     }
@@ -189,7 +198,10 @@ export class BlockHash implements SnapshotHashing {
 
             const alpha = data.data[idx + 3];
             // Use white for transparent pixels
-            total += alpha === 0 ? 765 : data.data[idx] + data.data[idx + 1] + data.data[idx + 2];
+            total +=
+              alpha === 0
+                ? 765
+                : data.data[idx] + data.data[idx + 1] + data.data[idx + 2];
           }
         }
 
@@ -204,8 +216,11 @@ export class BlockHash implements SnapshotHashing {
   /**
    * Converts block brightness values to bits by comparing to median values
    */
-  private translateBlocksToBits(blocks: number[], pixelsPerBlock: number): void {
-    const halfBlockValue = pixelsPerBlock * 256 * 3 / 2;
+  private translateBlocksToBits(
+    blocks: number[],
+    pixelsPerBlock: number,
+  ): void {
+    const halfBlockValue = (pixelsPerBlock * 256 * 3) / 2;
     const bandsize = blocks.length / 4;
 
     // Compare medians across four horizontal bands
@@ -221,7 +236,9 @@ export class BlockHash implements SnapshotHashing {
         // of blocks of value equal to the median. To avoid
         // generating hashes of all zeros or ones, in that case output
         // 0 if the median is in the lower value space, 1 otherwise
-        blocks[j] = Number(v > m || (Math.abs(v - m) < 1 && m > halfBlockValue));
+        blocks[j] = Number(
+          v > m || (Math.abs(v - m) < 1 && m > halfBlockValue),
+        );
       }
     }
   }
@@ -230,7 +247,7 @@ export class BlockHash implements SnapshotHashing {
    * Converts an array of bits to a hexadecimal string
    */
   private bitsToHexhash(bitsArray: number[]): string {
-    let hex = '';
+    let hex = "";
 
     for (let i = 0; i < bitsArray.length; i += 4) {
       const nibble = bitsArray.slice(i, i + 4);
@@ -239,7 +256,7 @@ export class BlockHash implements SnapshotHashing {
         nibble.push(0);
       }
 
-      hex += parseInt(nibble.join(''), 2).toString(16);
+      hex += parseInt(nibble.join(""), 2).toString(16);
     }
 
     return hex;
@@ -281,17 +298,15 @@ export class BlockHash implements SnapshotHashing {
     }
 
     // For hex strings, we need to compare bit by bit after conversion
-    let totalBits = 0;
     let differentBits = 0;
 
     for (let i = 0; i < snapshot1.length; i++) {
       // Convert each hex character to 4 bits
-      const bits1 = parseInt(snapshot1[i], 16).toString(2).padStart(4, '0');
-      const bits2 = parseInt(snapshot2[i], 16).toString(2).padStart(4, '0');
+      const bits1 = parseInt(snapshot1[i], 16).toString(2).padStart(4, "0");
+      const bits2 = parseInt(snapshot2[i], 16).toString(2).padStart(4, "0");
 
       // Compare each bit position
       for (let j = 0; j < bits1.length; j++) {
-        totalBits++;
         if (bits1[j] !== bits2[j]) {
           differentBits++;
         }
