@@ -56,5 +56,6 @@
     "ts-jest": "^29.2.4",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.3.3"
-  }
+  },
+  "packageManager": "pnpm@9.1.3+sha1.6110a47202a78d07d0bf8c9f4f4c63cc83bb833a"
 }
