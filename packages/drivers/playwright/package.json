@@ -29,7 +29,7 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "@wix-pilot/basewebdriver": "^1.0.0"
+    "@wix-pilot/basewebdriver": "^1.0.1"
   },
   "peerDependencies": {
     "@wix-pilot/core": "^3.1.6"
