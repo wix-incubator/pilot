@@ -39,10 +39,8 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "blockhash-core": "^0.1.0",
-    "canvas": "^3.0.1",
     "ora": "^5.4.1",
-    "png-js": "^1.0.0",
+    "pngjs": "^7.0.0",
     "winston": "^3.17.0"
   },
   "peerDependencies": {
@@ -52,5 +50,8 @@
     "expect": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@types/pngjs": "^6.0.5"
   }
 }
