@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/basewebdriver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Base web driver",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "@wix-pilot/web-utils": "^2.1.0",
-    "@wix-pilot/core": "^3.1.4"
+    "@wix-pilot/core": "^3.1.6"
   }
 }
