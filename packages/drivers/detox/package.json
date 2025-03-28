@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/detox",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Detox driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,23 +27,12 @@
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
-  "dependencies": {
-    "@react-native-community/slider": "^4.5.5",
-    "react": "^18.3.1",
-    "react-native": "^0.77.0"
-  },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@types/react": "^18.3.18",
-    "@types/react-native": "^0.73.0",
-    "detox": "^20.33.0",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "typescript": "^5.7.3"
+    "detox": "^20.33.0"
   },
   "peerDependencies": {
     "detox": ">=20.33.0",
-    "expect": ">=29.7.0",
+    "expect": "29.x.x || 28.x.x || ^27.2.5",
     "@wix-pilot/core": "^3.1.6"
   }
 }
