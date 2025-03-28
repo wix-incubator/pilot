@@ -13,7 +13,7 @@ In this section, we will explain how to implement custom drivers for different t
 
 A **Framework Driver** provides an abstraction layer between **Pilot** and the underlying testing framework. It defines the necessary methods to interact with the testing framework's API and potentially supports features such as taking snapshots of the app's UI and capturing the view hierarchy.
 
-By implementing a custom driver, you enable **Copilot** to communicate with your chosen testing framework, making it flexible and adaptable to a variety of testing environments.
+By implementing a custom driver, you enable **Pilot** to communicate with your chosen testing framework, making it flexible and adaptable to a variety of testing environments.
 
 ### TestingFrameworkDriver Interface
 
@@ -57,7 +57,7 @@ The following example demonstrates **part of the implementation** of a **Framewo
 const jestExpect = require('expect').default;
 const detox = require('../..');
 
-const detoxCopilotFrameworkDriver = {
+const detoxPilotFrameworkDriver = {
   apiCatalog: {
     context: { ...detox, jestExpect },
     name: 'Detox',
@@ -122,7 +122,7 @@ const detoxCopilotFrameworkDriver = {
   },
 };
 
-module.exports = detoxCopilotFrameworkDriver;
+module.exports = detoxPilotFrameworkDriver;
 ```
 ### Optional Support for Snapshot
 
@@ -137,6 +137,6 @@ The types related to the **Testing Framework Driver** can be found in the source
 
 ## Conclusion
 
-By implementing a **Framework Driver**, **Copilot by Detox** can work with any testing framework, giving users flexibility in their testing setup. For more detailed instructions, you can refer to the relevant types and source code for guidance.
+By implementing a **Framework Driver**, **Pilot** can work with any testing framework, giving users flexibility in their testing setup. For more detailed instructions, you can refer to the relevant types and source code for guidance.
 
 If you are interested in contributing or have any suggestions for improving the **Framework Driver** system, check out the open tasks on our [GitHub repository](https://github.com/wix-incubator/detox-copilot/issues).
