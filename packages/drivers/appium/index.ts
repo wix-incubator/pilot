@@ -136,18 +136,12 @@ export class WebdriverIOAppiumFrameworkDriver
           title: "Native Actions",
           items: [
             {
-              signature: `.click()`,
-              description: "Clicks (taps) an element.",
-              example: `
-// if the element is button
-await (await $('~loginButton')).waitForEnabled();
-await (await $('~loginButton')).click();
-
-// if the element isnt a button
-await (await $('~loginButton')).waitForDisplayed();
-await (await $('~loginButton')).click();`,
+              signature: ".click()",
+              description: "Triggers a click (or tap) event on an element.",
+              example:
+                "// For a button element\nawait (await $('~loginButton')).waitForEnabled();\nawait (await $('~loginButton')).click();\n\n// For a non-button element\nawait (await $('~loginButton')).waitForDisplayed();\nawait (await $('~loginButton')).click();",
               guidelines: [
-                "if the element is a button. allways use await (await $('~element')).waitForEnabled() before clicking on the element",
+                "For button elements, always use await (await $('~element')).waitForEnabled() to ensure the element is enabled before clicking.",
               ],
             },
             {
