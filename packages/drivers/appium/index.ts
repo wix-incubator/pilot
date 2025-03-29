@@ -139,10 +139,15 @@ export class WebdriverIOAppiumFrameworkDriver
               signature: `.click()`,
               description: "Clicks (taps) an element.",
               example: `
-              await (await $('~loginButton')).waitForEnabled();
-              await (await $('~loginButton')).click();`,
+// if the element is button
+await (await $('~loginButton')).waitForEnabled();
+await (await $('~loginButton')).click();
+
+// if the element isnt a button
+await (await $('~loginButton')).waitForDisplayed();
+await (await $('~loginButton')).click();`,
               guidelines: [
-                "Allways use await (await $('~element')).waitForEnabled() before clicking on the element",
+                "if the element is a button. allways use await (await $('~element')).waitForEnabled() before clicking on the element",
               ],
             },
             {
