@@ -1,6 +1,7 @@
 import { Pilot } from "@/Pilot";
+import logger from "@/common/logger";
 
-export { Pilot };
+export { Pilot, logger };
 
 export {
   Config,
@@ -12,4 +13,5 @@ export {
   TestingFrameworkAPICatalogItem,
   TestingFrameworkDriverConfig,
   AutoReport,
+  LoggerDelegate,
 } from "./types";

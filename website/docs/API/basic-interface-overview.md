@@ -241,13 +241,15 @@ pilot.extendAPICatalog([
 ### Config Interface
 
 ```typescript
-import {CacheOptions} from "@wix-pilot/core/dist/types";
+import {CacheOptions, LoggerDelegate} from "@wix-pilot/core/dist/types";
 
 interface Config {
     /** Testing framework driver */
     frameworkDriver: TestingFrameworkDriver;
     /** AI service handler */
     promptHandler: PromptHandler;
+    /** Custom logger delegate implementation */
+    loggerDelegate?: LoggerDelegate;
     /** Optional behavior settings */
     options?: PilotOptions;
 }
