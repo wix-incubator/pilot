@@ -29,9 +29,11 @@ export class StepPerformer {
   extendJSContext(newContext: any): void {
     for (const key in newContext) {
       if (key in this.context) {
-        logger.warn(
-          `Pilot's variable from context \`${key}\` is overridden by a new value from \`extendJSContext\``,
-        );
+        logger
+          .labeled("WARNING")
+          .warn(
+            `Pilot's variable from context \`${key}\` is overridden by a new value from \`extendJSContext\``,
+          );
         break;
       }
     }
@@ -100,11 +102,18 @@ export class StepPerformer {
     screenCapture: ScreenCapturerResult,
     maxAttempts: number = 2,
   ): Promise<CodeEvaluationResult> {
-    const loggerSpinner = logger.startSpinner(`🤖 Pilot performing step:`, {
-      message: step,
-      isBold: true,
-      color: "whiteBright",
-    });
+    const progress = logger.startProgress(
+      {
+        actionLabel: "STEP",
+        successLabel: "DONE",
+        failureLabel: "FAIL",
+      },
+      {
+        message: step,
+        isBold: true,
+        color: "whiteBright",
+      },
+    );
     let lastError: any = null;
     let lastCode: string | undefined;
 
@@ -123,10 +132,10 @@ export class StepPerformer {
         lastCode = code;
 
         if (!code) {
-          loggerSpinner.update(`🤖 Pilot retrying step:`, {
+          progress.updateLabel("RETRY", {
             message: step,
             isBold: true,
-            color: "whiteBright",
+            color: "yellow",
           });
 
           throw new Error(
@@ -141,33 +150,32 @@ export class StepPerformer {
         );
         this.sharedContext = result.sharedContext || this.sharedContext;
 
-        loggerSpinner.stop("success", `🦾 Pilot performed step:`, {
-          message: step,
+        progress.stop("success", {
+          message: "Step completed successfully",
           isBold: true,
-          color: "whiteBright",
+          color: "green",
         });
 
         if (attempt > 1) {
-          logger.info(
-            `🔄 Attempt ${attempt}/${maxAttempts} succeeded for step "${step}", generated code:\n`,
-            {
-              message: `\n\`\`\`javascript\n${code}\n\`\`\``,
-              isBold: false,
-              color: "gray",
-            },
-          );
+          logger
+            .labeled("SUCCESS")
+            .info(
+              `Attempt ${attempt}/${maxAttempts} succeeded for step "${step}"`,
+            );
         }
 
         return result;
       } catch (error) {
         lastError = error;
         const errorDetails = error instanceof Error ? error.message : error;
-        logger.warn(
-          `💥 Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
-        );
+        logger
+          .labeled("ERROR")
+          .error(
+            `Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
+          );
 
         if (attempt < maxAttempts) {
-          loggerSpinner.update(`Retrying step: "${step}"`);
+          progress.updateLabel("RETRY", "Trying again");
 
           previous = [
             ...previous,
@@ -181,9 +189,9 @@ export class StepPerformer {
       }
     }
 
-    loggerSpinner.stop(
+    progress.stop(
       "failure",
-      `😓 Failed to perform step: "${step}", max attempts exhausted! (${maxAttempts})`,
+      "Step failed after multiple attempts",
     );
     throw lastError;
   }

@@ -9,8 +9,13 @@ export class ScreenCapturer {
   ) {}
 
   async capture(useHighlights: boolean): Promise<ScreenCapturerResult> {
-    const loggerSpinner = logger.startSpinner(
-      "Waiting for the screen to reach a stable state...",
+    const progress = logger.startProgress(
+      {
+        actionLabel: "CAPTURE",
+        successLabel: "CAPTURED",
+        failureLabel: "FAILED",
+      },
+      "Taking screenshot of current screen",
     );
 
     try {
@@ -24,19 +29,18 @@ export class ScreenCapturer {
         this.snapshotManager.captureViewHierarchyString(),
       ]);
 
-      loggerSpinner.stop("success", "Screen captured successfully");
+      progress.stop("success", "Screenshot captured successfully");
 
       return {
         snapshot,
         viewHierarchy: viewHierarchy!,
       };
     } catch (error) {
-      logger.info("Screen capture failed:", {
-        message: String(error),
-        color: "red",
-        isBold: false,
-      });
-      loggerSpinner.stop("failure", "Failed to capture the screen");
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      
+      progress.stop("failure", `Screen capture failed: ${errorMessage}`);
+      
       throw error;
     }
   }

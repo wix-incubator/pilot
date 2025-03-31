@@ -10,10 +10,12 @@ import {
   AutoStepReport,
 } from "@/types/auto";
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
+import { LoggerMessageColor } from "@/types/logger";
 import {
   extractAutoPilotReviewOutputs,
   extractAutoPilotStepOutputs,
 } from "@/common/extract/extractTaggedOutputs";
+import { parseFormattedText } from "./reviews/format-utils";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
@@ -46,18 +48,22 @@ export class AutoPerformer {
     review: AutoReviewSection,
     typeObject: AutoReviewSectionConfig,
   ) {
-    logger.info({
-      message: `📝 Pilot ${typeObject.title.toUpperCase()} review: ${review?.summary} (Score: ${review?.score})`,
-      isBold: true,
-      color: "blueBright",
-    });
+    // Create a combined message with summary and findings
+    const summaryMessage = `${review?.summary} (Score: ${review?.score})`;
 
+    // Parse the summary message with our formatting parser
+    const formattedSummary = parseFormattedText(summaryMessage);
+
+    // Log the main summary with a label
+    logger
+      .labeled(`${typeObject.title.toUpperCase()} REVIEW`)
+      .info(...formattedSummary);
+
+    // Log each finding with indentation and potential formatting
     review.findings?.forEach((finding) => {
-      logger.info({
-        message: `🔍 ${finding}`,
-        isBold: false,
-        color: "blueBright",
-      });
+      // Parse each finding with our formatting parser
+      const formattedFinding = parseFormattedText(`- ${finding}`);
+      logger.info(...formattedFinding);
     });
   }
 
@@ -80,10 +86,14 @@ export class AutoPerformer {
       }
     }
 
-    const analysisLoggerSpinner = logger.startSpinner(
-      "🤔 Thinking on next step",
+    const analysisProgress = logger.startProgress(
       {
-        message: goal,
+        actionLabel: "ANALYZE",
+        successLabel: "READY",
+        failureLabel: "FAILED",
+      },
+      {
+        message: "Analyzing current screen content and structure",
         isBold: true,
         color: "whiteBright",
       },
@@ -119,17 +129,15 @@ export class AutoPerformer {
         const plan: AutoStepPlan = { action: lastAction, thoughts };
         const goalAchieved = lastAction === "success";
 
-        analysisLoggerSpinner.stop("success", "💡 Next step ready", {
-          message: plan.action,
+        analysisProgress.stop("success", {
+          message: "Screen analysis complete, next action determined",
           isBold: true,
-          color: "whiteBright",
+          color: "green",
         });
 
-        logger.info({
-          message: `🤔 Thoughts: ${thoughts}`,
-          isBold: false,
-          color: "grey",
-        });
+        // Log thoughts with formatted text
+        const formattedThoughts = parseFormattedText(thoughts);
+        logger.labeled("THOUGHTS").info(...formattedThoughts);
 
         const review: AutoReview = {};
 
@@ -146,11 +154,9 @@ export class AutoPerformer {
         const hasReviews = Object.keys(review).length > 0;
 
         if (hasReviews) {
-          logger.info({
-            message: `Conducting review for ${lastScreenDescription}\n`,
-            isBold: true,
-            color: "whiteBright",
-          });
+          // Log screen description with formatted text
+          const formattedDescription = parseFormattedText(lastScreenDescription);
+          logger.labeled("REVIEWING").info(...formattedDescription);
 
           Object.keys(review).forEach((reviewType) => {
             if (review[reviewType]) {
@@ -193,12 +199,14 @@ export class AutoPerformer {
         };
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : error;
-        logger.warn(
-          `💥 Auto-Pilot attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
-        );
+        logger
+          .labeled("ERROR")
+          .error(
+            `Analysis attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
+          );
 
         if (attempt < maxAttempts) {
-          logger.info(`Auto-Pilot retrying...`);
+          logger.labeled("RETRYING").warn("Initiating new analysis attempt");
 
           previousSteps = [
             ...previousSteps,
@@ -209,15 +217,15 @@ export class AutoPerformer {
             },
           ];
         } else {
-          analysisLoggerSpinner.stop(
+          analysisProgress.stop(
             "failure",
-            `😓 Auto-Pilot encountered an error: ${errorMessage}`,
+            `Screen analysis failed: ${errorMessage}`,
           );
           throw lastError;
         }
       }
     }
-    throw new Error("Auto-Pilot failed to reach a decision");
+    throw new Error("Analysis failed to reach a decision");
   }
 
   async perform(
@@ -229,22 +237,26 @@ export class AutoPerformer {
     let pilotSteps: PreviousStep[] = [];
     const report: AutoReport = { goal, steps: [] };
 
-    logger.info(
+    // Create the overall goal progress with minimal labels
+    const mainProgress = logger.startProgress(
       {
-        message: `🛫 Pilot is about to reach goal:\n`,
-        isBold: false,
-        color: "cyan",
+        actionLabel: "GOAL",
+        successLabel: "DONE",
+        failureLabel: "FAILED",
       },
       {
         message: goal,
         isBold: true,
-        color: "cyanBright",
+        color: "whiteBright",
       },
     );
 
     for (let step = 0; step < maxSteps; step++) {
+      // Capture the screen silently (without separate logging)
       const screenCaptureWithoutHighlight =
         await this.screenCapturer.capture(false);
+
+      // Analyze the screen and plan the next step
       const stepReport = await this.analyseScreenAndCreatePilotStep(
         goal,
         [...previousSteps],
@@ -256,11 +268,20 @@ export class AutoPerformer {
         report.summary = stepReport.summary;
         report.review = stepReport.review;
 
-        logger.info(`🛬 Pilot reached goal: "${goal}"! 🎉 Summarizing:\n`, {
-          message: `${stepReport.summary}`,
+        // Format summary with our formatting parser if available
+        const formattedSummary = report.summary
+          ? parseFormattedText(report.summary)
+          : [{message: "Goal completed successfully", isBold: false, color: "green" as LoggerMessageColor}];
+
+        // Complete the main progress
+        mainProgress.stop("success", {
+          message: "Success",
           isBold: true,
-          color: "whiteBright",
+          color: "green",
         });
+
+        logger.labeled("SUMMARY").info(...formattedSummary);
+
         logger.writeLogsToFile(`pilot_logs_${Date.now()}`);
         break;
       }
@@ -274,25 +295,19 @@ export class AutoPerformer {
       );
 
       report.steps.push({ code, ...stepReport });
-
-      pilotSteps = [
-        ...pilotSteps,
-        { step: stepReport.plan.action, code, result },
-      ];
-
-      previousSteps = [
-        ...previousSteps,
-        {
-          screenDescription: stepReport.screenDescription,
-          step: stepReport.plan.action,
-          review: stepReport.review,
-        },
-      ];
+      pilotSteps.push({ step: stepReport.plan.action, code, result });
+      previousSteps.push({
+        screenDescription: stepReport.screenDescription,
+        step: stepReport.plan.action,
+        review: stepReport.review,
+      });
 
       if (step === maxSteps - 1) {
-        logger.warn(
-          `🚨 Pilot reached the maximum number of steps (${maxSteps}) without reaching the goal.`,
-        );
+        mainProgress.stop("warn", {
+          message: "Limit reached",
+          isBold: true,
+          color: "yellow",
+        });
       }
     }
 

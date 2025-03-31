@@ -39,7 +39,6 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "ora": "^5.4.1",
     "pngjs": "^7.0.0",
     "winston": "^3.17.0"
   },

@@ -207,7 +207,7 @@ export class AutoPerformerPromptCreator {
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -222,7 +222,7 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -240,7 +240,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -255,7 +255,7 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -287,8 +287,12 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
       "Ensure the action is directly related to available elements in the view hierarchy.",
       "Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.",
       "Generate a one-line string that precisely describes this next action, enclosed within `<ACTION>` tags.",
-      "Provide a detailed description of your thought process enclosed within `<THOUGHTS>` tags.",
-      "If the goal is achieved, add a separate`<GOAL_SUMMARY>` block after the `<THOUGHTS>` section, summarizing the overall flow and findings.",
+      "Provide a detailed description of your thought process enclosed within `<THOUGHTS>` tags. Within your thoughts, you can use simple formatting:",
+      "  - Regular text will be displayed in gray (default color)",
+      "  - *Text between single asterisks* will be displayed in white",
+      "  - **Text between double asterisks** will be displayed bold in gray",
+      "  - ***Text between triple asterisks*** will be displayed bold in white",
+      "If the goal is achieved, add a separate`<GOAL_SUMMARY>` block after the `<THOUGHTS>` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.",
     ];
     if (reviewTypesArray) {
       const reviewTypes = reviewTypesArray.join(", ");
@@ -296,6 +300,12 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
         `Also, provide comprehensive overall ${reviewTypes} reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.`,
         `For each applicable review section (${reviewTypes}), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.`,
         "Ensure each section is clearly labeled and formatted as shown in the examples.",
+        "You can use the same formatting syntax in your review summaries and findings:",
+        "  - Regular text will be displayed in gray (default color)",
+        "  - *Text between single asterisks* will be displayed in white",
+        "  - **Text between double asterisks** will be displayed bold in gray",
+        "  - ***Text between triple asterisks*** will be displayed bold in white",
+        "This will help highlight important aspects of your reviews.",
         "If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.",
       );
     }
@@ -319,12 +329,12 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
       .map(
         (reviewType) => `<${reviewType.toUpperCase()}>
 <SUMMARY>
-The product catalog page has some ${reviewType.toLowerCase()} considerations.
+The product catalog page has some ***${reviewType.toLowerCase()} considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ${reviewType.toLowerCase()} improvements.
