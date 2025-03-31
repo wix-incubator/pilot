@@ -80,7 +80,11 @@ export class AutoPerformer {
     });
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      const cacheResult = await this.getValueFromCache(cacheKey, screenCapture);
+      const cacheResult = await this.getValueFromCache(
+        cacheKey,
+        screenCapture,
+        reviewSectionTypes,
+      );
       if (cacheResult) {
         return cacheResult;
       }
@@ -154,21 +158,7 @@ export class AutoPerformer {
         const hasReviews = Object.keys(review).length > 0;
 
         if (hasReviews) {
-          // Log screen description with formatted text
-          const formattedDescription = parseFormattedText(
-            lastScreenDescription,
-          );
-          logger.labeled("REVIEWING").info(...formattedDescription);
-
-          Object.keys(review).forEach((reviewType) => {
-            if (review[reviewType]) {
-              const reviewTypeConfig = reviewSectionTypes?.find(
-                (rt) => rt.title.toLowerCase() === reviewType.toLowerCase(),
-              );
-              if (reviewTypeConfig !== undefined)
-                this.logReviewSection(review[reviewType], reviewTypeConfig);
-            }
-          });
+          this.logReviews(lastScreenDescription, review, reviewSectionTypes);
         }
 
         const summary = goalAchieved ? outputs.goalSummary : undefined;
@@ -322,9 +312,29 @@ export class AutoPerformer {
     return report;
   }
 
+  private logReviews(
+    screenDescription: string,
+    review: AutoReview,
+    reviewSectionTypes?: AutoReviewSectionConfig[],
+  ): void {
+    const formattedDescription = parseFormattedText(screenDescription);
+    logger.labeled("REVIEWING").info(...formattedDescription);
+
+    Object.keys(review).forEach((reviewType) => {
+      if (review[reviewType]) {
+        const reviewTypeConfig = reviewSectionTypes?.find(
+          (rt) => rt.title.toLowerCase() === reviewType.toLowerCase(),
+        );
+        if (reviewTypeConfig !== undefined)
+          this.logReviewSection(review[reviewType], reviewTypeConfig);
+      }
+    });
+  }
+
   private async getValueFromCache(
     cacheKey: string,
     screenCapture: ScreenCapturerResult,
+    reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoStepReport | undefined> {
     const cachedValues =
       this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
@@ -343,6 +353,25 @@ export class AutoPerformer {
         snapshotHashes,
       );
 
-    return matchingEntry?.value as AutoStepReport;
+    const cachedReport = matchingEntry?.value as AutoStepReport;
+
+    if (cachedReport && cachedReport.plan && cachedReport.plan.thoughts) {
+      logger.labeled("CACHE").info("Using cached analysis result");
+
+      const formattedThoughts = parseFormattedText(cachedReport.plan.thoughts);
+      logger.labeled("THOUGHTS").info(...formattedThoughts);
+
+      const hasReviews =
+        cachedReport.review && Object.keys(cachedReport.review).length > 0;
+      if (hasReviews && reviewSectionTypes && cachedReport.review) {
+        this.logReviews(
+          cachedReport.screenDescription,
+          cachedReport.review,
+          reviewSectionTypes,
+        );
+      }
+    }
+
+    return cachedReport;
   }
 }

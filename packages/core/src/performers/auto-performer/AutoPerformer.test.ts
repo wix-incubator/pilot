@@ -447,6 +447,58 @@ describe("AutoPerformer", () => {
       expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     });
 
+    it("should log cached review sections when using cached values", async () => {
+      setupMocks({ cacheExists: true });
+
+      const cachedReview = {
+        UX: {
+          summary: "Good UX design",
+          findings: ["Button is well placed", "Clear navigation"],
+          score: "8/10",
+        },
+        Accessibility: {
+          summary: "Decent accessibility",
+          findings: ["Some contrast issues", "Missing alt text"],
+          score: "6/10",
+        },
+      };
+
+      mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
+        value: {
+          screenDescription: "Screen with reviews",
+          plan: {
+            thoughts: "Cached thoughts",
+            action: "Cached action",
+          },
+          review: cachedReview,
+          goalAchieved: false,
+          summary: "cached summary",
+        },
+        snapshotHashes: { BlockHash: "hash" },
+        creationTime: Date.now(),
+      });
+
+      const logReviewsSpy = jest.spyOn(performer as any, "logReviews");
+
+      const result = await performer.analyseScreenAndCreatePilotStep(
+        GOAL,
+        [],
+        mockCaptureResult,
+        AUTOPILOT_REVIEW_DEFAULTS,
+      );
+
+      expect(logReviewsSpy).toHaveBeenCalledWith(
+        "Screen with reviews",
+        cachedReview,
+        AUTOPILOT_REVIEW_DEFAULTS,
+      );
+
+      expect(result.review).toEqual(cachedReview);
+
+      expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
+      expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
+    });
+
     it("should retry if analysis fails", async () => {
       setupMocks();
       const goal = GOAL;
