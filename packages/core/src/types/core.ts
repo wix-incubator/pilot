@@ -24,6 +24,8 @@ export interface Config {
   frameworkDriver: TestingFrameworkDriver;
   /** AI service handler */
   promptHandler: PromptHandler;
+  /** Custom logger delegate implementation */
+  loggerDelegate?: import("@/types/logger").LoggerDelegate;
   /** Optional behavior settings */
   options?: PilotOptions;
 }

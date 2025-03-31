@@ -135,7 +135,7 @@ export class CacheHandler {
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
   ): void {
-    logger.info("Saving result to cache for future use");
+    logger.labeled("CACHE").info("Saving response to cache");
 
     const cacheValue: CacheValue<T> = {
       value,

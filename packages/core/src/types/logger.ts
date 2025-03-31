@@ -32,19 +32,86 @@ export type LoggerMessageComponent =
   | { message: string; isBold?: boolean; color: LoggerMessageColor };
 
 /**
+ * Interface for logger delegate implementation.
+ * Handles the actual printing of log messages.
+ */
+export interface LoggerDelegate {
+  /**
+   * Log a message with the specified log level.
+   * @param level - The log level (info, warn, error, debug)
+   * @param message - The formatted message to log
+   */
+  log(level: "info" | "warn" | "error" | "debug", message: string): void;
+}
+
+/**
  * Operation outcome type.
  */
 export type LoggerOperationResultType = "success" | "failure" | "warn" | "info";
 
 /**
- * Interface for the logger spinner.
- * @property update - Updates the spinner with given components.
- * @property stop - Stops the spinner with given result type and logs the result.
+ * Options for progress tracking.
+ * @property actionLabel - The label for the action in progress (e.g., "Analyzing", "Processing")
+ * @property successLabel - The label for successful completion (e.g., "Analyzed", "Processed")
+ * @property failureLabel - The label for failed completion (e.g., "Failed to analyze", "Processing failed")
  */
-export type LoggerSpinner = {
+export type ProgressOptions = {
+  actionLabel: string;
+  successLabel?: string;
+  failureLabel?: string;
+  warnLabel?: string;
+  infoLabel?: string;
+};
+
+/**
+ * Interface for the logger progress indicator.
+ * @property update - Updates the progress message, keeping the same action label.
+ * @property updateLabel - Updates both the action label and message.
+ * @property stop - Stops the progress with given result type and logs the result.
+ */
+export type LoggerProgress = {
   update: (...components: LoggerMessageComponent[]) => void;
+  updateLabel: (label: string, ...components: LoggerMessageComponent[]) => void;
   stop: (
     type: LoggerOperationResultType,
     ...components: LoggerMessageComponent[]
   ) => void;
+};
+
+/**
+ * Interface for the labeled logger.
+ * Returns logging methods that will display the specified label with appropriate styling.
+ */
+export type LabeledLogger = {
+  info: (...components: LoggerMessageComponent[]) => void;
+  warn: (...components: LoggerMessageComponent[]) => void;
+  error: (...components: LoggerMessageComponent[]) => void;
+  debug: (...components: LoggerMessageComponent[]) => void;
+
+  /**
+   * Creates a progress tracker with the current label.
+   * @returns A progress object that can be used to update and complete the progress
+   */
+  progress: () => LabeledProgress;
+};
+
+/**
+ * Interface for labeled progress tracking.
+ * Allows for updating progress with the same label.
+ */
+export type LabeledProgress = {
+  /**
+   * Updates the progress message, keeping the same label.
+   */
+  update: (...components: LoggerMessageComponent[]) => void;
+
+  /**
+   * Completes the progress with success status.
+   */
+  complete: (...components: LoggerMessageComponent[]) => void;
+
+  /**
+   * Completes the progress with error status.
+   */
+  fail: (...components: LoggerMessageComponent[]) => void;
 };

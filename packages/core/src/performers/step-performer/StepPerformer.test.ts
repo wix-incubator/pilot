@@ -425,7 +425,14 @@ describe("StepPerformer", () => {
     });
 
     it("should log when a context key is overridden", async () => {
-      jest.spyOn(logger, "warn").mockImplementation(() => {});
+      const mockLabeledLogger = {
+        warn: jest.fn(),
+        info: jest.fn(),
+        error: jest.fn(),
+        debug: jest.fn(),
+        progress: jest.fn(),
+      };
+      jest.spyOn(logger, "labeled").mockReturnValue(mockLabeledLogger);
 
       stepPerformer.extendJSContext(dummyBarContext1);
 
@@ -443,7 +450,8 @@ describe("StepPerformer", () => {
       );
 
       stepPerformer.extendJSContext(dummyBarContext2);
-      expect(logger.warn).toHaveBeenCalledWith(
+      expect(logger.labeled).toHaveBeenCalledWith("WARNING");
+      expect(mockLabeledLogger.warn).toHaveBeenCalledWith(
         "Pilot's variable from context `bar` is overridden by a new value from `extendJSContext`",
       );
 

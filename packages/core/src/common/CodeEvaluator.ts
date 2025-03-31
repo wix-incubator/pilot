@@ -17,19 +17,20 @@ export class CodeEvaluator {
     try {
       const result = await asyncFunction();
 
+      logger.labeled("EVAL").info("Code executed successfully");
+
       logger.info({
-        message: `\nPilot evaluated the code: \n\`\`\`\n${code}\n\`\`\``,
+        message: `${code}`,
         isBold: false,
         color: "gray",
       });
 
       return { code, result, sharedContext };
     } catch (error) {
-      logger.error({
-        message: `\nPilot failed to evaluate the code: \n\`\`\`\n${code}\n\`\`\``,
-        isBold: false,
-        color: "gray",
-      });
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      logger.labeled("ERROR").error(`Execution failed: ${errorMessage}`);
 
       throw error;
     }
