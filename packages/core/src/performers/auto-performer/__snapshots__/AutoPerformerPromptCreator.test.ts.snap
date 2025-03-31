@@ -8,7 +8,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -70,7 +70,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 17. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -327,7 +327,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -374,7 +374,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 17. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -631,7 +631,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -678,7 +678,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 17. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -935,7 +935,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -993,7 +993,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 17. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -1250,7 +1250,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -1308,7 +1308,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
 16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
 17. Ensure each section is clearly labeled and formatted as shown in the examples.
@@ -1565,7 +1565,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -1610,7 +1610,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 
 ### Verify the Prompt
 
@@ -1697,7 +1697,7 @@ You are an AI assistant tasked with:
 1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.
    Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,
    and another string (which can be greater than one line) which describes your thoughts while creating the step.
-   If the goal has been reached, return a one word action 'success'. 
+   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. 
    If it is not possible to determine the next action, and you tried and failed, throw an error.
    If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.
 
@@ -1753,7 +1753,7 @@ Your tasks are as follows:
 11.   - *Text between single asterisks* will be displayed in white
 12.   - **Text between double asterisks** will be displayed bold in gray
 13.   - ***Text between triple asterisks*** will be displayed bold in white
-14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+14. If the goal is achieved, add a separate \`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.
 
 ### Verify the Prompt
 

@@ -32,14 +32,20 @@ export class AutoPerformer {
     private snapshotComparator: SnapshotComparator,
   ) {}
 
-  private extractReviewOutput(text: string): AutoReviewSection {
+  private extractReviewOutput(text: string): AutoReviewSection | null {
     const { summary, findings, score } = extractAutoPilotReviewOutputs(text);
+
+    if (!summary) {
+      return null;
+    }
 
     return {
       summary,
       findings: findings
-        ?.split("\n")
-        .map((finding: string) => finding.replace(/^- /, "").trim()),
+        ? findings
+            .split("\n")
+            .map((finding: string) => finding.replace(/^- /, "").trim())
+        : undefined,
       score,
     };
   }
@@ -48,20 +54,17 @@ export class AutoPerformer {
     review: AutoReviewSection,
     typeObject: AutoReviewSectionConfig,
   ) {
-    // Create a combined message with summary and findings
-    const summaryMessage = `${review?.summary} (Score: ${review?.score})`;
+    const summaryMessage = review.score
+      ? `${review.summary} (Score: ${review.score})`
+      : review.summary;
 
-    // Parse the summary message with our formatting parser
     const formattedSummary = parseFormattedText(summaryMessage);
 
-    // Log the main summary with a label
     logger
       .labeled(`${typeObject.title.toUpperCase()} REVIEW`)
       .info(...formattedSummary);
 
-    // Log each finding with indentation and potential formatting
     review.findings?.forEach((finding) => {
-      // Parse each finding with our formatting parser
       const formattedFinding = parseFormattedText(`- ${finding}`);
       logger.info(...formattedFinding);
     });
@@ -127,11 +130,12 @@ export class AutoPerformer {
           reviewSectionTypes,
         );
 
-        const thoughts = outputs.thoughts;
-        lastScreenDescription = outputs.screenDescription;
-        lastAction = outputs.action;
+        // These fields are required according to the extractor, so we can safely assert they exist
+        const thoughts = outputs.thoughts as string;
+        lastScreenDescription = outputs.screenDescription as string;
+        lastAction = outputs.action as string;
         const plan: AutoStepPlan = { action: lastAction, thoughts };
-        const goalAchieved = lastAction === "success";
+        const goalAchieved = !!outputs.goalSummary;
 
         analysisProgress.stop("success", {
           message: "Screen analysis complete, next action determined",
@@ -140,7 +144,7 @@ export class AutoPerformer {
         });
 
         // Log thoughts with formatted text
-        const formattedThoughts = parseFormattedText(thoughts);
+        const formattedThoughts = parseFormattedText(thoughts as string);
         logger.labeled("THOUGHTS").info(...formattedThoughts);
 
         const review: AutoReview = {};
@@ -149,8 +153,10 @@ export class AutoPerformer {
           reviewSectionTypes.forEach((reviewType) => {
             const reviewContent = outputs[reviewType.title];
             if (reviewContent) {
-              review[reviewType.title] =
-                this.extractReviewOutput(reviewContent);
+              const extractedReview = this.extractReviewOutput(reviewContent);
+              if (extractedReview) {
+                review[reviewType.title] = extractedReview;
+              }
             }
           });
         }
@@ -161,7 +167,7 @@ export class AutoPerformer {
           this.logReviews(lastScreenDescription, review, reviewSectionTypes);
         }
 
-        const summary = goalAchieved ? outputs.goalSummary : undefined;
+        const summary = outputs.goalSummary;
 
         if (this.cacheHandler.isCacheInUse() && cacheKey) {
           const snapshotHashes =

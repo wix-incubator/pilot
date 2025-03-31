@@ -133,8 +133,8 @@ describe("extractOutputs", () => {
       const outputs = extractAutoPilotReviewOutputs(textToBeParsed);
       expect(outputs).toEqual({
         summary: "This is the summary of the review",
-        findings: "N/A",
-        score: "N/A",
+        findings: undefined,
+        score: undefined,
       });
     });
   });
