@@ -155,7 +155,9 @@ export class AutoPerformer {
 
         if (hasReviews) {
           // Log screen description with formatted text
-          const formattedDescription = parseFormattedText(lastScreenDescription);
+          const formattedDescription = parseFormattedText(
+            lastScreenDescription,
+          );
           logger.labeled("REVIEWING").info(...formattedDescription);
 
           Object.keys(review).forEach((reviewType) => {
@@ -233,8 +235,8 @@ export class AutoPerformer {
     reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoReport> {
     const maxSteps = 100;
-    let previousSteps: AutoPreviousStep[] = [];
-    let pilotSteps: PreviousStep[] = [];
+    const previousSteps: AutoPreviousStep[] = [];
+    const pilotSteps: PreviousStep[] = [];
     const report: AutoReport = { goal, steps: [] };
 
     // Create the overall goal progress with minimal labels
@@ -271,7 +273,13 @@ export class AutoPerformer {
         // Format summary with our formatting parser if available
         const formattedSummary = report.summary
           ? parseFormattedText(report.summary)
-          : [{message: "Goal completed successfully", isBold: false, color: "green" as LoggerMessageColor}];
+          : [
+              {
+                message: "Goal completed successfully",
+                isBold: false,
+                color: "green" as LoggerMessageColor,
+              },
+            ];
 
         // Complete the main progress
         mainProgress.stop("success", {

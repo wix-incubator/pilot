@@ -29,7 +29,7 @@ export class CodeEvaluator {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      
+
       logger.labeled("ERROR").error(`Execution failed: ${errorMessage}`);
 
       throw error;

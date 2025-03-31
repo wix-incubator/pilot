@@ -189,10 +189,7 @@ export class StepPerformer {
       }
     }
 
-    progress.stop(
-      "failure",
-      "Step failed after multiple attempts",
-    );
+    progress.stop("failure", "Step failed after multiple attempts");
     throw lastError;
   }
 }

@@ -65,12 +65,22 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
-11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
-13. Ensure each section is clearly labeled and formatted as shown in the examples.
-14. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
+17. Ensure each section is clearly labeled and formatted as shown in the examples.
+18. You can use the same formatting syntax in your review summaries and findings:
+19.   - Regular text will be displayed in gray (default color)
+20.   - *Text between single asterisks* will be displayed in white
+21.   - **Text between double asterisks** will be displayed bold in gray
+22.   - ***Text between triple asterisks*** will be displayed bold in white
+23. This will help highlight important aspects of your reviews.
+24. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -87,7 +97,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -95,12 +105,12 @@ Tap on the 'Add to Cart' button beneath the red dress product
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -109,12 +119,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -123,12 +133,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -141,7 +151,7 @@ The product catalog page has some internationalization considerations.
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -149,12 +159,12 @@ Tap on the "View Cart" button in the notification
 
    <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -163,12 +173,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -177,12 +187,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -198,7 +208,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -206,12 +216,12 @@ success
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -220,12 +230,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -234,12 +244,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -252,7 +262,7 @@ The product catalog page has some internationalization considerations.
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -260,12 +270,12 @@ Select the 'Profile' icon (ID: icon_profile)
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -274,12 +284,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -288,12 +298,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -359,12 +369,22 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
-11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
-13. Ensure each section is clearly labeled and formatted as shown in the examples.
-14. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
+17. Ensure each section is clearly labeled and formatted as shown in the examples.
+18. You can use the same formatting syntax in your review summaries and findings:
+19.   - Regular text will be displayed in gray (default color)
+20.   - *Text between single asterisks* will be displayed in white
+21.   - **Text between double asterisks** will be displayed bold in gray
+22.   - ***Text between triple asterisks*** will be displayed bold in white
+23. This will help highlight important aspects of your reviews.
+24. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -381,7 +401,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -389,12 +409,12 @@ Tap on the 'Add to Cart' button beneath the red dress product
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -403,12 +423,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -417,12 +437,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -435,7 +455,7 @@ The product catalog page has some internationalization considerations.
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -443,12 +463,12 @@ Tap on the "View Cart" button in the notification
 
    <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -457,12 +477,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -471,12 +491,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -492,7 +512,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -500,12 +520,12 @@ success
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -514,12 +534,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -528,12 +548,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -546,7 +566,7 @@ The product catalog page has some internationalization considerations.
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -554,12 +574,12 @@ Select the 'Profile' icon (ID: icon_profile)
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -568,12 +588,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -582,12 +602,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -653,12 +673,22 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
-11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
-13. Ensure each section is clearly labeled and formatted as shown in the examples.
-14. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
+17. Ensure each section is clearly labeled and formatted as shown in the examples.
+18. You can use the same formatting syntax in your review summaries and findings:
+19.   - Regular text will be displayed in gray (default color)
+20.   - *Text between single asterisks* will be displayed in white
+21.   - **Text between double asterisks** will be displayed bold in gray
+22.   - ***Text between triple asterisks*** will be displayed bold in white
+23. This will help highlight important aspects of your reviews.
+24. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -675,7 +705,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -683,12 +713,12 @@ Tap on the 'Add to Cart' button beneath the red dress product
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -697,12 +727,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -711,12 +741,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -729,7 +759,7 @@ The product catalog page has some internationalization considerations.
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -737,12 +767,12 @@ Tap on the "View Cart" button in the notification
 
    <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -751,12 +781,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -765,12 +795,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -786,7 +816,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -794,12 +824,12 @@ success
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -808,12 +838,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -822,12 +852,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -840,7 +870,7 @@ The product catalog page has some internationalization considerations.
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -848,12 +878,12 @@ Select the 'Profile' icon (ID: icon_profile)
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -862,12 +892,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -876,12 +906,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -958,12 +988,22 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
-11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
-13. Ensure each section is clearly labeled and formatted as shown in the examples.
-14. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
+17. Ensure each section is clearly labeled and formatted as shown in the examples.
+18. You can use the same formatting syntax in your review summaries and findings:
+19.   - Regular text will be displayed in gray (default color)
+20.   - *Text between single asterisks* will be displayed in white
+21.   - **Text between double asterisks** will be displayed bold in gray
+22.   - ***Text between triple asterisks*** will be displayed bold in white
+23. This will help highlight important aspects of your reviews.
+24. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -980,7 +1020,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -988,12 +1028,12 @@ Tap on the 'Add to Cart' button beneath the red dress product
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1002,12 +1042,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1016,12 +1056,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1034,7 +1074,7 @@ The product catalog page has some internationalization considerations.
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -1042,12 +1082,12 @@ Tap on the "View Cart" button in the notification
 
    <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1056,12 +1096,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1070,12 +1110,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1091,7 +1131,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -1099,12 +1139,12 @@ success
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1113,12 +1153,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1127,12 +1167,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1145,7 +1185,7 @@ The product catalog page has some internationalization considerations.
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -1153,12 +1193,12 @@ Select the 'Profile' icon (ID: icon_profile)
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1167,12 +1207,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1181,12 +1221,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1263,12 +1303,22 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
-11. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
-12. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
-13. Ensure each section is clearly labeled and formatted as shown in the examples.
-14. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
+15. Also, provide comprehensive overall UX, Accessibility, Internationalization reviews with total scores, given all the screens seen in previous steps, inside the respective review sections.
+16. For each applicable review section (UX, Accessibility, Internationalization), create a comprehensive report enclosed within corresponding tags (e.g., <UX>, <ACCESSIBILITY>, <INTERNATIONALIZATION>), including a summary, findings, and a score out of 10.
+17. Ensure each section is clearly labeled and formatted as shown in the examples.
+18. You can use the same formatting syntax in your review summaries and findings:
+19.   - Regular text will be displayed in gray (default color)
+20.   - *Text between single asterisks* will be displayed in white
+21.   - **Text between double asterisks** will be displayed bold in gray
+22.   - ***Text between triple asterisks*** will be displayed bold in white
+23. This will help highlight important aspects of your reviews.
+24. If you cannot determine the next action due to ambiguity or missing information, throw an informative error explaining the problem in one sentence.
 
 ### Verify the Prompt
 
@@ -1285,7 +1335,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -1293,12 +1343,12 @@ Tap on the 'Add to Cart' button beneath the red dress product
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1307,12 +1357,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1321,12 +1371,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1339,7 +1389,7 @@ The product catalog page has some internationalization considerations.
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -1347,12 +1397,12 @@ Tap on the "View Cart" button in the notification
 
    <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1361,12 +1411,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1375,12 +1425,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1396,7 +1446,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -1404,12 +1454,12 @@ success
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1418,12 +1468,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1432,12 +1482,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1450,7 +1500,7 @@ The product catalog page has some internationalization considerations.
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -1458,12 +1508,12 @@ Select the 'Profile' icon (ID: icon_profile)
 
 <UX>
 <SUMMARY>
-The product catalog page has some ux considerations.
+The product catalog page has some ***ux considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant ux improvements.
@@ -1472,12 +1522,12 @@ The product catalog page has some ux considerations.
 
 <ACCESSIBILITY>
 <SUMMARY>
-The product catalog page has some accessibility considerations.
+The product catalog page has some ***accessibility considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant accessibility improvements.
@@ -1486,12 +1536,12 @@ The product catalog page has some accessibility considerations.
 
 <INTERNATIONALIZATION>
 <SUMMARY>
-The product catalog page has some internationalization considerations.
+The product catalog page has some ***internationalization considerations*** that need to be addressed.
 </SUMMARY>
 <FINDINGS>
-  - The product catalog makes some "Add to Cart" buttons require scrolling to access.
-  - The notification confirms addition but lacks visual excitement and product imagery.
-  - Text-background contrast on product prices is low - Improve contrast with a darker font or background highlight.
+  - The product catalog makes some "Add to Cart" buttons **require scrolling** to access.
+  - The notification *confirms addition* but lacks visual excitement and product imagery.
+  - Text-background contrast on product prices is ***critically low*** - Improve contrast with a darker font or background highlight.
 </FINDINGS>
 <SCORE>
 4/10 - The flow needs significant internationalization improvements.
@@ -1555,8 +1605,12 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
 
 ### Verify the Prompt
 
@@ -1573,7 +1627,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -1587,7 +1641,7 @@ Tap on the 'Add to Cart' button beneath the red dress product
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -1604,7 +1658,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -1618,7 +1672,7 @@ success
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)
@@ -1694,8 +1748,12 @@ Your tasks are as follows:
 6. Ensure the action is directly related to available elements in the view hierarchy.
 7. Make sure to create a unique screen name enclosed with <SCREENDESCRIPTION> blocks according to the snapshot and view.
 8. Generate a one-line string that precisely describes this next action, enclosed within \`<ACTION>\` tags.
-9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags.
-10. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings.
+9. Provide a detailed description of your thought process enclosed within \`<THOUGHTS>\` tags. Within your thoughts, you can use simple formatting:
+10.   - Regular text will be displayed in gray (default color)
+11.   - *Text between single asterisks* will be displayed in white
+12.   - **Text between double asterisks** will be displayed bold in gray
+13.   - ***Text between triple asterisks*** will be displayed bold in white
+14. If the goal is achieved, add a separate\`<GOAL_SUMMARY>\` block after the \`<THOUGHTS>\` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.
 
 ### Verify the Prompt
 
@@ -1712,7 +1770,7 @@ Given goal: 'Add a product to the shopping cart and validate it was added correc
 Products Catalog Page
 </SCREENDESCRIPTION>
 <THOUGHTS>
-I need to add a product to the shopping cart. The page displays multiple products in a grid layout, each with an image, name, price, and an "Add to Cart" button. The red dress in the second position looks like a good option to add to the cart.
+I need to *add a product* to the shopping cart. The page displays **multiple products** in a grid layout, each with an image, name, price, and an ***"Add to Cart" button***. The red dress in the second position looks like a good option to add to the cart.
 </THOUGHTS>
 <ACTION>
 Tap on the 'Add to Cart' button beneath the red dress product
@@ -1726,7 +1784,7 @@ Tap on the 'Add to Cart' button beneath the red dress product
 Product Added Notification Overlay
 </SCREENDESCRIPTION>
 <THOUGHTS>
-A notification has appeared at the top of the screen confirming the red dress was added. Now I need to check the cart to verify the product was added correctly. There's a "View Cart" button in the notification and a cart icon in the header.
+A notification has appeared at the top of the screen *confirming the red dress was added*. Now I need to **check the cart** to verify the product was added correctly. There's a ***"View Cart" button*** in the notification and a cart icon in the header.
 </THOUGHTS>
 <ACTION>
 Tap on the "View Cart" button in the notification
@@ -1743,7 +1801,7 @@ Shopping Cart Page
 I can now see the shopping cart page with the red dress that was added. The product appears with its image, name "Red Cocktail Dress", price "$49.99", and quantity set to 1. The cart subtotal shows "$49.99" which matches the product price. This confirms the product was successfully added to the cart with the correct details.
 </THOUGHTS>
 <GOAL_SUMMARY>
-The goal has been successfully achieved. I added the red dress to the shopping cart and verified it appears correctly with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
+The goal has been ***successfully achieved***. I added the *red dress* to the shopping cart and **verified it appears correctly** with the right details. The flow provided clear feedback at each step, though there were opportunities to improve the messaging and layout.
 </GOAL_SUMMARY>
 <ACTION>
 success
@@ -1757,7 +1815,7 @@ success
 User Profile Screen.
 </SCREENDESCRIPTION>
 <THOUGHTS>
-To view the user profile, selecting the 'Profile' icon (ID: icon_profile) is required.
+To view the user profile, selecting the ***'Profile' icon*** (ID: *icon_profile*) is **required**.
 </THOUGHTS>
 <ACTION>
 Select the 'Profile' icon (ID: icon_profile)

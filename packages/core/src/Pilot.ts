@@ -17,6 +17,7 @@ import { SnapshotComparator } from "@/common/snapshot/comparator/SnapshotCompara
 import { SnapshotManager } from "@/common/snapshot/SnapshotManager";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import downscaleImage from "@/common/snapshot/downscaleImage";
+import logger from "@/common/logger";
 
 /**
  * The main Pilot class that provides AI-assisted testing capabilities for a given underlying testing framework.
@@ -47,6 +48,11 @@ export class Pilot {
   private snapshotComparator: SnapshotComparator;
 
   constructor(config: Config) {
+    // Configure logger delegate if provided
+    if (config.loggerDelegate) {
+      logger.setDelegate(config.loggerDelegate);
+    }
+
     this.snapshotComparator = new SnapshotComparator();
 
     this.snapshotManager = new SnapshotManager(

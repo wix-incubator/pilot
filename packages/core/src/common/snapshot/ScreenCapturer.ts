@@ -38,9 +38,9 @@ export class ScreenCapturer {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      
+
       progress.stop("failure", `Screen capture failed: ${errorMessage}`);
-      
+
       throw error;
     }
   }

@@ -9,6 +9,7 @@ The `@wix-pilot/core` package is the heart of Wix Pilot, responsible for:
 - Managing LLM interactions
 - Providing the main API interface
 - Handling driver registration and lifecycle
+- Configurable logging system
 
 ## Installation
 

@@ -1,9 +1,3 @@
-import {
-  createLogger,
-  format,
-  transports,
-  Logger as WinstonLogger,
-} from "winston";
 import chalk from "chalk";
 import {
   LoggerMessageComponent,
@@ -13,14 +7,40 @@ import {
   ProgressOptions,
   LabeledLogger,
   LabeledProgress,
+  LoggerDelegate,
 } from "@/types/logger";
 import * as fs from "fs";
 import path from "path";
 import os from "os";
+import {
+  createLogger,
+  format,
+  transports,
+  Logger as WinstonLogger,
+} from "winston";
+
+/**
+ * Default implementation of LoggerDelegate using Winston
+ */
+export class DefaultLoggerDelegate implements LoggerDelegate {
+  private readonly logger: WinstonLogger;
+
+  constructor() {
+    this.logger = createLogger({
+      level: "info",
+      format: format.combine(format.printf(({ message }) => String(message))),
+      transports: [new transports.Console()],
+    });
+  }
+
+  log(level: "info" | "warn" | "error" | "debug", message: string): void {
+    this.logger[level](message);
+  }
+}
 
 class Logger {
   private static instance: Logger;
-  private readonly logger: WinstonLogger;
+  private delegate: LoggerDelegate;
   private readonly logLevels = ["info", "warn", "error", "debug"] as const;
   private readonly colorMap: Record<
     (typeof this.logLevels)[number],
@@ -42,11 +62,7 @@ class Logger {
   } as const;
 
   private constructor() {
-    this.logger = createLogger({
-      level: "info",
-      format: format.combine(format.printf(({ message }) => String(message))),
-      transports: [new transports.Console()],
-    });
+    this.delegate = new DefaultLoggerDelegate();
   }
 
   static getInstance(): Logger {
@@ -54,6 +70,22 @@ class Logger {
       Logger.instance = new Logger();
     }
     return Logger.instance;
+  }
+
+  /**
+   * Set a custom logger delegate
+   * @param delegate The delegate implementation to use for logging
+   */
+  public setDelegate(delegate: LoggerDelegate): void {
+    this.delegate = delegate;
+  }
+
+  /**
+   * Get the current logger delegate
+   * @returns Current delegate implementation
+   */
+  public getDelegate(): LoggerDelegate {
+    return this.delegate;
   }
 
   private colorizeMessage(...components: LoggerMessageComponent[]): string {
@@ -108,7 +140,8 @@ class Logger {
       return component;
     });
 
-    this.logger[level](this.colorizeMessage(...processedComponents));
+    const colorizedMessage = this.colorizeMessage(...processedComponents);
+    this.delegate.log(level, colorizedMessage);
     this.logs.push(this.formatMessageForLogFile(level, ...components));
   }
 
@@ -159,7 +192,7 @@ class Logger {
           fail: (...components: LoggerMessageComponent[]): void => {
             // Call logWithLabel with the error level
             this.logWithLabel("error", label, ...components);
-          }
+          },
         };
       },
     };
@@ -199,9 +232,8 @@ class Logger {
     });
 
     // Log with the appropriate level
-    this.logger[level](
-      `${displayLabel} ${this.colorizeMessage(...processedComponents)}`,
-    );
+    const formattedMessage = `${displayLabel} ${this.colorizeMessage(...processedComponents)}`;
+    this.delegate.log(level, formattedMessage);
 
     // Add to logs
     this.logs.push(
@@ -247,7 +279,7 @@ class Logger {
       ),
     );
 
-    this.logger.info(`${displayedLabel} ${initialMessage}`);
+    this.delegate.log("info", `${displayedLabel} ${initialMessage}`);
 
     const stop = (
       result: LoggerOperationResultType,
@@ -273,7 +305,7 @@ class Logger {
       const logMethod = this.getLogMethodForResult(result);
       const resultMessage = `${resultLabel} ${message}`;
 
-      this.logger[logMethod](resultMessage);
+      this.delegate.log(logMethod, resultMessage);
       this.logs.push(
         this.formatMessageForLogFile(logMethod, `${labelText} ${message}`),
       );
@@ -293,7 +325,7 @@ class Logger {
         ),
       );
 
-      this.logger.info(`${displayedLabel} ${updatedMessage}`);
+      this.delegate.log("info", `${displayedLabel} ${updatedMessage}`);
     };
 
     const updateLabel = (
@@ -314,7 +346,7 @@ class Logger {
         ),
       );
 
-      this.logger.info(`${displayedLabel} ${updatedMessage}`);
+      this.delegate.log("info", `${displayedLabel} ${updatedMessage}`);
     };
 
     return { update, updateLabel, stop };
@@ -341,4 +373,8 @@ class Logger {
   }
 }
 
-export default Logger.getInstance();
+// Export the singleton instance
+const logger = Logger.getInstance();
+
+// Export the logger object and the default delegate class for users to extend
+export default logger;

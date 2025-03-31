@@ -32,6 +32,19 @@ export type LoggerMessageComponent =
   | { message: string; isBold?: boolean; color: LoggerMessageColor };
 
 /**
+ * Interface for logger delegate implementation.
+ * Handles the actual printing of log messages.
+ */
+export interface LoggerDelegate {
+  /**
+   * Log a message with the specified log level.
+   * @param level - The log level (info, warn, error, debug)
+   * @param message - The formatted message to log
+   */
+  log(level: "info" | "warn" | "error" | "debug", message: string): void;
+}
+
+/**
  * Operation outcome type.
  */
 export type LoggerOperationResultType = "success" | "failure" | "warn" | "info";
@@ -74,7 +87,7 @@ export type LabeledLogger = {
   warn: (...components: LoggerMessageComponent[]) => void;
   error: (...components: LoggerMessageComponent[]) => void;
   debug: (...components: LoggerMessageComponent[]) => void;
-  
+
   /**
    * Creates a progress tracker with the current label.
    * @returns A progress object that can be used to update and complete the progress
@@ -91,12 +104,12 @@ export type LabeledProgress = {
    * Updates the progress message, keeping the same label.
    */
   update: (...components: LoggerMessageComponent[]) => void;
-  
+
   /**
    * Completes the progress with success status.
    */
   complete: (...components: LoggerMessageComponent[]) => void;
-  
+
   /**
    * Completes the progress with error status.
    */
