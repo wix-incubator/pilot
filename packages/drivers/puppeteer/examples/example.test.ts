@@ -53,9 +53,50 @@ describe("Example Test Suite", () => {
     );
   });
 
-  it.only("perform test with autopilot", async () => {
+  it("perform test with autopilot 1", async () => {
     await pilot.autopilot(
-      "Open https://www.wix.com/domains and check domain availability for wix-pilot.net with GUI browser",
+      "Open https://www.wix.com/domains review the main page",
+      [
+        {
+          title: "Accessibility",
+          description: "Accessibility review of the web page",
+          guidelines: [
+            "Focus on negative aspects of the page",
+            "Ensure all images have alt text",
+            "Check color contrast ratios",
+            "Verify keyboard navigation works",
+            "Ensure ARIA roles are used correctly",
+            "Ensure support for screen readers",
+              "Provide clear example based on real analysis for any of the findings",
+          ],
+        },
+        {
+          title: "SEO",
+          description: "SEO review of the web page",
+          guidelines: [
+            "Focus on negative aspects of the page",
+            "Check for proper use of meta tags",
+            "Verify heading structure",
+            "Ensure mobile responsiveness",
+            "Check for broken links",
+            "Ensure fast loading times",
+              "Provide clear example based on real analysis for any of the findings",
+          ],
+        },
+        {
+          title: "UX",
+            description: "UX review of the web page",
+            guidelines: [
+                "Focus on negative aspects of the page",
+                "Check for clear navigation",
+                "Ensure consistent design elements",
+                "Verify readability of text",
+                "Check for intuitive layout",
+                "Evaluate how beautiful the page is",
+                "Provide clear example based on real analysis for any of the findings",
+                ]
+        }
+      ],
     );
   });
 });
