@@ -81,7 +81,7 @@ export type AutoReviewSection = {
   /** Specific observations */
   findings?: string[];
   /** Numerical rating (1-10) */
-  score: string;
+  score?: string;
 };
 
 /**

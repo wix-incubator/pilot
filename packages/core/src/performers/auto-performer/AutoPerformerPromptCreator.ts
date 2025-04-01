@@ -58,7 +58,7 @@ export class AutoPerformerPromptCreator {
       `1. Predicting the next optimal action a user should take within an application to progress towards a specific goal or to declare success.`,
       `   Please generate a one-line string that precisely describes the next action the user should take to move closer to their goal,`,
       `   and another string (which can be greater than one line) which describes your thoughts while creating the step.`,
-      `   If the goal has been reached, return a one word action 'success'. `,
+      `   If the goal has been reached, include a <GOAL_SUMMARY>...</GOAL_SUMMARY> section summarizing what was accomplished and return 'success' as the action. `,
       `   If it is not possible to determine the next action, and you tried and failed, throw an error.`,
       `   If there are any active loaders, spinners, animations, or partially rendered content in the screen, return "wait 3000" as the action.`,
     ];
@@ -292,7 +292,7 @@ ${reviewTypesArray ? this.generateReviewSections(reviewTypesArray) : ""}`,
       "  - *Text between single asterisks* will be displayed in white",
       "  - **Text between double asterisks** will be displayed bold in gray",
       "  - ***Text between triple asterisks*** will be displayed bold in white",
-      "If the goal is achieved, add a separate`<GOAL_SUMMARY>` block after the `<THOUGHTS>` section, summarizing the overall flow and findings. You can use the same formatting syntax in your goal summary.",
+      "If the goal is achieved, add a separate `<GOAL_SUMMARY>` block after the `<THOUGHTS>` section, summarizing the overall flow and findings, and set the action to 'success'. The presence of the GOAL_SUMMARY tag is what indicates the goal has been achieved. You can use the same formatting syntax in your goal summary.",
     ];
     if (reviewTypesArray) {
       const reviewTypes = reviewTypesArray.join(", ");

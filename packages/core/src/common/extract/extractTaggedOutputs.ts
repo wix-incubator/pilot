@@ -8,6 +8,10 @@ export type Output = {
 
 export type OutputsMapping = Record<string, Output>;
 
+type ExtractedType<M extends OutputsMapping> = {
+  [K in keyof M]: M[K]["isRequired"] extends true ? string : string | undefined;
+};
+
 const BASE_AUTOPILOT_STEP = {
   screenDescription: { tag: "SCREENDESCRIPTION", isRequired: true },
   thoughts: { tag: "THOUGHTS", isRequired: true },
@@ -27,39 +31,47 @@ function extractTaggedOutputs<M extends OutputsMapping>({
 }: {
   text: string;
   outputsMapper: M;
-}): { [K in keyof M]: string } {
-  const outputs: Partial<{ [K in keyof M]: string }> = {};
-  for (const fieldName in outputsMapper) {
-    const tag = outputsMapper[fieldName].tag;
+}): ExtractedType<M> {
+  const entries = (Object.keys(outputsMapper) as (keyof M)[]).map((key) => {
+    const { tag, isRequired } = outputsMapper[key];
     const regex = new RegExp(`<${tag}>(.*?)</${tag}>`, "s");
     const match = text.match(regex);
     if (match) {
-      outputs[fieldName] = match[1].trim();
-    } else if (!outputsMapper[fieldName].isRequired) {
-      outputs[fieldName] = "N/A";
+      return [key, match[1].trim()];
+    } else if (!isRequired) {
+      return [key, undefined];
     } else {
       throw new Error(`Missing field for required tag <${tag}>`);
     }
-  }
-  return outputs as { [K in keyof M]: string };
+  });
+
+  return Object.fromEntries(entries) as ExtractedType<M>;
 }
 
-export function extractAutoPilotReviewOutputs(text: string): {
-  [K in keyof typeof AUTOPILOT_REVIEW_SECTION]: string;
-} {
+/**
+ * Extracts review outputs (summary, findings, score) from text with review tags
+ */
+export function extractAutoPilotReviewOutputs(
+  text: string,
+): ExtractedType<typeof AUTOPILOT_REVIEW_SECTION> {
   return extractTaggedOutputs({
     text,
     outputsMapper: AUTOPILOT_REVIEW_SECTION,
   });
 }
 
+/**
+ * Extracts autopilot step outputs including dynamic review sections
+ */
 export function extractAutoPilotStepOutputs(
   text: string,
   reviewTypes: AutoReviewSectionConfig[] = [],
-): {
-  [K in keyof ReturnType<typeof reviewConfigsToOutputsMapping>]: string;
-} {
+): ExtractedType<typeof BASE_AUTOPILOT_STEP> &
+  Record<string, string | undefined> {
   const reviewSections = reviewConfigsToOutputsMapping(reviewTypes);
   const outputsMapper = { ...BASE_AUTOPILOT_STEP, ...reviewSections };
-  return extractTaggedOutputs({ text, outputsMapper });
+  return extractTaggedOutputs({ text, outputsMapper }) as ExtractedType<
+    typeof BASE_AUTOPILOT_STEP
+  > &
+    Record<string, string | undefined>;
 }

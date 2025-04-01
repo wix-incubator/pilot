@@ -12,6 +12,7 @@ import {
 } from "@/types";
 import { StepPerformer } from "../step-performer/StepPerformer";
 import { AUTOPILOT_REVIEW_DEFAULTS } from "./reviews/reviewDefaults";
+import * as extractTaggedOutputsModule from "@/common/extract/extractTaggedOutputs";
 
 const GOAL = "tap button";
 const VIEW_HIERARCHY = "<view></view>";
@@ -154,7 +155,48 @@ describe("AutoPerformer", () => {
     mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
 
     mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
-    mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
+    mockPromptHandler.runPrompt.mockImplementation(() => {
+      jest
+        .spyOn(extractTaggedOutputsModule, "extractAutoPilotStepOutputs")
+        .mockReturnValue({
+          screenDescription: "default name",
+          thoughts: "I think this is great",
+          action: "Tap on GREAT button",
+          goalSummary: undefined,
+          UX: `<SUMMARY>
+The review of UX
+</SUMMARY>
+<FINDINGS>
+- UX finding one
+- UX finding two
+</FINDINGS>
+<SCORE>
+7/10
+</SCORE>`,
+          Accessibility: `<SUMMARY>
+The review of accessibility
+</SUMMARY>
+<FINDINGS>
+- ACC finding one
+- ACC finding two
+</FINDINGS>
+<SCORE>
+8/10
+</SCORE>`,
+          Internationalization: `<SUMMARY>
+The review of i18n
+</SUMMARY>
+<FINDINGS>
+- i18n finding one
+- i18n finding two
+</FINDINGS>
+<SCORE>
+6/10
+</SCORE>`,
+        });
+
+      return Promise.resolve(promptResult);
+    });
     mockPromptHandler.isSnapshotImageSupported.mockReturnValue(
       isSnapshotSupported,
     );
@@ -366,6 +408,15 @@ describe("AutoPerformer", () => {
           goalAchieved: true,
           summary: "all was good",
         };
+
+        jest
+          .spyOn(extractTaggedOutputsModule, "extractAutoPilotStepOutputs")
+          .mockReturnValueOnce({
+            screenDescription: "Screen 2",
+            thoughts: "Completed successfully",
+            action: "success",
+            goalSummary: "all was good",
+          });
 
         const screenCapturerResult: ScreenCapturerResult = {
           snapshot: SNAPSHOT_DATA,
