@@ -17,9 +17,7 @@ export class CodeEvaluator {
     try {
       const result = await asyncFunction();
 
-      logger.labeled("EVAL").info("Code executed successfully");
-
-      logger.info({
+      logger.labeled("EVAL").info("Code executed successfully\n", {
         message: `${code}`,
         isBold: false,
         color: "gray",

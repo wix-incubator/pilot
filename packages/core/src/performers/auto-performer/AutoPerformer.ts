@@ -10,7 +10,7 @@ import {
   AutoStepReport,
 } from "@/types/auto";
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
-import { LoggerMessageColor } from "@/types/logger";
+import { LoggerMessageColor, LoggerMessageComponent } from "@/types/logger";
 import {
   extractAutoPilotReviewOutputs,
   extractAutoPilotStepOutputs,
@@ -50,24 +50,37 @@ export class AutoPerformer {
     };
   }
 
-  private logReviewSection(
+  private formatReviewSection(
     review: AutoReviewSection,
     typeObject: AutoReviewSectionConfig,
-  ) {
+  ): LoggerMessageComponent[] {
     const summaryMessage = review.score
       ? `${review.summary} (Score: ${review.score})`
       : review.summary;
 
-    const formattedSummary = parseFormattedText(summaryMessage);
-
-    logger
-      .labeled(`${typeObject.title.toUpperCase()} REVIEW`)
-      .info(...formattedSummary);
-
-    review.findings?.forEach((finding) => {
-      const formattedFinding = parseFormattedText(`- ${finding}`);
-      logger.info(...formattedFinding);
+    const formattedResults: LoggerMessageComponent[] = [];
+    formattedResults.push({ message: "\n", isBold: false, color: "white" });
+    formattedResults.push({
+      message: `${typeObject.title.toUpperCase()}: `,
+      isBold: true,
+      color: "green",
     });
+    formattedResults.push(...parseFormattedText(summaryMessage));
+
+    if (review.findings?.length) {
+      formattedResults.push({ message: "\n", isBold: false, color: "white" });
+      review.findings.forEach((finding) => {
+        formattedResults.push({ message: "\n", isBold: false, color: "white" });
+        formattedResults.push({
+          message: "  - ",
+          isBold: false,
+          color: "white",
+        });
+        formattedResults.push(...parseFormattedText(finding));
+      });
+    }
+
+    return formattedResults;
   }
 
   async analyseScreenAndCreatePilotStep(
@@ -285,8 +298,6 @@ export class AutoPerformer {
         });
 
         logger.labeled("SUMMARY").info(...formattedSummary);
-
-        logger.writeLogsToFile(`pilot_logs_${Date.now()}`);
         break;
       }
 
@@ -323,18 +334,24 @@ export class AutoPerformer {
     review: AutoReview,
     reviewSectionTypes?: AutoReviewSectionConfig[],
   ): void {
-    const formattedDescription = parseFormattedText(screenDescription);
-    logger.labeled("REVIEWING").info(...formattedDescription);
+    const allReviewComponents: LoggerMessageComponent[] = [];
+
+    allReviewComponents.push(...parseFormattedText(screenDescription));
 
     Object.keys(review).forEach((reviewType) => {
       if (review[reviewType]) {
         const reviewTypeConfig = reviewSectionTypes?.find(
           (rt) => rt.title.toLowerCase() === reviewType.toLowerCase(),
         );
-        if (reviewTypeConfig !== undefined)
-          this.logReviewSection(review[reviewType], reviewTypeConfig);
+        if (reviewTypeConfig !== undefined) {
+          allReviewComponents.push(
+            ...this.formatReviewSection(review[reviewType], reviewTypeConfig),
+          );
+        }
       }
     });
+
+    logger.labeled("REVIEWING").info(...allReviewComponents);
   }
 
   private async getValueFromCache(
