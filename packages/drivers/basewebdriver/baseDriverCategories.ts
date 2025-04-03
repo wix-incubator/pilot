@@ -34,7 +34,8 @@ export const baseDriverCategories = [
 });
 await submitElement.click();`,
         guidelines: [
-          `Use the attributes from this list: ${Object.keys(MATCHING_CONFIG).join(",")}.`,
+          `Only send findElements element attributes from the same line. you can count each <> closer as a different line in the view hierarchy. never combine attributes from different lines`,
+          `Use the attributes from this list: ${Object.keys(MATCHING_CONFIG).join(",")}. you must use all of them. if one doesnt present set it's value as undeifned`,
           "You must always detect and use all the attributes related to the element from the provided view",
           "Make sure you are only adding attributes of the relevant element and no any other",
         ],

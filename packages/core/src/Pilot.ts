@@ -10,6 +10,7 @@ import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
 import { AutoPerformer } from "@/performers/auto-performer/AutoPerformer";
 import { AutoPerformerPromptCreator } from "@/performers/auto-performer/AutoPerformerPromptCreator";
+import { UserGoalToPilotGoalPromptCreator } from "@/performers/auto-performer/UserGoalToPilotGoalPromptCreator";
 import { AutoReport } from "@/types/auto";
 import { StepPerformerPromptCreator } from "@/performers/step-performer/StepPerformerPromptCreator";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
@@ -90,6 +91,7 @@ export class Pilot {
       this.screenCapturer,
       this.cacheHandler,
       this.snapshotComparator,
+      new UserGoalToPilotGoalPromptCreator(),
     );
   }
 

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserGoalToPilotGoalPromptCreator should create a prompt with the provided goal and correct sections 1`] = `
+"# General Goal to QA Test Goal Conversion
+
+You are an AI assistant tasked with:
+
+1. Reading a general goal or objective provided.
+2. Converting it into a **QA/test-oriented goal** in a single line—something a tester would verify or validate.
+3. Wrapping the final goal in <GOAL>...</GOAL> **with no extra text** outside those tags.
+4. If the goal is unclear or invalid, throw an informative error in one sentence.
+
+Make sure the resulting goal is framed as an instruction or verification task for a tester, rather than from the perspective of a feature creator.
+## Context
+
+### Goal Provided
+
+Test that users can log in successfully
+
+## Instructions
+
+1. Extract the **key testing objective** from the provided goal. The final statement should read like a verification or validation instruction (e.g., “Verify that…”, “Ensure that…”, “Make sure…”).
+2. Keep it concise and imperative
+3. Output **only** <GOAL> ... </GOAL> with no extra text outside those tags.
+
+If you cannot confidently form a concise test goal, respond with:
+
+Error: Unable to determine a concise test goal from the given goal.
+
+## Examples
+
+### Example 1
+#### Input
+
+Track orders to see shipping updates in real time.
+
+#### Correct Output (QA Perspective)
+
+<GOAL>Verify that shipping updates are displayed in real time when tracking orders</GOAL>
+
+### Example 2
+#### Input
+
+Select from multiple banner layout presets for quick design.
+
+#### Correct Output (QA Perspective)
+
+<GOAL>Ensure multiple banner layout presets can be selected</GOAL>
+
+### Example 3 (Error Case)
+#### Input
+
+Nonsensical goal with no clear objective.
+
+#### Correct Output
+
+Error: Unable to determine a concise test goal from the given goal.
+
+### Example 4 (Longer Goal)
+#### Input
+
+as a user i would like to manage multiple shipping addresses from a single interface, including the ability to edit, delete, and set a default address, so that they can easily handle their delivery preferences without having to navigate to different pages.
+
+#### Correct Output (QA Perspective)
+
+<GOAL>Verify that users can add, edit, remove, and set a default shipping address from one interface</GOAL>
+
+### Example 5 (Longer Goal)
+#### Input
+
+Provide a feature for scheduling promotional email campaigns with custom templates, allowing marketers to target segments, set time zones, and receive detailed send reports for each campaign so they can optimize future mailouts.
+
+#### Correct Output (QA Perspective)
+
+<GOAL>Ensure that marketers can schedule campaigns with custom templates, target segments, set time zones, and view detailed reports</GOAL>
+
+### Example 6 (Longer Goal)
+#### Input
+
+As a user, i would like to have an analytics dashboard that tracks daily active users, session durations, and peak usage times. The goal is to give product managers real-time insights into user engagement patterns and to enable them to make quick, data-driven decisions.
+
+#### Correct Output (QA Perspective)
+
+<GOAL>Verify the analytics dashboard accurately tracks daily active users, session durations, and peak usage times in real time</GOAL>
+Please provide your response below:"
+`;

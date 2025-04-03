@@ -21,7 +21,7 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
       return { x: left, y: top };
     },
     compare: comparators.compareRect,
-    importance: { type: "weighted", weight: 0.2 },
+    importance: { type: "weighted", weight: 0.1 },
   },
   "aria-label": {
     extract: (el: HTMLElement): string | null => el.getAttribute("aria-label"),
@@ -67,7 +67,7 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
   src: {
     extract: (el: HTMLElement): string | null => el.getAttribute("src"),
     compare: comparators.compareExactString,
-    importance: { type: "weighted", weight: 0.3 },
+    importance: { type: "weighted", weight: 0.4 },
   },
   text: {
     extract: (el: HTMLElement): string | null => {
@@ -75,7 +75,7 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
       return text ? text.substring(0, DEFAULT_STRING_LENGTH) : null;
     },
     compare: comparators.compareExactString,
-    importance: { type: "weighted", weight: 0.3 },
+    importance: { type: "weighted", weight: 0.4 },
   },
   "nth-child": {
     extract: (el: HTMLElement): string | null => {
@@ -96,11 +96,16 @@ export const ELEMENT_MATCHING_CONFIG: Record<string, CriteriaConfig<any>> = {
       });
       return result;
     },
-    compare: (actual, expected, threshold?: number) => {
+    compare: (actual, expected) => {
       const actualStr = JSON.stringify(actual);
       const expectedStr = JSON.stringify(expected);
-      return comparators.compareExactString(actualStr, expectedStr, threshold);
+      return comparators.compareExactString(actualStr, expectedStr);
     },
     importance: { type: "weighted", weight: 0.4 },
+  },
+  "data-hook": {
+    extract: (el: HTMLElement): string | null => el.getAttribute("data-hook"),
+    compare: comparators.compareExactString,
+    importance: { type: "weighted", weight: 0.3 },
   },
 };

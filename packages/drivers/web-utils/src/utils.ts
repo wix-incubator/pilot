@@ -70,7 +70,6 @@ export function findElement(
     },
     { candidate: null as HTMLElement | null, errorScore: Infinity },
   );
-
   return bestCandidate.errorScore < maxErrorThreshold
     ? bestCandidate.candidate
     : null;
@@ -186,23 +185,19 @@ export function createMarkedViewHierarchy() {
 
   function processElement(element: Element, depth = 0): string {
     const children = Array.from(element.children);
-    let structure = "";
-    let childStructure = "";
+    let result = "";
+    let childrenOutput = "";
 
     for (const child of children) {
-      const childStr = processElement(child, depth + 1);
-      if (childStr) {
-        childStructure += childStr;
-      }
+      childrenOutput += processElement(child, depth + 1);
     }
-
     const isImportantElement =
       element.hasAttribute("aria-pilot-category") ||
       ESSENTIAL_ELEMENTS.includes(element.tagName);
 
-    if (isImportantElement || childStructure) {
+    if (isImportantElement || childrenOutput) {
       const indent = "  ".repeat(depth);
-      structure += `${indent}<${element.tagName.toLowerCase()}`;
+      let line = `${indent}ELEMENT: <${element.tagName.toLowerCase()}`;
 
       Array.from(element.attributes)
         .filter(
@@ -213,29 +208,25 @@ export function createMarkedViewHierarchy() {
             ),
         )
         .forEach((attr) => {
-          structure += ` ${attr.name}="${attr.value}"`;
+          line += ` ${attr.name}="${attr.value}"`;
         });
 
       const interestingAttrs = getInterestingAttributes(element as HTMLElement);
       for (const [attr, value] of Object.entries(interestingAttrs)) {
         if (value != null && value !== "") {
-          structure += ` ${attr}=${JSON.stringify(value)}`;
+          line += ` ${attr}=${JSON.stringify(value)}`;
         }
       }
 
       const category = element.getAttribute("aria-pilot-category");
       const index = element.getAttribute("aria-pilot-index");
       if (category) {
-        structure += ` data-category="${category}" data-index="${index}"`;
+        line += ` data-category="${category}" data-index="${index}"`;
       }
-      structure += ">\n";
-
-      if (childStructure) {
-        structure += childStructure;
-      }
-      structure += `${indent}</${element.tagName.toLowerCase()}>\n`;
+      line += ">";
+      result += line + "\n" + childrenOutput;
     }
-    return structure;
+    return result;
   }
 
   return processElement(root);

@@ -10,9 +10,11 @@ import {
   AutoStepReport,
 } from "@/types/auto";
 import { PreviousStep, PromptHandler, ScreenCapturerResult } from "@/types";
+import { UserGoalToPilotGoalPromptCreator } from "./UserGoalToPilotGoalPromptCreator";
 import {
   extractAutoPilotReviewOutputs,
   extractAutoPilotStepOutputs,
+  extractGoalOutput,
 } from "@/common/extract/extractTaggedOutputs";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
@@ -28,6 +30,7 @@ export class AutoPerformer {
     private screenCapturer: ScreenCapturer,
     private cacheHandler: CacheHandler,
     private snapshotComparator: SnapshotComparator,
+    private userGoalToPilotGoalPromptCreator: UserGoalToPilotGoalPromptCreator,
   ) {}
 
   private extractReviewOutput(text: string): AutoReviewSection {
@@ -224,6 +227,7 @@ export class AutoPerformer {
     goal: string,
     reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoReport> {
+    goal = await this.getValidGoal(goal);
     const maxSteps = 100;
     let previousSteps: AutoPreviousStep[] = [];
     let pilotSteps: PreviousStep[] = [];
@@ -321,5 +325,33 @@ export class AutoPerformer {
       );
 
     return matchingEntry?.value as AutoStepReport;
+  }
+
+  private async getValidGoal(goal: string): Promise<string> {
+    const key = this.cacheHandler.generateCacheKey({ goal });
+    const runPromptAndExtractGoal = async (): Promise<string> => {
+      return extractGoalOutput(
+        await this.promptHandler.runPrompt(
+          this.userGoalToPilotGoalPromptCreator.createPrompt(goal),
+        ),
+      );
+    };
+
+    if (this.cacheHandler.isCacheInUse() && key) {
+      const cachedValues =
+        this.cacheHandler.getFromPersistentCache<string>(key);
+      if (cachedValues) {
+        const matchingEntry =
+          this.cacheHandler.findMatchingCacheEntry<string>(cachedValues);
+        if (matchingEntry?.value) {
+          return matchingEntry.value as string;
+        }
+      }
+      const validGoal = await runPromptAndExtractGoal();
+      this.cacheHandler.addToTemporaryCache(key, validGoal);
+      return validGoal;
+    }
+
+    return runPromptAndExtractGoal();
   }
 }

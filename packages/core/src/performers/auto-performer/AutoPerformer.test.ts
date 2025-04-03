@@ -11,6 +11,7 @@ import {
   AutoReport,
 } from "@/types";
 import { StepPerformer } from "../step-performer/StepPerformer";
+import { UserGoalToPilotGoalPromptCreator } from "./UserGoalToPilotGoalPromptCreator";
 import { AUTOPILOT_REVIEW_DEFAULTS } from "./reviews/reviewDefaults";
 
 const GOAL = "tap button";
@@ -63,7 +64,10 @@ The review of i18n
 <SCORE>
 6/10
 </SCORE>
-</INTERNATIONALIZATION>`;
+</INTERNATIONALIZATION>
+<GOAL>
+ tap button
+</GOAL>`;
 
 const SNAPSHOT_DATA = "snapshot_data";
 
@@ -76,6 +80,7 @@ describe("AutoPerformer", () => {
   let mockCaptureResult: ScreenCapturerResult;
   let mockCacheHandler: jest.Mocked<CacheHandler>;
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
+  let mockUserGoalToPilotGoalPromptCreator: jest.Mocked<UserGoalToPilotGoalPromptCreator>;
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -118,6 +123,9 @@ describe("AutoPerformer", () => {
       compareSnapshot: jest.fn(),
     } as unknown as jest.Mocked<SnapshotComparator>;
 
+    mockUserGoalToPilotGoalPromptCreator = {
+      createPrompt: jest.fn(),
+    } as unknown as jest.Mocked<UserGoalToPilotGoalPromptCreator>;
     // Instantiate PilotPerformer with the mocks
     performer = new AutoPerformer(
       mockPromptCreator,
@@ -126,6 +134,7 @@ describe("AutoPerformer", () => {
       mockScreenCapturer,
       mockCacheHandler,
       mockSnapshotComparator,
+      mockUserGoalToPilotGoalPromptCreator,
     );
   });
 
@@ -152,7 +161,9 @@ describe("AutoPerformer", () => {
 
     // Mock the capture function to return mockCaptureResult
     mockScreenCapturer.capture.mockResolvedValue(mockCaptureResult);
-
+    mockUserGoalToPilotGoalPromptCreator.createPrompt.mockReturnValue(
+      GENERATED_PROMPT,
+    );
     mockPromptCreator.createPrompt.mockReturnValue(GENERATED_PROMPT);
     mockPromptHandler.runPrompt.mockResolvedValue(promptResult);
     mockPromptHandler.isSnapshotImageSupported.mockReturnValue(
@@ -346,6 +357,7 @@ describe("AutoPerformer", () => {
 
     describe("perform", () => {
       it("should perform multiple steps until success is returned", async () => {
+        setupMocks();
         const pilotOutputStep1: AutoStepReport = {
           screenDescription: "Screen 1",
           plan: {
@@ -498,7 +510,6 @@ describe("AutoPerformer", () => {
   describe("with review types", () => {
     it("should perform an intent successfully with snapshot image support with review", async () => {
       setupMocks();
-
       const result = await performer.analyseScreenAndCreatePilotStep(
         GOAL,
         [],
