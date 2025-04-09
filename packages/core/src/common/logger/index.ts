@@ -19,17 +19,36 @@ import {
 } from "winston";
 import { findProjectRoot, getRelativePath } from "./pathUtils";
 
+/**
+ * Default logger delegate implementation using Winston
+ * Provides clean, formatted output to the console
+ */
 export class DefaultLoggerDelegate implements LoggerDelegate {
   private readonly logger: WinstonLogger;
 
   constructor() {
+    // Create a custom console transport that writes directly to stdout
+    // This avoids the default Winston formatting and timestamp
+    const customConsoleTransport = new transports.Console({
+      format: format.printf(({ message }) => String(message)),
+    });
+
+    // Create the Winston logger with minimal formatting
     this.logger = createLogger({
       level: "info",
-      format: format.combine(format.printf(({ message }) => String(message))),
-      transports: [new transports.Console()],
+      format: format.combine(
+        // Simple format without timestamps or log level prefixes
+        format.printf(({ message }) => String(message)),
+      ),
+      transports: [customConsoleTransport],
     });
   }
 
+  /**
+   * Log a message at the specified level
+   * @param level The log level (info, warn, error, debug)
+   * @param message The formatted message to log
+   */
   log(level: LogLevel, message: string): void {
     this.logger[level](message);
   }
