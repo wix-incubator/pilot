@@ -17,6 +17,7 @@ import {
   transports,
   Logger as WinstonLogger,
 } from "winston";
+import { Writable } from "stream";
 import { findProjectRoot, getRelativePath } from "./pathUtils";
 
 /**
@@ -27,20 +28,26 @@ export class DefaultLoggerDelegate implements LoggerDelegate {
   private readonly logger: WinstonLogger;
 
   constructor() {
-    // Create a custom console transport that writes directly to stdout
-    // This avoids the default Winston formatting and timestamp
-    const customConsoleTransport = new transports.Console({
+    // Create a custom output stream that writes directly to stdout
+    // This completely bypasses console.log
+    const outputStream = new Writable({
+      write(chunk, encoding, callback) {
+        process.stdout.write(chunk);
+        callback();
+      },
+    });
+
+    // Create a custom transport using our direct stdout stream
+    const directStdoutTransport = new transports.Stream({
+      stream: outputStream,
       format: format.printf(({ message }) => String(message)),
     });
 
     // Create the Winston logger with minimal formatting
     this.logger = createLogger({
       level: "info",
-      format: format.combine(
-        // Simple format without timestamps or log level prefixes
-        format.printf(({ message }) => String(message)),
-      ),
-      transports: [customConsoleTransport],
+      format: format.printf(({ message }) => String(message)),
+      transports: [directStdoutTransport],
     });
   }
 
