@@ -14,6 +14,7 @@ Generate the minimal executable code to perform the following intent: "Tap on a 
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
 \`\`\`
 <view><button>Login</button></view>
 \`\`\`
@@ -46,17 +47,17 @@ Your task is to generate the minimal executable code to perform the following in
 Please follow these steps carefully:
 
 1. Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.
-2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.
+2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add the relevant snippet from the view hierarchy to the response inside <VIEW_HIERARCHY_SNIPPED></VIEW_HIERARCHY_SNIPPED> block.
 3. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
 4. Determine if the intent can be fully validated visually using the snapshot image.
 5. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
-6. If the visual assertion fails, return code that throws an informative error explaining the failure.
+6. If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.
 7. If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.
 8. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 9. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 10. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
 11. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-12. Wrap the generated code with backticks, without any additional formatting.
+12. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
 13. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
@@ -70,15 +71,22 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
+#### Example of providing the view hierarchy snippet:
+<VIEW_HIERARCHY_SNIPPET>
+<RCTViewComponentView alpha="1.0" class="RCTViewComponentView" focused="false" height="769" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0" label="User ID: 12345" tag="124" visibility="visible" width="393" x="0" y="0">
+<RCTTextView alpha="1.0" class="RCTTextView" focused="false" height="20" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0_1" label="User ID: 12345" visibility="visible" width="393" x="0" y="0"/>
+<UIButton alpha="1.0" class="UIButton" focused="false" height="50" id="user-profile-12345" visibility="visible" width="200" text="User Profile"/>
+</RCTViewComponentView>
+</VIEW_HIERARCHY_SNIPPET>
 #### Example of using shared context between steps:
-\`\`\`typescript
+<CODE>
 // Step 1: Store the user ID
 const userId = await getUserId();
 sharedContext.userId = userId;
 
 // Step 2: Use the stored user ID
 await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
+</CODE>
 
 #### Visual validation using the snapshot:
 \`\`\`typescript

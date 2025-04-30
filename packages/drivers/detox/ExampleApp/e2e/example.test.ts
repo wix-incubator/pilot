@@ -43,8 +43,8 @@ describe('ExampleApp Detox Test Suite', () => {
     });
 
     describe('Emoji Game', () => {
-        it.only('should get 10 point in the matching game', async () => {
-            await pilot.autopilot(`Drag emojis in the Emoji game, until you reach score 3. The transparent circles are the targets.`, reviewTypes);
+        it('should get 10 point in the matching game', async () => {
+            await pilot.autopilot(`Drag emojis in the Emoji game, until you reach score 2. The transparent circles are the targets.`, reviewTypes);
         });
     });
 
@@ -56,8 +56,25 @@ describe('ExampleApp Detox Test Suite', () => {
     });
 
     describe('Assertions screen', () => {
-        it('should test the screen', async () => {
+        it.only('should test the screen', async () => {
             await pilot.autopilot(`Explore the assertions screen and verify the different assertions.`);
         });
+    });
+
+    describe('pilot check', () => {
+       it('should check the pilot', async () => {
+           await pilot.perform('drag the star emoji to the transparent star emoji',
+               'verify the score is 1');
+       });
+       it('should check the autopilot', async () => {
+              await pilot.autopilot('get 1 point in the emoji game using the star emoji');
+       });
+       it('should check the pilot', async () => {
+          await pilot.perform('go to the assertions screen', 'change toggle value to 1');
+       });
+
+       it('should check the autopilot', async () => {
+          await pilot.autopilot('go to the assertions screen', AUTOPILOT_REVIEW_DEFAULTS);
+       });
     });
 });

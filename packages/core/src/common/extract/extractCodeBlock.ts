@@ -1,28 +1,40 @@
-export function extractCodeBlock(text: string): string {
+export function extractCodeBlock(text: string): any {
+  let viewHierarchyResult: string[] = [];
+  let codeBlockResult = text;
+
+  const viewHierarchyRegex =
+    /View hierarchy snippet showing relevant context:\s*```(?:xml)?\s*([\s\S]*?)\s*```/;
+  const viewHierarchyMatch = text.match(viewHierarchyRegex);
+
+  if (viewHierarchyMatch) {
+    viewHierarchyResult = viewHierarchyMatch[1]
+      .trim()
+      .split(/\n+/)
+      .map((str) => str.trim())
+      .filter((str) => str.length > 0)
+      .map((str) => str.replace(/\s*\/>/g, ""));
+    codeBlockResult = codeBlockResult.replace(viewHierarchyMatch[0], "").trim();
+  }
   // Check for triple backtick code blocks
   const tripleBacktickRegex = /```(?:\w+)?\r?\n([\s\S]*?)\r?\n```/;
-  const tripleBacktickMatch = text.match(tripleBacktickRegex);
+  const tripleBacktickMatch = codeBlockResult.match(tripleBacktickRegex);
 
   // Check for single backtick code blocks (including empty ones)
   const singleBacktickRegex = /^[ \t]*`([^`]*)`[ \t]*$/m;
-  const singleBacktickMatch = text.match(singleBacktickRegex);
+  const singleBacktickMatch = codeBlockResult.match(singleBacktickRegex);
+
+  let extractedCode: string;
 
   if (tripleBacktickMatch) {
-    // Get content from triple backtick block
     const innerContent = tripleBacktickMatch[1].trim();
-    // Recursively check for nested code blocks
     const nestedResult = extractCodeBlock(innerContent);
-    // If we found a nested code block, return it
-    if (nestedResult !== innerContent) {
-      return nestedResult;
-    }
-    // Otherwise return the inner content
-    return innerContent;
+    extractedCode =
+      typeof nestedResult === "object" ? nestedResult.code : nestedResult;
   } else if (singleBacktickMatch) {
-    // Return content from single backtick block
-    return singleBacktickMatch[1];
+    extractedCode = singleBacktickMatch[1];
+  } else {
+    extractedCode = codeBlockResult;
   }
 
-  // If no code block is found, return the original text
-  return text;
+  return { code: extractedCode, viewHierarchy: viewHierarchyResult };
 }

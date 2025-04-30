@@ -1,9 +1,14 @@
 import { CacheHandler } from "./CacheHandler";
 import { mockCache, mockedCacheFile } from "../../test-utils/cache";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
-import type { ScreenCapturerResult } from "@/types";
+import {
+  CacheValueSnapshot,
+  CacheValueViewHierarchy,
+  ScreenCapturerResult,
+} from "@/types";
 import fs from "fs";
 import * as testEnvUtils from "./testEnvUtils";
+import expect from "expect";
 
 jest.mock("fs");
 jest.mock("../snapshot/comparator/SnapshotComparator");
@@ -60,11 +65,18 @@ describe("CacheHandler", () => {
     it("should save cache to file successfully", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
       cacheHandler.flushTemporaryCache();
 
       expect(mockedCacheFile).toHaveProperty("cacheKey");
       expect(mockedCacheFile?.cacheKey[0].value).toEqual("test-value");
+      expect(mockedCacheFile?.cacheKey[0].viewHierarchy).toEqual([
+        "<button>Click me</button>",
+      ]);
     });
 
     it("should handle file errors gracefully when loading cache", () => {
@@ -82,7 +94,11 @@ describe("CacheHandler", () => {
         throw mockError;
       });
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
 
       expect(() => cacheHandler.flushTemporaryCache()).not.toThrow();
     });
@@ -92,24 +108,38 @@ describe("CacheHandler", () => {
     it("should add to temporary cache but not to persistent cache", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
       expect(mockedCacheFile).toBeUndefined();
     });
 
     it("should store snapshot hashes when provided", () => {
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value", mockHashes);
+      cacheHandler.addToTemporaryCacheSnapshotBased(
+        "cacheKey",
+        "test-value",
+        mockHashes,
+      );
       cacheHandler.flushTemporaryCache();
 
-      const result = cacheHandler.getFromPersistentCache("cacheKey");
+      const result = cacheHandler.getFromPersistentCache(
+        "cacheKey",
+      ) as CacheValueSnapshot<string>[];
       expect(result?.[0].snapshotHashes).toEqual(mockHashes);
     });
   });
 
   describe("getFromPersistentCache", () => {
     it("should retrieve a value from cache", () => {
-      cacheHandler.addToTemporaryCache("some_key", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "some_key",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
       cacheHandler.flushTemporaryCache();
 
       const result = cacheHandler.getFromPersistentCache("some_key");
@@ -128,7 +158,11 @@ describe("CacheHandler", () => {
         shouldOverrideCache: true,
       });
 
-      cacheHandler.addToTemporaryCache("some_key", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "some_key",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
       cacheHandler.flushTemporaryCache();
 
       const result = cacheHandler.getFromPersistentCache("some_key");
@@ -140,8 +174,16 @@ describe("CacheHandler", () => {
     it("should move all temporary cache entries to the persistent cache", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCache("cacheKey1", "value1");
-      cacheHandler.addToTemporaryCache("cacheKey2", "value2");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey1",
+        "value1",
+        ["<button>Click me</button>"],
+      );
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey2",
+        "value2",
+        ["<button>Click me</button>"],
+      );
 
       cacheHandler.flushTemporaryCache();
 
@@ -153,15 +195,27 @@ describe("CacheHandler", () => {
     it("should append multiple values for the same key", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCache("cacheKey1", "value1");
-      cacheHandler.addToTemporaryCache("cacheKey1", "value2");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey1",
+        "value1",
+        ["<button>Click me</button>"],
+      );
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey1",
+        "value2",
+        ["<button>Click me</button>"],
+      );
 
       cacheHandler.flushTemporaryCache();
 
-      const result = cacheHandler.getFromPersistentCache("cacheKey1");
+      const result = cacheHandler.getFromPersistentCache(
+        "cacheKey1",
+      ) as CacheValueViewHierarchy<string>[];
       expect(result?.length).toBe(2);
       expect(result?.[0].value).toEqual("value1");
       expect(result?.[1].value).toEqual("value2");
+      expect(result?.[0].viewHierarchy).toEqual(["<button>Click me</button>"]);
+      expect(result?.[1].viewHierarchy).toEqual(["<button>Click me</button>"]);
     });
 
     it("should do nothing if temporary cache is empty", () => {
@@ -176,7 +230,11 @@ describe("CacheHandler", () => {
   describe("clearTemporaryCache", () => {
     it("should clear the temporary cache without persisting it", () => {
       mockCache({});
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+        "cacheKey",
+        "test-value",
+        ["<button>Click me</button>"],
+      );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
 
@@ -200,7 +258,10 @@ describe("CacheHandler", () => {
 
   describe("findMatchingCacheEntry", () => {
     it("should return undefined if no cache values are provided", () => {
-      const result = cacheHandler.findMatchingCacheEntry([], mockHashes);
+      const result = cacheHandler.findMatchingCacheEntrySnapshotBased(
+        [],
+        mockHashes,
+      );
       expect(result).toBeUndefined();
     });
 
@@ -213,7 +274,7 @@ describe("CacheHandler", () => {
         },
       ];
 
-      const result = cacheHandler.findMatchingCacheEntry(
+      const result = cacheHandler.findMatchingCacheEntryViewHierarchyBased(
         cacheValues,
         undefined,
       );
@@ -232,7 +293,7 @@ describe("CacheHandler", () => {
 
       mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
 
-      const result = cacheHandler.findMatchingCacheEntry(
+      const result = cacheHandler.findMatchingCacheEntrySnapshotBased(
         cacheValues,
         mockHashes,
       );
