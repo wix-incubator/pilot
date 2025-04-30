@@ -45,14 +45,25 @@ export type CacheKey<T> = {
   key: T;
 };
 
+export type CacheValue<T> = {
+  value: T;
+  creationTime: number;
+};
+
 /**
  * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
  * @param T - Cached step data type (result).
- * @param SnapshotHashes - Snapshot hashes. Allows partial object for backward compatibility.
  * @param creationTime - Cache entry creation time.
  */
-export type CacheValue<T> = {
-  value: T;
+export type CacheValueSnapshot<T> = CacheValue<T> & {
   snapshotHashes?: Partial<SnapshotHashes>;
-  creationTime: number;
+};
+
+/**
+ * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
+ * @param T - Cached step data type (result).
+ * @param creationTime - Cache entry creation time.
+ */
+export type CacheValueViewHierarchy<T> = CacheValue<T> & {
+  viewHierarchy?: string[];
 };

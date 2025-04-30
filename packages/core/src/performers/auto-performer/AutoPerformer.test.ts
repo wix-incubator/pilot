@@ -9,6 +9,7 @@ import {
   ScreenCapturerResult,
   AutoStepReport,
   AutoReport,
+  CacheValueSnapshot,
 } from "@/types";
 import { StepPerformer } from "../step-performer/StepPerformer";
 import { AUTOPILOT_REVIEW_DEFAULTS } from "./reviews/reviewDefaults";
@@ -111,7 +112,7 @@ describe("AutoPerformer", () => {
       generateCacheKey: jest.fn(),
       isCacheInUse: jest.fn(),
       getFromPersistentCache: jest.fn(),
-      findMatchingCacheEntry: jest.fn(),
+      findMatchingCacheEntrySnapshotBased: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -465,7 +466,7 @@ The review of i18n
       setupMocks({ cacheExists: true });
 
       // Mock the findMatchingCacheEntry to return a valid cache entry
-      mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
+      mockCacheHandler.findMatchingCacheEntrySnapshotBased.mockReturnValue({
         value: {
           screenDescription: "Screen 1",
           plan: undefined,
@@ -475,7 +476,20 @@ The review of i18n
         },
         snapshotHashes: { BlockHash: "hash" },
         creationTime: Date.now(),
-      });
+      } as CacheValueSnapshot<any>);
+
+      // Mock the findMatchingCacheEntry to return a valid cache entry
+      mockCacheHandler.findMatchingCacheEntrySnapshotBased.mockReturnValue({
+        value: {
+          screenDescription: "Screen 1",
+          plan: undefined,
+          review: undefined,
+          goalAchieved: false,
+          summary: "success",
+        },
+        snapshotHashes: { BlockHash: "hash" },
+        creationTime: Date.now(),
+      } as CacheValueSnapshot<unknown>);
 
       const goal = GOAL;
       const previousSteps: AutoPreviousStep[] = [];
@@ -514,7 +528,7 @@ The review of i18n
         },
       };
 
-      mockCacheHandler.findMatchingCacheEntry.mockReturnValue({
+      mockCacheHandler.findMatchingCacheEntrySnapshotBased.mockReturnValue({
         value: {
           screenDescription: "Screen with reviews",
           plan: {
@@ -527,7 +541,7 @@ The review of i18n
         },
         snapshotHashes: { BlockHash: "hash" },
         creationTime: Date.now(),
-      });
+      } as CacheValueSnapshot<unknown>);
 
       const logReviewsSpy = jest.spyOn(performer as any, "logReviews");
 

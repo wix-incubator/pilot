@@ -114,6 +114,7 @@ export class StepPerformerPromptCreator {
       "",
       "### View hierarchy",
       "",
+      "This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write `No view hierarchy needed for this action` inside the block.",
       "```",
       `${viewHierarchy}`,
       "```",
@@ -196,15 +197,22 @@ export class StepPerformerPromptCreator {
       "throw new Error(\"Unable to find the 'Submit' button element in the current context.\");",
       "```",
       "",
+      "#### Example of providing the view hierarchy snippet:",
+      "<VIEW_HIERARCHY_SNIPPET>",
+      `<RCTViewComponentView alpha="1.0" class="RCTViewComponentView" focused="false" height="769" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0" label="User ID: 12345" tag="124" visibility="visible" width="393" x="0" y="0">`,
+      `<RCTTextView alpha="1.0" class="RCTTextView" focused="false" height="20" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0_1" label="User ID: 12345" visibility="visible" width="393" x="0" y="0"/>`,
+      `<UIButton alpha="1.0" class="UIButton" focused="false" height="50" id="user-profile-12345" visibility="visible" width="200" text="User Profile"/>`,
+      `</RCTViewComponentView>`,
+      "</VIEW_HIERARCHY_SNIPPET>",
       "#### Example of using shared context between steps:",
-      "```typescript",
+      "<CODE>",
       "// Step 1: Store the user ID",
       "const userId = await getUserId();",
       "sharedContext.userId = userId;",
       "",
       "// Step 2: Use the stored user ID",
       "await element(by.id('user-' + sharedContext.userId)).tap();",
-      "```",
+      "</CODE>",
       "",
     ]
       .concat(
@@ -228,17 +236,17 @@ export class StepPerformerPromptCreator {
     if (isSnapshotImageAttached) {
       steps.push(
         "Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.",
-        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.",
+        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add the relevant snippet from the view hierarchy to the response inside <VIEW_HIERARCHY_SNIPPED></VIEW_HIERARCHY_SNIPPED> block.",
         "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.",
         "Determine if the intent can be fully validated visually using the snapshot image.",
         "If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.",
-        "If the visual assertion fails, return code that throws an informative error explaining the failure.",
+        "If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.",
         "If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.",
       );
     } else {
       steps.push(
-        "Analyze the provided intent and the view hierarchy to understand the required action.",
-        "Generate the minimal executable code required to perform the intent using the available API.",
+        "Analyze the provided intent and the view hierarchy to understand the required action. Add the relevant snippet from the view hierarchy to the response inside <VIEW_HIERARCHY_SNIPPED></VIEW_HIERARCHY_SNIPPED> block.",
+        "Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.",
       );
     }
     steps.push(
@@ -246,7 +254,7 @@ export class StepPerformerPromptCreator {
       "Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.",
       "Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.",
       "If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'",
-      "Wrap the generated code with backticks, without any additional formatting.",
+      "Wrap the generated code with <CODE></CODE> block, without any additional formatting.",
       "Do not provide any additional code beyond the minimal executable code required to perform the intent.",
     );
     return steps;
