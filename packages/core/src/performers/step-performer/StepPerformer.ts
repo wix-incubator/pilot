@@ -9,7 +9,7 @@ import {
   ScreenCapturerResult,
   StepPerformerCacheValue,
 } from "@/types";
-import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
+import { extractPilotOutputs } from "@/common/extract/extractTaggedOutputs";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
@@ -44,27 +44,26 @@ export class StepPerformer {
     currentStep: string,
     previousSteps: PreviousStep[],
     screenCapture: ScreenCapturerResult,
-  ): Promise<string> {
+  ): Promise<any> {
     const cacheKey = this.cacheHandler.generateCacheKey({
       currentStep,
       previousSteps,
     });
-    const snapshotHashes =
-      await this.cacheHandler.generateHashes(screenCapture);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey && snapshotHashes) {
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
         this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
         const matchingEntry =
-          this.cacheHandler.findMatchingCacheEntry<StepPerformerCacheValue>(
+          this.cacheHandler.findMatchingCacheEntryViewHierarchyBased<StepPerformerCacheValue>(
             cachedValues,
-            snapshotHashes,
+            screenCapture.viewHierarchy,
           );
 
         if (matchingEntry) {
+          logger.warn(`I WAS TAKEN FROM CACHE ${matchingEntry.value.code}`);
           return matchingEntry.value.code;
         }
       }
@@ -82,18 +81,25 @@ export class StepPerformer {
       prompt,
       screenCapture.snapshot,
     );
-    const code = extractCodeBlock(promptResult);
+
+    const extractedCodeBlock = extractPilotOutputs(promptResult);
+
+    const code = extractedCodeBlock.code
+      ? extractedCodeBlock.code
+      : "No code found";
+    const viewHierarchySnipped = extractedCodeBlock.viewHierarchySnippet
+      ? extractedCodeBlock.viewHierarchySnippet
+      : ["Unknown view hierarchy"];
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cacheValue: StepPerformerCacheValue = { code };
-      this.cacheHandler.addToTemporaryCache(
+      this.cacheHandler.addToTemporaryCacheViewHierarchyBased(
         cacheKey,
         cacheValue,
-        snapshotHashes,
+        viewHierarchySnipped,
       );
     }
-
-    return code;
+    return { code: code, viewHierarchy: viewHierarchySnipped };
   }
 
   async perform(
@@ -124,11 +130,15 @@ export class StepPerformer {
             ? screenCapture
             : await this.screenCapturer.capture(true);
 
-        const code = await this.generateCode(
+        const generatedCode = await this.generateCode(
           step,
           previous,
           screenCaptureResult,
         );
+        const code =
+          typeof generatedCode === "object"
+            ? generatedCode.code
+            : generatedCode;
         lastCode = code;
 
         if (!code) {

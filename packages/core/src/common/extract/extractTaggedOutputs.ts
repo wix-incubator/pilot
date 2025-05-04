@@ -25,6 +25,11 @@ const AUTOPILOT_REVIEW_SECTION = {
   score: { tag: "SCORE", isRequired: false },
 };
 
+const PILOT_OUTPUTS = {
+  viewHierarchySnippet: { tag: "VIEW_HIERARCHY_SNIPPET", isRequired: true },
+  code: { tag: "CODE", isRequired: true },
+};
+
 function extractTaggedOutputs<M extends OutputsMapping>({
   text,
   outputsMapper,
@@ -74,4 +79,25 @@ export function extractAutoPilotStepOutputs(
     typeof BASE_AUTOPILOT_STEP
   > &
     Record<string, string | undefined>;
+}
+
+export function extractPilotOutputs(text: string): {
+  code: string | undefined;
+  viewHierarchySnippet: string[] | undefined;
+} {
+  const outputs = extractTaggedOutputs({
+    text,
+    outputsMapper: PILOT_OUTPUTS,
+  });
+
+  const viewHierarchySnippet = outputs.viewHierarchySnippet
+    ? outputs.viewHierarchySnippet
+        .trim()
+        .split(/\n+/)
+        .map((str) => str.trim())
+        .filter((str) => str.length > 0)
+        .map((str) => str.replace(/\s*\/>/g, ""))
+    : undefined;
+
+  return { code: outputs.code, viewHierarchySnippet: viewHierarchySnippet };
 }

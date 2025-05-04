@@ -4,6 +4,8 @@ import os from "os";
 import {
   CacheOptions,
   CacheValue,
+  CacheValueSnapshot,
+  CacheValueViewHierarchy,
   ScreenCapturerResult,
   SnapshotHashes,
 } from "@/types";
@@ -130,16 +132,42 @@ export class CacheHandler {
    * @param value The value to cache
    * @param snapshotHashes Hash values for the current snapshot
    */
-  public addToTemporaryCache<T>(
+  public addToTemporaryCacheSnapshotBased<T>(
     cacheKey: string,
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
   ): void {
-    logger.labeled("CACHE").info("Saving response to cache");
+    logger.info("Saving result to cache for future use");
 
-    const cacheValue: CacheValue<T> = {
+    const cacheValue: CacheValueSnapshot<T> = {
       value,
       snapshotHashes: snapshotHashes || {},
+      creationTime: Date.now(),
+    };
+
+    const existingValues = this.temporaryCache.get(cacheKey) || [];
+    this.temporaryCache.set(cacheKey, [
+      ...existingValues,
+      cacheValue as CacheValue<unknown>,
+    ]);
+  }
+
+  /**
+   * Add value to temporary cache
+   * @param cacheKey The cache key string
+   * @param value The value to cache
+   * @param viewHierarchy The relevant snipped from the view hierarchy string
+   */
+  public addToTemporaryCacheViewHierarchyBased<T>(
+    cacheKey: string,
+    value: T,
+    viewHierarchy: string[],
+  ): void {
+    logger.labeled("CACHE").info("Saving response to cache");
+
+    const cacheValue: CacheValueViewHierarchy<T> = {
+      value,
+      viewHierarchy,
       creationTime: Date.now(),
     };
 
@@ -176,8 +204,8 @@ export class CacheHandler {
    * @param currentHashes Current snapshot hashes (complete with all algorithms)
    * @returns Matching cache value if found, undefined otherwise
    */
-  public findMatchingCacheEntry<T>(
-    cacheValues: Array<CacheValue<T>>,
+  public findMatchingCacheEntrySnapshotBased<T>(
+    cacheValues: Array<CacheValueSnapshot<T>>,
     currentHashes?: SnapshotHashes,
   ): CacheValue<T> | undefined {
     if (!cacheValues?.length || !currentHashes) {
@@ -190,6 +218,40 @@ export class CacheHandler {
         entry.snapshotHashes,
       );
     });
+  }
+
+  /**
+   * Find matching cache entry by comparing snapshot hashes
+   * @param cacheValues Array of cache values to search
+   * @param viewHierarchy The view hierarchy string to match
+   * @returns Matching cache value if found, undefined otherwise
+   */
+  public findMatchingCacheEntryViewHierarchyBased<T>(
+    cacheValues: Array<CacheValueViewHierarchy<T>>,
+    viewHierarchy: string | undefined,
+  ): CacheValue<T> | undefined {
+    if (!cacheValues?.length || !viewHierarchy) {
+      return undefined;
+    }
+
+    for (const entry of cacheValues) {
+      if (!entry.viewHierarchy) continue;
+
+      let allMatch = true;
+
+      for (const hierarchy of entry.viewHierarchy) {
+        if (!viewHierarchy.includes(hierarchy)) {
+          allMatch = false;
+          break;
+        }
+      }
+
+      if (allMatch) {
+        return entry;
+      }
+    }
+
+    return undefined;
   }
 
   /**
