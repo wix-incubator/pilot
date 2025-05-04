@@ -20,7 +20,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -181,7 +181,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -330,7 +330,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -417,6 +417,22 @@ element(by.id("uniqueId"))
 
 - Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
 
+### Custom Actions
+
+#### swipe(direction: string)
+
+Swipes in the specified direction.
+
+##### Example
+
+\`\`\`
+await swipe("up");
+\`\`\`
+
+##### Guidelines
+
+- Use this method to scroll the screen.
+
 ## Instructions
 
 Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible"
@@ -477,7 +493,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -620,7 +636,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -753,7 +769,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -908,7 +924,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -1060,7 +1076,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
