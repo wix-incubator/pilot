@@ -14,7 +14,7 @@ Generate the minimal executable code to perform the following intent: "Tap on a 
 
 ### View hierarchy
 
-This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block.
+This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write \`No view hierarchy needed for this action\` inside the block.
 \`\`\`
 <view><button>Login</button></view>
 \`\`\`
