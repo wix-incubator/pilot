@@ -205,16 +205,6 @@ export class StepPerformerPromptCreator {
         "<CACHE_VALIDATION_MATCHER>",
         `const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');`,
         "</CACHE_VALIDATION_MATCHER>",
-      "#### Example of using shared context between steps:",
-      "<CODE>",
-      "// Step 1: Store the user ID",
-      "const userId = await getUserId();",
-      "sharedContext.userId = userId;",
-      "",
-      "// Step 2: Use the stored user ID",
-      "await element(by.id('user-' + sharedContext.userId)).tap();",
-      "</CODE>",
-      "",
     ]
       .concat(
         isSnapshotImageAttached

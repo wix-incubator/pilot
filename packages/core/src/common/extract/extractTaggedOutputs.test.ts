@@ -143,27 +143,27 @@ describe("extractOutputs", () => {
   describe("extractPilotOutputs", () => {
     it("should extract outputs from text", () => {
       const textToBeParsed = `
-         This is the view hierarchy snippet:
-         <VIEW_HIERARCHY_SNIPPET>
-         This is the view hierarchy snippet
-         </VIEW_HIERARCHY_SNIPPET>
+         This is the cache validation matcher:
+         <CACHE_VALIDATION_MATCHER>
+         This is the cache validation matcher
+         </CACHE_VALIDATION_MATCHER>
          This is the code:
          <CODE>
          This is the code
          </CODE>`;
       const outputs = extractPilotOutputs(textToBeParsed);
       expect(outputs).toEqual({
-        viewHierarchySnippet: ["This is the view hierarchy snippet"],
+        cacheValidationMatcher: "This is the cache validation matcher",
         code: "This is the code",
       });
     });
 
     it("should throw error if required output is missing", () => {
       const textToBeParsedNoCode = `
-            This is the view hierarchy snippet:
-            <VIEW_HIERARCHY_SNIPPET>
-            This is the view hierarchy snippet
-            </VIEW_HIERARCHY_SNIPPET>`;
+            This is the cache validation matcher:
+            <CACHE_VALIDATION_MATCHER>
+            This is the cache validation matcher
+            </CACHE_VALIDATION_MATCHER>`;
       expect(() => extractPilotOutputs(textToBeParsedNoCode)).toThrowError(
         "Missing field for required tag <CODE>",
       );
@@ -175,7 +175,7 @@ describe("extractOutputs", () => {
             </CODE>`;
       expect(() =>
         extractPilotOutputs(textToBeParsedNoViewHierarchy),
-      ).toThrowError("Missing field for required tag <VIEW_HIERARCHY_SNIPPET>");
+      ).toThrowError("Missing field for required tag <CACHE_VALIDATION_MATCHER>");
     });
   });
 });

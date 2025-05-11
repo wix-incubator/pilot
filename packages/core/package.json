@@ -39,7 +39,6 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "@babel/runtime": "^7.27.0",
     "chalk": "^4.1.0",
     "pngjs": "^7.0.0",
     "winston": "^3.17.0"

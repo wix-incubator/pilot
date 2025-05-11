@@ -24,16 +24,16 @@ jest.mock("crypto");
 const INTENT = "tap button";
 const VIEW_HIERARCHY = "<view></view>";
 const PROMPT_RESULT =
-  "prompt result: <CODE> tap button </CODE> <VIEW_HIERARCHY_SNIPPET> <view></view> </VIEW_HIERARCHY_SNIPPET>";
+  "prompt result: <CODE> tap button </CODE> <CACHE_VALIDATION_MATCHER> exist button </CACHE_VALIDATION_MATCHER>";
 const CODE = "tap button";
-const VIEW_HIERARCHY_SNIPPET = `<VIEW_HIERARCHY_SNIPPET>["<view></view>"]</VIEW_HIERARCHY_SNIPPET>`;
+const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER>"exist button"</CACHE_VALIDATION_MATCHER>`;
 const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 
-const CACHE_VALUE = [
+const CACHE_VALUE  = [
   {
     value: { code: CODE },
-    viewHierarchy: [VIEW_HIERARCHY],
+      validationMatcher: CACHE_VALIDATION,
     creationTime: Date.now(),
   },
 ];
@@ -94,8 +94,8 @@ describe("StepPerformer", () => {
       isCacheInUse: jest.fn(),
       getFromPersistentCache: jest.fn(),
       generateHashes: jest.fn(),
-      findMatchingCacheEntryViewHierarchyBased: jest.fn(),
-      addToTemporaryCacheViewHierarchyBased: jest.fn(),
+        findMatchingCacheEntryValidationMatcherBased: jest.fn(),
+      addToTemporaryCacheValidationMatcherBased: jest.fn(),
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -180,12 +180,12 @@ describe("StepPerformer", () => {
           return cacheData.get(key);
         },
       );
-      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockReturnValue(
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockResolvedValue(
         CACHE_VALUE[0],
       );
     } else {
       mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
-      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockReturnValue(
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockResolvedValue(
         undefined,
       );
     }
@@ -360,7 +360,7 @@ describe("StepPerformer", () => {
     mockPromptHandler.runPrompt.mockRejectedValueOnce(error);
     // On retry, it succeeds
     mockPromptHandler.runPrompt.mockResolvedValueOnce(
-      `<CODE>retry generated code</CODE>${VIEW_HIERARCHY_SNIPPET}`,
+      `<CODE>retry generated code</CODE>${CACHE_VALIDATION}`,
     );
 
     const screenCapture: ScreenCapturerResult = {
