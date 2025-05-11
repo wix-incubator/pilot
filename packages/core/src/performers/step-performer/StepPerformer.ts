@@ -51,20 +51,27 @@ export class StepPerformer {
     });
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
+        logger.warn(
+            `I AM LOOKING FOR MATCHING CACHE VALUE ${JSON.stringify(cacheKey)}`,
+        );
       const cachedValues =
         this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
+          logger.warn(
+              `I AM LOOKING FOR MATCHING ENTRY ${JSON.stringify(cacheKey)}`,
+          );
         const matchingEntry =
-          this.cacheHandler.findMatchingCacheEntryViewHierarchyBased<StepPerformerCacheValue>(
+          await this.cacheHandler.findMatchingCacheEntryValidationMatcherBased<StepPerformerCacheValue>(
             cachedValues,
-            screenCapture.viewHierarchy,
+            this.context,
+            this.sharedContext,
           );
 
         if (matchingEntry) {
           logger.warn(`I WAS TAKEN FROM CACHE ${matchingEntry.value.code}`);
-          return matchingEntry.value.code;
+          return { code: matchingEntry.value.code, shouldRunMoreCode: matchingEntry.shouldRunMoreCode };
         }
       }
     }
@@ -87,19 +94,19 @@ export class StepPerformer {
     const code = extractedCodeBlock.code
       ? extractedCodeBlock.code
       : "No code found";
-    const viewHierarchySnipped = extractedCodeBlock.viewHierarchySnippet
-      ? extractedCodeBlock.viewHierarchySnippet
+    const cacheValidationMatcher = extractedCodeBlock.cacheValidationMatcher
+      ? extractedCodeBlock.cacheValidationMatcher
       : ["Unknown view hierarchy"];
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cacheValue: StepPerformerCacheValue = { code };
-      this.cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
-        viewHierarchySnipped,
+        cacheValidationMatcher,
       );
     }
-    return { code: code, viewHierarchy: viewHierarchySnipped };
+    return { code: code, cacheValidationMatcher: cacheValidationMatcher, shouldRunMoreCode: true };
   }
 
   async perform(
@@ -135,10 +142,9 @@ export class StepPerformer {
           previous,
           screenCaptureResult,
         );
-        const code =
-          typeof generatedCode === "object"
-            ? generatedCode.code
-            : generatedCode;
+
+        const code= generatedCode.code;
+        const shouldRunMoreCode = generatedCode.shouldRunMoreCode;
         lastCode = code;
 
         if (!code) {
@@ -153,13 +159,21 @@ export class StepPerformer {
           );
         }
 
-        const result = await this.codeEvaluator.evaluate(
-          code,
-          this.context,
-          this.sharedContext,
-        );
-        this.sharedContext = result.sharedContext || this.sharedContext;
-
+          let result: CodeEvaluationResult;
+          if (!shouldRunMoreCode) {
+              result = {
+                  code,
+                  result: undefined, // or some placeholder
+                  sharedContext: this.sharedContext,
+              };
+          } else {
+              result = await this.codeEvaluator.evaluate(
+                  code,
+                  this.context,
+                  this.sharedContext,
+              );
+              this.sharedContext = result.sharedContext || this.sharedContext;
+          }
         progress.stop("success", {
           message: "Step completed successfully",
           isBold: true,

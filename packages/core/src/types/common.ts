@@ -1,3 +1,5 @@
+import {StepPerformerCacheValue} from "@/types/core";
+
 /**
  * Screen capture output.
  */
@@ -61,9 +63,10 @@ export type CacheValueSnapshot<T> = CacheValue<T> & {
 
 /**
  * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
- * @param T - Cached step data type (result).
- * @param creationTime - Cache entry creation time.
+ * @param validationMatcher - a code line that validate the existence of the step's relevant element
  */
-export type CacheValueViewHierarchy<T> = CacheValue<T> & {
-  viewHierarchy?: string[];
+export type CacheValueValidationMatcher<T> = CacheValue<T> & {
+  value: { code: string};
+  validationMatcher?: string | string[];
+  shouldRunMoreCode?: boolean;
 };

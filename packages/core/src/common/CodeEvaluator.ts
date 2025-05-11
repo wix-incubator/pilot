@@ -23,11 +23,13 @@ export class CodeEvaluator {
         color: "gray",
       });
 
+      logger.warn(`THIS IS THE CODE I DID RUN ${code}`);
       return { code, result, sharedContext };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
+      logger.warn(`THIS IS THE CODE I TRIED TO RUN ${code}`);
       logger.labeled("ERROR").error(`Execution failed: ${errorMessage}`);
 
       throw error;
