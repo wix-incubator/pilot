@@ -180,12 +180,12 @@ describe("StepPerformer", () => {
           return cacheData.get(key);
         },
       );
-      mockCacheHandler.findMatchingCacheEntryViewHierarchyBased.mockReturnValue(
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockReturnValue(
         CACHE_VALUE[0],
       );
     } else {
       mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
-      mockCacheHandler.findMatchingCacheEntryViewHierarchyBased.mockReturnValue(
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockReturnValue(
         undefined,
       );
     }
@@ -324,7 +324,7 @@ describe("StepPerformer", () => {
       stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow("Evaluation failed");
     expect(
-      mockCacheHandler.addToTemporaryCacheViewHierarchyBased,
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).toHaveBeenCalled();
   });
 
@@ -350,7 +350,7 @@ describe("StepPerformer", () => {
       {},
     );
     expect(
-      mockCacheHandler.addToTemporaryCacheViewHierarchyBased,
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).not.toHaveBeenCalled(); // No need to save cache again
   });
 
@@ -379,7 +379,7 @@ describe("StepPerformer", () => {
       {},
     );
     expect(
-      mockCacheHandler.addToTemporaryCacheViewHierarchyBased,
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).toHaveBeenCalledTimes(1); // Cache should be saved after success
   });
 
@@ -402,7 +402,7 @@ describe("StepPerformer", () => {
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
     expect(
-      mockCacheHandler.addToTemporaryCacheViewHierarchyBased,
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).not.toHaveBeenCalled();
   });
 

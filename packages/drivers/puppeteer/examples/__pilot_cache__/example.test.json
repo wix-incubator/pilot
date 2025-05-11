@@ -1,0 +1,42 @@
+{
+  "{\"currentStep\":\"Open https://www.wix.com/domains with GUI browser\",\"previousSteps\":[]}": [
+    {
+      "value": {
+        "code": "const browser = await puppeteer.launch({ headless: false, executablePath: \"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);"
+      },
+      "validationMatcher": "const browser = await puppeteer.launch({ headless: false, executablePath: \"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);",
+      "creationTime": 1746943569332,
+      "shouldRunMoreCode": false
+    }
+  ],
+  "{\"currentStep\":\"Tap on the domain search input\",\"previousSteps\":[{\"step\":\"Open https://www.wix.com/domains with GUI browser\",\"code\":\"const browser = await puppeteer.launch({ headless: false, executablePath: \\\"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\\\", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);\"}]}": [
+    {
+      "value": {
+        "code": "const page = getCurrentPage();\nconst inputElement = await findElement(page, {placeholder: \"Type the domain you want\",\"aria-label\": \"Type the domain you want\",class: \"KvoMHf has-custom-focus wixui-text-input__input\",\"data-category\": \"input\"});\nawait inputElement.click();"
+      },
+      "validationMatcher": "const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: \"Type the domain you want\",\"aria-label\": \"Type the domain you want\",class: \"KvoMHf has-custom-focus wixui-text-input__input\",\"data-category\": \"input\"}) ?? (() => { throw new Error('Domain search input not found'); })();",
+      "creationTime": 1746943596687,
+      "shouldRunMoreCode": true
+    }
+  ],
+  "{\"currentStep\":\"Type wix-pilot.com in the domain search input\",\"previousSteps\":[{\"step\":\"Open https://www.wix.com/domains with GUI browser\",\"code\":\"const browser = await puppeteer.launch({ headless: false, executablePath: \\\"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\\\", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);\"},{\"step\":\"Tap on the domain search input\",\"code\":\"const page = getCurrentPage();\\nconst inputElement = await findElement(page, {placeholder: \\\"Type the domain you want\\\",\\\"aria-label\\\": \\\"Type the domain you want\\\",class: \\\"KvoMHf has-custom-focus wixui-text-input__input\\\",\\\"data-category\\\": \\\"input\\\"});\\nawait inputElement.click();\"}]}": [
+    {
+      "value": {
+        "code": "const page = getCurrentPage();\nconst inputElement = await findElement(page, {placeholder: \"Type the domain you want\",\"aria-label\": \"Type the domain you want\",class: \"KvoMHf has-custom-focus wixui-text-input__input\",\"data-category\": \"input\"});\nawait inputElement.type('wix-pilot.com');"
+      },
+      "validationMatcher": "const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: \"Type the domain you want\",\"aria-label\": \"Type the domain you want\",class: \"KvoMHf has-custom-focus wixui-text-input__input\",\"data-category\": \"input\"}) ?? (() => { throw new Error('Domain search input not found'); })();",
+      "creationTime": 1746943624763,
+      "shouldRunMoreCode": true
+    }
+  ],
+  "{\"currentStep\":\"Tap on the Search button\",\"previousSteps\":[{\"step\":\"Open https://www.wix.com/domains with GUI browser\",\"code\":\"const browser = await puppeteer.launch({ headless: false, executablePath: \\\"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\\\", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);\"},{\"step\":\"Tap on the domain search input\",\"code\":\"const page = getCurrentPage();\\nconst inputElement = await findElement(page, {placeholder: \\\"Type the domain you want\\\",\\\"aria-label\\\": \\\"Type the domain you want\\\",class: \\\"KvoMHf has-custom-focus wixui-text-input__input\\\",\\\"data-category\\\": \\\"input\\\"});\\nawait inputElement.click();\"},{\"step\":\"Type wix-pilot.com in the domain search input\",\"code\":\"const page = getCurrentPage();\\nconst inputElement = await findElement(page, {placeholder: \\\"Type the domain you want\\\",\\\"aria-label\\\": \\\"Type the domain you want\\\",class: \\\"KvoMHf has-custom-focus wixui-text-input__input\\\",\\\"data-category\\\": \\\"input\\\"});\\nawait inputElement.type('wix-pilot.com');\"}]}": [
+    {
+      "value": {
+        "code": "const page = getCurrentPage();\nconst searchButton = await findElement(page, {\"aria-label\": \"Search\", text: \"Search\", class: \"StylableButton2545352419__container\"});\nawait searchButton.click();"
+      },
+      "validationMatcher": "const page = getCurrentPage(); const searchButton = await findElement(page, {\"aria-label\": \"Search\", text: \"Search\", class: \"StylableButton2545352419__container\"}) ?? (() => { throw new Error('Search button not found'); })();",
+      "creationTime": 1746943651245,
+      "shouldRunMoreCode": true
+    }
+  ]
+}

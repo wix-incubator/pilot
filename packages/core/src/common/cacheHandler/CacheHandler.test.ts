@@ -3,7 +3,7 @@ import { mockCache, mockedCacheFile } from "../../test-utils/cache";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import {
   CacheValueSnapshot,
-  CacheValueViewHierarchy,
+  CacheValueValidationMatcher,
   ScreenCapturerResult,
 } from "@/types";
 import fs from "fs";
@@ -65,7 +65,7 @@ describe("CacheHandler", () => {
     it("should save cache to file successfully", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
         "test-value",
         ["<button>Click me</button>"],
@@ -94,7 +94,7 @@ describe("CacheHandler", () => {
         throw mockError;
       });
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
         "test-value",
         ["<button>Click me</button>"],
@@ -108,7 +108,7 @@ describe("CacheHandler", () => {
     it("should add to temporary cache but not to persistent cache", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
         "test-value",
         ["<button>Click me</button>"],
@@ -135,7 +135,7 @@ describe("CacheHandler", () => {
 
   describe("getFromPersistentCache", () => {
     it("should retrieve a value from cache", () => {
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "some_key",
         "test-value",
         ["<button>Click me</button>"],
@@ -158,7 +158,7 @@ describe("CacheHandler", () => {
         shouldOverrideCache: true,
       });
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "some_key",
         "test-value",
         ["<button>Click me</button>"],
@@ -174,12 +174,12 @@ describe("CacheHandler", () => {
     it("should move all temporary cache entries to the persistent cache", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
         "value1",
         ["<button>Click me</button>"],
       );
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey2",
         "value2",
         ["<button>Click me</button>"],
@@ -195,12 +195,12 @@ describe("CacheHandler", () => {
     it("should append multiple values for the same key", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
         "value1",
         ["<button>Click me</button>"],
       );
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
         "value2",
         ["<button>Click me</button>"],
@@ -210,12 +210,16 @@ describe("CacheHandler", () => {
 
       const result = cacheHandler.getFromPersistentCache(
         "cacheKey1",
-      ) as CacheValueViewHierarchy<string>[];
+      ) as CacheValueValidationMatcher<string>[];
       expect(result?.length).toBe(2);
       expect(result?.[0].value).toEqual("value1");
       expect(result?.[1].value).toEqual("value2");
-      expect(result?.[0].viewHierarchy).toEqual(["<button>Click me</button>"]);
-      expect(result?.[1].viewHierarchy).toEqual(["<button>Click me</button>"]);
+      expect(result?.[0].validationMatcher).toEqual([
+        "<button>Click me</button>",
+      ]);
+      expect(result?.[1].validationMatcher).toEqual([
+        "<button>Click me</button>",
+      ]);
     });
 
     it("should do nothing if temporary cache is empty", () => {
@@ -230,7 +234,7 @@ describe("CacheHandler", () => {
   describe("clearTemporaryCache", () => {
     it("should clear the temporary cache without persisting it", () => {
       mockCache({});
-      cacheHandler.addToTemporaryCacheViewHierarchyBased(
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
         "test-value",
         ["<button>Click me</button>"],
@@ -274,7 +278,7 @@ describe("CacheHandler", () => {
         },
       ];
 
-      const result = cacheHandler.findMatchingCacheEntryViewHierarchyBased(
+      const result = cacheHandler.findMatchingCacheEntryValidationMatcherBased(
         cacheValues,
         undefined,
       );

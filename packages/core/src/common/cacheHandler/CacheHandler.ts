@@ -5,13 +5,15 @@ import {
   CacheOptions,
   CacheValue,
   CacheValueSnapshot,
-  CacheValueViewHierarchy,
+  CacheValueValidationMatcher,
   ScreenCapturerResult,
   SnapshotHashes,
+  CodeEvaluationResult,
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
 import { getCurrentTestFilePath } from "./testEnvUtils";
+import { CodeEvaluator } from "@/common/CodeEvaluator";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
@@ -28,6 +30,7 @@ export class CacheHandler {
   private cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
+  private codeEvaluator: CodeEvaluator;
 
   /**
    * Creates a new CacheHandler instance
@@ -44,6 +47,7 @@ export class CacheHandler {
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
     this.cacheFilePath = this.determineCurrentCacheFilePath();
+    this.codeEvaluator = new CodeEvaluator();
   }
 
   private createCacheOptionsWithDefaults(
@@ -156,18 +160,18 @@ export class CacheHandler {
    * Add value to temporary cache
    * @param cacheKey The cache key string
    * @param value The value to cache
-   * @param viewHierarchy The relevant snipped from the view hierarchy string
+   * @param validationMatcher a code line that validate the existence of the step's relevant element
    */
-  public addToTemporaryCacheViewHierarchyBased<T>(
+  public addToTemporaryCacheValidationMatcherBased<T>(
     cacheKey: string,
-    value: T,
-    viewHierarchy: string[],
+    value: T & {code: string},
+    validationMatcher: string [] | string | undefined,
   ): void {
     logger.labeled("CACHE").info("Saving response to cache");
 
-    const cacheValue: CacheValueViewHierarchy<T> = {
+    const cacheValue: CacheValueValidationMatcher<T> = {
       value,
-      viewHierarchy,
+      validationMatcher: validationMatcher,
       creationTime: Date.now(),
     };
 
@@ -223,36 +227,43 @@ export class CacheHandler {
   /**
    * Find matching cache entry by comparing snapshot hashes
    * @param cacheValues Array of cache values to search
-   * @param viewHierarchy The view hierarchy string to match
+   * @param context The context
+   * @param sharedContext The shared context to use for evaluating the validation matcher
    * @returns Matching cache value if found, undefined otherwise
    */
-  public findMatchingCacheEntryViewHierarchyBased<T>(
-    cacheValues: Array<CacheValueViewHierarchy<T>>,
-    viewHierarchy: string | undefined,
-  ): CacheValue<T> | undefined {
-    if (!cacheValues?.length || !viewHierarchy) {
-      return undefined;
-    }
-
+  public async findMatchingCacheEntryValidationMatcherBased<T>(
+    cacheValues: Array<CacheValueValidationMatcher<T>>,
+    context: any,
+    sharedContext?: Record<string, any>,
+  ): Promise<CacheValueValidationMatcher<T> | undefined> {
     for (const entry of cacheValues) {
-      if (!entry.viewHierarchy) continue;
+      if (!entry.validationMatcher) continue;
+        const matcher = entry.validationMatcher;
+        if (!matcher || typeof matcher !== "string") continue;
 
-      let allMatch = true;
+        try {
+            const result = await this.codeEvaluator.evaluate(
+                matcher,
+                context,
+                sharedContext,
+            );
 
-      for (const hierarchy of entry.viewHierarchy) {
-        if (!viewHierarchy.includes(hierarchy)) {
-          allMatch = false;
-          break;
+            if (result) {
+                const newEntry = entry;
+                const code = (entry.value.code).replace(/\s+/g, '').trim();
+                const matcherCode = matcher.replace(/\s+/g, '').trim();
+                newEntry.shouldRunMoreCode = !(entry.value.code && code.replace(matcherCode, '').trim() === "");
+                logger.warn(`SHOULD RUN MORE CODE ${newEntry.shouldRunMoreCode}`);
+                return newEntry;
+            }
+        } catch (error) {
+            console.error("Error evaluating matcher:", error);
         }
-      }
-
-      if (allMatch) {
-        return entry;
-      }
     }
 
-    return undefined;
+      return undefined;
   }
+
 
   /**
    * Generate a cache key from serializable data

@@ -26,7 +26,7 @@ const AUTOPILOT_REVIEW_SECTION = {
 };
 
 const PILOT_OUTPUTS = {
-  viewHierarchySnippet: { tag: "VIEW_HIERARCHY_SNIPPET", isRequired: true },
+  cacheValidationMatcher: { tag: "CACHE_VALIDATION_MATCHER", isRequired: true },
   code: { tag: "CODE", isRequired: true },
 };
 
@@ -83,21 +83,18 @@ export function extractAutoPilotStepOutputs(
 
 export function extractPilotOutputs(text: string): {
   code: string | undefined;
-  viewHierarchySnippet: string[] | undefined;
+  cacheValidationMatcher: string | undefined;
 } {
   const outputs = extractTaggedOutputs({
     text,
     outputsMapper: PILOT_OUTPUTS,
   });
 
-  const viewHierarchySnippet = outputs.viewHierarchySnippet
-    ? outputs.viewHierarchySnippet
+  const cacheValidationMatcher = outputs.cacheValidationMatcher
+    ? outputs.cacheValidationMatcher
         .trim()
-        .split(/\n+/)
-        .map((str) => str.trim())
-        .filter((str) => str.length > 0)
-        .map((str) => str.replace(/\s*\/>/g, ""))
+        .replace(/\s*\/>/g, "")
     : undefined;
 
-  return { code: outputs.code, viewHierarchySnippet: viewHierarchySnippet };
+  return { code: outputs.code, cacheValidationMatcher: cacheValidationMatcher };
 }

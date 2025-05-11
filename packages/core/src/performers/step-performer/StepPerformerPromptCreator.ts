@@ -114,7 +114,7 @@ export class StepPerformerPromptCreator {
       "",
       "### View hierarchy",
       "",
-      "This is the complete view hierarchy. Use only the relevant parts for the executable code. In your answer include a list containing the snipped from the view-hierarchy, under a <VIEW_HIERARCHY_SNIPPET></VIEW_HIERARCHY_SNIPPET> block. If there is no need for view hierarchy, or there is no active page, write `No view hierarchy needed for this action` inside the block.",
+      "This is the complete view hierarchy. Use only the relevant parts for the executable code.",
       "```",
       `${viewHierarchy}`,
       "```",
@@ -178,7 +178,7 @@ export class StepPerformerPromptCreator {
     return [
       "## Instructions",
       "",
-      `Your task is to generate the minimal executable code to perform the following intent: "${intent}"`,
+      `Your task is to generate the minimal executable code to perform the following intent: "${intent}". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '\n' inside one code action`,
       "",
       "Please follow these steps carefully:",
       "",
@@ -197,13 +197,14 @@ export class StepPerformerPromptCreator {
       "throw new Error(\"Unable to find the 'Submit' button element in the current context.\");",
       "```",
       "",
-      "#### Example of providing the view hierarchy snippet:",
-      "<VIEW_HIERARCHY_SNIPPET>",
-      `<RCTViewComponentView alpha="1.0" class="RCTViewComponentView" focused="false" height="769" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0" label="User ID: 12345" tag="124" visibility="visible" width="393" x="0" y="0">`,
-      `<RCTTextView alpha="1.0" class="RCTTextView" focused="false" height="20" id="detox_temp_0_0_0_0_0_0_0_0_0_0_0_0_1" label="User ID: 12345" visibility="visible" width="393" x="0" y="0"/>`,
-      `<UIButton alpha="1.0" class="UIButton" focused="false" height="50" id="user-profile-12345" visibility="visible" width="200" text="User Profile"/>`,
-      `</RCTViewComponentView>`,
-      "</VIEW_HIERARCHY_SNIPPET>",
+      "#### Example of providing the validation matcher for a first step:",
+      "<CACHE_VALIDATION_MATCHER>",
+      `await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);`,
+      "</CACHE_VALIDATION_MATCHER>",
+        "#### Example of providing the validation matcher",
+        "<CACHE_VALIDATION_MATCHER>",
+        `const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');`,
+        "</CACHE_VALIDATION_MATCHER>",
       "#### Example of using shared context between steps:",
       "<CODE>",
       "// Step 1: Store the user ID",
@@ -236,7 +237,7 @@ export class StepPerformerPromptCreator {
     if (isSnapshotImageAttached) {
       steps.push(
         "Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.",
-        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add the relevant snippet from the view hierarchy to the response inside <VIEW_HIERARCHY_SNIPPED></VIEW_HIERARCHY_SNIPPED> block.",
+        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid \"browser is not defined\" errors for example. Pay attention to the fact that if the current step is not the first step, the setup is not needed, and can break the test. Make sure to not add \'\n\' inside one code action.",
         "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.",
         "Determine if the intent can be fully validated visually using the snapshot image.",
         "If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.",
@@ -245,8 +246,9 @@ export class StepPerformerPromptCreator {
       );
     } else {
       steps.push(
-        "Analyze the provided intent and the view hierarchy to understand the required action. Add the relevant snippet from the view hierarchy to the response inside <VIEW_HIERARCHY_SNIPPED></VIEW_HIERARCHY_SNIPPED> block.",
+        "Analyze the provided intent and the view hierarchy to understand the required action.",
         "Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.",
+        'Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid \"browser is not defined\" errors for example. \'waitFor\' actions are not needed. Make sure to not add \'\n\' inside one code action',
       );
     }
     steps.push(
