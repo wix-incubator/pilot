@@ -63,7 +63,11 @@ export type CacheValueSnapshot<T> = CacheValue<T> & {
 
 /**
  * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
- * @param validationMatcher - a code line that validate the existence of the step's relevant element
+ * @template T - The type of the cached step result.
+ * @property value - An object containing the code that represents the full step logic.
+ * @param validationMatcher - A line of code used to verify that the relevant element(s) for the step exist.
+ * @param shouldRunMoreCode - Indicates whether additional code should be executed after the validation step.
+ * If the validation step already ran the entire step's code, this should be set to false.
  */
 export type CacheValueValidationMatcher<T> = CacheValue<T> & {
   value: { code: string};
