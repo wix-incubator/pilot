@@ -265,8 +265,8 @@ describe("CacheHandler", () => {
       expect(result).toBeUndefined();
     });
 
-    it("should return undefined if no hashes are provided", () => {
-      const result = cacheHandler.findMatchingCacheEntryValidationMatcherBased(
+    it("should return undefined if no hashes are provided", async() => {
+      const result = await cacheHandler.findMatchingCacheEntryValidationMatcherBased(
           [CACHED_VALUE],
         undefined,
       );
