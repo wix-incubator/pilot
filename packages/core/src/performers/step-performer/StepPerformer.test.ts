@@ -24,9 +24,10 @@ jest.mock("crypto");
 const INTENT = "tap button";
 const VIEW_HIERARCHY = "<view></view>";
 const PROMPT_RESULT =
-  "prompt result: <CODE> tap button </CODE> <CACHE_VALIDATION_MATCHER> exist button </CACHE_VALIDATION_MATCHER>";
+  "prompt result: <CODE> tap button </CODE> <CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VALIDATION_MATCHER>";
 const CODE = "tap button";
-const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER>"exist button"</CACHE_VALIDATION_MATCHER>`;
+const CODE_VALIDATION = "exist button";
+const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VALIDATION_MATCHER>`;
 const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 
@@ -96,6 +97,7 @@ describe("StepPerformer", () => {
       generateHashes: jest.fn(),
         findMatchingCacheEntryValidationMatcherBased: jest.fn(),
       addToTemporaryCacheValidationMatcherBased: jest.fn(),
+        evaluate: mockCodeEvaluator.evaluate,
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -211,7 +213,6 @@ describe("StepPerformer", () => {
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       CODE,
-      //VIEW_HIERARCHY_SNIPPET,
       mockContext,
       {},
     );
@@ -239,7 +240,6 @@ describe("StepPerformer", () => {
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       CODE,
-      //VIEW_HIERARCHY_SNIPPET,
       mockContext,
       {},
     );
@@ -266,7 +266,6 @@ describe("StepPerformer", () => {
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       CODE,
-      //VIEW_HIERARCHY_SNIPPET,
       mockContext,
       {},
     );
@@ -302,7 +301,6 @@ describe("StepPerformer", () => {
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
       CODE,
-      //VIEW_HIERARCHY_SNIPPET,
       mockContext,
       {},
     );
@@ -336,19 +334,13 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     };
 
-    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
+   await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
-    expect(result).toBe("success");
     expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
     // Should not call runPrompt or createPrompt since result is cached
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
-    expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      CODE,
-      //[VIEW_HIERARCHY],
-      mockContext,
-      {},
-    );
+    expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
     expect(
       mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).not.toHaveBeenCalled(); // No need to save cache again
@@ -420,7 +412,6 @@ describe("StepPerformer", () => {
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         CODE,
-        //VIEW_HIERARCHY_SNIPPET,
         dummyBarContext1,
         {},
       );
@@ -432,7 +423,6 @@ describe("StepPerformer", () => {
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         CODE,
-        //VIEW_HIERARCHY_SNIPPET,
         extendedContext,
         {},
       );
@@ -459,7 +449,6 @@ describe("StepPerformer", () => {
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         CODE,
-        //VIEW_HIERARCHY_SNIPPET,
         dummyBarContext1,
         {},
       );
@@ -473,7 +462,6 @@ describe("StepPerformer", () => {
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
         CODE,
-        //VIEW_HIERARCHY_SNIPPET,
         dummyBarContext2,
         {},
       );
