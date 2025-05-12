@@ -1,6 +1,7 @@
 import {
   extractAutoPilotStepOutputs,
   extractAutoPilotReviewOutputs,
+  extractPilotOutputs,
 } from "./extractTaggedOutputs";
 import { AutoReviewSectionConfig } from "@/types/auto";
 
@@ -136,6 +137,36 @@ describe("extractOutputs", () => {
         findings: undefined,
         score: undefined,
       });
+    });
+  });
+
+  describe("extractPilotOutputs", () => {
+    it("should extract outputs from text", () => {
+      const textToBeParsed = `
+         This is the cache validation matcher:
+         <CACHE_VALIDATION_MATCHER>
+         This is the cache validation matcher
+         </CACHE_VALIDATION_MATCHER>
+         This is the code:
+         <CODE>
+         This is the code
+         </CODE>`;
+      const outputs = extractPilotOutputs(textToBeParsed);
+      expect(outputs).toEqual({
+        cacheValidationMatcher: "This is the cache validation matcher",
+        code: "This is the code",
+      });
+    });
+
+    it("should throw error if required output is missing", () => {
+      const textToBeParsedNoCode = `
+            This is the cache validation matcher:
+            <CACHE_VALIDATION_MATCHER>
+            This is the cache validation matcher
+            </CACHE_VALIDATION_MATCHER>`;
+      expect(() => extractPilotOutputs(textToBeParsedNoCode)).toThrowError(
+        "Missing field for required tag <CODE>",
+      );
     });
   });
 });

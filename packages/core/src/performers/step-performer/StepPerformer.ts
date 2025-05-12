@@ -9,7 +9,7 @@ import {
   ScreenCapturerResult,
   StepPerformerCacheValue,
 } from "@/types";
-import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
+import { extractPilotOutputs } from "@/common/extract/extractTaggedOutputs";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
@@ -44,28 +44,35 @@ export class StepPerformer {
     currentStep: string,
     previousSteps: PreviousStep[],
     screenCapture: ScreenCapturerResult,
-  ): Promise<string> {
+  ): Promise<any> {
     const cacheKey = this.cacheHandler.generateCacheKey({
       currentStep,
       previousSteps,
     });
-    const snapshotHashes =
-      await this.cacheHandler.generateHashes(screenCapture);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey && snapshotHashes) {
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
         this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
         const matchingEntry =
-          this.cacheHandler.findMatchingCacheEntry<StepPerformerCacheValue>(
+          await this.cacheHandler.findMatchingCacheEntryValidationMatcherBased<StepPerformerCacheValue>(
             cachedValues,
-            snapshotHashes,
+            this.context,
+            this.sharedContext,
           );
 
         if (matchingEntry) {
-          return matchingEntry.value.code;
+            logger.warn("I WAS TAKEN FROM CACHE")
+            logger
+                .labeled("CACHE")
+                .warn(
+                    `Using cached value`,
+                );
+          return {
+            code: matchingEntry.value.code,
+          };
         }
       }
     }
@@ -82,18 +89,39 @@ export class StepPerformer {
       prompt,
       screenCapture.snapshot,
     );
-    const code = extractCodeBlock(promptResult);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      const cacheValue: StepPerformerCacheValue = { code };
-      this.cacheHandler.addToTemporaryCache(
+    const extractedCodeBlock = extractPilotOutputs(promptResult);
+
+    const code = extractedCodeBlock.code
+      ? extractedCodeBlock.code
+      : "No code found";
+
+    const cacheValue: StepPerformerCacheValue = { code };
+    if (this.cacheHandler.isCacheInUse() && cacheKey && extractedCodeBlock.cacheValidationMatcher) {
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
-        snapshotHashes,
+        extractedCodeBlock.cacheValidationMatcher,
       );
     }
+    else if (this.cacheHandler.isCacheInUse() && cacheKey){
+        this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+            cacheKey,
+            cacheValue,
+        );
+    }
 
-    return code;
+      if (extractedCodeBlock.cacheValidationMatcher) {
+          return {
+              code: code,
+              cacheValidationMatcher: extractedCodeBlock.cacheValidationMatcher,
+          };
+      } else {
+          return {
+              code: code,
+          };
+      }
+
   }
 
   async perform(
@@ -124,11 +152,13 @@ export class StepPerformer {
             ? screenCapture
             : await this.screenCapturer.capture(true);
 
-        const code = await this.generateCode(
+        const generatedCode = await this.generateCode(
           step,
           previous,
           screenCaptureResult,
         );
+
+        const code = generatedCode.code;
         lastCode = code;
 
         if (!code) {
@@ -143,13 +173,13 @@ export class StepPerformer {
           );
         }
 
-        const result = await this.codeEvaluator.evaluate(
-          code,
-          this.context,
-          this.sharedContext,
-        );
-        this.sharedContext = result.sharedContext || this.sharedContext;
-
+        let result: CodeEvaluationResult;
+          result = await this.codeEvaluator.evaluate(
+            code,
+            this.context,
+            this.sharedContext,
+          );
+          this.sharedContext = result.sharedContext || this.sharedContext;
         progress.stop("success", {
           message: "Step completed successfully",
           isBold: true,

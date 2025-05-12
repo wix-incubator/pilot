@@ -194,7 +194,7 @@ export class AutoPerformer {
             summary,
           };
 
-          this.cacheHandler.addToTemporaryCache(
+          this.cacheHandler.addToTemporaryCacheSnapshotBased(
             cacheKey,
             cacheValue,
             snapshotHashes,
@@ -371,7 +371,7 @@ export class AutoPerformer {
       await this.snapshotComparator.generateHashes(screenCapture);
 
     const matchingEntry =
-      this.cacheHandler.findMatchingCacheEntry<AutoPerformerCacheValue>(
+      this.cacheHandler.findMatchingCacheEntrySnapshotBased<AutoPerformerCacheValue>(
         cachedValues,
         snapshotHashes,
       );
