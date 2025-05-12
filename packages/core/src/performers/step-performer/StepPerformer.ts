@@ -51,17 +51,11 @@ export class StepPerformer {
     });
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      logger.warn(
-        `I AM LOOKING FOR MATCHING CACHE VALUE ${JSON.stringify(cacheKey)}`,
-      );
       const cachedValues =
         this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
-        logger.warn(
-          `I AM LOOKING FOR MATCHING ENTRY ${JSON.stringify(cacheKey)}`,
-        );
         const matchingEntry =
           await this.cacheHandler.findMatchingCacheEntryValidationMatcherBased<StepPerformerCacheValue>(
             cachedValues,
@@ -70,7 +64,11 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
-          logger.warn(`I WAS TAKEN FROM CACHE ${matchingEntry.value.code}`);
+            logger
+                .labeled("CACHE")
+                .warn(
+                    `Using cached value`,
+                );
           return {
             code: matchingEntry.value.code,
             shouldRunMoreCode: matchingEntry.shouldRunMoreCode,

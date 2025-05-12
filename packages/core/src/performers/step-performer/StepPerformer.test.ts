@@ -164,12 +164,6 @@ describe("StepPerformer", () => {
       step: intent,
       previous: previous,
     });
-
-    // const snapshotHashes = {
-    //   BlockHash: VIEW_HIERARCHY_HASH,
-    //   ViewHierarchyHash: VIEW_HIERARCHY_HASH,
-    // };
-    // mockCacheHandler.generateHashes.mockResolvedValue(snapshotHashes);
     mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
     mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
