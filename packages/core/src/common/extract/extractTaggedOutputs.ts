@@ -26,7 +26,7 @@ const AUTOPILOT_REVIEW_SECTION = {
 };
 
 const PILOT_OUTPUTS = {
-  cacheValidationMatcher: { tag: "CACHE_VALIDATION_MATCHER", isRequired: true },
+  cacheValidationMatcher: { tag: "CACHE_VALIDATION_MATCHER", isRequired: false },
   code: { tag: "CODE", isRequired: true },
 };
 

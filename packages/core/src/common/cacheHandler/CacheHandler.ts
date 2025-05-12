@@ -164,7 +164,7 @@ export class CacheHandler {
   public addToTemporaryCacheValidationMatcherBased<T>(
     cacheKey: string,
     value: T & { code: string },
-    validationMatcher: string[] | string | undefined,
+    validationMatcher?: string[] | string | undefined,
   ): void {
     logger.labeled("CACHE").info("Saving response to cache");
 
@@ -238,7 +238,9 @@ export class CacheHandler {
     sharedContext?: Record<string, any>,
   ): Promise<CacheValueValidationMatcher<T> | undefined> {
     for (const entry of cacheValues) {
-      if (!entry.validationMatcher) continue;
+      if (!entry.validationMatcher){
+          return entry;
+      }
       const matcher = entry.validationMatcher;
       if (!matcher || typeof matcher !== "string") continue;
 
@@ -250,13 +252,7 @@ export class CacheHandler {
         );
 
         if (result) {
-          const newEntry = entry;
-          const code = entry.value.code.replace(/\s+/g, "").trim();
-          const matcherCode = matcher.replace(/\s+/g, "").trim();
-          newEntry.shouldRunMoreCode = !(
-            entry.value.code && code.replace(matcherCode, "").trim() === ""
-          );
-          return newEntry;
+          return entry;
         }
       } catch (error) {
         console.error("Error evaluating matcher:", error);

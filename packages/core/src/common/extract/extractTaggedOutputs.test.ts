@@ -167,17 +167,6 @@ describe("extractOutputs", () => {
       expect(() => extractPilotOutputs(textToBeParsedNoCode)).toThrowError(
         "Missing field for required tag <CODE>",
       );
-
-      const textToBeParsedNoViewHierarchy = `
-            This is the code:
-            <CODE>
-            This is the code
-            </CODE>`;
-      expect(() =>
-        extractPilotOutputs(textToBeParsedNoViewHierarchy),
-      ).toThrowError(
-        "Missing field for required tag <CACHE_VALIDATION_MATCHER>",
-      );
     });
   });
 });

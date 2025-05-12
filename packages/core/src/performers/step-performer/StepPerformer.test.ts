@@ -26,8 +26,7 @@ const VIEW_HIERARCHY = "<view></view>";
 const PROMPT_RESULT =
   "prompt result: <CODE> tap button </CODE> <CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VALIDATION_MATCHER>";
 const CODE = "tap button";
-const CODE_VALIDATION = "exist button";
-const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VALIDATION_MATCHER>`;
+const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>`;
 const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 
@@ -334,7 +333,11 @@ describe("StepPerformer", () => {
     // Should not call runPrompt or createPrompt since result is cached
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
-    expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
+      expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
+          CODE,
+          mockContext,
+          {},
+      );
     expect(
       mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).not.toHaveBeenCalled(); // No need to save cache again
