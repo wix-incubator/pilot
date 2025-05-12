@@ -64,6 +64,7 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
+            logger.warn("I WAS TAKEN FROM CACHE")
             logger
                 .labeled("CACHE")
                 .warn(
@@ -71,7 +72,6 @@ export class StepPerformer {
                 );
           return {
             code: matchingEntry.value.code,
-            shouldRunMoreCode: matchingEntry.shouldRunMoreCode,
           };
         }
       }
@@ -95,23 +95,33 @@ export class StepPerformer {
     const code = extractedCodeBlock.code
       ? extractedCodeBlock.code
       : "No code found";
-    const cacheValidationMatcher = extractedCodeBlock.cacheValidationMatcher
-      ? extractedCodeBlock.cacheValidationMatcher
-      : "No cache validation matcher found";
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      const cacheValue: StepPerformerCacheValue = { code };
+    const cacheValue: StepPerformerCacheValue = { code };
+    if (this.cacheHandler.isCacheInUse() && cacheKey && extractedCodeBlock.cacheValidationMatcher) {
       this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
-        cacheValidationMatcher,
+        extractedCodeBlock.cacheValidationMatcher,
       );
     }
-    return {
-      code: code,
-      cacheValidationMatcher: cacheValidationMatcher,
-      shouldRunMoreCode: true,
-    };
+    else if (this.cacheHandler.isCacheInUse() && cacheKey){
+        this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+            cacheKey,
+            cacheValue,
+        );
+    }
+
+      if (extractedCodeBlock.cacheValidationMatcher) {
+          return {
+              code: code,
+              cacheValidationMatcher: extractedCodeBlock.cacheValidationMatcher,
+          };
+      } else {
+          return {
+              code: code,
+          };
+      }
+
   }
 
   async perform(
@@ -149,7 +159,6 @@ export class StepPerformer {
         );
 
         const code = generatedCode.code;
-        const shouldRunMoreCode = generatedCode.shouldRunMoreCode;
         lastCode = code;
 
         if (!code) {
@@ -165,20 +174,12 @@ export class StepPerformer {
         }
 
         let result: CodeEvaluationResult;
-        if (!shouldRunMoreCode) {
-          result = {
-            code,
-            result: undefined, // or some placeholder
-            sharedContext: this.sharedContext,
-          };
-        } else {
           result = await this.codeEvaluator.evaluate(
             code,
             this.context,
             this.sharedContext,
           );
           this.sharedContext = result.sharedContext || this.sharedContext;
-        }
         progress.stop("success", {
           message: "Step completed successfully",
           isBold: true,

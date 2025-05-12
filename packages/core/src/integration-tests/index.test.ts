@@ -20,8 +20,7 @@ jest.mock("crypto");
 jest.mock("fs");
 
 const CACHE_VALIDATION_TAG =
-  "<CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>";
-const CACHE_VALIDATION_CODE = "verify button exists";
+  `<CACHE_VALIDATION_MATCHER>verify button exists</CACHE_VALIDATION_MATCHER>`;
 
 describe("Pilot Integration Tests", () => {
   let mockFrameworkDriver: jest.Mocked<TestingFrameworkDriver>;
@@ -310,7 +309,7 @@ describe("Pilot Integration Tests", () => {
               value: {
                 code: "// Perform action",
               },
-              validationMatcher: "No cache validation matcher found",
+              validationMatcher: "verify button exists",
             }),
           ]),
       });
@@ -326,7 +325,7 @@ describe("Pilot Integration Tests", () => {
             value: {
               code: "// Cached action code",
             },
-            validationMatcher: CACHE_VALIDATION_CODE,
+            validationMatcher: "verify button exists",
             creationTime: Date.now(),
           },
         ],
@@ -343,7 +342,7 @@ describe("Pilot Integration Tests", () => {
 
     it("should update cache file after performing new action", async () => {
       mockPromptHandler.runPrompt.mockResolvedValue(
-        `<CODE>// New action code</CODE><CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>`,
+        `<CODE>// New action code</CODE><CACHE_VALIDATION_MATCHER>verify button exists</CACHE_VALIDATION_MATCHER>`,
       );
 
       await pilot.perform("New action");
@@ -355,7 +354,7 @@ describe("Pilot Integration Tests", () => {
             value: {
               code: "// New action code",
             },
-            validationMatcher: "No cache validation matcher found",
+            validationMatcher: "verify button exists",
           }),
         ],
       });
@@ -583,7 +582,6 @@ describe("Pilot Integration Tests", () => {
         (mockedCacheFile as Record<string, CacheValue<any>[]>) || {},
       )[0][0];
 
-      expect(firstCacheValue).toHaveProperty("validationMatcher");
       expect(firstCacheValue).toHaveProperty("value");
     });
 

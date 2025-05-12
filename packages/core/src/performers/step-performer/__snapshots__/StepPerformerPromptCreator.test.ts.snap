@@ -123,15 +123,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -150,13 +148,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -266,15 +260,13 @@ await swipe("up");
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -293,13 +285,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -407,15 +395,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -434,13 +420,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -534,14 +516,12 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.
-2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. Pay attention to the fact that if the current step is not the first step, the setup is not needed, and can break the test. Make sure to not add '
-' inside one code action.
+2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>.
 3. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
 4. Determine if the intent can be fully validated visually using the snapshot image.
 5. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
@@ -565,13 +545,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 #### Visual validation using the snapshot:
 \`\`\`typescript
@@ -670,15 +646,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -697,13 +671,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -819,15 +789,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -846,13 +814,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -965,15 +929,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -992,13 +954,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
@@ -1119,15 +1077,13 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
 2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
-3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. . If there is a need to load a page or app before performing the validation, and ONLY if it is the first step, add the suitable code lines inside as well, to avoid "browser is not defined" errors for example. 'waitFor' actions are not needed. Make sure to not add '
-' inside one code action
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
@@ -1146,13 +1102,9 @@ Before generating the code, please review the provided context and instructions 
 throw new Error("Unable to find the 'Submit' button element in the current context.");
 \`\`\`
 
-#### Example of providing the validation matcher for a first step:
-<CACHE_VALIDATION_MATCHER>
-await puppeteer.launch({ headless: false, executablePath: "/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing", defaultViewport: null, args: ['--start-maximized']}); const page = await browser.newPage(); await page.goto('https://www.wix.com/domains'); setCurrentPage(page);
-</CACHE_VALIDATION_MATCHER>
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
-const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })(); await inputElement.type('wix-pilot.com');
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
 </CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
