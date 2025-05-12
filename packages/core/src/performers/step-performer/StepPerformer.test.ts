@@ -31,10 +31,10 @@ const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VA
 const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
 
-const CACHE_VALUE  = [
+const CACHE_VALUE = [
   {
     value: { code: CODE },
-      validationMatcher: CACHE_VALIDATION,
+    validationMatcher: CACHE_VALIDATION,
     creationTime: Date.now(),
   },
 ];
@@ -95,9 +95,9 @@ describe("StepPerformer", () => {
       isCacheInUse: jest.fn(),
       getFromPersistentCache: jest.fn(),
       generateHashes: jest.fn(),
-        findMatchingCacheEntryValidationMatcherBased: jest.fn(),
+      findMatchingCacheEntryValidationMatcherBased: jest.fn(),
       addToTemporaryCacheValidationMatcherBased: jest.fn(),
-        evaluate: mockCodeEvaluator.evaluate,
+      evaluate: mockCodeEvaluator.evaluate,
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -334,7 +334,7 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     };
 
-   await stepPerformer.perform(INTENT, [], screenCapture, 2);
+    await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
     expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
     // Should not call runPrompt or createPrompt since result is cached

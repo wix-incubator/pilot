@@ -175,7 +175,9 @@ describe("extractOutputs", () => {
             </CODE>`;
       expect(() =>
         extractPilotOutputs(textToBeParsedNoViewHierarchy),
-      ).toThrowError("Missing field for required tag <CACHE_VALIDATION_MATCHER>");
+      ).toThrowError(
+        "Missing field for required tag <CACHE_VALIDATION_MATCHER>",
+      );
     });
   });
 });

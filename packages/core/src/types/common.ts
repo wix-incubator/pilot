@@ -1,5 +1,3 @@
-import {StepPerformerCacheValue} from "@/types/core";
-
 /**
  * Screen capture output.
  */
@@ -70,7 +68,7 @@ export type CacheValueSnapshot<T> = CacheValue<T> & {
  * If the validation step already ran the entire step's code, this should be set to false.
  */
 export type CacheValueValidationMatcher<T> = CacheValue<T> & {
-  value: { code: string};
+  value: { code: string };
   validationMatcher?: string | string[];
   shouldRunMoreCode?: boolean;
 };

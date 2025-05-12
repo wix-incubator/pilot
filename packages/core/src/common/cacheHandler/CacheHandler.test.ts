@@ -18,10 +18,10 @@ describe("CacheHandler", () => {
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
 
   const CACHED_VALUE = {
-        value: { code: "code to run" },
-        validationMatcher: "validation code",
-        creationTime: Date.now(),
-        shouldRunMoreCode: false
+    value: { code: "code to run" },
+    validationMatcher: "validation code",
+    creationTime: Date.now(),
+    shouldRunMoreCode: false,
   };
 
   const mockScreenCapture = {
@@ -53,7 +53,6 @@ describe("CacheHandler", () => {
 
   describe("cache and file operations", () => {
     it("should load cache from file successfully if the file exists and is valid - matcher based", () => {
-
       mockCache({ cacheKey: [CACHED_VALUE] });
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
@@ -69,14 +68,18 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
       cacheHandler.flushTemporaryCache();
 
       expect(mockedCacheFile).toHaveProperty("cacheKey");
-      expect(mockedCacheFile?.cacheKey[0].value).toEqual({ code: "code to run" });
-      expect(mockedCacheFile?.cacheKey[0].validationMatcher).toEqual("validation code");
+      expect(mockedCacheFile?.cacheKey[0].value).toEqual({
+        code: "code to run",
+      });
+      expect(mockedCacheFile?.cacheKey[0].validationMatcher).toEqual(
+        "validation code",
+      );
     });
 
     it("should handle file errors gracefully when loading cache", () => {
@@ -96,8 +99,8 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
 
       expect(() => cacheHandler.flushTemporaryCache()).not.toThrow();
@@ -110,8 +113,8 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
@@ -137,8 +140,8 @@ describe("CacheHandler", () => {
     it("should retrieve a value from cache", () => {
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "some_key",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
       cacheHandler.flushTemporaryCache();
 
@@ -160,8 +163,8 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "some_key",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
       cacheHandler.flushTemporaryCache();
 
@@ -176,13 +179,13 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
-          { code: "code to run 1" },
-         "validation code 1",
+        { code: "code to run 1" },
+        "validation code 1",
       );
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey2",
-          { code: "code to run 2" },
-          "validation code 2",
+        { code: "code to run 2" },
+        "validation code 2",
       );
 
       cacheHandler.flushTemporaryCache();
@@ -197,13 +200,13 @@ describe("CacheHandler", () => {
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
-          { code: "code to run 1" },
-          "validation code 1",
+        { code: "code to run 1" },
+        "validation code 1",
       );
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey1",
-          { code: "code to run 2" },
-          "validation code 2",
+        { code: "code to run 2" },
+        "validation code 2",
       );
 
       cacheHandler.flushTemporaryCache();
@@ -232,8 +235,8 @@ describe("CacheHandler", () => {
       mockCache({});
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
         "cacheKey",
-          CACHED_VALUE.value,
-          CACHED_VALUE.validationMatcher,
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
       );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
@@ -265,11 +268,12 @@ describe("CacheHandler", () => {
       expect(result).toBeUndefined();
     });
 
-    it("should return undefined if no hashes are provided", async() => {
-      const result = await cacheHandler.findMatchingCacheEntryValidationMatcherBased(
+    it("should return undefined if no hashes are provided", async () => {
+      const result =
+        await cacheHandler.findMatchingCacheEntryValidationMatcherBased(
           [CACHED_VALUE],
-        undefined,
-      );
+          undefined,
+        );
 
       expect(result).toBeUndefined();
     });
