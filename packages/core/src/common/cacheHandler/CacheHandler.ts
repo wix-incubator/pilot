@@ -224,7 +224,9 @@ export class CacheHandler {
   }
 
   /**
-   * Find matching cache entry by comparing snapshot hashes
+   * Searches for a matching cache entry by evaluating its validation matcher code.
+   * If the matcher evaluates to true, the corresponding cache entry is returned.
+   * Also determines whether additional code should be run based on a comparison between the original code and the matcher.
    * @param cacheValues Array of cache values to search
    * @param context The context
    * @param sharedContext The shared context to use for evaluating the validation matcher
@@ -254,7 +256,6 @@ export class CacheHandler {
           newEntry.shouldRunMoreCode = !(
             entry.value.code && code.replace(matcherCode, "").trim() === ""
           );
-          logger.warn(`SHOULD RUN MORE CODE ${newEntry.shouldRunMoreCode}`);
           return newEntry;
         }
       } catch (error) {
