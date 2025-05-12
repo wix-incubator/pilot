@@ -91,9 +91,7 @@ export function extractPilotOutputs(text: string): {
   });
 
   const cacheValidationMatcher = outputs.cacheValidationMatcher
-    ? outputs.cacheValidationMatcher
-        .trim()
-        .replace(/\s*\/>/g, "")
+    ? outputs.cacheValidationMatcher.trim().replace(/\s*\/>/g, "")
     : undefined;
 
   return { code: outputs.code, cacheValidationMatcher: cacheValidationMatcher };

@@ -19,7 +19,9 @@ import { getSnapshotImage } from "@/test-utils/SnapshotComparatorTestImages/Snap
 jest.mock("crypto");
 jest.mock("fs");
 
-const CACHE_VALIDATION_TAG = "<CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>";
+const CACHE_VALIDATION_TAG =
+  "<CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>";
+const CACHE_VALIDATION_CODE = "verify button exists";
 
 describe("Pilot Integration Tests", () => {
   let mockFrameworkDriver: jest.Mocked<TestingFrameworkDriver>;
@@ -137,9 +139,15 @@ describe("Pilot Integration Tests", () => {
 
     it("should perform multiple steps using spread operator", async () => {
       mockPromptHandler.runPrompt
-        .mockResolvedValueOnce(`<CODE>// Tap login button</CODE>${CACHE_VALIDATION_TAG}`)
-        .mockResolvedValueOnce(`<CODE>// Enter username</CODE>${CACHE_VALIDATION_TAG}`)
-        .mockResolvedValueOnce(`<CODE>// Enter password</CODE>${CACHE_VALIDATION_TAG}`);
+        .mockResolvedValueOnce(
+          `<CODE>// Tap login button</CODE>${CACHE_VALIDATION_TAG}`,
+        )
+        .mockResolvedValueOnce(
+          `<CODE>// Enter username</CODE>${CACHE_VALIDATION_TAG}`,
+        )
+        .mockResolvedValueOnce(
+          `<CODE>// Enter password</CODE>${CACHE_VALIDATION_TAG}`,
+        );
 
       await pilot.perform(
         "Tap on the login button",
@@ -156,14 +164,18 @@ describe("Pilot Integration Tests", () => {
 
     it("should handle errors in multiple steps and stop execution", async () => {
       mockPromptHandler.runPrompt
-        .mockResolvedValueOnce(`<CODE>// Tap login button</CODE>${CACHE_VALIDATION_TAG}`)
+        .mockResolvedValueOnce(
+          `<CODE>// Tap login button</CODE>${CACHE_VALIDATION_TAG}`,
+        )
         .mockResolvedValueOnce(
           `<CODE>throw new Error("Username field not found");</CODE>${CACHE_VALIDATION_TAG}`,
         )
         .mockResolvedValueOnce(
           `<CODE>throw new Error("Username field not found - second");</CODE>${CACHE_VALIDATION_TAG}`,
         )
-        .mockResolvedValueOnce(`<CODE>// Enter password</CODE>${CACHE_VALIDATION_TAG}`);
+        .mockResolvedValueOnce(
+          `<CODE>// Enter password</CODE>${CACHE_VALIDATION_TAG}`,
+        );
 
       await expect(
         pilot.perform(
@@ -242,8 +254,12 @@ describe("Pilot Integration Tests", () => {
 
     it("should clear conversation history on reset", async () => {
       mockPromptHandler.runPrompt
-        .mockResolvedValueOnce(`<CODE>// Action 1</CODE>${CACHE_VALIDATION_TAG}`)
-        .mockResolvedValueOnce(`<CODE>// Action 2</CODE>${CACHE_VALIDATION_TAG}`);
+        .mockResolvedValueOnce(
+          `<CODE>// Action 1</CODE>${CACHE_VALIDATION_TAG}`,
+        )
+        .mockResolvedValueOnce(
+          `<CODE>// Action 2</CODE>${CACHE_VALIDATION_TAG}`,
+        );
 
       await pilot.perform("Action 1");
       await pilot.perform("Action 2");
@@ -293,20 +309,24 @@ describe("Pilot Integration Tests", () => {
             expect.objectContaining({
               value: {
                 code: "// Perform action",
-              }, validationMatcher: ["Unknown view hierarchy"],
+              },
+              validationMatcher: "No cache validation matcher found",
             }),
           ]),
       });
     });
 
     it("should use snapshot cache if available", async () => {
+      mockPromptHandler.runPrompt.mockResolvedValue(
+        `<CODE>// New action code</CODE><CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>`,
+      );
       mockCache({
         '{"currentStep":"Cached action","previousSteps":[]}': [
           {
             value: {
               code: "// Cached action code",
             },
-            validationMatcher: ["<view><button>Login</button></view>"],
+            validationMatcher: CACHE_VALIDATION_CODE,
             creationTime: Date.now(),
           },
         ],
@@ -318,12 +338,12 @@ describe("Pilot Integration Tests", () => {
 
       await pilot.perform("Cached action");
 
-      expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
+      expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(1);
     });
 
     it("should update cache file after performing new action", async () => {
       mockPromptHandler.runPrompt.mockResolvedValue(
-        `<CODE>// New action code</CODE><VIEW_HIERARCHY_SNIPPET><view></view></VIEW_HIERARCHY_SNIPPET>`,
+        `<CODE>// New action code</CODE><CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>`,
       );
 
       await pilot.perform("New action");
@@ -335,7 +355,7 @@ describe("Pilot Integration Tests", () => {
             value: {
               code: "// New action code",
             },
-            viewHierarchy: ["<view></view>"],
+            validationMatcher: "No cache validation matcher found",
           }),
         ],
       });
@@ -377,7 +397,9 @@ describe("Pilot Integration Tests", () => {
         )
         .mockImplementationOnce((prompt, _snapshot) => {
           promptParam = prompt;
-          return Promise.resolve(`<CODE>// No operation</CODE>${CACHE_VALIDATION_TAG}`);
+          return Promise.resolve(
+            `<CODE>// No operation</CODE>${CACHE_VALIDATION_TAG}`,
+          );
         });
 
       await pilot.perform("Tap on a non-existent button");
@@ -561,7 +583,7 @@ describe("Pilot Integration Tests", () => {
         (mockedCacheFile as Record<string, CacheValue<any>[]>) || {},
       )[0][0];
 
-      expect(firstCacheValue).toHaveProperty("viewHierarchy");
+      expect(firstCacheValue).toHaveProperty("validationMatcher");
       expect(firstCacheValue).toHaveProperty("value");
     });
 

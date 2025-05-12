@@ -8,7 +8,6 @@ import {
   CacheValueValidationMatcher,
   ScreenCapturerResult,
   SnapshotHashes,
-  CodeEvaluationResult,
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
@@ -164,8 +163,8 @@ export class CacheHandler {
    */
   public addToTemporaryCacheValidationMatcherBased<T>(
     cacheKey: string,
-    value: T & {code: string},
-    validationMatcher: string [] | string | undefined,
+    value: T & { code: string },
+    validationMatcher: string[] | string | undefined,
   ): void {
     logger.labeled("CACHE").info("Saving response to cache");
 
@@ -238,32 +237,33 @@ export class CacheHandler {
   ): Promise<CacheValueValidationMatcher<T> | undefined> {
     for (const entry of cacheValues) {
       if (!entry.validationMatcher) continue;
-        const matcher = entry.validationMatcher;
-        if (!matcher || typeof matcher !== "string") continue;
+      const matcher = entry.validationMatcher;
+      if (!matcher || typeof matcher !== "string") continue;
 
-        try {
-            const result = await this.codeEvaluator.evaluate(
-                matcher,
-                context,
-                sharedContext,
-            );
+      try {
+        const result = await this.codeEvaluator.evaluate(
+          matcher,
+          context,
+          sharedContext,
+        );
 
-            if (result) {
-                const newEntry = entry;
-                const code = (entry.value.code).replace(/\s+/g, '').trim();
-                const matcherCode = matcher.replace(/\s+/g, '').trim();
-                newEntry.shouldRunMoreCode = !(entry.value.code && code.replace(matcherCode, '').trim() === "");
-                logger.warn(`SHOULD RUN MORE CODE ${newEntry.shouldRunMoreCode}`);
-                return newEntry;
-            }
-        } catch (error) {
-            console.error("Error evaluating matcher:", error);
+        if (result) {
+          const newEntry = entry;
+          const code = entry.value.code.replace(/\s+/g, "").trim();
+          const matcherCode = matcher.replace(/\s+/g, "").trim();
+          newEntry.shouldRunMoreCode = !(
+            entry.value.code && code.replace(matcherCode, "").trim() === ""
+          );
+          logger.warn(`SHOULD RUN MORE CODE ${newEntry.shouldRunMoreCode}`);
+          return newEntry;
         }
+      } catch (error) {
+        console.error("Error evaluating matcher:", error);
+      }
     }
 
-      return undefined;
+    return undefined;
   }
-
 
   /**
    * Generate a cache key from serializable data
