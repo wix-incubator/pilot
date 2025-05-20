@@ -144,9 +144,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -281,9 +281,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -416,9 +416,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -541,9 +541,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -667,9 +667,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -810,9 +810,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -950,9 +950,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>
@@ -1098,9 +1098,9 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
 #### Example of providing the validation matcher
 <CACHE_VALIDATION_MATCHER>

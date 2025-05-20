@@ -44,7 +44,7 @@ export class StepPerformer {
     currentStep: string,
     previousSteps: PreviousStep[],
     screenCapture: ScreenCapturerResult,
-  ): Promise<any> {
+  ): Promise<string> {
     const cacheKey = this.cacheHandler.generateCacheKey({
       currentStep,
       previousSteps,
@@ -64,15 +64,12 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
-            logger.warn("I WAS TAKEN FROM CACHE")
             logger
                 .labeled("CACHE")
                 .warn(
                     `Using cached value`,
                 );
-          return {
-            code: matchingEntry.value.code,
-          };
+          return matchingEntry.value.code;
         }
       }
     }
@@ -110,17 +107,7 @@ export class StepPerformer {
             cacheValue,
         );
     }
-
-      if (extractedCodeBlock.cacheValidationMatcher) {
-          return {
-              code: code,
-              cacheValidationMatcher: extractedCodeBlock.cacheValidationMatcher,
-          };
-      } else {
-          return {
-              code: code,
-          };
-      }
+    return code;
 
   }
 
@@ -158,10 +145,9 @@ export class StepPerformer {
           screenCaptureResult,
         );
 
-        const code = generatedCode.code;
-        lastCode = code;
+        lastCode = generatedCode;
 
-        if (!code) {
+        if (!generatedCode) {
           progress.updateLabel("RETRY", {
             message: step,
             isBold: true,
@@ -175,7 +161,7 @@ export class StepPerformer {
 
         let result: CodeEvaluationResult;
           result = await this.codeEvaluator.evaluate(
-            code,
+            generatedCode,
             this.context,
             this.sharedContext,
           );
