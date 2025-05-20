@@ -64,11 +64,7 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
-            logger
-                .labeled("CACHE")
-                .warn(
-                    `Using cached value`,
-                );
+          logger.labeled("CACHE").warn(`Using cached value`);
           return matchingEntry.value.code;
         }
       }
@@ -94,21 +90,23 @@ export class StepPerformer {
       : "No code found";
 
     const cacheValue: StepPerformerCacheValue = { code };
-    if (this.cacheHandler.isCacheInUse() && cacheKey && extractedCodeBlock.cacheValidationMatcher) {
+    if (
+      this.cacheHandler.isCacheInUse() &&
+      cacheKey &&
+      extractedCodeBlock.cacheValidationMatcher
+    ) {
       this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
         extractedCodeBlock.cacheValidationMatcher,
       );
-    }
-    else if (this.cacheHandler.isCacheInUse() && cacheKey){
-        this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
-            cacheKey,
-            cacheValue,
-        );
+    } else if (this.cacheHandler.isCacheInUse() && cacheKey) {
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        cacheKey,
+        cacheValue,
+      );
     }
     return code;
-
   }
 
   async perform(
@@ -159,13 +157,12 @@ export class StepPerformer {
           );
         }
 
-        let result: CodeEvaluationResult;
-          result = await this.codeEvaluator.evaluate(
-            generatedCode,
-            this.context,
-            this.sharedContext,
-          );
-          this.sharedContext = result.sharedContext || this.sharedContext;
+        const result = await this.codeEvaluator.evaluate(
+          generatedCode,
+          this.context,
+          this.sharedContext,
+        );
+        this.sharedContext = result.sharedContext || this.sharedContext;
         progress.stop("success", {
           message: "Step completed successfully",
           isBold: true,

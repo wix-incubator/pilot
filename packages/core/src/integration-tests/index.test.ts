@@ -19,8 +19,7 @@ import { getSnapshotImage } from "@/test-utils/SnapshotComparatorTestImages/Snap
 jest.mock("crypto");
 jest.mock("fs");
 
-const CACHE_VALIDATION_TAG =
-  `<CACHE_VALIDATION_MATCHER>verify button exists</CACHE_VALIDATION_MATCHER>`;
+const CACHE_VALIDATION_TAG = `<CACHE_VALIDATION_MATCHER>verify button exists</CACHE_VALIDATION_MATCHER>`;
 
 describe("Pilot Integration Tests", () => {
   let mockFrameworkDriver: jest.Mocked<TestingFrameworkDriver>;

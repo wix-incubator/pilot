@@ -238,8 +238,8 @@ export class CacheHandler {
     sharedContext?: Record<string, any>,
   ): Promise<CacheValueValidationMatcher<T> | undefined> {
     for (const entry of cacheValues) {
-      if (!entry.validationMatcher){
-          return entry;
+      if (!entry.validationMatcher) {
+        return entry;
       }
       const matcher = entry.validationMatcher;
       if (!matcher || typeof matcher !== "string") continue;

@@ -333,11 +333,11 @@ describe("StepPerformer", () => {
     // Should not call runPrompt or createPrompt since result is cached
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
-      expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-          CODE,
-          mockContext,
-          {},
-      );
+    expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
+      CODE,
+      mockContext,
+      {},
+    );
     expect(
       mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
     ).not.toHaveBeenCalled(); // No need to save cache again
