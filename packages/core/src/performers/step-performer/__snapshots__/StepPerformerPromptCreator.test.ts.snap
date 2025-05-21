@@ -393,6 +393,22 @@ element(by.id("uniqueId"))
 
 - Use unique IDs for elements to avoid conflicts, combine with atIndex() if necessary.
 
+### Custom Actions
+
+#### swipe(direction: string)
+
+Swipes in the specified direction.
+
+##### Example
+
+\`\`\`
+await swipe("up");
+\`\`\`
+
+##### Guidelines
+
+- Use this method to scroll the screen.
+
 ## Instructions
 
 Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
