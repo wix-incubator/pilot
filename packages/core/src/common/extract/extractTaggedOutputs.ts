@@ -25,6 +25,14 @@ const AUTOPILOT_REVIEW_SECTION = {
   score: { tag: "SCORE", isRequired: false },
 };
 
+const PILOT_OUTPUTS = {
+  cacheValidationMatcher: {
+    tag: "CACHE_VALIDATION_MATCHER",
+    isRequired: false,
+  },
+  code: { tag: "CODE", isRequired: true },
+};
+
 function extractTaggedOutputs<M extends OutputsMapping>({
   text,
   outputsMapper,
@@ -74,4 +82,20 @@ export function extractAutoPilotStepOutputs(
     typeof BASE_AUTOPILOT_STEP
   > &
     Record<string, string | undefined>;
+}
+
+export function extractPilotOutputs(text: string): {
+  code: string | undefined;
+  cacheValidationMatcher: string | undefined;
+} {
+  const outputs = extractTaggedOutputs({
+    text,
+    outputsMapper: PILOT_OUTPUTS,
+  });
+
+  const cacheValidationMatcher = outputs.cacheValidationMatcher
+    ? outputs.cacheValidationMatcher.trim().replace(/\s*\/>/g, "")
+    : undefined;
+
+  return { code: outputs.code, cacheValidationMatcher: cacheValidationMatcher };
 }

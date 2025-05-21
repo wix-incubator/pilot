@@ -20,6 +20,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -122,18 +123,19 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible"
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -142,20 +144,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -173,6 +169,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -263,18 +260,19 @@ await swipe("up");
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible"
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -283,20 +281,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -314,6 +306,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -418,18 +411,19 @@ await swipe("up");
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible"
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -438,20 +432,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -469,6 +457,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -543,22 +532,22 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button"
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.
-2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.
+2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>.
 3. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
 4. Determine if the intent can be fully validated visually using the snapshot image.
 5. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
-6. If the visual assertion fails, return code that throws an informative error explaining the failure.
+6. If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.
 7. If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.
 8. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
 9. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
 10. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
 11. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-12. Wrap the generated code with backticks, without any additional formatting.
+12. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
 13. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
@@ -568,20 +557,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 #### Visual validation using the snapshot:
 \`\`\`typescript
 // Visual assertion passed based on the snapshot image.
@@ -604,6 +587,7 @@ Generate the minimal executable code to perform the following intent: "expect bu
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -678,18 +662,19 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible"
+Your task is to generate the minimal executable code to perform the following intent: "expect button to be visible". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -698,20 +683,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -729,6 +708,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -825,18 +805,19 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button"
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -845,20 +826,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -876,6 +851,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -969,18 +945,19 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button"
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -989,20 +966,14 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;
 
@@ -1020,6 +991,7 @@ Generate the minimal executable code to perform the following intent: "tap butto
 
 ### View hierarchy
 
+This is the complete view hierarchy. Use only the relevant parts for the executable code.
 \`\`\`
 <View><Button testID="submit" title="Submit" /></View>
 \`\`\`
@@ -1121,18 +1093,19 @@ element(by.id("uniqueId"))
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "tap button"
+Your task is to generate the minimal executable code to perform the following intent: "tap button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent and the view hierarchy to understand the required action.
-2. Generate the minimal executable code required to perform the intent using the available API.
-3. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-4. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-5. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-6. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-7. Wrap the generated code with backticks, without any additional formatting.
-8. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+2. Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.
+3. Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+4. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+5. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+6. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+7. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+8. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+9. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
@@ -1141,19 +1114,13 @@ Before generating the code, please review the provided context and instructions 
 ### Examples
 
 #### Example of throwing an informative error:
-\`\`\`typescript
+<CODE>
 throw new Error("Unable to find the 'Submit' button element in the current context.");
-\`\`\`
+</CODE>
 
-#### Example of using shared context between steps:
-\`\`\`typescript
-// Step 1: Store the user ID
-const userId = await getUserId();
-sharedContext.userId = userId;
-
-// Step 2: Use the stored user ID
-await element(by.id('user-' + sharedContext.userId)).tap();
-\`\`\`
-
+#### Example of providing the validation matcher
+<CACHE_VALIDATION_MATCHER>
+const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();
+</CACHE_VALIDATION_MATCHER>
 Please provide your code below:"
 `;

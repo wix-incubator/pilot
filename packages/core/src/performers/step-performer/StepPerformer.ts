@@ -9,7 +9,7 @@ import {
   ScreenCapturerResult,
   StepPerformerCacheValue,
 } from "@/types";
-import { extractCodeBlock } from "@/common/extract/extractCodeBlock";
+import { extractPilotOutputs } from "@/common/extract/extractTaggedOutputs";
 import { ScreenCapturer } from "@/common/snapshot/ScreenCapturer";
 import logger from "@/common/logger";
 
@@ -49,22 +49,22 @@ export class StepPerformer {
       currentStep,
       previousSteps,
     });
-    const snapshotHashes =
-      await this.cacheHandler.generateHashes(screenCapture);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey && snapshotHashes) {
+    if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
         this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
         const matchingEntry =
-          this.cacheHandler.findMatchingCacheEntry<StepPerformerCacheValue>(
+          await this.cacheHandler.findMatchingCacheEntryValidationMatcherBased<StepPerformerCacheValue>(
             cachedValues,
-            snapshotHashes,
+            this.context,
+            this.sharedContext,
           );
 
         if (matchingEntry) {
+          logger.labeled("CACHE").warn(`Using cached value`);
           return matchingEntry.value.code;
         }
       }
@@ -82,17 +82,30 @@ export class StepPerformer {
       prompt,
       screenCapture.snapshot,
     );
-    const code = extractCodeBlock(promptResult);
 
-    if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      const cacheValue: StepPerformerCacheValue = { code };
-      this.cacheHandler.addToTemporaryCache(
+    const extractedCodeBlock = extractPilotOutputs(promptResult);
+
+    const code = extractedCodeBlock.code
+      ? extractedCodeBlock.code
+      : "No code found";
+
+    const cacheValue: StepPerformerCacheValue = { code };
+    if (
+      this.cacheHandler.isCacheInUse() &&
+      cacheKey &&
+      extractedCodeBlock.cacheValidationMatcher
+    ) {
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
-        snapshotHashes,
+        extractedCodeBlock.cacheValidationMatcher,
+      );
+    } else if (this.cacheHandler.isCacheInUse() && cacheKey) {
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        cacheKey,
+        cacheValue,
       );
     }
-
     return code;
   }
 
@@ -124,14 +137,15 @@ export class StepPerformer {
             ? screenCapture
             : await this.screenCapturer.capture(true);
 
-        const code = await this.generateCode(
+        const generatedCode = await this.generateCode(
           step,
           previous,
           screenCaptureResult,
         );
-        lastCode = code;
 
-        if (!code) {
+        lastCode = generatedCode;
+
+        if (!generatedCode) {
           progress.updateLabel("RETRY", {
             message: step,
             isBold: true,
@@ -144,12 +158,11 @@ export class StepPerformer {
         }
 
         const result = await this.codeEvaluator.evaluate(
-          code,
+          generatedCode,
           this.context,
           this.sharedContext,
         );
         this.sharedContext = result.sharedContext || this.sharedContext;
-
         progress.stop("success", {
           message: "Step completed successfully",
           isBold: true,

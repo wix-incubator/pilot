@@ -23,17 +23,17 @@ jest.mock("crypto");
 
 const INTENT = "tap button";
 const VIEW_HIERARCHY = "<view></view>";
-const PROMPT_RESULT = "generated code";
+const PROMPT_RESULT =
+  "prompt result: <CODE> tap button </CODE> <CACHE_VALIDATION_MATCHER>${CODE_VALIDATION}</CACHE_VALIDATION_MATCHER>";
+const CODE = "tap button";
+const CACHE_VALIDATION = `<CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>`;
 const CODE_EVALUATION_RESULT = "success";
 const SNAPSHOT_DATA = "snapshot_data";
-const VIEW_HIERARCHY_HASH = "hash";
+
 const CACHE_VALUE = [
   {
-    value: { code: PROMPT_RESULT, viewHierarchy: VIEW_HIERARCHY_HASH },
-    snapshotHashes: {
-      BlockHash: VIEW_HIERARCHY_HASH,
-      ViewHierarchyHash: VIEW_HIERARCHY_HASH,
-    },
+    value: { code: CODE },
+    validationMatcher: CACHE_VALIDATION,
     creationTime: Date.now(),
   },
 ];
@@ -86,7 +86,6 @@ describe("StepPerformer", () => {
       loadCacheFromFile: jest.fn(),
       saveCacheToFile: jest.fn(),
       existInCache: jest.fn(),
-      addToTemporaryCache: jest.fn(),
       flushTemporaryCache: jest.fn(),
       clearTemporaryCache: jest.fn(),
       getStepFromCache: jest.fn(),
@@ -95,7 +94,9 @@ describe("StepPerformer", () => {
       isCacheInUse: jest.fn(),
       getFromPersistentCache: jest.fn(),
       generateHashes: jest.fn(),
-      findMatchingCacheEntry: jest.fn(),
+      findMatchingCacheEntryValidationMatcherBased: jest.fn(),
+      addToTemporaryCacheValidationMatcherBased: jest.fn(),
+      evaluate: mockCodeEvaluator.evaluate,
     } as unknown as jest.Mocked<CacheHandler>;
 
     mockSnapshotComparator = {
@@ -152,13 +153,6 @@ describe("StepPerformer", () => {
       process.env.PILOT_OVERRIDE_CACHE = "false";
     }
 
-    const viewHierarchyHash = "hash";
-    (crypto.createHash as jest.Mock).mockReturnValue({
-      update: jest.fn().mockReturnValue({
-        digest: jest.fn().mockReturnValue(viewHierarchyHash),
-      }),
-    });
-
     mockCaptureResult = {
       snapshot: SNAPSHOT_DATA,
       viewHierarchy: VIEW_HIERARCHY,
@@ -169,12 +163,6 @@ describe("StepPerformer", () => {
       step: intent,
       previous: previous,
     });
-
-    const snapshotHashes = {
-      BlockHash: VIEW_HIERARCHY_HASH,
-      ViewHierarchyHash: VIEW_HIERARCHY_HASH,
-    };
-    mockCacheHandler.generateHashes.mockResolvedValue(snapshotHashes);
     mockCacheHandler.generateCacheKey.mockReturnValue(cacheKey);
     mockCacheHandler.isCacheInUse.mockReturnValue(true);
 
@@ -187,10 +175,14 @@ describe("StepPerformer", () => {
           return cacheData.get(key);
         },
       );
-      mockCacheHandler.findMatchingCacheEntry.mockReturnValue(CACHE_VALUE[0]);
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockResolvedValue(
+        CACHE_VALUE[0],
+      );
     } else {
       mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
-      mockCacheHandler.findMatchingCacheEntry.mockReturnValue(undefined);
+      mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockResolvedValue(
+        undefined,
+      );
     }
   };
 
@@ -213,7 +205,7 @@ describe("StepPerformer", () => {
       SNAPSHOT_DATA,
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
+      CODE,
       mockContext,
       {},
     );
@@ -240,7 +232,7 @@ describe("StepPerformer", () => {
       undefined,
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
+      CODE,
       mockContext,
       {},
     );
@@ -266,7 +258,7 @@ describe("StepPerformer", () => {
       undefined,
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
+      CODE,
       mockContext,
       {},
     );
@@ -301,7 +293,7 @@ describe("StepPerformer", () => {
       SNAPSHOT_DATA,
     );
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
+      CODE,
       mockContext,
       {},
     );
@@ -322,7 +314,9 @@ describe("StepPerformer", () => {
     await expect(
       stepPerformer.perform(INTENT, [], screenCapture, 2),
     ).rejects.toThrow("Evaluation failed");
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalled();
+    expect(
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
+    ).toHaveBeenCalled();
   });
 
   it("should use cached prompt result if available", async () => {
@@ -333,19 +327,20 @@ describe("StepPerformer", () => {
       viewHierarchy: VIEW_HIERARCHY,
     };
 
-    const result = await stepPerformer.perform(INTENT, [], screenCapture, 2);
+    await stepPerformer.perform(INTENT, [], screenCapture, 2);
 
-    expect(result).toBe("success");
     expect(mockCacheHandler.getFromPersistentCache).toHaveBeenCalled();
     // Should not call runPrompt or createPrompt since result is cached
     expect(mockPromptCreator.createPrompt).not.toHaveBeenCalled();
     expect(mockPromptHandler.runPrompt).not.toHaveBeenCalled();
     expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-      PROMPT_RESULT,
+      CODE,
       mockContext,
       {},
     );
-    expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled(); // No need to save cache again
+    expect(
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
+    ).not.toHaveBeenCalled(); // No need to save cache again
   });
 
   it("should retry if initial runPrompt throws an error and succeed on retry", async () => {
@@ -353,7 +348,9 @@ describe("StepPerformer", () => {
     const error = new Error("Initial prompt failed");
     mockPromptHandler.runPrompt.mockRejectedValueOnce(error);
     // On retry, it succeeds
-    mockPromptHandler.runPrompt.mockResolvedValueOnce("retry generated code");
+    mockPromptHandler.runPrompt.mockResolvedValueOnce(
+      `<CODE>retry generated code</CODE>${CACHE_VALIDATION}`,
+    );
 
     const screenCapture: ScreenCapturerResult = {
       snapshot: SNAPSHOT_DATA,
@@ -370,7 +367,9 @@ describe("StepPerformer", () => {
       mockContext,
       {},
     );
-    expect(mockCacheHandler.addToTemporaryCache).toHaveBeenCalledTimes(1); // Cache should be saved after success
+    expect(
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
+    ).toHaveBeenCalledTimes(1); // Cache should be saved after success
   });
 
   it("should throw original error if retry also fails", async () => {
@@ -391,7 +390,9 @@ describe("StepPerformer", () => {
     expect(mockPromptCreator.createPrompt).toHaveBeenCalledTimes(2);
     expect(mockPromptHandler.runPrompt).toHaveBeenCalledTimes(2);
     expect(mockCodeEvaluator.evaluate).not.toHaveBeenCalled();
-    expect(mockCacheHandler.addToTemporaryCache).not.toHaveBeenCalled();
+    expect(
+      mockCacheHandler.addToTemporaryCacheValidationMatcherBased,
+    ).not.toHaveBeenCalled();
   });
 
   describe("extendJSContext", () => {
@@ -407,7 +408,7 @@ describe("StepPerformer", () => {
 
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
+        CODE,
         dummyBarContext1,
         {},
       );
@@ -418,7 +419,7 @@ describe("StepPerformer", () => {
 
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
+        CODE,
         extendedContext,
         {},
       );
@@ -444,7 +445,7 @@ describe("StepPerformer", () => {
 
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
+        CODE,
         dummyBarContext1,
         {},
       );
@@ -457,7 +458,7 @@ describe("StepPerformer", () => {
 
       await stepPerformer.perform(INTENT, [], screenCapture, 2);
       expect(mockCodeEvaluator.evaluate).toHaveBeenCalledWith(
-        PROMPT_RESULT,
+        CODE,
         dummyBarContext2,
         {},
       );
