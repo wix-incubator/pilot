@@ -121,11 +121,6 @@ describe("Example Test Suite", () => {
            "Proceed to checkout");
    });
 
-   it.skip("auto perform filter by price - FAILS", async () => {
-       await pilot.autopilot(
-           "Open https://www.yohaiknaani.com, in `Shop All` page. Open the price filter and set price to be between 61 to 100 dollars, and add the first item to the cart");
-   });
-
     it.only("auto perform filter by color - FAILS", wrapTest(async () => {
         await pilot.autopilot(
             "Open https://www.yohaiknaani.com, go to `Shop All` page and add `digital varient` to the cart");
