@@ -3,7 +3,6 @@ import puppeteer from "puppeteer";
 import * as puppeteerCore from "puppeteer-core";
 import { PromptHandler } from "../utils/promptHandler";
 import { PuppeteerFrameworkDriver } from "../index";
-//import  { CacheHandler } from "../../../core/src/common/cacheHandler/CacheHandler";
 
 describe("Example Test Suite", () => {
   jest.setTimeout(300000);
@@ -37,14 +36,14 @@ describe("Example Test Suite", () => {
     pilot.end(!testFailed);
   });
 
-    const wrapTest = (fn: () => Promise<void>) => async () => {
-        try {
-            await fn();
-        } catch (err) {
-            testFailed = true;
-            throw err;
-        }
-    };
+  const wrapTest = (fn: () => Promise<void>) => async () => {
+    try {
+      await fn();
+    } catch (err) {
+      testFailed = true;
+      throw err;
+    }
+  };
 
   it.skip("perform test with pilot", async () => {
     await pilot.perform(
@@ -86,67 +85,57 @@ describe("Example Test Suite", () => {
     );
   });
 
-  // it.only("perform on yohai's sites", async () => {
-  //     const cacheFunctionSpy = jest.spyOn(CacheHandler.prototype, "findMatchingCacheEntryValidationMatcherBased");
-  //   await pilot.perform(
-  //     "Open https://www.yohaiknaani.com",
-  //      "Search for 'MMO Game'",
-  //      "Add the first item to the cart",
-  //      "Proceed to checkout");
-  //   expect(cacheFunctionSpy).not.toHaveBeenCalled();
-  //     await pilot.perform(
-  //         "Open https://www.yohaiknaani.com",
-  //         "Search for 'MMO Game'",
-  //         "Add the first item to the cart",
-  //         "Proceed to checkout");
-  //     expect(cacheFunctionSpy).toHaveBeenCalled();
-  //     expect(cacheFunctionSpy).not.toHaveReturnedWith(undefined);
-  //     expect(cacheFunctionSpy).toBeInstanceOf(Promise);
-  // });
+  it.skip("perform on yohai's sites", async () => {
+    await pilot.perform(
+      "Open https://www.yohaiknaani.com",
+      "Search for 'MMO Game'",
+      "Add the first item to the cart",
+      "Proceed to checkout",
+    );
+  });
 
-    it.skip("perform on yohai's sites", async () => {
-        await pilot.perform(
-            "Open https://www.yohaiknaani.com",
-            "Search for 'MMO Game'",
-            "Add the first item to the cart",
-            "Proceed to checkout");
-    });
+  it.skip("perform filter by price", async () => {
+    await pilot.perform(
+      "Open https://www.yohaiknaani.com",
+      "Go to `Shop All` page",
+      "Filter price to be 61 to 100 dollars",
+      "Add the first item to the cart",
+      "Proceed to checkout",
+    );
+  });
 
-   it.skip("perform filter by price", async () => {
-       await pilot.perform(
-           "Open https://www.yohaiknaani.com",
-           "Go to `Shop All` page",
-           "Filter price to be 61 to 100 dollars",
-           "Add the first item to the cart",
-           "Proceed to checkout");
-   });
+  it.only(
+    "auto perform filter by color - FAILS",
+    wrapTest(async () => {
+      await pilot.autopilot(
+        "Open https://www.yohaiknaani.com, go to `Shop All` page and add `digital varient` to the cart",
+      );
+    }),
+  );
 
-    it.only("auto perform filter by color - FAILS", wrapTest(async () => {
-        await pilot.autopilot(
-            "Open https://www.yohaiknaani.com, go to `Shop All` page and add `digital varient` to the cart");
-    }));
+  it.skip("filter by color", async () => {
+    await pilot.perform(
+      "Open https://www.yohaiknaani.com",
+      "Go to `Shop All` page.",
+      "Open the color filter",
+      "Set color to black",
+      "Add the first item to the cart",
+    );
+  });
 
-    it.skip("filter by color", async () => {
-        await pilot.perform(
-            "Open https://www.yohaiknaani.com",
-            "Go to `Shop All` page.",
-            "Open the color filter",
-            "Set color to black",
-            "Add the first item to the cart");
-    });
-
-    it.skip("perform send a message", async () => {
-        await pilot.perform(
-            "Open https://www.yohaiknaani.com",
-            "Go to `Contact` page.",
-            "Tap on the `First Name` input",
-            "Type John in the `First Name` input",
-            "Tap on the `Last Name` input",
-            "Type Doe in the `Last Name` input",
-            "Tap on the `Email` input",
-            "Type 0Q2Jc@example.com in the `Email` input",
-            "Tap on the `Message` input",
-            "Type Hello in the `Message` input",
-            "Tap on the `Submit` button");
-    });
+  it.skip("perform send a message", async () => {
+    await pilot.perform(
+      "Open https://www.yohaiknaani.com",
+      "Go to `Contact` page.",
+      "Tap on the `First Name` input",
+      "Type John in the `First Name` input",
+      "Tap on the `Last Name` input",
+      "Type Doe in the `Last Name` input",
+      "Tap on the `Email` input",
+      "Type 0Q2Jc@example.com in the `Email` input",
+      "Tap on the `Message` input",
+      "Type Hello in the `Message` input",
+      "Tap on the `Submit` button",
+    );
+  });
 });
