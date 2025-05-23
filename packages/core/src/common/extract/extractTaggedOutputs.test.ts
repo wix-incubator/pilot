@@ -1,6 +1,7 @@
 import {
   extractAutoPilotStepOutputs,
   extractAutoPilotReviewOutputs,
+  extractPilotOutputs,
 } from "./extractTaggedOutputs";
 import { AutoReviewSectionConfig } from "@/types/auto";
 
@@ -136,6 +137,45 @@ describe("extractOutputs", () => {
         findings: undefined,
         score: undefined,
       });
+    });
+  });
+
+  describe("extractPilotOutputs", () => {
+    it("should extract outputs from text", () => {
+      const textToBeParsed = `
+         This is the view hierarchy snippet:
+         <VIEW_HIERARCHY_SNIPPET>
+         This is the view hierarchy snippet
+         </VIEW_HIERARCHY_SNIPPET>
+         This is the code:
+         <CODE>
+         This is the code
+         </CODE>`;
+      const outputs = extractPilotOutputs(textToBeParsed);
+      expect(outputs).toEqual({
+        viewHierarchySnippet: ["This is the view hierarchy snippet"],
+        code: "This is the code",
+      });
+    });
+
+    it("should throw error if required output is missing", () => {
+      const textToBeParsedNoCode = `
+            This is the view hierarchy snippet:
+            <VIEW_HIERARCHY_SNIPPET>
+            This is the view hierarchy snippet
+            </VIEW_HIERARCHY_SNIPPET>`;
+      expect(() => extractPilotOutputs(textToBeParsedNoCode)).toThrowError(
+        "Missing field for required tag <CODE>",
+      );
+
+      const textToBeParsedNoViewHierarchy = `
+            This is the code:
+            <CODE>
+            This is the code
+            </CODE>`;
+      expect(() =>
+        extractPilotOutputs(textToBeParsedNoViewHierarchy),
+      ).toThrowError("Missing field for required tag <VIEW_HIERARCHY_SNIPPET>");
     });
   });
 });
