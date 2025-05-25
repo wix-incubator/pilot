@@ -92,10 +92,35 @@ console.log(`Releasing ${isPrerelease ? npmReleaseType + ' (prerelease)' : relea
     } else {
       // Publish package
       console.log('Publishing package...');
-      const otp = await promptOTP(); // Get OTP from user
-      let publishCmd = `npm publish --access public --otp=${otp}`;
+      // Check for npm auth token in env or .npmrc
+      let hasToken = false;
+      if (process.env.npm_config__authToken) {
+        hasToken = true;
+      } else {
+        // Check .npmrc in project root
+        const npmrcPath = path.resolve(process.cwd(), '.npmrc');
+        if (fs.existsSync(npmrcPath)) {
+          const npmrc = fs.readFileSync(npmrcPath, 'utf8');
+          if (/(_authToken\s*=\s*\S+)/.test(npmrc)) {
+            hasToken = true;
+          }
+        }
+        // Check .npmrc in workspace root
+        const rootNpmrcPath = path.resolve(__dirname, '../.npmrc');
+        if (!hasToken && fs.existsSync(rootNpmrcPath)) {
+          const rootNpmrc = fs.readFileSync(rootNpmrcPath, 'utf8');
+          if (/(_authToken\s*=\s*\S+)/.test(rootNpmrc)) {
+            hasToken = true;
+          }
+        }
+      }
+      let publishCmd = 'npm publish --access public';
       if (isPrerelease) {
         publishCmd += ' --tag alpha';
+      }
+      if (!hasToken) {
+        const otp = await promptOTP(); // Get OTP from user
+        publishCmd += ` --otp=${otp}`;
       }
       execSync(publishCmd, { stdio: 'inherit' });
     }
