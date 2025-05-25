@@ -21,8 +21,11 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "type-check": "tsc --noEmit",
     "release:patch": "node ../../../scripts/release-package.js patch",
+    "release:patch:alpha": "node ../../../scripts/release-package.js patch --prerelease",
     "release:minor": "node ../../../scripts/release-package.js minor",
-    "release:major": "node ../../../scripts/release-package.js major"
+    "release:minor:alpha": "node ../../../scripts/release-package.js minor --prerelease",
+    "release:major": "node ../../../scripts/release-package.js major",
+    "release:major:alpha": "node ../../../scripts/release-package.js major --prerelease"
   },
   "bugs": {
     "url": "https://github.com/wix-incubator/pilot/issues"
