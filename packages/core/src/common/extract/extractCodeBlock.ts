@@ -1,40 +1,28 @@
-export function extractCodeBlock(text: string): any {
-  let viewHierarchyResult: string[] = [];
-  let codeBlockResult = text;
-
-  const viewHierarchyRegex =
-    /View hierarchy snippet showing relevant context:\s*```(?:xml)?\s*([\s\S]*?)\s*```/;
-  const viewHierarchyMatch = text.match(viewHierarchyRegex);
-
-  if (viewHierarchyMatch) {
-    viewHierarchyResult = viewHierarchyMatch[1]
-      .trim()
-      .split(/\n+/)
-      .map((str) => str.trim())
-      .filter((str) => str.length > 0)
-      .map((str) => str.replace(/\s*\/>/g, ""));
-    codeBlockResult = codeBlockResult.replace(viewHierarchyMatch[0], "").trim();
-  }
+export function extractCodeBlock(text: string): string {
   // Check for triple backtick code blocks
   const tripleBacktickRegex = /```(?:\w+)?\r?\n([\s\S]*?)\r?\n```/;
-  const tripleBacktickMatch = codeBlockResult.match(tripleBacktickRegex);
+  const tripleBacktickMatch = text.match(tripleBacktickRegex);
 
   // Check for single backtick code blocks (including empty ones)
   const singleBacktickRegex = /^[ \t]*`([^`]*)`[ \t]*$/m;
-  const singleBacktickMatch = codeBlockResult.match(singleBacktickRegex);
-
-  let extractedCode: string;
+  const singleBacktickMatch = text.match(singleBacktickRegex);
 
   if (tripleBacktickMatch) {
+    // Get content from triple backtick block
     const innerContent = tripleBacktickMatch[1].trim();
+    // Recursively check for nested code blocks
     const nestedResult = extractCodeBlock(innerContent);
-    extractedCode =
-      typeof nestedResult === "object" ? nestedResult.code : nestedResult;
+    // If we found a nested code block, return it
+    if (nestedResult !== innerContent) {
+      return nestedResult;
+    }
+    // Otherwise return the inner content
+    return innerContent;
   } else if (singleBacktickMatch) {
-    extractedCode = singleBacktickMatch[1];
-  } else {
-    extractedCode = codeBlockResult;
+    // Return content from single backtick block
+    return singleBacktickMatch[1];
   }
 
-  return { code: extractedCode, viewHierarchy: viewHierarchyResult };
+  // If no code block is found, return the original text
+  return text;
 }
