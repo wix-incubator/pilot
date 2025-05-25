@@ -43,7 +43,7 @@ export class StepPerformer {
   private async generateCode(
     currentStep: string,
     previousSteps: PreviousStep[],
-    screenCapture: ScreenCapturerResult,
+    screenshotHandler: () => Promise<ScreenCapturerResult>,
   ): Promise<string> {
     const cacheKey = this.cacheHandler.generateCacheKey({
       currentStep,
@@ -70,6 +70,8 @@ export class StepPerformer {
       }
     }
 
+    const screenCapture = await screenshotHandler();
+
     // No cache match found, generate new code
     const prompt = this.promptCreator.createPrompt(
       currentStep,
@@ -85,9 +87,11 @@ export class StepPerformer {
 
     const extractedCodeBlock = extractPilotOutputs(promptResult);
 
-    const code = extractedCodeBlock.code
-      ? extractedCodeBlock.code
-      : "No code found";
+    if (!extractedCodeBlock.code){
+        logger.error("No code found");
+    }
+
+    const code = extractedCodeBlock.code;
 
     const cacheValue: StepPerformerCacheValue = { code };
     if (
@@ -132,15 +136,18 @@ export class StepPerformer {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        const screenCaptureResult =
-          attempt == 1
-            ? screenCapture
-            : await this.screenCapturer.capture(true);
+          
+        const screenshotHandler = async () => {
+            return attempt == 1
+                ? screenCapture
+                : await this.screenCapturer.capture(true);
+        }
+
 
         const generatedCode = await this.generateCode(
           step,
           previous,
-          screenCaptureResult,
+          screenshotHandler,
         );
 
         lastCode = generatedCode;

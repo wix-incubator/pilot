@@ -21,7 +21,6 @@ describe("CacheHandler", () => {
     value: { code: "code to run" },
     validationMatcher: "validation code",
     creationTime: Date.now(),
-    shouldRunMoreCode: false,
   };
 
   const mockScreenCapture = {

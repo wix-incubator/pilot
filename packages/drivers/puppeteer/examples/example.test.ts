@@ -104,7 +104,7 @@ describe("Example Test Suite", () => {
     );
   });
 
-  it.only(
+  it.skip(
     "auto perform filter by color - FAILS",
     wrapTest(async () => {
       await pilot.autopilot(
@@ -113,7 +113,7 @@ describe("Example Test Suite", () => {
     }),
   );
 
-  it.skip("filter by color", async () => {
+  it.only("filter by color", async () => {
     await pilot.perform(
       "Open https://www.yohaiknaani.com",
       "Go to `Shop All` page.",

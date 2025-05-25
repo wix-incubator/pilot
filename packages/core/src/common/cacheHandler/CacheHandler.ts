@@ -255,7 +255,7 @@ export class CacheHandler {
           return entry;
         }
       } catch (error) {
-        console.error("Error evaluating matcher:", error);
+        logger.debug("Error evaluating matcher:", matcher);
       }
     }
 

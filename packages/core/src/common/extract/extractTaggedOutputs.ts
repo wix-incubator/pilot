@@ -9,7 +9,7 @@ export type Output = {
 export type OutputsMapping = Record<string, Output>;
 
 type ExtractedType<M extends OutputsMapping> = {
-  [K in keyof M]: M[K]["isRequired"] extends true ? string : string | undefined;
+  [K in keyof M]: M[K]["isRequired"] extends true ? string : string | "";
 };
 
 const BASE_AUTOPILOT_STEP = {
@@ -85,8 +85,8 @@ export function extractAutoPilotStepOutputs(
 }
 
 export function extractPilotOutputs(text: string): {
-  code: string | undefined;
-  cacheValidationMatcher: string | undefined;
+  code: string;
+  cacheValidationMatcher: string;
 } {
   const outputs = extractTaggedOutputs({
     text,
@@ -95,7 +95,7 @@ export function extractPilotOutputs(text: string): {
 
   const cacheValidationMatcher = outputs.cacheValidationMatcher
     ? outputs.cacheValidationMatcher.trim().replace(/\s*\/>/g, "")
-    : undefined;
+    : "";
 
   return { code: outputs.code, cacheValidationMatcher: cacheValidationMatcher };
 }
