@@ -4,12 +4,15 @@ import os from "os";
 import {
   CacheOptions,
   CacheValue,
+  CacheValueSnapshot,
+  CacheValueValidationMatcher,
   ScreenCapturerResult,
   SnapshotHashes,
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
 import { getCurrentTestFilePath } from "./testEnvUtils";
+import { CodeEvaluator } from "@/common/CodeEvaluator";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
@@ -26,6 +29,7 @@ export class CacheHandler {
   private cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
+  private codeEvaluator: CodeEvaluator;
 
   /**
    * Creates a new CacheHandler instance
@@ -42,6 +46,7 @@ export class CacheHandler {
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
     this.cacheFilePath = this.determineCurrentCacheFilePath();
+    this.codeEvaluator = new CodeEvaluator();
   }
 
   private createCacheOptionsWithDefaults(
@@ -130,16 +135,42 @@ export class CacheHandler {
    * @param value The value to cache
    * @param snapshotHashes Hash values for the current snapshot
    */
-  public addToTemporaryCache<T>(
+  public addToTemporaryCacheSnapshotBased<T>(
     cacheKey: string,
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
   ): void {
-    logger.labeled("CACHE").info("Saving response to cache");
+    logger.info("Saving result to cache for future use");
 
-    const cacheValue: CacheValue<T> = {
+    const cacheValue: CacheValueSnapshot<T> = {
       value,
       snapshotHashes: snapshotHashes || {},
+      creationTime: Date.now(),
+    };
+
+    const existingValues = this.temporaryCache.get(cacheKey) || [];
+    this.temporaryCache.set(cacheKey, [
+      ...existingValues,
+      cacheValue as CacheValue<unknown>,
+    ]);
+  }
+
+  /**
+   * Add value to temporary cache
+   * @param cacheKey The cache key string
+   * @param value The value to cache
+   * @param validationMatcher a code line that validate the existence of the step's relevant element
+   */
+  public addToTemporaryCacheValidationMatcherBased<T>(
+    cacheKey: string,
+    value: T & { code: string },
+    validationMatcher?: string[] | string | undefined,
+  ): void {
+    logger.labeled("CACHE").info("Saving response to cache");
+
+    const cacheValue: CacheValueValidationMatcher<T> = {
+      value,
+      validationMatcher: validationMatcher,
       creationTime: Date.now(),
     };
 
@@ -176,8 +207,8 @@ export class CacheHandler {
    * @param currentHashes Current snapshot hashes (complete with all algorithms)
    * @returns Matching cache value if found, undefined otherwise
    */
-  public findMatchingCacheEntry<T>(
-    cacheValues: Array<CacheValue<T>>,
+  public findMatchingCacheEntrySnapshotBased<T>(
+    cacheValues: Array<CacheValueSnapshot<T>>,
     currentHashes?: SnapshotHashes,
   ): CacheValue<T> | undefined {
     if (!cacheValues?.length || !currentHashes) {
@@ -190,6 +221,45 @@ export class CacheHandler {
         entry.snapshotHashes,
       );
     });
+  }
+
+  /**
+   * Searches for a matching cache entry by evaluating its validation matcher code.
+   * If the matcher evaluates to true, the corresponding cache entry is returned.
+   * Also determines whether additional code should be run based on a comparison between the original code and the matcher.
+   * @param cacheValues Array of cache values to search
+   * @param context The context
+   * @param sharedContext The shared context to use for evaluating the validation matcher
+   * @returns Matching cache value if found, undefined otherwise
+   */
+  public async findMatchingCacheEntryValidationMatcherBased<T>(
+    cacheValues: Array<CacheValueValidationMatcher<T>>,
+    context: any,
+    sharedContext?: Record<string, any>,
+  ): Promise<CacheValueValidationMatcher<T> | undefined> {
+    for (const entry of cacheValues) {
+      if (!entry.validationMatcher) {
+        return entry;
+      }
+      const matcher = entry.validationMatcher;
+      if (!matcher || typeof matcher !== "string") continue;
+
+      try {
+        const result = await this.codeEvaluator.evaluate(
+          matcher,
+          context,
+          sharedContext,
+        );
+
+        if (result) {
+          return entry;
+        }
+      } catch (error) {
+        logger.debug("Error evaluating matcher:", matcher);
+      }
+    }
+
+    return undefined;
   }
 
   /**

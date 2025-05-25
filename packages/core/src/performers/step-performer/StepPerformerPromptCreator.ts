@@ -114,6 +114,7 @@ export class StepPerformerPromptCreator {
       "",
       "### View hierarchy",
       "",
+      "This is the complete view hierarchy. Use only the relevant parts for the executable code.",
       "```",
       `${viewHierarchy}`,
       "```",
@@ -177,7 +178,7 @@ export class StepPerformerPromptCreator {
     return [
       "## Instructions",
       "",
-      `Your task is to generate the minimal executable code to perform the following intent: "${intent}"`,
+      `Your task is to generate the minimal executable code to perform the following intent: "${intent}". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.`,
       "",
       "Please follow these steps carefully:",
       "",
@@ -192,20 +193,14 @@ export class StepPerformerPromptCreator {
       "### Examples",
       "",
       "#### Example of throwing an informative error:",
-      "```typescript",
+      "<CODE>",
       "throw new Error(\"Unable to find the 'Submit' button element in the current context.\");",
-      "```",
+      "</CODE>",
       "",
-      "#### Example of using shared context between steps:",
-      "```typescript",
-      "// Step 1: Store the user ID",
-      "const userId = await getUserId();",
-      "sharedContext.userId = userId;",
-      "",
-      "// Step 2: Use the stored user ID",
-      "await element(by.id('user-' + sharedContext.userId)).tap();",
-      "```",
-      "",
+      "#### Example of providing the validation matcher",
+      "<CACHE_VALIDATION_MATCHER>",
+      `const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();`,
+      "</CACHE_VALIDATION_MATCHER>",
     ]
       .concat(
         isSnapshotImageAttached
@@ -228,17 +223,18 @@ export class StepPerformerPromptCreator {
     if (isSnapshotImageAttached) {
       steps.push(
         "Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.",
-        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors.",
+        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>.",
         "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.",
         "Determine if the intent can be fully validated visually using the snapshot image.",
         "If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.",
-        "If the visual assertion fails, return code that throws an informative error explaining the failure.",
+        "If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.",
         "If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.",
       );
     } else {
       steps.push(
         "Analyze the provided intent and the view hierarchy to understand the required action.",
-        "Generate the minimal executable code required to perform the intent using the available API.",
+        "Generate the minimal executable code required to perform the intent using the available API inside <CODE></CODE> block.",
+        "Inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add the minimal executable code (1-2 lines) that verifies the existence of the elements that will be interacted with in this step, in the code part. This tag is not required, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.",
       );
     }
     steps.push(
@@ -246,7 +242,7 @@ export class StepPerformerPromptCreator {
       "Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.",
       "Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.",
       "If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'",
-      "Wrap the generated code with backticks, without any additional formatting.",
+      "Wrap the generated code with <CODE></CODE> block, without any additional formatting.",
       "Do not provide any additional code beyond the minimal executable code required to perform the intent.",
     );
     return steps;

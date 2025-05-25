@@ -45,14 +45,27 @@ export type CacheKey<T> = {
   key: T;
 };
 
+export type CacheValue<T> = {
+  value: T;
+  creationTime: number;
+};
+
 /**
  * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
  * @param T - Cached step data type (result).
- * @param SnapshotHashes - Snapshot hashes. Allows partial object for backward compatibility.
  * @param creationTime - Cache entry creation time.
  */
-export type CacheValue<T> = {
-  value: T;
+export type CacheValueSnapshot<T> = CacheValue<T> & {
   snapshotHashes?: Partial<SnapshotHashes>;
-  creationTime: number;
+};
+
+/**
+ * Cache value structure, serving as a cache value for both StepPerformer and AutoPerformer.
+ * @template T - The type of the cached step result.
+ * @property value - An object containing the code that represents the full step logic.
+ * @param validationMatcher - A line of code used to verify that the relevant element(s) for the step exist.
+ */
+export type CacheValueValidationMatcher<T> = CacheValue<T> & {
+  value: { code: string };
+  validationMatcher?: string | string[];
 };

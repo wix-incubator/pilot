@@ -1,9 +1,14 @@
 import { CacheHandler } from "./CacheHandler";
 import { mockCache, mockedCacheFile } from "../../test-utils/cache";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
-import type { ScreenCapturerResult } from "@/types";
+import {
+  CacheValueSnapshot,
+  CacheValueValidationMatcher,
+  ScreenCapturerResult,
+} from "@/types";
 import fs from "fs";
 import * as testEnvUtils from "./testEnvUtils";
+import expect from "expect";
 
 jest.mock("fs");
 jest.mock("../snapshot/comparator/SnapshotComparator");
@@ -11,6 +16,12 @@ jest.mock("../snapshot/comparator/SnapshotComparator");
 describe("CacheHandler", () => {
   let cacheHandler: CacheHandler;
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
+
+  const CACHED_VALUE = {
+    value: { code: "code to run" },
+    validationMatcher: "validation code",
+    creationTime: Date.now(),
+  };
 
   const mockScreenCapture = {
     screenshot: Buffer.from("test-screenshot"),
@@ -40,31 +51,34 @@ describe("CacheHandler", () => {
   });
 
   describe("cache and file operations", () => {
-    it("should load cache from file successfully if the file exists and is valid", () => {
-      const cacheValue = {
-        value: "test-value",
-        creationTime: Date.now(),
-        snapshotHashes: mockHashes,
-      };
-
-      mockCache({ cacheKey: [cacheValue] });
+    it("should load cache from file successfully if the file exists and is valid - matcher based", () => {
+      mockCache({ cacheKey: [CACHED_VALUE] });
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
 
       cacheHandler.loadCacheFromFile();
 
       const result = cacheHandler.getFromPersistentCache("cacheKey");
-      expect(result).toEqual([cacheValue]);
+      expect(result).toEqual([CACHED_VALUE]);
     });
 
     it("should save cache to file successfully", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
       cacheHandler.flushTemporaryCache();
 
       expect(mockedCacheFile).toHaveProperty("cacheKey");
-      expect(mockedCacheFile?.cacheKey[0].value).toEqual("test-value");
+      expect(mockedCacheFile?.cacheKey[0].value).toEqual({
+        code: "code to run",
+      });
+      expect(mockedCacheFile?.cacheKey[0].validationMatcher).toEqual(
+        "validation code",
+      );
     });
 
     it("should handle file errors gracefully when loading cache", () => {
@@ -82,7 +96,11 @@ describe("CacheHandler", () => {
         throw mockError;
       });
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
 
       expect(() => cacheHandler.flushTemporaryCache()).not.toThrow();
     });
@@ -92,29 +110,43 @@ describe("CacheHandler", () => {
     it("should add to temporary cache but not to persistent cache", () => {
       mockCache();
 
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
       expect(mockedCacheFile).toBeUndefined();
     });
 
     it("should store snapshot hashes when provided", () => {
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value", mockHashes);
+      cacheHandler.addToTemporaryCacheSnapshotBased(
+        "cacheKey",
+        "test-value",
+        mockHashes,
+      );
       cacheHandler.flushTemporaryCache();
 
-      const result = cacheHandler.getFromPersistentCache("cacheKey");
+      const result = cacheHandler.getFromPersistentCache(
+        "cacheKey",
+      ) as CacheValueSnapshot<string>[];
       expect(result?.[0].snapshotHashes).toEqual(mockHashes);
     });
   });
 
   describe("getFromPersistentCache", () => {
     it("should retrieve a value from cache", () => {
-      cacheHandler.addToTemporaryCache("some_key", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "some_key",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
       cacheHandler.flushTemporaryCache();
 
       const result = cacheHandler.getFromPersistentCache("some_key");
 
-      expect(result?.[0].value).toEqual("test-value");
+      expect(result?.[0].value).toEqual({ code: "code to run" });
     });
 
     it("should return undefined if the key does not exist in cache", () => {
@@ -128,7 +160,11 @@ describe("CacheHandler", () => {
         shouldOverrideCache: true,
       });
 
-      cacheHandler.addToTemporaryCache("some_key", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "some_key",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
       cacheHandler.flushTemporaryCache();
 
       const result = cacheHandler.getFromPersistentCache("some_key");
@@ -140,28 +176,48 @@ describe("CacheHandler", () => {
     it("should move all temporary cache entries to the persistent cache", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCache("cacheKey1", "value1");
-      cacheHandler.addToTemporaryCache("cacheKey2", "value2");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey1",
+        { code: "code to run 1" },
+        "validation code 1",
+      );
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey2",
+        { code: "code to run 2" },
+        "validation code 2",
+      );
 
       cacheHandler.flushTemporaryCache();
 
       const result = cacheHandler.getFromPersistentCache("cacheKey2");
       expect(result?.length).toBe(1);
-      expect(result?.[0].value).toEqual("value2");
+      expect(result?.[0].value).toEqual({ code: "code to run 2" });
     });
 
     it("should append multiple values for the same key", () => {
       expect(cacheHandler.getFromPersistentCache("cacheKey1")).toBeUndefined();
 
-      cacheHandler.addToTemporaryCache("cacheKey1", "value1");
-      cacheHandler.addToTemporaryCache("cacheKey1", "value2");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey1",
+        { code: "code to run 1" },
+        "validation code 1",
+      );
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey1",
+        { code: "code to run 2" },
+        "validation code 2",
+      );
 
       cacheHandler.flushTemporaryCache();
 
-      const result = cacheHandler.getFromPersistentCache("cacheKey1");
+      const result = cacheHandler.getFromPersistentCache(
+        "cacheKey1",
+      ) as CacheValueValidationMatcher<string>[];
       expect(result?.length).toBe(2);
-      expect(result?.[0].value).toEqual("value1");
-      expect(result?.[1].value).toEqual("value2");
+      expect(result?.[0].value).toEqual({ code: "code to run 1" });
+      expect(result?.[1].value).toEqual({ code: "code to run 2" });
+      expect(result?.[0].validationMatcher).toEqual("validation code 1");
+      expect(result?.[1].validationMatcher).toEqual("validation code 2");
     });
 
     it("should do nothing if temporary cache is empty", () => {
@@ -176,7 +232,11 @@ describe("CacheHandler", () => {
   describe("clearTemporaryCache", () => {
     it("should clear the temporary cache without persisting it", () => {
       mockCache({});
-      cacheHandler.addToTemporaryCache("cacheKey", "test-value");
+      cacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "cacheKey",
+        CACHED_VALUE.value,
+        CACHED_VALUE.validationMatcher,
+      );
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
 
@@ -200,23 +260,19 @@ describe("CacheHandler", () => {
 
   describe("findMatchingCacheEntry", () => {
     it("should return undefined if no cache values are provided", () => {
-      const result = cacheHandler.findMatchingCacheEntry([], mockHashes);
+      const result = cacheHandler.findMatchingCacheEntrySnapshotBased(
+        [],
+        mockHashes,
+      );
       expect(result).toBeUndefined();
     });
 
-    it("should return undefined if no hashes are provided", () => {
-      const cacheValues = [
-        {
-          value: "test-value",
-          creationTime: Date.now(),
-          snapshotHashes: mockHashes,
-        },
-      ];
-
-      const result = cacheHandler.findMatchingCacheEntry(
-        cacheValues,
-        undefined,
-      );
+    it("should return undefined if no hashes are provided", async () => {
+      const result =
+        await cacheHandler.findMatchingCacheEntryValidationMatcherBased(
+          [CACHED_VALUE],
+          undefined,
+        );
 
       expect(result).toBeUndefined();
     });
@@ -232,7 +288,7 @@ describe("CacheHandler", () => {
 
       mockSnapshotComparator.compareSnapshot.mockReturnValue(true);
 
-      const result = cacheHandler.findMatchingCacheEntry(
+      const result = cacheHandler.findMatchingCacheEntrySnapshotBased(
         cacheValues,
         mockHashes,
       );
