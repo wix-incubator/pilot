@@ -163,7 +163,7 @@ describe("AutoPerformer", () => {
           screenDescription: "default name",
           thoughts: "I think this is great",
           action: "Tap on GREAT button",
-          goalSummary: undefined,
+          goalSummary: "",
           UX: `<SUMMARY>
 The review of UX
 </SUMMARY>
@@ -263,6 +263,7 @@ The review of i18n
         },
         review: {},
         goalAchieved: false,
+        summary: "",
       };
 
       expect(result).toEqual(expectedResult);
@@ -296,6 +297,7 @@ The review of i18n
         },
         review: {},
         goalAchieved: false,
+        summary: "",
       };
 
       expect(result).toEqual(expectedResult);
@@ -329,6 +331,7 @@ The review of i18n
         },
         review: {},
         goalAchieved: false,
+        summary: "",
       };
 
       expect(result).toEqual(expectedResult);
@@ -371,6 +374,7 @@ The review of i18n
         },
         review: {},
         goalAchieved: false,
+        summary: "",
       };
 
       expect(result).toEqual(expectedResult);
@@ -647,6 +651,7 @@ The review of i18n
           },
         },
         goalAchieved: false,
+        summary: "",
       };
 
       expect(result).toEqual(expectedResult);

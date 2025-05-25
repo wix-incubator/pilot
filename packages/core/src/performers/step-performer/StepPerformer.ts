@@ -87,8 +87,8 @@ export class StepPerformer {
 
     const extractedCodeBlock = extractPilotOutputs(promptResult);
 
-    if (!extractedCodeBlock.code){
-        logger.error("No code found");
+    if (!extractedCodeBlock.code) {
+      logger.error("No code found");
     }
 
     const code = extractedCodeBlock.code;
@@ -136,13 +136,11 @@ export class StepPerformer {
 
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-          
         const screenshotHandler = async () => {
-            return attempt == 1
-                ? screenCapture
-                : await this.screenCapturer.capture(true);
-        }
-
+          return attempt == 1
+            ? screenCapture
+            : await this.screenCapturer.capture(true);
+        };
 
         const generatedCode = await this.generateCode(
           step,
