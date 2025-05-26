@@ -42,23 +42,25 @@ Element not found
 
 ## Instructions
 
-Your task is to generate the minimal executable code to perform the following intent: "Tap on a non-existent button". In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This is not required for all steps, but it's important to add these lines as a safety measure to ensure that the test does not fail due to unexpected element not found errors.
+Your task is to generate the minimal executable code to perform the following intent: "Tap on a non-existent button". The code should include appropriate synchronization using the testing framework's wait methods to ensure reliable test execution. In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This validation matcher will be used in subsequent test executions to wait for the elements to appear on the screen.
 
 Please follow these steps carefully:
 
 1. Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.
 2. When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>.
-3. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
-4. Determine if the intent can be fully validated visually using the snapshot image.
-5. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
-6. If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.
-7. If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.
-8. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
-9. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
-10. Use the provided framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
-11. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
-12. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
-13. Do not provide any additional code beyond the minimal executable code required to perform the intent.
+3. Include appropriate synchronization in your code using the testing framework's wait methods to ensure elements are present and ready before interacting with them. Use the testing framework's documented wait APIs to make the test more reliable and prevent flaky failures.
+4. The code inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> will be cached and used in future test runs to quickly verify that the page is in the expected state before executing the main test logic.
+5. Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.
+6. Determine if the intent can be fully validated visually using the snapshot image.
+7. If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.
+8. If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.
+9. If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.
+10. If you cannot generate the relevant code due to ambiguity or invalid intent, return code that throws an informative error explaining the problem in one sentence.
+11. Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.
+12. Use the provided the testing framework APIs as much as possible - prefer using the documented API methods over creating custom implementations.
+13. If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'
+14. Wrap the generated code with <CODE></CODE> block, without any additional formatting.
+15. Do not provide any additional code beyond the minimal executable code required to perform the intent.
 
 ### Verify the prompt
 
