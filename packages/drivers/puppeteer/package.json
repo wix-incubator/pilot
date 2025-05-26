@@ -36,6 +36,7 @@
     "env-paths": "^2.2.1"
   },
   "devDependencies": {
+    "@wix-pilot/prompt-handler": "^0.1.0",
     "axios": "^1.7.9",
     "puppeteer": "^22.15.0"
   },

@@ -1,7 +1,7 @@
 import { Pilot } from "@wix-pilot/core";
 import puppeteer from "puppeteer";
 import * as puppeteerCore from "puppeteer-core";
-import { PromptHandler } from "../utils/promptHandler";
+import { PromptHandler } from '@wix-pilot/prompt-handler';
 import { PuppeteerFrameworkDriver } from "../index";
 
 describe("Example Test Suite", () => {

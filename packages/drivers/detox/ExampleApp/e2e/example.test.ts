@@ -1,6 +1,6 @@
 import { Pilot } from '@wix-pilot/core';
 import { DetoxFrameworkDriver } from '../../index.ts';
-import { PromptHandler } from '../../utils/promptHandler.ts';
+import { PromptHandler } from '@wix-pilot/prompt-handler';
 import { device } from 'detox';
 import { AUTOPILOT_REVIEW_DEFAULTS } from "../../../../core/src/performers/auto-performer/reviews/reviewDefaults.ts";
 

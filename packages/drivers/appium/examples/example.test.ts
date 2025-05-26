@@ -1,5 +1,5 @@
 import { Pilot } from "@wix-pilot/core";
-import { PromptHandler } from "../utils/promptHandler";
+import { PromptHandler } from '@wix-pilot/prompt-handler';
 import { WebdriverIOAppiumFrameworkDriver } from "../index";
 
 describe("Example Test Suite", () => {
