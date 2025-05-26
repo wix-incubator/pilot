@@ -24,7 +24,7 @@ export class WixPromptHandler {
     const image = await fs.readFile(imagePath);
     try {
       const response: AxiosResponse<UploadImageResponseData> = await axios.post(
-        'https://bo.wix.com/mobile-infra-ai-services/v2/image-upload',
+        'https://bo.wix.com/mobile-infra-ai-services/v1/image-upload',
         { image },
       );
       const imageUrl: string | undefined = response.data.url;
@@ -48,7 +48,7 @@ export class WixPromptHandler {
     }
     try {
       const response: AxiosResponse<RunPromptResponseData> = await axios.post(
-        'https://bo.wix.com/mobile-infra-ai-services/v1/prompt',
+        'https://bo.wix.com/mobile-infra-ai-services/v2/prompt',
         {
           prompt,
           model: this.model,
