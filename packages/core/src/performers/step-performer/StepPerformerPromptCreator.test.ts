@@ -190,6 +190,140 @@ describe("PromptCreator", () => {
     expect(prompt).toMatchSnapshot();
   });
 
+  describe("CACHE_VALIDATION_MATCHER behavior", () => {
+    it("should include CACHE_VALIDATION_MATCHER instructions when snapshot is attached", () => {
+      const intent = "tap submit button";
+      const viewHierarchy =
+        '<View><Button testID="submit" title="Submit" /></View>';
+
+      const prompt = promptCreator.createPrompt(
+        intent,
+        viewHierarchy,
+        true,
+        [],
+      );
+
+      expect(prompt).toContain("CACHE_VALIDATION_MATCHER");
+      expect(prompt).toContain(
+        "add code lines that verify the existence of the elements",
+      );
+      expect(prompt).toContain(
+        "This validation matcher will be used in subsequent test executions",
+      );
+      expect(prompt).toMatchSnapshot();
+    });
+
+    it("should NOT include CACHE_VALIDATION_MATCHER instructions when no snapshot is attached", () => {
+      const intent = "tap submit button";
+      const viewHierarchy =
+        '<View><Button testID="submit" title="Submit" /></View>';
+
+      const prompt = promptCreator.createPrompt(
+        intent,
+        viewHierarchy,
+        false,
+        [],
+      );
+
+      expect(prompt).not.toContain("CACHE_VALIDATION_MATCHER");
+      expect(prompt).not.toContain(
+        "add code lines that verify the existence of the elements",
+      );
+      expect(prompt).not.toContain(
+        "This validation matcher will be used in subsequent test executions",
+      );
+      expect(prompt).toMatchSnapshot();
+    });
+  });
+
+  describe("Framework-specific references", () => {
+    it("should use specific framework name when available", () => {
+      const mockAPIWithName: TestingFrameworkAPICatalog = {
+        name: "Playwright",
+        description: "End-to-end testing framework",
+        context: {},
+        categories: mockAPI.categories,
+      };
+
+      const promptCreatorWithName = new StepPerformerPromptCreator(
+        mockAPIWithName,
+      );
+      const intent = "click button";
+      const viewHierarchy =
+        '<View><Button testID="submit" title="Submit" /></View>';
+
+      const prompt = promptCreatorWithName.createPrompt(
+        intent,
+        viewHierarchy,
+        true,
+        [],
+      );
+
+      expect(prompt).toContain("using Playwright");
+      expect(prompt).toContain("Playwright's wait methods");
+      expect(prompt).toContain("Playwright's documented wait APIs");
+      expect(prompt).toContain("Use the provided Playwright APIs");
+      expect(prompt).toContain("Available Playwright API");
+      expect(prompt).toMatchSnapshot();
+    });
+
+    it("should use generic references when no framework name is provided", () => {
+      const intent = "click button";
+      const viewHierarchy =
+        '<View><Button testID="submit" title="Submit" /></View>';
+
+      const prompt = promptCreator.createPrompt(
+        intent,
+        viewHierarchy,
+        true,
+        [],
+      );
+
+      expect(prompt).toContain("using the mentioned testing framework");
+      expect(prompt).toContain("the testing framework's wait methods");
+      expect(prompt).toContain("the testing framework's documented wait APIs");
+      expect(prompt).toContain("Use the provided the testing framework APIs");
+      expect(prompt).toContain("Available Testing Framework API");
+      expect(prompt).toMatchSnapshot();
+    });
+  });
+
+  describe("Synchronization instructions", () => {
+    it("should include synchronization instructions for both scenarios", () => {
+      const intent = "tap button";
+      const viewHierarchy =
+        '<View><Button testID="submit" title="Submit" /></View>';
+
+      // With screenshot
+      const promptWithSnapshot = promptCreator.createPrompt(
+        intent,
+        viewHierarchy,
+        true,
+        [],
+      );
+      expect(promptWithSnapshot).toContain(
+        "Include appropriate synchronization",
+      );
+      expect(promptWithSnapshot).toContain(
+        "wait methods to ensure elements are present",
+      );
+
+      // Without screenshot
+      const promptWithoutSnapshot = promptCreator.createPrompt(
+        intent,
+        viewHierarchy,
+        false,
+        [],
+      );
+      expect(promptWithoutSnapshot).toContain(
+        "Include appropriate synchronization",
+      );
+      expect(promptWithoutSnapshot).toContain(
+        "wait methods to ensure elements are present",
+      );
+    });
+  });
+
   describe("extentAPICategories", () => {
     const intent = "expect button to be visible";
     const viewHierarchy =
