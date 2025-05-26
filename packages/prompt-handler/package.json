@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "echo No tests available for this package"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
