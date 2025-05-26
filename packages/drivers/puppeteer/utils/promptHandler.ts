@@ -39,10 +39,10 @@ export class PromptHandler {
     if (!imagePath) {
       try {
         const response: AxiosResponse<RunPromptResponseData> = await axios.post(
-          "https://bo.wix.com/mobile-infra-ai-services/v1/prompt",
+          "https://bo.wix.com/mobile-infra-ai-services/v2/prompt",
           {
             prompt,
-            model: "SONNET_3_5",
+            model: "SONNET_4_0",
             ownershipTag: "Detox OSS",
             project: "Detox OSS",
             images: [],
