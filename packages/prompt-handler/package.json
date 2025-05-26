@@ -5,7 +5,9 @@
   "main": "dist/WixPromptHandler.js",
   "types": "dist/WixPromptHandler.d.ts",
   "scripts": {
-    "build": "tsc --project tsconfig.json"
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
