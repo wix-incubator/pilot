@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { promises as fs } from 'fs';
+import axios, { AxiosResponse } from "axios";
+import { promises as fs } from "fs";
 
 interface UploadImageResponseData {
   url: string;
@@ -17,14 +17,14 @@ export class WixPromptHandler {
   private model: string;
 
   constructor(options: WixPromptHandlerOptions = {}) {
-    this.model = options.model || 'SONNET_4_0';
+    this.model = options.model || "SONNET_4_0";
   }
 
   async uploadImage(imagePath: string): Promise<string> {
     const image = await fs.readFile(imagePath);
     try {
       const response: AxiosResponse<UploadImageResponseData> = await axios.post(
-        'https://bo.wix.com/mobile-infra-ai-services/v1/image-upload',
+        "https://bo.wix.com/mobile-infra-ai-services/v1/image-upload",
         { image },
       );
       const imageUrl: string | undefined = response.data.url;
@@ -35,7 +35,7 @@ export class WixPromptHandler {
       }
       return imageUrl;
     } catch (error) {
-      console.error('Error while uploading image:', error);
+      console.error("Error while uploading image:", error);
       throw error;
     }
   }
@@ -48,12 +48,12 @@ export class WixPromptHandler {
     }
     try {
       const response: AxiosResponse<RunPromptResponseData> = await axios.post(
-        'https://bo.wix.com/mobile-infra-ai-services/v2/prompt',
+        "https://bo.wix.com/mobile-infra-ai-services/v2/prompt",
         {
           prompt,
           model: this.model,
-          ownershipTag: 'Detox OSS',
-          project: 'Detox OSS',
+          ownershipTag: "Pilot OSS",
+          project: "Pilot OSS",
           images,
         },
       );
@@ -65,7 +65,7 @@ export class WixPromptHandler {
       }
       return generatedText;
     } catch (error) {
-      console.error('Error running prompt:', error);
+      console.error("Error running prompt:", error);
       throw error;
     }
   }
