@@ -31,7 +31,8 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "devDependencies": {
-    "detox": "^20.33.0"
+    "detox": "^20.33.0",
+    "@wix-pilot/prompt-handler": "^0.1.0"
   },
   "peerDependencies": {
     "detox": ">=20.33.0",

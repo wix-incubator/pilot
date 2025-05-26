@@ -48,6 +48,7 @@
     "appium-xcuitest-driver": "^8.3.1",
     "axios": "^1.7.9",
     "chai": "^5.2.0",
-    "webdriverio": "^9.9.1"
+    "webdriverio": "^9.9.1",
+    "@wix-pilot/prompt-handler": "^0.1.0"
   }
 }

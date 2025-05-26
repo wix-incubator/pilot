@@ -1,5 +1,5 @@
 import { Pilot } from "@wix-pilot/core";
-import { PromptHandler } from "../utils/promptHandler";
+import { WixPromptHandler } from "@wix-pilot/prompt-handler";
 import { WebdriverIOAppiumFrameworkDriver } from "../index";
 
 describe("Example Test Suite", () => {
@@ -7,7 +7,7 @@ describe("Example Test Suite", () => {
   let pilot: Pilot;
 
   before(async () => {
-    const promptHandler: PromptHandler = new PromptHandler();
+    const promptHandler: WixPromptHandler = new WixPromptHandler();
     frameworkDriver = new WebdriverIOAppiumFrameworkDriver();
 
     pilot = new Pilot({

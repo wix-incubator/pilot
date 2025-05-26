@@ -1,7 +1,7 @@
 import { Pilot } from "@wix-pilot/core";
 import puppeteer from "puppeteer";
 import * as puppeteerCore from "puppeteer-core";
-import { PromptHandler } from "../utils/promptHandler";
+import { WixPromptHandler } from "@wix-pilot/prompt-handler";
 import { PuppeteerFrameworkDriver } from "../index";
 
 describe("Example Test Suite", () => {
@@ -12,7 +12,7 @@ describe("Example Test Suite", () => {
   let testFailed = false;
 
   beforeAll(async () => {
-    const promptHandler: PromptHandler = new PromptHandler();
+    const promptHandler: WixPromptHandler = new WixPromptHandler();
     frameworkDriver = new PuppeteerFrameworkDriver(puppeteer.executablePath());
 
     pilot = new Pilot({

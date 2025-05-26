@@ -1,6 +1,6 @@
 import { Pilot } from '@wix-pilot/core';
 import { DetoxFrameworkDriver } from '../../index.ts';
-import { PromptHandler } from '../../utils/promptHandler.ts';
+import { WixPromptHandler } from "@wix-pilot/prompt-handler";
 import { device } from 'detox';
 import { AUTOPILOT_REVIEW_DEFAULTS } from "../../../../core/src/performers/auto-performer/reviews/reviewDefaults.ts";
 
@@ -22,7 +22,7 @@ describe('ExampleApp Detox Test Suite', () => {
     }]
 
     beforeAll(async () => {
-        const promptHandler: PromptHandler = new PromptHandler();
+        const promptHandler: WixPromptHandler = new WixPromptHandler();
         frameworkDriver = new DetoxFrameworkDriver();
 
         pilot = new Pilot({
