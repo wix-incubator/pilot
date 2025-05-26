@@ -9,14 +9,14 @@ interface RunPromptResponseData {
   generatedTexts: string[];
 }
 
-export interface PromptHandlerOptions {
+export interface WixPromptHandlerOptions {
   model?: string;
 }
 
-export class PromptHandler {
+export class WixPromptHandler {
   private model: string;
 
-  constructor(options: PromptHandlerOptions = {}) {
+  constructor(options: WixPromptHandlerOptions = {}) {
     this.model = options.model || 'SONNET_4_0';
   }
 
@@ -24,7 +24,7 @@ export class PromptHandler {
     const image = await fs.readFile(imagePath);
     try {
       const response: AxiosResponse<UploadImageResponseData> = await axios.post(
-        'https://bo.wix.com/mobile-infra-ai-services/v1/image-upload',
+        'https://bo.wix.com/mobile-infra-ai-services/v2/image-upload',
         { image },
       );
       const imageUrl: string | undefined = response.data.url;
@@ -52,8 +52,8 @@ export class PromptHandler {
         {
           prompt,
           model: this.model,
-          ownershipTag: 'Pilot OSS',
-          project: 'Pilot OSS',
+          ownershipTag: 'Detox OSS',
+          project: 'Detox OSS',
           images,
         },
       );

@@ -2,8 +2,8 @@
   "name": "@wix-pilot/prompt-handler",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/PromptHandler.js",
-  "types": "dist/PromptHandler.d.ts",
+  "main": "dist/WixPromptHandler.js",
+  "types": "dist/WixPromptHandler.d.ts",
   "scripts": {
     "build": "tsc --project tsconfig.json"
   },

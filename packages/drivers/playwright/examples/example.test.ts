@@ -1,5 +1,5 @@
 import { Pilot } from "@wix-pilot/core";
-import { PromptHandler } from '@wix-pilot/prompt-handler';
+import { WixPromptHandler } from "@wix-pilot/prompt-handler";
 import { PlaywrightFrameworkDriver } from "../index";
 import * as playwright from "playwright";
 
@@ -10,7 +10,7 @@ describe("Example Test Suite", () => {
   let pilot: Pilot;
 
   beforeAll(async () => {
-    const promptHandler: PromptHandler = new PromptHandler();
+    const promptHandler: WixPromptHandler = new WixPromptHandler();
     frameworkDriver = new PlaywrightFrameworkDriver();
 
     pilot = new Pilot({

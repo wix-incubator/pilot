@@ -1,6 +1,6 @@
 # @wix-pilot/prompt-handler
 
-A unified PromptHandler for interacting with AI services (e.g., OpenAI) in test environments. This package is intended to be used as a devDependency in other packages for test automation and AI-driven workflows.
+A unified WixPromptHandler for interacting with AI services (e.g., OpenAI) in test environments. This package is intended to be used as a devDependency in other packages for test automation and AI-driven workflows.
 
 ## Features
 - Uploads UI snapshot images (optional)
@@ -11,15 +11,15 @@ A unified PromptHandler for interacting with AI services (e.g., OpenAI) in test 
 ## Usage
 
 ```ts
-import { PromptHandler } from '@wix-pilot/prompt-handler';
+import { WixPromptHandler } from '@wix-pilot/prompt-handler';
 
-const handler = new PromptHandler({ model: 'SONNET_3_5' });
+const handler = new WixPromptHandler({ model: 'SONNET_3_5' });
 const response = await handler.runPrompt('Your prompt here', '/path/to/image.png');
 ```
 
 ## API
 
-### `PromptHandler(options)`
+### `WixPromptHandler(options)`
 - `model` (string, optional): The model to use (default: 'SONNET_3_5')
 
 ### `runPrompt(prompt: string, imagePath?: string): Promise<string>`
