@@ -17,7 +17,7 @@ export class PromptHandler {
   private model: string;
 
   constructor(options: PromptHandlerOptions = {}) {
-    this.model = options.model || 'SONNET_3_5';
+    this.model = options.model || 'SONNET_4_0';
   }
 
   async uploadImage(imagePath: string): Promise<string> {
@@ -52,8 +52,8 @@ export class PromptHandler {
         {
           prompt,
           model: this.model,
-          ownershipTag: 'Detox OSS',
-          project: 'Detox OSS',
+          ownershipTag: 'Pilot OSS',
+          project: 'Pilot OSS',
           images,
         },
       );
