@@ -37,6 +37,6 @@
   "peerDependencies": {
     "detox": ">=20.33.0",
     "expect": "29.x.x || 28.x.x || ^27.2.5",
-    "@wix-pilot/core": "^3.3.0"
+    "@wix-pilot/core": "^3.3.1"
   }
 }
