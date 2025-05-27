@@ -204,11 +204,9 @@ describe("PromptCreator", () => {
       );
 
       expect(prompt).toContain("CACHE_VALIDATION_MATCHER");
+      expect(prompt).toContain("You must provide TWO separate outputs");
       expect(prompt).toContain(
-        "add code lines that verify the existence of the elements",
-      );
-      expect(prompt).toContain(
-        "This validation matcher will be used in subsequent test executions",
+        "element validation code in <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> tags",
       );
       expect(prompt).toMatchSnapshot();
     });
@@ -226,11 +224,9 @@ describe("PromptCreator", () => {
       );
 
       expect(prompt).not.toContain("CACHE_VALIDATION_MATCHER");
+      expect(prompt).not.toContain("You must provide TWO separate outputs");
       expect(prompt).not.toContain(
-        "add code lines that verify the existence of the elements",
-      );
-      expect(prompt).not.toContain(
-        "This validation matcher will be used in subsequent test executions",
+        "element validation code in <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> tags",
       );
       expect(prompt).toMatchSnapshot();
     });

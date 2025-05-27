@@ -185,7 +185,7 @@ export class StepPerformerPromptCreator {
 
     if (isSnapshotImageAttached) {
       instructions.push(
-        `Your task is to generate the minimal executable code to perform the following intent: "${intent}". The code should include appropriate synchronization using ${frameworkName}'s wait methods to ensure reliable test execution. In addition, inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>, add code lines that verify the existence of the elements that will be interacted with in this step. This validation matcher will be used in subsequent test executions to wait for the elements to appear on the screen.`,
+        `Your task is to generate the minimal executable code to perform the following intent: "${intent}". The code should include appropriate synchronization using ${frameworkName}'s wait methods to ensure reliable test execution. You must provide TWO separate outputs: the main executable code in <CODE></CODE> tags, and element validation code in <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> tags.`,
       );
     } else {
       instructions.push(
@@ -216,10 +216,19 @@ export class StepPerformerPromptCreator {
 
     if (isSnapshotImageAttached) {
       instructions.push(
-        "#### Example of providing the validation matcher",
+        "#### Example of correct output format with both code and validation matcher:",
+        "",
+        "**Main executable code:**",
+        "<CODE>",
+        "const submitButton = await element(by.id('submit-btn'));",
+        "await submitButton.tap();",
+        "</CODE>",
+        "",
+        "**Element validation matcher (separate from main code):**",
         "<CACHE_VALIDATION_MATCHER>",
-        `const page = getCurrentPage(); const inputElement = await findElement(page, {placeholder: "Type the domain you want","aria-label": "Type the domain you want",class: "KvoMHf has-custom-focus wixui-text-input__input"}) ?? (() => { throw new Error('Input not found'); })();`,
+        "const page = getCurrentPage(); const submitButton = await findElement(page, {id: 'submit-btn'}) ?? (() => { throw new Error('Submit button not found'); })();",
         "</CACHE_VALIDATION_MATCHER>",
+        "",
       );
     }
 
@@ -247,14 +256,17 @@ export class StepPerformerPromptCreator {
     if (isSnapshotImageAttached) {
       steps.push(
         "Analyze the provided intent, the view hierarchy, and the snapshot image to understand the required action.",
-        "When interacting with an element, ensure that you use the correct identifier from the view hierarchy. Do not rely on a screenshot to guess the element's selectors. Add code lines that verify the existence of the elements that will be interacted with in this step inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER>.",
-        `Include appropriate synchronization in your code using ${frameworkName}'s wait methods to ensure elements are present and ready before interacting with them. Use ${frameworkName}'s documented wait APIs to make the test more reliable and prevent flaky failures.`,
-        "The code inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> will be cached and used in future test runs to quickly verify that the page is in the expected state before executing the main test logic.",
-        "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others. Tests should fail if the actual locations do not align with the expected configuration.",
         "Determine if the intent can be fully validated visually using the snapshot image.",
         "If the intent can be visually analyzed and passes the visual check, return only comments explaining the successful visual assertion.",
         "If the visual assertion fails, return code that throws an informative error explaining the failure, inside <CODE></CODE> block.",
         "If visual validation is not possible, proceed to generate the minimal executable code required to perform the intent.",
+        "When generating code, you MUST provide TWO separate outputs:",
+        "  a) Main executable code inside <CODE></CODE> block - this performs the actual intent",
+        "  b) Element validation code inside <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> block - this verifies elements exist",
+        "The validation matcher should verify the existence of elements that will be interacted with in the main code. Do NOT put the validation matcher inside the <CODE> block.",
+        `Include appropriate synchronization in your main code using ${frameworkName}'s wait methods to ensure elements are present and ready before interacting with them. Use ${frameworkName}'s documented wait APIs to make the test more reliable and prevent flaky failures.`,
+        "The validation matcher will be cached and used in future test runs to quickly verify that the page is in the expected state before executing the main test logic.",
+        "Assess the positions of elements within the screen layout. Ensure that tests accurately reflect their intended locations, such as whether an element is centered or positioned relative to others.",
       );
     } else {
       steps.push(
@@ -268,7 +280,9 @@ export class StepPerformerPromptCreator {
       "Each step must be completely independent - do not rely on any variables or assignments from previous steps. Even if a variable was declared or assigned in a previous step, you must redeclare and reassign it in your current step.",
       `Use the provided ${frameworkName} APIs as much as possible - prefer using the documented API methods over creating custom implementations.`,
       "If you need to share data between steps, use the 'sharedContext' object. You can access and modify it directly like: sharedContext.myKey = 'myValue'",
-      "Wrap the generated code with <CODE></CODE> block, without any additional formatting.",
+      isSnapshotImageAttached
+        ? "Provide your outputs in the correct format: <CODE></CODE> for main executable code, and <CACHE_VALIDATION_MATCHER></CACHE_VALIDATION_MATCHER> for element validation (when applicable)."
+        : "Wrap the generated code with <CODE></CODE> block, without any additional formatting.",
       "Do not provide any additional code beyond the minimal executable code required to perform the intent.",
     );
     return steps;
