@@ -1,0 +1,21 @@
+{
+  "name": "@wix-pilot/prompt-handler",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/WixPromptHandler.js",
+  "types": "dist/WixPromptHandler.d.ts",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "test": "echo No tests available for this package",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "description": "Unified PromptHandler for AI service interactions, to be used as a devDependency in test environments."
+}

@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/playwright",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "Playwright driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -35,10 +35,11 @@
     "@wix-pilot/basewebdriver": "^1.0.1"
   },
   "peerDependencies": {
-    "@wix-pilot/core": "^3.3.0"
+    "@wix-pilot/core": "^3.3.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
-    "axios": "^1.7.9"
+    "axios": "^1.7.9",
+    "@wix-pilot/prompt-handler": "^0.1.0"
   }
 }

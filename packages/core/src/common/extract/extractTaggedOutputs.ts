@@ -40,18 +40,23 @@ function extractTaggedOutputs<M extends OutputsMapping>({
   text: string;
   outputsMapper: M;
 }): ExtractedType<M> {
-  const entries = (Object.keys(outputsMapper) as (keyof M)[]).map((key) => {
+  const entries: [keyof M, string | undefined][] = [];
+
+  for (const key of Object.keys(outputsMapper) as (keyof M)[]) {
     const { tag, isRequired } = outputsMapper[key];
-    const regex = new RegExp(`<${tag}>(.*?)</${tag}>`, "s");
+    const regex = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`);
     const match = text.match(regex);
+
     if (match) {
-      return [key, match[1].trim()];
+      const content = match[1].trim();
+      entries.push([key, content]);
+      text = text.replace(match[0], "");
     } else if (!isRequired) {
-      return [key, undefined];
+      entries.push([key, undefined]);
     } else {
       throw new Error(`Missing field for required tag <${tag}>`);
     }
-  });
+  }
 
   return Object.fromEntries(entries) as ExtractedType<M>;
 }

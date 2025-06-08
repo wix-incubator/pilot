@@ -34,7 +34,7 @@
   },
   "peerDependencies": {
     "@wdio/globals": ">=8.0.0",
-    "@wix-pilot/core": "^3.3.0"
+    "@wix-pilot/core": "^3.3.2"
   },
   "devDependencies": {
     "@wdio/appium-service": "^8.29.0",
@@ -48,6 +48,7 @@
     "appium-xcuitest-driver": "^8.4.3",
     "axios": "^1.7.9",
     "chai": "^5.2.0",
-    "webdriverio": "^9.9.1"
+    "webdriverio": "^9.9.1",
+    "@wix-pilot/prompt-handler": "^0.1.0"
   }
 }
