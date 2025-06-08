@@ -216,7 +216,7 @@ export class StepPerformerPromptCreator {
 
     if (isSnapshotImageAttached) {
       instructions.push(
-        "#### Example of correct output format with both code and validation matcher:",
+        "#### Example of correct output format with both code and validation matcher. Do **not** nest one tag inside another. Each tagged block must be separate and self-contained.",
         "",
         "**Main executable code:**",
         "<CODE>",
