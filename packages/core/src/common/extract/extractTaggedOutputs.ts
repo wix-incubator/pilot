@@ -33,28 +33,31 @@ const PILOT_OUTPUTS = {
   code: { tag: "CODE", isRequired: true },
 };
 
-function extractTaggedOutputs<M extends OutputsMapping>({
-  text,
-  outputsMapper,
-}: {
-  text: string;
-  outputsMapper: M;
+function extractTaggedOutputs<M extends OutputsMapping>({text, outputsMapper,}: {
+    text: string;
+    outputsMapper: M;
 }): ExtractedType<M> {
-  const entries = (Object.keys(outputsMapper) as (keyof M)[]).map((key) => {
-    const { tag, isRequired } = outputsMapper[key];
-    const regex = new RegExp(`<${tag}>(.*?)</${tag}>`, "s");
-    const match = text.match(regex);
-    if (match) {
-      return [key, match[1].trim()];
-    } else if (!isRequired) {
-      return [key, undefined];
-    } else {
-      throw new Error(`Missing field for required tag <${tag}>`);
-    }
-  });
+    const entries: [keyof M, string][] = [];
 
-  return Object.fromEntries(entries) as ExtractedType<M>;
+    for (const key of Object.keys(outputsMapper) as (keyof M)[]) {
+        const { tag, isRequired } = outputsMapper[key];
+        const regex = new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`);
+        const match = text.match(regex);
+
+        if (match) {
+            const content = match[1].trim();
+            entries.push([key, content]);
+            text = text.replace(match[0], "");
+        } else if (!isRequired) {
+            entries.push([key, ""]);
+        } else {
+            throw new Error(`Missing field for required tag <${tag}>`);
+        }
+    }
+
+    return Object.fromEntries(entries) as ExtractedType<M>;
 }
+
 
 /**
  * Extracts review outputs (summary, findings, score) from text with review tags
