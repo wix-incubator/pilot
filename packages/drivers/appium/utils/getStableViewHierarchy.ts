@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import  { JSDOM } from "jsdom";
 const DEFAULT_POLL_INTERVAL = 500; // ms
 const DEFAULT_TIMEOUT = 5000; // ms
 
@@ -11,7 +12,7 @@ export async function waitForStableState(
   let lastSnapshot: string | undefined;
 
   while (Date.now() - startTime < timeout) {
-    const currentSnapshot: string = (await driver.getPageSource()) || "";
+    const currentSnapshot: string = (await getCleanPageSource()) || "";
     if (!currentSnapshot) {
       return undefined;
     }
@@ -30,6 +31,15 @@ export async function waitForStableState(
   // Return the last snapshot if timeout is reached
   return lastSnapshot;
 }
+
+async function getCleanPageSource(): Promise<string>{
+    const fullPageSource = await driver.getPageSource();
+
+    return fullPageSource
+        .replace(/\s+value="[^"]*"/g, '')
+        .replace(/\s+label="[^"]*"/g, '')
+}
+
 export function compareViewHierarchies(current: string, last: string): boolean {
   // Use MD5 for fast comparison of view hierarchies
   const currentHash = crypto.createHash("md5").update(current).digest("hex");

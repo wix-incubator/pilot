@@ -37,15 +37,15 @@
     "@wix-pilot/core": "^3.3.0"
   },
   "devDependencies": {
-    "@wdio/globals": "^9.9.1",
     "@wdio/appium-service": "^8.29.0",
     "@wdio/cli": "^9.9.1",
+    "@wdio/globals": "^9.9.1",
     "@wdio/local-runner": "^9.9.1",
     "@wdio/mocha-framework": "^9.9.0",
     "@wdio/spec-reporter": "^9.9.0",
     "@wdio/types": "^9.9.0",
     "appium": "^2.15.0",
-    "appium-xcuitest-driver": "^8.3.1",
+    "appium-xcuitest-driver": "^8.4.3",
     "axios": "^1.7.9",
     "chai": "^5.2.0",
     "webdriverio": "^9.9.1"
