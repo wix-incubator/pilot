@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import  { JSDOM } from "jsdom";
 const DEFAULT_POLL_INTERVAL = 500; // ms
 const DEFAULT_TIMEOUT = 5000; // ms
 
@@ -32,12 +31,12 @@ export async function waitForStableState(
   return lastSnapshot;
 }
 
-async function getCleanPageSource(): Promise<string>{
-    const fullPageSource = await driver.getPageSource();
+async function getCleanPageSource(): Promise<string> {
+  const fullPageSource = await driver.getPageSource();
 
-    return fullPageSource
-        .replace(/\s+value="[^"]*"/g, '')
-        .replace(/\s+label="[^"]*"/g, '')
+  return fullPageSource
+    .replace(/\s+value="[^"]*"/g, "")
+    .replace(/\s+label="[^"]*"/g, "");
 }
 
 export function compareViewHierarchies(current: string, last: string): boolean {
