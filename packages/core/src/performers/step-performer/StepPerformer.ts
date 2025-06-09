@@ -185,7 +185,7 @@ export class StepPerformer {
         return result;
       } catch (error) {
         lastError = error;
-        const errorDetails = error instanceof Error ? error.message : error;
+          const errorDetails = error instanceof Error ? error.message : typeof error === "string" ? error : JSON.stringify(error);
         logger
           .labeled("ERROR")
           .error(
