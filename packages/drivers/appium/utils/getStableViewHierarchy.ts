@@ -35,8 +35,8 @@ async function getCleanPageSource(): Promise<string> {
   const fullPageSource = await driver.getPageSource();
 
   return fullPageSource
-    .replace(/\s+value="[^"]*"/g, "")
-    .replace(/\s+label="[^"]*"/g, "");
+    .replace(/\s+value="(?=[^"]{16,})[^"]*"/g, "")
+    .replace(/\s+label="(?=[^"]{16,})[^"]*"/g, "");
 }
 
 export function compareViewHierarchies(current: string, last: string): boolean {
