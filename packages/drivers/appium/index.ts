@@ -352,3 +352,52 @@ await driver.performTouchAction({
     };
   }
 }
+
+// Handel text that  is not presented in the DOM
+import Tesseract from 'tesseract.js';
+
+/**
+ * Finds the coordinates of a word in an image
+ * @param imagePath - Array of URL or path to the image
+ * @param word - The word to search for
+ * @returns Array of coordinates where the word was found
+ */
+async function getWordCoordinates(imagePath: string | string[], word: string) {
+    const worker = await Tesseract.createWorker('eng');
+
+    const results = [];
+    const paths = typeof imagePath === "string" ? [imagePath] : imagePath;
+
+    for (const path of paths) {
+        try {
+            const result = await worker.recognize(path, {}, { blocks: true });
+            results.push(result);
+        } catch (error) {
+            console.error(`Failed to open or process image at ${path}:`, error);
+        }
+    }
+
+    await worker.terminate();
+
+    const coordinates = [];
+    for (const result of results) {
+        if (result.data?.blocks) {
+            for (const block of result.data.blocks) {
+                for (const paragraph of block.paragraphs || []) {
+                    for (const line of paragraph.lines || []) {
+                        for (const foundWord of line.words || []) {
+                            if (foundWord.text?.toLowerCase() === word.toLowerCase()) {
+                                coordinates.push({
+                                    x: (foundWord.bbox.x1 - foundWord.bbox.x0)/2,
+                                    y: (foundWord.bbox.y0 -foundWord.bbox.x0)/2,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return coordinates;
+}
