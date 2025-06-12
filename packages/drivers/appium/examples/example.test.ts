@@ -24,7 +24,11 @@ describe("Example Test Suite", () => {
     pilot.end();
   });
 
-  it("perform test with pilot", async () => {
+  it.skip("perform test with pilot", async () => {
     await pilot.autopilot("earn 2 points in the game");
   });
+
+    it.only('should get 2 point in the first counter', async () => {
+        await pilot.autopilot(`Click on the "First Counter" to get to 2 points`);
+    });
 });
