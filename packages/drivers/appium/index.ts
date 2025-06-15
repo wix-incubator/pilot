@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { waitForStableState } from "./utils/getStableViewHierarchy";
 import os from "os";
+import { getWordCoordinates } from "./utils/getWordCoordinates";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
@@ -74,6 +75,18 @@ export class WebdriverIOAppiumFrameworkDriver
         $: $,
         driver: driver,
         expect: expect,
+        findTextLocation: async (word: string) => {
+          const imagePath = await driver.takeScreenshot();
+          if (!imagePath) throw new Error("Failed to capture screenshot");
+
+          const screenSize = await driver.getWindowSize();
+          const rawPoints = await getWordCoordinates(imagePath, word);
+
+          return rawPoints.map(({ x, y }) => ({
+            x: x * screenSize.width,
+            y: y * screenSize.height,
+          }));
+        },
       },
       categories: [
         {
@@ -345,6 +358,33 @@ await driver.performTouchAction({
               signature: `driver.toggleAirplaneMode() (Android)`,
               description: "Toggles the Airplane mode on an Android device.",
               example: `await driver.toggleAirplaneMode();`,
+            },
+          ],
+        },
+        {
+          title: "Text element that are not in the DOM",
+          items: [
+            {
+              signature: `await findTextLocation('Next');`,
+              description:
+                "Finds the on-screen coordinates of all occurrences of the specified word by performing on a given screenshot/s. Useful when the text is visible but not part of the DOM or view hierarchy.",
+              example: `const coords = await findTextLocation('Next');
+                for (const point of points) {
+                try {
+                await driver.touchPerform([
+                { action: 'press', options: { x: point.x, y: point.y }},
+                { action: 'release' }
+                ]);
+                break; // stop after successful tap
+                } catch (e) {
+                console.warn('Failed to tap on this point, trying next...');
+                }
+               }`,
+              guidelines: [
+                "Use this when the text you want to interact with is visible on the screen but not accessible via Appium selectors.",
+                "Make sure the text is clearly visible in the screenshot and not obscured.",
+                "You can combine this with touch actions to tap on the text by coordinates.",
+              ],
             },
           ],
         },
