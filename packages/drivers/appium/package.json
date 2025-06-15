@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
+    "@types/probe-image-size": "^7.2.5",
     "@types/react": "^19.1.8",
     "@types/react-native": "^0.73.0",
     "@wdio/appium-service": "^8.29.0",
@@ -52,6 +53,8 @@
     "appium-xcuitest-driver": "^9.6.0",
     "axios": "^1.7.9",
     "chai": "^5.2.0",
+    "probe-image-size": "^7.2.3",
+    "tesseract.js": "^5.0.0",
     "webdriverio": "^9.9.1"
   }
 }

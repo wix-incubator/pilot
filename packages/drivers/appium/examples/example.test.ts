@@ -28,7 +28,7 @@ describe("Example Test Suite", () => {
     await pilot.autopilot("earn 2 points in the game");
   });
 
-    it.only('should get 2 point in the first counter', async () => {
-        await pilot.autopilot(`Click on the "First Counter" to get to 2 points`);
-    });
+  it.only("should get 2 point in the first counter", async () => {
+    await pilot.autopilot(`Click on the "First Counter" to get to 2 points`);
+  });
 });
