@@ -54,7 +54,7 @@
     "axios": "^1.7.9",
     "chai": "^5.2.0",
     "probe-image-size": "^7.2.3",
-    "tesseract.js": "^5.0.0",
+    "tesseract.js": "^6.0.1",
     "webdriverio": "^9.9.1"
   }
 }

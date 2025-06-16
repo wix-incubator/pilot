@@ -13,7 +13,7 @@ export const config = {
     },
   ],
 
-  logLevel: "info",
+  logLevel: "warn",
   bail: 0,
   baseUrl: "http://localhost",
   waitforTimeout: 10000,
