@@ -8,9 +8,10 @@ import * as probe from "probe-image-size";
 async function getImageDimensions(
   imagePath: string,
 ): Promise<{ width: number; height: number }> {
-    try {
+  try {
     const buffer = readFileSync(imagePath);
-    const dimensions = probe.sync(buffer);if (!dimensions) {
+    const dimensions = probe.sync(buffer);
+    if (!dimensions) {
       console.error(
         `Failed to probe image dimensions for ${imagePath}: probe.sync returned null`,
       );
@@ -66,7 +67,10 @@ function deduplicateCoordinates(
  * @param searchText - The searchText to search for
  * @returns Array of normalized center coordinates (0-1) where the searchText was found
  */
-async function getTextCoordinates(imagePath: string | string[], searchText: string) {
+async function getTextCoordinates(
+  imagePath: string | string[],
+  searchText: string,
+) {
   const worker = await Tesseract.createWorker("eng");
   const results = [];
   const paths = typeof imagePath === "string" ? [imagePath] : imagePath;
@@ -83,28 +87,28 @@ async function getTextCoordinates(imagePath: string | string[], searchText: stri
   await worker.terminate();
 
   const coordinates = [];
-    for (const { result, imageDimensions } of results) {
-        const imageWidth = imageDimensions.width;
-        const imageHeight = imageDimensions.height;
+  for (const { result, imageDimensions } of results) {
+    const imageWidth = imageDimensions.width;
+    const imageHeight = imageDimensions.height;
 
-        if (result.data?.blocks) {
-            for (const block of result.data.blocks) {
-                for (const paragraph of block.paragraphs || []) {
-                    for (const line of paragraph.lines || []) {
-                        const lineText = line.text || '';
+    if (result.data?.blocks) {
+      for (const block of result.data.blocks) {
+        for (const paragraph of block.paragraphs || []) {
+          for (const line of paragraph.lines || []) {
+            const lineText = line.text || "";
 
-                        if (lineText.toLowerCase().includes(searchText.toLowerCase())) {
-                            const centerX = (line.bbox.x0 + line.bbox.x1) / 2 / imageWidth;
-                            const centerY = (line.bbox.y0 + line.bbox.y1) / 2 / imageHeight;
+            if (lineText.toLowerCase().includes(searchText.toLowerCase())) {
+              const centerX = (line.bbox.x0 + line.bbox.x1) / 2 / imageWidth;
+              const centerY = (line.bbox.y0 + line.bbox.y1) / 2 / imageHeight;
 
-                            coordinates.push({ x: centerX, y: centerY });
-                            console.log(`Found "${searchText}" in line: "${lineText}"`);
-                        }
-                    }
-                }
+              coordinates.push({ x: centerX, y: centerY });
+              console.log(`Found "${searchText}" in line: "${lineText}"`);
             }
+          }
         }
+      }
     }
+  }
   const allCoords = coordinates.flat();
   const sorted = sortCoordinates(allCoords);
   const deduped = deduplicateCoordinates(sorted);

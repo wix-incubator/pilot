@@ -78,10 +78,10 @@ export class WebdriverIOAppiumFrameworkDriver
         expect: expect,
         findTextLocation: async (word: string) => {
           const base64Image = await driver.takeScreenshot();
-            if (!base64Image) throw new Error("Failed to capture screenshot");
+          if (!base64Image) throw new Error("Failed to capture screenshot");
 
-            const tempImagePath = path.join(__dirname, "temp_screenshot.png");
-            writeFileSync(tempImagePath, base64Image, { encoding: "base64" });
+          const tempImagePath = path.join(__dirname, "temp_screenshot.png");
+          writeFileSync(tempImagePath, base64Image, { encoding: "base64" });
 
           const screenSize = await driver.getWindowSize();
           const rawPoints = await getTextCoordinates(tempImagePath, word);
@@ -372,7 +372,7 @@ await driver.performTouchAction({
               signature: `await findTextLocation(string);`,
               description:
                 "Finds the on-screen coordinates of all occurrences of the specified word (sorted by x, y occurrences)." +
-                  " Useful when the text is visible but not part of the view hierarchy.",
+                " Useful when the text is visible but not part of the view hierarchy.",
               example: `const coords = await findTextLocation('Next');
 for (const point of coords) {
   try {
@@ -399,8 +399,8 @@ for (const point of coords) {
                 "Use this when the text you want to interact with is visible on the screen but does not present in the view hierarchy.",
                 "Make sure the text is clearly visible in the screenshot and not obscured.",
                 "You can combine this with touch actions to tap on the text by coordinates.",
-                  "Do not use UI Automation for locating the inaccessible test element use this api"
-                ],
+                "Do not use UI Automation for locating the inaccessible test element use this api",
+              ],
             },
           ],
         },
