@@ -43,7 +43,7 @@ describe("CacheHandler", () => {
     // Mock the getCurrentJestTestFilePath to return undefined by default
     jest
       .spyOn(testEnvUtils, "getCurrentTestFilePath")
-        .mockResolvedValue(undefined);
+      .mockResolvedValue(undefined);
 
     cacheHandler = new CacheHandler(
       mockSnapshotComparator as unknown as SnapshotComparator,
@@ -51,18 +51,18 @@ describe("CacheHandler", () => {
   });
 
   describe("cache and file operations", () => {
-    it("should load cache from file successfully if the file exists and is valid - matcher based", () => {
+    it("should load cache from file successfully if the file exists and is valid - matcher based", async () => {
       mockCache({ cacheKey: [CACHED_VALUE] });
 
       expect(cacheHandler.getFromPersistentCache("cacheKey")).toBeUndefined();
 
-      cacheHandler.loadCacheFromFile();
+      await cacheHandler.loadCacheFromFile();
 
       const result = cacheHandler.getFromPersistentCache("cacheKey");
       expect(result).toEqual([CACHED_VALUE]);
     });
 
-    it("should save cache to file successfully", () => {
+    it("should save cache to file successfully", async () => {
       mockCache();
 
       cacheHandler.addToTemporaryCacheValidationMatcherBased(
@@ -70,7 +70,7 @@ describe("CacheHandler", () => {
         CACHED_VALUE.value,
         CACHED_VALUE.validationMatcher,
       );
-      cacheHandler.flushTemporaryCache();
+      await cacheHandler.flushTemporaryCache();
 
       expect(mockedCacheFile).toHaveProperty("cacheKey");
       expect(mockedCacheFile?.cacheKey[0].value).toEqual({
@@ -338,7 +338,7 @@ describe("CacheHandler", () => {
       jest.spyOn(testEnvUtils, "getCurrentTestFilePath").mockReset();
     });
 
-    it("should use default cache path when no Jest test path is available", () => {
+    it("should use default cache path when no Jest test path is available", async () => {
       jest
         .spyOn(testEnvUtils, "getCurrentTestFilePath")
         .mockResolvedValue(undefined);
@@ -346,11 +346,11 @@ describe("CacheHandler", () => {
 
       const newCacheHandler = new CacheHandler(mockSnapshotComparator);
 
-      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      const cacheFilePath = await (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain("__pilot_cache__/global.json");
     });
 
-    it("should use Jest test file path when available", () => {
+    it("should use Jest test file path when available", async () => {
       const mockTestPath = "/path/to/test/myTest.test.ts";
       jest
         .spyOn(testEnvUtils, "getCurrentTestFilePath")
@@ -358,13 +358,13 @@ describe("CacheHandler", () => {
 
       const newCacheHandler = new CacheHandler(mockSnapshotComparator);
 
-      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      const cacheFilePath = await (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain(
         "/path/to/test/__pilot_cache__/myTest.test.json",
       );
     });
 
-    it("should use explicit cache file path when provided", () => {
+    it("should use explicit cache file path when provided", async () => {
       const explicitPath = "/custom/path/cache.json";
 
       const newCacheHandler = new CacheHandler(
@@ -373,7 +373,7 @@ describe("CacheHandler", () => {
         explicitPath,
       );
 
-      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      const cacheFilePath = await (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain("/custom/path/cache.json");
     });
   });
