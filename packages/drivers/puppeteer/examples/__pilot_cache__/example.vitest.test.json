@@ -1,0 +1,19 @@
+{
+  "{\"currentStep\":\"Open https://www.yohaiknaani.com site\",\"previousSteps\":[]}": [
+    {
+      "value": {
+        "code": "const browser = await puppeteer.launch({ \n  headless: false, \n  executablePath: \"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\n  defaultViewport: null,\n  args: ['--start-maximized']\n});\nconst page = await browser.newPage();\nsetCurrentPage(page);\nawait page.goto('https://www.yohaiknaani.com');\nawait page.waitForLoadState('networkidle');"
+      },
+      "creationTime": 1750236581045
+    }
+  ],
+  "{\"currentStep\":\"Open https://www.yohaiknaani.com site\",\"previousSteps\":[{\"step\":\"Open https://www.yohaiknaani.com site\",\"code\":\"const browser = await puppeteer.launch({ \\n  headless: false, \\n  executablePath: \\\"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\\\",\\n  defaultViewport: null,\\n  args: ['--start-maximized']\\n});\\nconst page = await browser.newPage();\\nsetCurrentPage(page);\\nawait page.goto('https://www.yohaiknaani.com');\\nawait page.waitForLoadState('networkidle');\",\"error\":\"page.waitForLoadState is not a function\"}]}": [
+    {
+      "value": {
+        "code": "const browser = await puppeteer.launch({ \n  headless: false, \n  executablePath: \"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\n  defaultViewport: null,\n  args: ['--start-maximized']\n});\nconst page = await browser.newPage();\nsetCurrentPage(page);\nawait page.goto('https://www.yohaiknaani.com');\nawait page.waitForSelector('header.xU8fqS.SITE_HEADER.wixui-header', { timeout: 30000 });"
+      },
+      "validationMatcher": "const page = getCurrentPage(); \nconst header = await findElement(page, {\n  \"class\": \"xU8fqS SITE_HEADER wixui-header\",\n  \"rect\": {\"x\":0,\"y\":0},\n  \"text\": \"#comp-km3aq0q0 svg [\",\n  \"nth-child\": \"1\"\n}) ?? (() => { throw new Error('Website header not found - site may not have loaded properly'); })();",
+      "creationTime": 1750236606537
+    }
+  ]
+}

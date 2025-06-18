@@ -18,6 +18,9 @@
     "build": "tsc && tsc-alias",
     "test": "echo No tests avialable for this package",
     "test:example": "jest",
+    "test:jest": "jest",
+    "test:mocha": "mocha",
+    "test:vitest": "vitest run",
     "release:patch": "node ../../../scripts/release-package.js patch",
     "release:patch:alpha": "node ../../../scripts/release-package.js patch --prerelease",
     "release:minor": "node ../../../scripts/release-package.js minor",
@@ -36,9 +39,14 @@
     "env-paths": "^2.2.1"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.0.3",
     "@wix-pilot/prompt-handler": "^0.1.0",
     "axios": "^1.7.9",
-    "puppeteer": "^22.15.0"
+    "mocha": "^11.6.0",
+    "puppeteer": "^22.15.0",
+    "ts-node": "^10.9.2",
+    "vitest": "^3.2.3"
   },
   "peerDependencies": {
     "@wix-pilot/core": "^3.3.4"
