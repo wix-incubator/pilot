@@ -299,7 +299,7 @@ describe("Pilot Integration Tests", () => {
       );
 
       await pilot.perform("Perform action");
-      pilot.end(true);
+      await pilot.end(true);
 
       expect(mockedCacheFile).toEqual({
         '{"currentStep":"Perform action","previousSteps":[]}':
@@ -345,7 +345,7 @@ describe("Pilot Integration Tests", () => {
       );
 
       await pilot.perform("New action");
-      pilot.end();
+      await pilot.end();
 
       expect(mockedCacheFile).toEqual({
         '{"currentStep":"New action","previousSteps":[]}': [
@@ -575,7 +575,7 @@ describe("Pilot Integration Tests", () => {
       cachePilot.start();
 
       await cachePilot.perform("Tap on the login button");
-      cachePilot.end();
+      await cachePilot.end();
 
       const firstCacheValue = Object.values(
         (mockedCacheFile as Record<string, CacheValue<any>[]>) || {},

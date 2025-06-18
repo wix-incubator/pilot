@@ -185,13 +185,13 @@ export class CacheHandler {
   /**
    * Persist temporary cache to permanent cache and save to file
    */
-  public flushTemporaryCache(): void {
+  public async flushTemporaryCache(): Promise<void> {
     this.temporaryCache.forEach((values, key) => {
       const existingValues = this.cache.get(key) || [];
       this.cache.set(key, [...existingValues, ...values]);
     });
 
-    this.saveCacheToFile();
+    await this.saveCacheToFile();
     this.clearTemporaryCache();
   }
 
