@@ -371,7 +371,7 @@ await driver.performTouchAction({
             {
               signature: `await findTextLocation(string);`,
               description:
-                "Finds the on-screen coordinates of all occurrences of the specified word (sorted by x, y occurrences)." +
+                "Finds the on-screen coordinates of all occurrences of the specified text (sorted by x, y occurrences)." +
                 " Useful when the text is visible but not part of the view hierarchy.",
               example: `const coords = await findTextLocation('Next');
 for (const point of coords) {
