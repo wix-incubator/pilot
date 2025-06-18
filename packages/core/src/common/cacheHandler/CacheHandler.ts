@@ -26,7 +26,7 @@ export class CacheHandler {
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly overrideCacheFilePath: string | undefined;
-  private cacheFilePath: string;
+  private cacheFilePath: Promise<string>;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
@@ -58,7 +58,8 @@ export class CacheHandler {
     };
   }
 
-  private determineCurrentCacheFilePath() {
+  private async determineCurrentCacheFilePath() {
+    console.log("determineCurrentCacheFilePath()");
     return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
@@ -73,12 +74,11 @@ export class CacheHandler {
     return await this.snapshotComparator.generateHashes(screenCapture);
   }
 
-  public loadCacheFromFile(): void {
-    this.cacheFilePath = this.determineCurrentCacheFilePath();
-
+  public async loadCacheFromFile(): Promise<void> {
     try {
-      if (fs.existsSync(this.cacheFilePath)) {
-        const data = fs.readFileSync(this.cacheFilePath, "utf-8");
+      const resolvedPath = await this.cacheFilePath;
+      if (fs.existsSync(resolvedPath)) {
+        const data = fs.readFileSync(resolvedPath, "utf-8");
         const json = JSON.parse(data);
         this.cache = new Map(Object.entries(json));
       } else {
@@ -93,15 +93,16 @@ export class CacheHandler {
     }
   }
 
-  private saveCacheToFile(): void {
+  private async saveCacheToFile(): Promise<void> {
     try {
-      const dirPath = path.dirname(this.cacheFilePath);
+      const resolvedPath = await this.cacheFilePath;
+      const dirPath = path.dirname(resolvedPath);
       if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
       }
 
       const json = Object.fromEntries(this.cache);
-      fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
+      fs.writeFileSync(resolvedPath, JSON.stringify(json, null, 2), {
         flag: "w+",
       });
       logger.info("Pilot cache saved successfully");
@@ -320,8 +321,10 @@ export class CacheHandler {
    * Determines the appropriate cache file path based on the caller path
    * @returns The resolved cache file path
    */
-  private getCacheFilePath(): string {
-    const callerPath = getCurrentTestFilePath();
+  private async getCacheFilePath(): Promise<string> {
+    const callerPath = await getCurrentTestFilePath();
+
+    console.log("CACHE HANDLER - getCacheFilePath", callerPath);
 
     return callerPath
       ? this.getCallerCacheFilePath(callerPath)

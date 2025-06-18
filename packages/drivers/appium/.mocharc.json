@@ -1,0 +1,7 @@
+{
+  "spec": "examples/**/*.mocha.test.ts",
+  "require": "ts-node/register",
+  "extensions": ["ts"],
+  "timeout": 5000,
+  "recursive": true
+}

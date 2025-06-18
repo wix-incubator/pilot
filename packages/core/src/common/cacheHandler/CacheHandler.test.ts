@@ -43,7 +43,7 @@ describe("CacheHandler", () => {
     // Mock the getCurrentJestTestFilePath to return undefined by default
     jest
       .spyOn(testEnvUtils, "getCurrentTestFilePath")
-      .mockReturnValue(undefined);
+        .mockResolvedValue(undefined);
 
     cacheHandler = new CacheHandler(
       mockSnapshotComparator as unknown as SnapshotComparator,
@@ -341,7 +341,7 @@ describe("CacheHandler", () => {
     it("should use default cache path when no Jest test path is available", () => {
       jest
         .spyOn(testEnvUtils, "getCurrentTestFilePath")
-        .mockReturnValue(undefined);
+        .mockResolvedValue(undefined);
       (fs.existsSync as jest.Mock).mockReturnValue(false);
 
       const newCacheHandler = new CacheHandler(mockSnapshotComparator);
@@ -354,7 +354,7 @@ describe("CacheHandler", () => {
       const mockTestPath = "/path/to/test/myTest.test.ts";
       jest
         .spyOn(testEnvUtils, "getCurrentTestFilePath")
-        .mockReturnValue(mockTestPath);
+        .mockResolvedValue(mockTestPath);
 
       const newCacheHandler = new CacheHandler(mockSnapshotComparator);
 

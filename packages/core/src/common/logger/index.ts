@@ -174,8 +174,8 @@ class Logger {
    * Creates components for the test file label if in a test environment
    * @returns Array of components for the test file label or empty array if not in a test
    */
-  private createTestFileComponents(): LoggerMessageComponent[] {
-    const filePath = getCurrentTestFilePath();
+  private async createTestFileComponents(): Promise<LoggerMessageComponent[]> {
+    const filePath = await getCurrentTestFilePath();
     if (!filePath) {
       return [];
     }
@@ -229,11 +229,11 @@ class Logger {
    * @param components Message components
    * @param prefix Optional prefix to prepend to the message
    */
-  private formatAndSend(
+  private async formatAndSend(
     level: LogLevel,
     components: LoggerMessageComponent[],
     prefix?: string,
-  ): void {
+  ): Promise<void> {
     const normalizedComponents = this.normalizeComponents(components, level);
     const messageComponents: LoggerMessageComponent[] = [];
 
@@ -244,7 +244,7 @@ class Logger {
       });
     }
 
-    const fileComponents = this.createTestFileComponents();
+    const fileComponents = await this.createTestFileComponents();
     if (fileComponents.length > 0) {
       messageComponents.push(...fileComponents);
     }

@@ -231,7 +231,7 @@ export class Pilot {
   /**
    * Loads the cache from the cache file.
    */
-  private loadCache(): void {
-    this.cacheHandler.loadCacheFromFile();
+  private async loadCache(): Promise<void> {
+    await this.cacheHandler.loadCacheFromFile();
   }
 }
