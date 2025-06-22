@@ -18,6 +18,7 @@
     "build": "tsc && tsc-alias",
     "test": "echo No tests available for this package",
     "test:example": "wdio run examples/wdio.conf.ts",
+    "test:findTextLocation": "jest",
     "build:app": "cd ../detox/ExampleApp &&  npm run build:ios",
     "release:patch": "node ../../../scripts/release-package.js patch",
     "release:patch:alpha": "node ../../../scripts/release-package.js patch --prerelease",
@@ -53,8 +54,10 @@
     "appium-xcuitest-driver": "^9.6.0",
     "axios": "^1.7.9",
     "chai": "^5.2.0",
+    "jest": "^30.0.2",
     "probe-image-size": "^7.2.3",
     "tesseract.js": "^6.0.1",
+    "ts-jest": "^29.4.0",
     "webdriverio": "^9.9.1"
   }
 }

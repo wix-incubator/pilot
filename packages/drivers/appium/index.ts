@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { waitForStableState } from "./utils/getStableViewHierarchy";
 import os from "os";
-import { getTextCoordinates } from "./utils/getTextCoordinates";
+import {findTextLocation} from "./utils/findTextLocation";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
@@ -76,21 +76,7 @@ export class WebdriverIOAppiumFrameworkDriver
         $: $,
         driver: driver,
         expect: expect,
-        findTextLocation: async (word: string) => {
-          const base64Image = await driver.takeScreenshot();
-          if (!base64Image) throw new Error("Failed to capture screenshot");
-
-          const tempImagePath = path.join(__dirname, "temp_screenshot.png");
-          writeFileSync(tempImagePath, base64Image, { encoding: "base64" });
-
-          const screenSize = await driver.getWindowSize();
-          const rawPoints = await getTextCoordinates(tempImagePath, word);
-
-          return rawPoints.map(({ x, y }) => ({
-            x: x * screenSize.width,
-            y: y * screenSize.height,
-          }));
-        },
+        findTextLocation: findTextLocation,
       },
       categories: [
         {
