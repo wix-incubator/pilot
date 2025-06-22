@@ -10,8 +10,8 @@ const App: React.FC = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Simple Counter App</Text>
 
-            <TouchableOpacity onPress={() => setCounter1(counter1 + 1)}>
-                <Text style={styles.counterText}>First Counter: {counter1}</Text>
+            <TouchableOpacity onPress={() => setCounter1(counter1 + 1)} accessibilityElementsHidden={true} accessible={false}>
+                <Text style={styles.counterText} accessible={false}> First Counter: {counter1}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setCounter2(counter2 + 1)}>
@@ -23,7 +23,7 @@ const App: React.FC = () => {
             </TouchableOpacity>
 
             <Text style={styles.instruction}>Tap any counter text to increment it!</Text>
-        </View>
+       </View>
     );
 };
 
