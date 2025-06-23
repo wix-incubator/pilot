@@ -38,6 +38,7 @@
     "@wix-pilot/core": "^3.3.4"
   },
   "devDependencies": {
+    "@react-native/eslint-config": "^0.80.0",
     "@types/jest": "^29.5.14",
     "@types/probe-image-size": "^7.2.5",
     "@types/react": "^19.1.8",
