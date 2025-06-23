@@ -9,7 +9,7 @@ export class ScreenCapturer {
   ) {}
 
   async capture(useHighlights: boolean): Promise<ScreenCapturerResult> {
-    const progress = logger.startProgress(
+    const progress = await logger.startProgress(
       {
         actionLabel: "CAPTURE",
         successLabel: "CAPTURED",

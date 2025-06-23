@@ -30,6 +30,7 @@ export class CacheHandler {
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
+  private resolvedCacheFilePath?: string;
 
   /**
    * Creates a new CacheHandler instance
@@ -42,6 +43,7 @@ export class CacheHandler {
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
+    console.log("cacheHandler constructor");
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
@@ -59,6 +61,7 @@ export class CacheHandler {
   }
 
   private async determineCurrentCacheFilePath() {
+    console.log("determineCurrentCacheFilePath()");
     return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
@@ -74,6 +77,8 @@ export class CacheHandler {
   }
 
   public async loadCacheFromFile(): Promise<void> {
+    console.log("loadCacheFromFile");
+    this.cacheFilePath = this.determineCurrentCacheFilePath();
     try {
       const resolvedPath = await this.cacheFilePath;
       if (fs.existsSync(resolvedPath)) {
@@ -84,7 +89,7 @@ export class CacheHandler {
         this.cache.clear();
       }
     } catch (error) {
-      logger.warn("Error loading cache from file:", {
+      await logger.warn("Error loading cache from file:", {
         message: String(error),
         color: "yellow",
       });
@@ -104,9 +109,9 @@ export class CacheHandler {
       fs.writeFileSync(resolvedPath, JSON.stringify(json, null, 2), {
         flag: "w+",
       });
-      logger.info("Pilot cache saved successfully");
+      await logger.info("Pilot cache saved successfully");
     } catch (error) {
-      logger.error("Error saving cache to file:", {
+      await logger.error("Error saving cache to file:", {
         message: String(error),
         color: "red",
       });
@@ -118,11 +123,11 @@ export class CacheHandler {
    * @param cacheKey The cache key string
    * @returns Array of cache values if found, undefined otherwise
    */
-  public getFromPersistentCache<T>(
+  public async getFromPersistentCache<T>(
     cacheKey: string,
-  ): Array<CacheValue<T>> | undefined {
+  ): Promise<Array<CacheValue<T>> | undefined> {
     if (this.shouldOverrideCache()) {
-      logger.info("Cache disabled, generating new response");
+      await logger.info("Cache disabled, generating new response");
       return undefined;
     }
 
@@ -135,12 +140,12 @@ export class CacheHandler {
    * @param value The value to cache
    * @param snapshotHashes Hash values for the current snapshot
    */
-  public addToTemporaryCacheSnapshotBased<T>(
+  public async addToTemporaryCacheSnapshotBased<T>(
     cacheKey: string,
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
-  ): void {
-    logger.info("Saving result to cache for future use");
+  ): Promise<void> {
+    await logger.info("Saving result to cache for future use");
 
     const cacheValue: CacheValueSnapshot<T> = {
       value,
@@ -161,12 +166,12 @@ export class CacheHandler {
    * @param value The value to cache
    * @param validationMatcher a code line that validate the existence of the step's relevant element
    */
-  public addToTemporaryCacheValidationMatcherBased<T>(
+  public async addToTemporaryCacheValidationMatcherBased<T>(
     cacheKey: string,
     value: T & { code: string },
     validationMatcher?: string[] | string | undefined,
-  ): void {
-    logger.labeled("CACHE").info("Saving response to cache");
+  ): Promise<void> {
+    await logger.labeled("CACHE").info("Saving response to cache");
 
     const cacheValue: CacheValueValidationMatcher<T> = {
       value,
@@ -255,7 +260,7 @@ export class CacheHandler {
           return entry;
         }
       } catch (error) {
-        logger.debug("Error evaluating matcher:", matcher);
+        await logger.debug("Error evaluating matcher:", matcher);
       }
     }
 
@@ -321,11 +326,17 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private async getCacheFilePath(): Promise<string> {
+    console.log("getCacheFilePath()");
     const callerPath = await getCurrentTestFilePath();
 
-    return callerPath
-      ? this.getCallerCacheFilePath(callerPath)
-      : this.getDefaultCacheFilePath();
+    if (callerPath) {
+      this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);
+    } else if (this.resolvedCacheFilePath) {
+      return this.resolvedCacheFilePath;
+    } else {
+      this.resolvedCacheFilePath = this.getDefaultCacheFilePath();
+    }
+    return this.resolvedCacheFilePath;
   }
 
   /**
