@@ -59,7 +59,6 @@ export class CacheHandler {
   }
 
   private async determineCurrentCacheFilePath() {
-    console.log("determineCurrentCacheFilePath()");
     return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
@@ -323,8 +322,6 @@ export class CacheHandler {
    */
   private async getCacheFilePath(): Promise<string> {
     const callerPath = await getCurrentTestFilePath();
-
-    console.log("CACHE HANDLER - getCacheFilePath", callerPath);
 
     return callerPath
       ? this.getCallerCacheFilePath(callerPath)
