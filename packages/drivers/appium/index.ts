@@ -3,12 +3,11 @@ import {
   TestingFrameworkDriver,
   TestingFrameworkDriverConfig,
 } from "@wix-pilot/core";
-import { writeFileSync } from "fs";
 import * as fs from "fs";
 import * as path from "path";
 import { waitForStableState } from "./utils/getStableViewHierarchy";
 import os from "os";
-import {findTextLocation} from "./utils/findTextLocation";
+import { findTextLocation } from "./utils/findTextLocation";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
