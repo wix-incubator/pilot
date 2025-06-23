@@ -106,7 +106,7 @@ export class AutoPerformer {
       }
     }
 
-    const analysisProgress = logger.startProgress(
+    const analysisProgress = await logger.startProgress(
       {
         actionLabel: "ANALYZE",
         successLabel: "READY",
@@ -158,7 +158,7 @@ export class AutoPerformer {
 
         // Log thoughts with formatted text
         const formattedThoughts = parseFormattedText(thoughts as string);
-        logger.labeled("THOUGHTS").info(...formattedThoughts);
+        await logger.labeled("THOUGHTS").info(...formattedThoughts);
 
         const review: AutoReview = {};
 
@@ -177,7 +177,11 @@ export class AutoPerformer {
         const hasReviews = Object.keys(review).length > 0;
 
         if (hasReviews) {
-          this.logReviews(lastScreenDescription, review, reviewSectionTypes);
+          await this.logReviews(
+            lastScreenDescription,
+            review,
+            reviewSectionTypes,
+          );
         }
 
         const summary = outputs.goalSummary;
@@ -194,7 +198,7 @@ export class AutoPerformer {
             summary,
           };
 
-          this.cacheHandler.addToTemporaryCacheSnapshotBased(
+          await this.cacheHandler.addToTemporaryCacheSnapshotBased(
             cacheKey,
             cacheValue,
             snapshotHashes,
@@ -210,14 +214,16 @@ export class AutoPerformer {
         };
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : error;
-        logger
+        await logger
           .labeled("ERROR")
           .error(
             `Analysis attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
           );
 
         if (attempt < maxAttempts) {
-          logger.labeled("RETRYING").warn("Initiating new analysis attempt");
+          await logger
+            .labeled("RETRYING")
+            .warn("Initiating new analysis attempt");
 
           previousSteps = [
             ...previousSteps,
@@ -249,7 +255,7 @@ export class AutoPerformer {
     const report: AutoReport = { goal, steps: [] };
 
     // Create the overall goal progress with minimal labels
-    const mainProgress = logger.startProgress(
+    const mainProgress = await logger.startProgress(
       {
         actionLabel: "GOAL",
         successLabel: "DONE",
@@ -297,7 +303,7 @@ export class AutoPerformer {
           color: "green",
         });
 
-        logger.labeled("SUMMARY").info(...formattedSummary);
+        await logger.labeled("SUMMARY").info(...formattedSummary);
         break;
       }
 
@@ -329,11 +335,11 @@ export class AutoPerformer {
     return report;
   }
 
-  private logReviews(
+  private async logReviews(
     screenDescription: string,
     review: AutoReview,
     reviewSectionTypes?: AutoReviewSectionConfig[],
-  ): void {
+  ): Promise<void> {
     const allReviewComponents: LoggerMessageComponent[] = [];
 
     allReviewComponents.push(...parseFormattedText(screenDescription));
@@ -351,7 +357,7 @@ export class AutoPerformer {
       }
     });
 
-    logger.labeled("REVIEWING").info(...allReviewComponents);
+    await logger.labeled("REVIEWING").info(...allReviewComponents);
   }
 
   private async getValueFromCache(
@@ -360,7 +366,7 @@ export class AutoPerformer {
     reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoStepReport | undefined> {
     const cachedValues =
-      this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
+      await this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
         cacheKey,
       );
     if (!cachedValues) {
@@ -379,15 +385,15 @@ export class AutoPerformer {
     const cachedReport = matchingEntry?.value as AutoStepReport;
 
     if (cachedReport && cachedReport.plan && cachedReport.plan.thoughts) {
-      logger.labeled("CACHE").info("Using cached analysis result");
+      await logger.labeled("CACHE").info("Using cached analysis result");
 
       const formattedThoughts = parseFormattedText(cachedReport.plan.thoughts);
-      logger.labeled("THOUGHTS").info(...formattedThoughts);
+      await logger.labeled("THOUGHTS").info(...formattedThoughts);
 
       const hasReviews =
         cachedReport.review && Object.keys(cachedReport.review).length > 0;
       if (hasReviews && reviewSectionTypes && cachedReport.review) {
-        this.logReviews(
+        await this.logReviews(
           cachedReport.screenDescription,
           cachedReport.review,
           reviewSectionTypes,

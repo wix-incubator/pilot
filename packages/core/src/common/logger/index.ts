@@ -7,7 +7,6 @@ import {
   LoggerMessageColor,
   LoggerOperationResultType,
   ProgressOptions,
-  LabeledLogger,
   LoggerDelegate,
   LogLevel,
 } from "@/types/logger";
@@ -255,28 +254,41 @@ class Logger {
     this.delegate.log(level, formattedMessage);
   }
 
-  private log(level: LogLevel, ...components: LoggerMessageComponent[]): void {
-    this.formatAndSend(level, components);
+  private async log(
+    level: LogLevel,
+    ...components: LoggerMessageComponent[]
+  ): Promise<void> {
+    await this.formatAndSend(level, components);
   }
 
   /**
    * Log an informational message
    * @param components Message components
    */
-  public info(...components: LoggerMessageComponent[]): void {
-    this.log("info", ...components);
+  public async info(...components: LoggerMessageComponent[]): Promise<void> {
+    await this.log("info", ...components);
   }
-  public warn(...components: LoggerMessageComponent[]): void {
-    this.log("warn", ...components);
+  public async warn(...components: LoggerMessageComponent[]): Promise<void> {
+    await this.log("warn", ...components);
   }
-  public error(...components: LoggerMessageComponent[]): void {
-    this.log("error", ...components);
+  public async error(...components: LoggerMessageComponent[]): Promise<void> {
+    await this.log("error", ...components);
   }
-  public debug(...components: LoggerMessageComponent[]): void {
-    this.log("debug", ...components);
+  public async debug(...components: LoggerMessageComponent[]): Promise<void> {
+    await this.log("debug", ...components);
   }
 
-  public labeled(label: string): LabeledLogger {
+  public labeled(label: string): {
+    warn: (...c: LoggerMessageComponent[]) => Promise<void>;
+    debug: (...c: LoggerMessageComponent[]) => Promise<void>;
+    progress: () => Promise<{
+      fail: (...c: LoggerMessageComponent[]) => Promise<void>;
+      update: (...c: LoggerMessageComponent[]) => Promise<void>;
+      complete: (...c: LoggerMessageComponent[]) => Promise<void>;
+    }>;
+    error: (...c: LoggerMessageComponent[]) => Promise<void>;
+    info: (...c: LoggerMessageComponent[]) => Promise<void>;
+  } {
     const createMethod =
       (level: LogLevel) =>
       (...c: LoggerMessageComponent[]) =>
@@ -287,8 +299,8 @@ class Logger {
       warn: createMethod("warn"),
       error: createMethod("error"),
       debug: createMethod("debug"),
-      progress: () => {
-        this.logWithLabel("info", label, "Starting");
+      progress: async () => {
+        await this.logWithLabel("info", label, "Starting");
         return {
           update: createMethod("info"),
           complete: createMethod("info"),
@@ -304,11 +316,11 @@ class Logger {
    * @param label The label to display
    * @param components Message components
    */
-  private logWithLabel(
+  private async logWithLabel(
     level: LogLevel,
     label: string,
     ...components: LoggerMessageComponent[]
-  ): void {
+  ): Promise<void> {
     const bgColorMap: Record<LogLevel, string> = {
       info: "gray",
       warn: "yellow",
@@ -317,7 +329,7 @@ class Logger {
     };
 
     const displayLabel = this.createLabel(label, bgColorMap[level]);
-    this.formatAndSend(level, components, displayLabel);
+    await this.formatAndSend(level, components, displayLabel);
   }
 
   /**
@@ -346,13 +358,13 @@ class Logger {
    * @param components Initial message components
    * @returns Progress control object
    */
-  public startProgress(
+  public async startProgress(
     options: ProgressOptions,
     ...components: LoggerMessageComponent[]
-  ): LoggerProgress {
+  ): Promise<LoggerProgress> {
     let currentActionLabel = options.actionLabel || "Progress";
 
-    this.logProgress(
+    await this.logProgress(
       currentActionLabel,
       this.statusColors.inProgress,
       "info",
@@ -368,16 +380,16 @@ class Logger {
           components,
         );
       },
-      updateLabel: (label, ...components) => {
+      updateLabel: async (label, ...components) => {
         currentActionLabel = label;
-        this.logProgress(
+        await this.logProgress(
           currentActionLabel,
           this.statusColors.inProgress,
           "info",
           components,
         );
       },
-      stop: (result, ...components) => {
+      stop: async (result, ...components) => {
         const resultMap = {
           success: {
             label: options.successLabel || `${currentActionLabel} completed`,
@@ -396,7 +408,7 @@ class Logger {
         const { label, color } =
           resultMap[result as keyof typeof resultMap] || resultMap.warn;
         const logLevel = this.getLogMethodForResult(result);
-        this.logProgress(label, color, logLevel, components);
+        await this.logProgress(label, color, logLevel, components);
       },
     };
   }
@@ -408,14 +420,14 @@ class Logger {
    * @param level Log level
    * @param components Message components
    */
-  private logProgress(
+  private async logProgress(
     labelText: string,
     labelColor: string,
     level: LogLevel,
     components: LoggerMessageComponent[] = [],
-  ): void {
+  ): Promise<void> {
     const displayLabel = this.createLabel(labelText, labelColor);
-    this.formatAndSend(level, components, displayLabel);
+    await this.formatAndSend(level, components, displayLabel);
   }
 
   /**

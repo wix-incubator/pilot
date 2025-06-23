@@ -177,6 +177,7 @@ export class Pilot {
    * @returns The result of the last executed step.
    */
   async perform(...steps: string[]): Promise<any> {
+    console.log("Pilot - perform");
     await this.loadCache();
 
     let result;
@@ -223,6 +224,7 @@ export class Pilot {
     goal: string,
     reviewConfigs?: AutoReviewSectionConfig[],
   ): Promise<AutoReport> {
+    console.log("Pilot - autopilot");
     await this.loadCache();
     this.assertIsRunning();
     return await this.autoPerformer.perform(goal, reviewConfigs);
@@ -232,6 +234,7 @@ export class Pilot {
    * Loads the cache from the cache file.
    */
   private async loadCache(): Promise<void> {
+    console.log("Pilot - loadCache");
     await this.cacheHandler.loadCacheFromFile();
   }
 }

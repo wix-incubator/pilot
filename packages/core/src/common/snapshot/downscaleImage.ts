@@ -82,7 +82,7 @@ async function downscaleImage(imagePath: string): Promise<string> {
 
     return downscaledPath;
   } catch (err) {
-    logger.error({
+    await logger.error({
       message: `Error processing image: ${err}`,
       isBold: false,
       color: "gray",

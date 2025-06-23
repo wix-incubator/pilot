@@ -17,7 +17,7 @@ export class CodeEvaluator {
     try {
       const result = await asyncFunction();
 
-      logger.labeled("EVAL").info("Code executed successfully\n", {
+      await logger.labeled("EVAL").info("Code executed successfully\n", {
         message: `${code}`,
         isBold: false,
         color: "gray",
@@ -28,7 +28,7 @@ export class CodeEvaluator {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      logger.labeled("ERROR").error(`Execution failed: ${errorMessage}`);
+      await logger.labeled("ERROR").error(`Execution failed: ${errorMessage}`);
 
       throw error;
     }
