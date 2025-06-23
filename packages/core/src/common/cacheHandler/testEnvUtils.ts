@@ -42,7 +42,6 @@ async function getCurrentTestFileFromStackTrace() {
   for (const line of stackLines) {
     const match = line.match(/\((.*\.(test|spec|e2e)\.[jt]sx?):\d+:\d+\)/);
     if (match) {
-      console.log("testEnvUtils match", match[1]);
       return match[1];
     }
   }

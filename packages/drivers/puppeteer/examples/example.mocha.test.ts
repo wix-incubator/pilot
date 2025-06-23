@@ -37,15 +37,16 @@ describe("Example Test Suite", function () {
     pilot.end(!testFailed);
   });
 
-  const wrapTest = (fn: () => Promise<void>) =>
-    async function () {
-      try {
-        await fn();
-      } catch (err) {
-        testFailed = true;
-        throw err;
-      }
-    };
+  // A wrapper function to make sure that failing test is not saved to cache.
+  // const wrapTest = (fn: () => Promise<void>) =>
+  //   async function () {
+  //     try {
+  //       await fn();
+  //     } catch (err) {
+  //       testFailed = true;
+  //       throw err;
+  //     }
+  //   };
 
   it.only("open a site", async function () {
     await pilot.perform("Open https://www.yohaiknaani.com");
