@@ -7,12 +7,10 @@
  * @returns The current Jest test file path, or undefined if not in Jest or the path is not available
  */
 export async function getCurrentTestFilePath(): Promise<string | undefined> {
-  console.log("getCurrentTestFilePath()");
   return getCurrentJestTestFilePath() || getCurrentTestFileFromStackTrace();
 }
 
 function getCurrentJestTestFilePath(): string | undefined {
-  console.log("getCurrentJestTestFilePath()");
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { expect } = require("expect");
@@ -31,7 +29,6 @@ function getCurrentJestTestFilePath(): string | undefined {
 }
 
 async function getCurrentTestFileFromStackTrace() {
-  console.log("getCurrentTestFileFromStackTrace()");
   const err = new Error();
   if (!err.stack) {
     return undefined;
