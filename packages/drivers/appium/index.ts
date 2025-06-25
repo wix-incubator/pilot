@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { waitForStableState } from "./utils/getStableViewHierarchy";
 import os from "os";
+import { findTextLocation } from "./utils/findTextLocation";
 
 export class WebdriverIOAppiumFrameworkDriver
   implements TestingFrameworkDriver
@@ -74,6 +75,7 @@ export class WebdriverIOAppiumFrameworkDriver
         $: $,
         driver: driver,
         expect: expect,
+        findTextLocation: findTextLocation,
       },
       categories: [
         {
@@ -345,6 +347,45 @@ await driver.performTouchAction({
               signature: `driver.toggleAirplaneMode() (Android)`,
               description: "Toggles the Airplane mode on an Android device.",
               example: `await driver.toggleAirplaneMode();`,
+            },
+          ],
+        },
+        {
+          title: "Find text location on screen",
+          items: [
+            {
+              signature: `await findTextLocation(string);`,
+              description:
+                "Finds the on-screen coordinates of all occurrences of the specified text (sorted by x, y occurrences)." +
+                " Useful when the text is visible but not part of the view hierarchy.",
+              example: `const coords = await findTextLocation('Next');
+for (const point of coords) {
+  try {
+    await driver.performActions([
+      {
+        type: 'pointer',
+        id: 'finger1',
+        parameters: { pointerType: 'touch' },
+        actions: [
+          { type: 'pointerMove', duration: 0, x: point.x, y: point.y },
+          { type: 'pointerDown', button: 0 },
+          { type: 'pause', duration: 100 },
+          { type: 'pointerUp', button: 0 },
+        ],
+      },
+    ]);
+    await driver.releaseActions(); // Important to clean up actions
+    break; // stop after successful tap
+  } catch (e) {
+    console.warn('Failed to tap on this point, trying next...');
+  }
+}`,
+              guidelines: [
+                "Use this when the text you want to interact with is visible on the screen but does not present in the view hierarchy.",
+                "Make sure the text is clearly visible in the screenshot and not obscured.",
+                "You can combine this with touch actions to tap on the text by coordinates.",
+                "Do not use UI Automation for locating the inaccessible test element use this api",
+              ],
             },
           ],
         },

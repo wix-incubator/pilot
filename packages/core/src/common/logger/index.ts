@@ -426,6 +426,14 @@ class Logger {
   private getLogMethodForResult(result: LoggerOperationResultType): LogLevel {
     return result === "failure" ? "error" : result === "warn" ? "warn" : "info";
   }
+
+  public logCodeExec(code: string): void {
+    this.labeled("CODE").info("Running code: ", {
+      message: `${code}`,
+      isBold: false,
+      color: "gray",
+    });
+  }
 }
 
 // Export the singleton instance

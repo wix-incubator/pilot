@@ -1,5 +1,3 @@
-import path from "path";
-
 export const config = {
   runner: "local",
   specs: ["./**/*.test.ts"],
@@ -8,16 +6,14 @@ export const config = {
   capabilities: [
     {
       platformName: "iOS",
-      "appium:deviceName": "iPhone 15 Pro",
+      "appium:deviceName": "iPhone 16 Pro",
       "appium:automationName": "XCUITest",
-      "appium:app": path.resolve(
-        __dirname,
-        "../../detox/ExampleApp/ios/build/Build/Products/Release-iphonesimulator/ExampleApp.app",
-      ),
+      "appium:app":
+        "/Users/lironsh/Library/Developer/Xcode/DerivedData/NewApp-bexwbuoqarcledbxwzczerjgrpmo/Build/Products/Release-iphonesimulator/NewApp.app",
     },
   ],
 
-  logLevel: "info",
+  logLevel: "warn",
   bail: 0,
   baseUrl: "http://localhost",
   waitforTimeout: 10000,

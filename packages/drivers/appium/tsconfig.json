@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "rootDir": "./",
-    "types": ["node", "mocha", "@wdio/globals/types"],
+    "types": ["node", "mocha", "@wdio/globals/types", "jest"],
     "baseUrl": "./",
     "resolveJsonModule": true
   },
@@ -17,5 +17,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    ]
+    "NewApp"
+  ]
 }
