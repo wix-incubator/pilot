@@ -9,7 +9,7 @@ export const config = {
       "appium:deviceName": "iPhone 16 Pro",
       "appium:automationName": "XCUITest",
       "appium:app":
-        "/Users/lironsh/Development/pilot/packages/drivers/appium/NewApp/ios/build/Build/Products/Debug-iphonesimulator/NewApp.app",
+        "/Users/lironsh/Library/Developer/Xcode/DerivedData/NewApp-bexwbuoqarcledbxwzczerjgrpmo/Build/Products/Release-iphonesimulator/NewApp.app",
     },
   ],
 
