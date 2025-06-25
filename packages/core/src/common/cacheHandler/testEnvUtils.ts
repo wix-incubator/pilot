@@ -6,7 +6,7 @@
  * Gets the current test file path from the Jest expect API or the stack trace
  * @returns The current Jest test file path, or undefined if not in Jest or the path is not available
  */
-export function getCurrentTestFilePath(): string | undefined {
+export async function getCurrentTestFilePath(): Promise<string | undefined> {
   return getCurrentJestTestFilePath() || getCurrentTestFileFromStackTrace();
 }
 
@@ -28,7 +28,7 @@ function getCurrentJestTestFilePath(): string | undefined {
   }
 }
 
-function getCurrentTestFileFromStackTrace() {
+async function getCurrentTestFileFromStackTrace() {
   const err = new Error();
   if (!err.stack) {
     return undefined;
@@ -40,8 +40,10 @@ function getCurrentTestFileFromStackTrace() {
     .slice(1, STACK_TRACE_SEARCH_LINES_LIMIT);
 
   for (const line of stackLines) {
+    console.log("THIS IS THE LINE:", line);
     const match = line.match(/\((.*\.(test|spec|e2e)\.[jt]sx?):\d+:\d+\)/);
     if (match) {
+      console.log("Match found", match[1]);
       return match[1];
     }
   }

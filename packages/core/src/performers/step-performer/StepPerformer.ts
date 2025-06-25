@@ -26,10 +26,10 @@ export class StepPerformer {
     private screenCapturer: ScreenCapturer,
   ) {}
 
-  extendJSContext(newContext: any): void {
+  async extendJSContext(newContext: any): Promise<void> {
     for (const key in newContext) {
       if (key in this.context) {
-        logger
+        await logger
           .labeled("WARNING")
           .warn(
             `Pilot's variable from context \`${key}\` is overridden by a new value from \`extendJSContext\``,
@@ -52,7 +52,7 @@ export class StepPerformer {
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
-        this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
+        await this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
@@ -64,7 +64,7 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
-          logger.labeled("CACHE").warn(`Using cached value`);
+          await logger.labeled("CACHE").warn(`Using cached value`);
           return matchingEntry.value.code;
         }
       }
@@ -88,7 +88,7 @@ export class StepPerformer {
     const extractedCodeBlock = extractPilotOutputs(promptResult);
 
     if (!extractedCodeBlock.code) {
-      logger.error("No code found");
+      await logger.error("No code found");
     }
 
     const code = extractedCodeBlock.code;
@@ -99,13 +99,13 @@ export class StepPerformer {
       cacheKey &&
       extractedCodeBlock.cacheValidationMatcher
     ) {
-      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
         extractedCodeBlock.cacheValidationMatcher,
       );
     } else if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
       );
@@ -119,7 +119,7 @@ export class StepPerformer {
     screenCapture: ScreenCapturerResult,
     maxAttempts: number = 2,
   ): Promise<CodeEvaluationResult> {
-    const progress = logger.startProgress(
+    const progress = await logger.startProgress(
       {
         actionLabel: "STEP",
         successLabel: "DONE",
@@ -175,7 +175,7 @@ export class StepPerformer {
         });
 
         if (attempt > 1) {
-          logger
+          await logger
             .labeled("SUCCESS")
             .info(
               `Attempt ${attempt}/${maxAttempts} succeeded for step "${step}"`,
@@ -191,7 +191,7 @@ export class StepPerformer {
             : typeof error === "string"
               ? error
               : JSON.stringify(error);
-        logger
+        await logger
           .labeled("ERROR")
           .error(
             `Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,
