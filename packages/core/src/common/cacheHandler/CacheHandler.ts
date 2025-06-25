@@ -43,7 +43,6 @@ export class CacheHandler {
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
-    console.log("cacheHandler constructor");
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
@@ -61,7 +60,6 @@ export class CacheHandler {
   }
 
   private async determineCurrentCacheFilePath() {
-    console.log("determineCurrentCacheFilePath()");
     return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
@@ -77,7 +75,6 @@ export class CacheHandler {
   }
 
   public async loadCacheFromFile(): Promise<void> {
-    console.log("loadCacheFromFile");
     this.cacheFilePath = this.determineCurrentCacheFilePath();
     try {
       const resolvedPath = await this.cacheFilePath;
@@ -326,7 +323,6 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private async getCacheFilePath(): Promise<string> {
-    console.log("getCacheFilePath()");
     const callerPath = await getCurrentTestFilePath();
 
     if (callerPath) {
