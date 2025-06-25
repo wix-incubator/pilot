@@ -65,9 +65,7 @@ export class StepPerformer {
 
         if (matchingEntry) {
           logger.labeled("CACHE").warn(`Using cached value`);
-          logger
-            .labeled("CODE")
-            .info(`Running code:`, matchingEntry.value.code);
+          logger.logCodeExec(matchingEntry.value.code);
           return matchingEntry.value.code;
         }
       }
@@ -114,7 +112,7 @@ export class StepPerformer {
       );
     }
 
-    logger.labeled("CODE").info(`Running code:`, code);
+    logger.logCodeExec(code);
     return code;
   }
 
