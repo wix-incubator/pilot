@@ -106,7 +106,7 @@ export class AutoPerformer {
       }
     }
 
-    const analysisProgress = await logger.startProgress(
+    const analysisProgress = logger.startProgress(
       {
         actionLabel: "ANALYZE",
         successLabel: "READY",
@@ -158,7 +158,7 @@ export class AutoPerformer {
 
         // Log thoughts with formatted text
         const formattedThoughts = parseFormattedText(thoughts as string);
-        await logger.labeled("THOUGHTS").info(...formattedThoughts);
+        logger.labeled("THOUGHTS").info(...formattedThoughts);
 
         const review: AutoReview = {};
 
@@ -214,16 +214,14 @@ export class AutoPerformer {
         };
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : error;
-        await logger
+        logger
           .labeled("ERROR")
           .error(
             `Analysis attempt ${attempt}/${maxAttempts} failed: ${errorMessage}`,
           );
 
         if (attempt < maxAttempts) {
-          await logger
-            .labeled("RETRYING")
-            .warn("Initiating new analysis attempt");
+          logger.labeled("RETRYING").warn("Initiating new analysis attempt");
 
           previousSteps = [
             ...previousSteps,
@@ -255,7 +253,7 @@ export class AutoPerformer {
     const report: AutoReport = { goal, steps: [] };
 
     // Create the overall goal progress with minimal labels
-    const mainProgress = await logger.startProgress(
+    const mainProgress = logger.startProgress(
       {
         actionLabel: "GOAL",
         successLabel: "DONE",
@@ -303,7 +301,7 @@ export class AutoPerformer {
           color: "green",
         });
 
-        await logger.labeled("SUMMARY").info(...formattedSummary);
+        logger.labeled("SUMMARY").info(...formattedSummary);
         break;
       }
 
@@ -357,7 +355,7 @@ export class AutoPerformer {
       }
     });
 
-    await logger.labeled("REVIEWING").info(...allReviewComponents);
+    logger.labeled("REVIEWING").info(...allReviewComponents);
   }
 
   private async getValueFromCache(
@@ -385,10 +383,10 @@ export class AutoPerformer {
     const cachedReport = matchingEntry?.value as AutoStepReport;
 
     if (cachedReport && cachedReport.plan && cachedReport.plan.thoughts) {
-      await logger.labeled("CACHE").info("Using cached analysis result");
+      logger.labeled("CACHE").info("Using cached analysis result");
 
       const formattedThoughts = parseFormattedText(cachedReport.plan.thoughts);
-      await logger.labeled("THOUGHTS").info(...formattedThoughts);
+      logger.labeled("THOUGHTS").info(...formattedThoughts);
 
       const hasReviews =
         cachedReport.review && Object.keys(cachedReport.review).length > 0;
