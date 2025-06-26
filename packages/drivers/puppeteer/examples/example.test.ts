@@ -113,7 +113,7 @@ describe("Example Test Suite", () => {
     }),
   );
 
-  it.only("filter by color", async () => {
+  it.skip("filter by color", async () => {
     await pilot.perform(
       "Open https://www.yohaiknaani.com",
       "Go to `Shop All` page.",
@@ -137,5 +137,13 @@ describe("Example Test Suite", () => {
       "Type Hello in the `Message` input",
       "Tap on the `Submit` button",
     );
+  });
+
+  it.only("open new tab", async () => {
+      await pilot.perform(
+          "Open https://www.bgu.ac.il/",
+          "Click `לפורטל האישי`",
+          "Type `lironmir` in the username input"
+      );
   });
 });
