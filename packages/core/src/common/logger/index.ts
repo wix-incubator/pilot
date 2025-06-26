@@ -173,8 +173,8 @@ class Logger {
    * Creates components for the test file label if in a test environment
    * @returns Array of components for the test file label or empty array if not in a test
    */
-  private async createTestFileComponents(): Promise<LoggerMessageComponent[]> {
-    const filePath = await getCurrentTestFilePath();
+  private createTestFileComponents(): LoggerMessageComponent[] {
+    const filePath = getCurrentTestFilePath();
     if (!filePath) {
       return [];
     }
@@ -228,11 +228,11 @@ class Logger {
    * @param components Message components
    * @param prefix Optional prefix to prepend to the message
    */
-  private async formatAndSend(
+  private formatAndSend(
     level: LogLevel,
     components: LoggerMessageComponent[],
     prefix?: string,
-  ): Promise<void> {
+  ): void {
     const normalizedComponents = this.normalizeComponents(components, level);
     const messageComponents: LoggerMessageComponent[] = [];
 
@@ -243,7 +243,7 @@ class Logger {
       });
     }
 
-    const fileComponents = await this.createTestFileComponents();
+    const fileComponents = this.createTestFileComponents();
     if (fileComponents.length > 0) {
       messageComponents.push(...fileComponents);
     }
@@ -254,40 +254,37 @@ class Logger {
     this.delegate.log(level, formattedMessage);
   }
 
-  private async log(
-    level: LogLevel,
-    ...components: LoggerMessageComponent[]
-  ): Promise<void> {
-    await this.formatAndSend(level, components);
+  private log(level: LogLevel, ...components: LoggerMessageComponent[]): void {
+    this.formatAndSend(level, components);
   }
 
   /**
    * Log an informational message
    * @param components Message components
    */
-  public async info(...components: LoggerMessageComponent[]): Promise<void> {
-    await this.log("info", ...components);
+  public info(...components: LoggerMessageComponent[]): void {
+    this.log("info", ...components);
   }
-  public async warn(...components: LoggerMessageComponent[]): Promise<void> {
-    await this.log("warn", ...components);
+  public warn(...components: LoggerMessageComponent[]): void {
+    this.log("warn", ...components);
   }
-  public async error(...components: LoggerMessageComponent[]): Promise<void> {
-    await this.log("error", ...components);
+  public error(...components: LoggerMessageComponent[]): void {
+    this.log("error", ...components);
   }
-  public async debug(...components: LoggerMessageComponent[]): Promise<void> {
-    await this.log("debug", ...components);
+  public debug(...components: LoggerMessageComponent[]): void {
+    this.log("debug", ...components);
   }
 
   public labeled(label: string): {
-    warn: (...c: LoggerMessageComponent[]) => Promise<void>;
-    debug: (...c: LoggerMessageComponent[]) => Promise<void>;
+    warn: (...c: LoggerMessageComponent[]) => void;
+    debug: (...c: LoggerMessageComponent[]) => void;
     progress: () => Promise<{
-      fail: (...c: LoggerMessageComponent[]) => Promise<void>;
-      update: (...c: LoggerMessageComponent[]) => Promise<void>;
-      complete: (...c: LoggerMessageComponent[]) => Promise<void>;
+      fail: (...c: LoggerMessageComponent[]) => void;
+      update: (...c: LoggerMessageComponent[]) => void;
+      complete: (...c: LoggerMessageComponent[]) => void;
     }>;
-    error: (...c: LoggerMessageComponent[]) => Promise<void>;
-    info: (...c: LoggerMessageComponent[]) => Promise<void>;
+    error: (...c: LoggerMessageComponent[]) => void;
+    info: (...c: LoggerMessageComponent[]) => void;
   } {
     const createMethod =
       (level: LogLevel) =>
@@ -316,11 +313,11 @@ class Logger {
    * @param label The label to display
    * @param components Message components
    */
-  private async logWithLabel(
+  private logWithLabel(
     level: LogLevel,
     label: string,
     ...components: LoggerMessageComponent[]
-  ): Promise<void> {
+  ): void {
     const bgColorMap: Record<LogLevel, string> = {
       info: "gray",
       warn: "yellow",
@@ -329,7 +326,7 @@ class Logger {
     };
 
     const displayLabel = this.createLabel(label, bgColorMap[level]);
-    await this.formatAndSend(level, components, displayLabel);
+    this.formatAndSend(level, components, displayLabel);
   }
 
   /**
@@ -358,13 +355,13 @@ class Logger {
    * @param components Initial message components
    * @returns Progress control object
    */
-  public async startProgress(
+  public startProgress(
     options: ProgressOptions,
     ...components: LoggerMessageComponent[]
-  ): Promise<LoggerProgress> {
+  ): LoggerProgress {
     let currentActionLabel = options.actionLabel || "Progress";
 
-    await this.logProgress(
+    this.logProgress(
       currentActionLabel,
       this.statusColors.inProgress,
       "info",
@@ -380,16 +377,16 @@ class Logger {
           components,
         );
       },
-      updateLabel: async (label, ...components) => {
+      updateLabel: (label, ...components) => {
         currentActionLabel = label;
-        await this.logProgress(
+        this.logProgress(
           currentActionLabel,
           this.statusColors.inProgress,
           "info",
           components,
         );
       },
-      stop: async (result, ...components) => {
+      stop: (result, ...components) => {
         const resultMap = {
           success: {
             label: options.successLabel || `${currentActionLabel} completed`,
@@ -408,7 +405,7 @@ class Logger {
         const { label, color } =
           resultMap[result as keyof typeof resultMap] || resultMap.warn;
         const logLevel = this.getLogMethodForResult(result);
-        await this.logProgress(label, color, logLevel, components);
+        this.logProgress(label, color, logLevel, components);
       },
     };
   }
@@ -420,14 +417,14 @@ class Logger {
    * @param level Log level
    * @param components Message components
    */
-  private async logProgress(
+  private logProgress(
     labelText: string,
     labelColor: string,
     level: LogLevel,
     components: LoggerMessageComponent[] = [],
-  ): Promise<void> {
+  ): void {
     const displayLabel = this.createLabel(labelText, labelColor);
-    await this.formatAndSend(level, components, displayLabel);
+    this.formatAndSend(level, components, displayLabel);
   }
 
   /**

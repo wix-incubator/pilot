@@ -29,7 +29,7 @@ export class StepPerformer {
   async extendJSContext(newContext: any): Promise<void> {
     for (const key in newContext) {
       if (key in this.context) {
-        await logger
+        logger
           .labeled("WARNING")
           .warn(
             `Pilot's variable from context \`${key}\` is overridden by a new value from \`extendJSContext\``,
@@ -64,7 +64,7 @@ export class StepPerformer {
           );
 
         if (matchingEntry) {
-          await logger.labeled("CACHE").warn(`Using cached value`);
+          logger.labeled("CACHE").warn(`Using cached value`);
           return matchingEntry.value.code;
         }
       }
@@ -88,7 +88,7 @@ export class StepPerformer {
     const extractedCodeBlock = extractPilotOutputs(promptResult);
 
     if (!extractedCodeBlock.code) {
-      await logger.error("No code found");
+      logger.error("No code found");
     }
 
     const code = extractedCodeBlock.code;
@@ -119,7 +119,7 @@ export class StepPerformer {
     screenCapture: ScreenCapturerResult,
     maxAttempts: number = 2,
   ): Promise<CodeEvaluationResult> {
-    const progress = await logger.startProgress(
+    const progress = logger.startProgress(
       {
         actionLabel: "STEP",
         successLabel: "DONE",
@@ -175,7 +175,7 @@ export class StepPerformer {
         });
 
         if (attempt > 1) {
-          await logger
+          logger
             .labeled("SUCCESS")
             .info(
               `Attempt ${attempt}/${maxAttempts} succeeded for step "${step}"`,
@@ -191,7 +191,7 @@ export class StepPerformer {
             : typeof error === "string"
               ? error
               : JSON.stringify(error);
-        await logger
+        logger
           .labeled("ERROR")
           .error(
             `Attempt ${attempt}/${maxAttempts} failed for step: ${step}, with error: ${errorDetails}`,

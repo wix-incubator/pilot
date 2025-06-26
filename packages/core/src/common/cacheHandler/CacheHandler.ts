@@ -86,7 +86,7 @@ export class CacheHandler {
         this.cache.clear();
       }
     } catch (error) {
-      await logger.warn("Error loading cache from file:", {
+      logger.warn("Error loading cache from file:", {
         message: String(error),
         color: "yellow",
       });
@@ -106,9 +106,9 @@ export class CacheHandler {
       fs.writeFileSync(resolvedPath, JSON.stringify(json, null, 2), {
         flag: "w+",
       });
-      await logger.info("Pilot cache saved successfully");
+      logger.info("Pilot cache saved successfully");
     } catch (error) {
-      await logger.error("Error saving cache to file:", {
+      logger.error("Error saving cache to file:", {
         message: String(error),
         color: "red",
       });
@@ -124,7 +124,7 @@ export class CacheHandler {
     cacheKey: string,
   ): Promise<Array<CacheValue<T>> | undefined> {
     if (this.shouldOverrideCache()) {
-      await logger.info("Cache disabled, generating new response");
+      logger.info("Cache disabled, generating new response");
       return undefined;
     }
 
@@ -142,7 +142,7 @@ export class CacheHandler {
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
   ): Promise<void> {
-    await logger.info("Saving result to cache for future use");
+    logger.info("Saving result to cache for future use");
 
     const cacheValue: CacheValueSnapshot<T> = {
       value,
@@ -168,7 +168,7 @@ export class CacheHandler {
     value: T & { code: string },
     validationMatcher?: string[] | string | undefined,
   ): Promise<void> {
-    await logger.labeled("CACHE").info("Saving response to cache");
+    logger.labeled("CACHE").info("Saving response to cache");
 
     const cacheValue: CacheValueValidationMatcher<T> = {
       value,
@@ -257,7 +257,7 @@ export class CacheHandler {
           return entry;
         }
       } catch (error) {
-        await logger.debug("Error evaluating matcher:", matcher);
+        logger.debug("Error evaluating matcher:", matcher);
       }
     }
 
