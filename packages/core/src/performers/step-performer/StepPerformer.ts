@@ -73,6 +73,8 @@ export class StepPerformer {
 
     const screenCapture = await screenshotHandler();
 
+    screenCapture.viewHierarchy ? logger.warn("VIEW HIERARCHY", screenCapture.viewHierarchy) : logger.warn("VIEW HIERARCHY NULL")
+
     // No cache match found, generate new code
     const prompt = this.promptCreator.createPrompt(
       currentStep,

@@ -139,11 +139,15 @@ describe("Example Test Suite", () => {
     );
   });
 
-  it.only("open new tab", async () => {
-      await pilot.perform(
-          "Open https://www.bgu.ac.il/",
-          "Click `לפורטל האישי`",
-          "Type `lironmir` in the username input"
-      );
-  });
+    it.skip("open new tab", async () => {
+        await pilot.perform(
+            "Open https://wix.github.io/Detox/",
+            "Tap `#StandWithUkraine` link",
+            "Tap `Donate to the military`"
+        );
+    });
+
+    it.only("open new tab", async () => {
+        await pilot.autopilot("Open https://wix.github.io/Detox/ tap `#StandWithUkraine` link. Tap `Donate to the military`")
+    })
 });

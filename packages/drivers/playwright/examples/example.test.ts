@@ -34,9 +34,21 @@ describe("Example Test Suite", () => {
     pilot.end();
   });
 
-  it("perform test with pilot", async () => {
+  it.skip("perform test with pilot", async () => {
     await pilot.autopilot(
       "Open https://github.com/wix-incubator/pilot and tell me what was the last commit about and who have created it",
     );
   });
+
+    it.skip("open new tab", async () => {
+        await pilot.perform(
+            "Open https://wix.github.io/Detox/",
+            "Tap `#StandWithUkraine` link",
+            "Tap `Donate to the military`"
+        );
+    });
+
+    it.only("open new tab", async () => {
+        await pilot.autopilot("Open https://wix.github.io/Detox/ tap `#StandWithUkraine` link. Tap `Donate to the military`")
+    })
 });

@@ -26,10 +26,17 @@ export const createAPICatalog: TestingFrameworkAPICatalog = {
     timeout: 30000  // Default timeout for all operations
   });
   const context = await browser.newContext();
+  //IMPORTANT! 
+    context.on('page', async page => {
+  await page.waitForLoadState();
+  await page.bringToFront();
+  setCurrentPage(page);
+});
   const page = await context.newPage();
   setCurrentPage(page);
   await page.goto('https://www.test.com/');
-  await page.waitForLoadState('load');`,
+  await page.waitForLoadState('load');
+  `,
           guidelines: [
             "Set longer timeouts (30s or more) to handle slow operations.",
             "Can use chromium, firefox, or webkit browsers.",
