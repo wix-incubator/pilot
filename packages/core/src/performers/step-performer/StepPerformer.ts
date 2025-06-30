@@ -52,7 +52,7 @@ export class StepPerformer {
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
-        this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
+        await this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {
@@ -100,13 +100,13 @@ export class StepPerformer {
       cacheKey &&
       extractedCodeBlock.cacheValidationMatcher
     ) {
-      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
         extractedCodeBlock.cacheValidationMatcher,
       );
     } else if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
       );
