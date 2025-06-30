@@ -17,16 +17,13 @@ export const createAPICatalog = (
         {
           signature: "const browser = await puppeteer.launch([options])",
           description: "Launches a new browser instance.",
-          example: `const browser = await puppeteer.launch({ headless: false, executablePath: "${executablePath}", 
-  defaultViewport: null,
-  args: ['--start-maximized']
-});
+          example: `const browser = await puppeteer.launch({ headless: false, executablePath: "${executablePath}"});
 
 // IMPORTANT!
 browser.on('targetcreated', async target => {
   if (target.type() === 'page') {
     const page = await target.page();
-    await page.bringToFront(); // Only works for non-headless
+    await page.bringToFront(); 
     await page.waitForNavigation({ waitUntil: 'load' }).catch(() => {});
     setCurrentPage(page);
   }

@@ -30,7 +30,6 @@ export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
    * Sets the current page identifier, must be set if the driver needs to interact with a specific page
    */
   setCurrentPage(page: T): void {
-     logger.error("SET CURRENT PAGE")
     this.driverUtils.setCurrentPage(page);
   }
 
