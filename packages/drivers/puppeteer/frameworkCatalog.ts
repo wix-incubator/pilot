@@ -32,8 +32,7 @@ browser.on('targetcreated', async target => {
 const [page] = await browser.pages();
 await page.bringToFront();
 setCurrentPage(page);
-await page.goto('https://www.test.com/');
-await page.waitForNavigation({ waitUntil: 'load' });`,
+await page.goto('https://www.test.com/', {waitUntil: 'load' });`,
           guidelines: [
             `Executable path is required always, use the path: ${executablePath}`,
             "Options can specify `headless`, `slowMo`, `args`, etc.",
