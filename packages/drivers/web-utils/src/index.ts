@@ -156,6 +156,9 @@ export default class WebTestingFrameworkDriverHelper {
         "START A NEW ONE BASED ON THE ACTION NEED OR RAISE AN ERROR"
       );
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
     await this.waitForStableDOM(this.currentPage);
     await this.markImportantElements(this.currentPage);
     return await this.createMarkedViewHierarchy(this.currentPage);

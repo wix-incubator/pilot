@@ -113,7 +113,7 @@ describe("Example Test Suite", () => {
     }),
   );
 
-  it.only("filter by color", async () => {
+  it.skip("filter by color", async () => {
     await pilot.perform(
       "Open https://www.yohaiknaani.com",
       "Go to `Shop All` page.",
@@ -136,6 +136,20 @@ describe("Example Test Suite", () => {
       "Tap on the `Message` input",
       "Type Hello in the `Message` input",
       "Tap on the `Submit` button",
+    );
+  });
+
+  it.only("open new tab", async () => {
+    await pilot.perform(
+      "Open https://wix.github.io/Detox/",
+      "Tap `#StandWithUkraine` link",
+      "Tap `Donate to the military`",
+    );
+  });
+
+  it.skip("open new tab", async () => {
+    await pilot.autopilot(
+      "Open https://wix.github.io/Detox/ tap `#StandWithUkraine` link. Tap `Donate to the military`",
     );
   });
 });

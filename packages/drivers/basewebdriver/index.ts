@@ -1,6 +1,6 @@
 import WebTestingFrameworkDriverHelper from "@wix-pilot/web-utils";
 import type { ElementMatchingCriteria, Page } from "@wix-pilot/web-utils";
-import type {
+import {
   TestingFrameworkAPICatalog,
   TestingFrameworkDriver,
   TestingFrameworkDriverConfig,
