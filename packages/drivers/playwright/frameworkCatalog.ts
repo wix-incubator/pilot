@@ -27,7 +27,7 @@ export const createAPICatalog: TestingFrameworkAPICatalog = {
   });
   const context = await browser.newContext();
   //IMPORTANT! 
-    context.on('page', async page => {
+  context.on('page', async page => {
   await page.waitForLoadState();
   await page.bringToFront();
   setCurrentPage(page);

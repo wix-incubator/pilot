@@ -139,14 +139,17 @@ describe("Example Test Suite", () => {
     );
   });
 
-    it.only("open new tab", async () => {
-        await pilot.perform(
-            "Open https://wix.github.io/Detox/",
-            "Tap `#StandWithUkraine` link",
-        );
-    });
+  it.only("open new tab", async () => {
+    await pilot.perform(
+      "Open https://wix.github.io/Detox/",
+      "Tap `#StandWithUkraine` link",
+      "Tap `Donate to the military`",
+    );
+  });
 
-    it.skip("open new tab", async () => {
-        await pilot.autopilot("Open https://wix.github.io/Detox/ tap `#StandWithUkraine` link. Tap `Donate to the military`")
-    })
+  it.skip("open new tab", async () => {
+    await pilot.autopilot(
+      "Open https://wix.github.io/Detox/ tap `#StandWithUkraine` link. Tap `Donate to the military`",
+    );
+  });
 });
