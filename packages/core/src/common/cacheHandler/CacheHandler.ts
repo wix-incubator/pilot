@@ -26,7 +26,7 @@ export class CacheHandler {
   private cache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly overrideCacheFilePath: string | undefined;
-  private cacheFilePath: Promise<string>;
+  private cacheFilePath: string;
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
@@ -59,7 +59,7 @@ export class CacheHandler {
     };
   }
 
-  private async determineCurrentCacheFilePath() {
+  private determineCurrentCacheFilePath() {
     return this.overrideCacheFilePath || this.getCacheFilePath();
   }
 
@@ -74,10 +74,10 @@ export class CacheHandler {
     return await this.snapshotComparator.generateHashes(screenCapture);
   }
 
-  public async loadCacheFromFile(): Promise<void> {
+  public loadCacheFromFile(): void {
     this.cacheFilePath = this.determineCurrentCacheFilePath();
     try {
-      const resolvedPath = await this.cacheFilePath;
+      const resolvedPath = this.cacheFilePath;
       if (fs.existsSync(resolvedPath)) {
         const data = fs.readFileSync(resolvedPath, "utf-8");
         const json = JSON.parse(data);
@@ -94,9 +94,9 @@ export class CacheHandler {
     }
   }
 
-  private async saveCacheToFile(): Promise<void> {
+  private saveCacheToFile(): void {
     try {
-      const resolvedPath = await this.cacheFilePath;
+      const resolvedPath = this.cacheFilePath;
       const dirPath = path.dirname(resolvedPath);
       if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
@@ -120,9 +120,9 @@ export class CacheHandler {
    * @param cacheKey The cache key string
    * @returns Array of cache values if found, undefined otherwise
    */
-  public async getFromPersistentCache<T>(
+  public getFromPersistentCache<T>(
     cacheKey: string,
-  ): Promise<Array<CacheValue<T>> | undefined> {
+  ): Array<CacheValue<T>> | undefined {
     if (this.shouldOverrideCache()) {
       logger.info("Cache disabled, generating new response");
       return undefined;
@@ -192,7 +192,7 @@ export class CacheHandler {
       this.cache.set(key, [...existingValues, ...values]);
     });
 
-    await this.saveCacheToFile();
+    this.saveCacheToFile();
     this.clearTemporaryCache();
   }
 
@@ -322,8 +322,8 @@ export class CacheHandler {
    * Determines the appropriate cache file path based on the caller path
    * @returns The resolved cache file path
    */
-  private async getCacheFilePath(): Promise<string> {
-    const callerPath = await getCurrentTestFilePath();
+  private getCacheFilePath(): string {
+    const callerPath = getCurrentTestFilePath();
 
     if (callerPath) {
       this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);

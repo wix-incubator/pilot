@@ -179,7 +179,7 @@ describe("StepPerformer", () => {
         CACHE_VALUE[0],
       );
     } else {
-      mockCacheHandler.getFromPersistentCache.mockResolvedValue(undefined);
+      mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
       mockCacheHandler.findMatchingCacheEntryValidationMatcherBased.mockResolvedValue(
         undefined,
       );

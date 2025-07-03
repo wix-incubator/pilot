@@ -364,7 +364,7 @@ export class AutoPerformer {
     reviewSectionTypes?: AutoReviewSectionConfig[],
   ): Promise<AutoStepReport | undefined> {
     const cachedValues =
-      await this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
+      this.cacheHandler.getFromPersistentCache<AutoPerformerCacheValue>(
         cacheKey,
       );
     if (!cachedValues) {

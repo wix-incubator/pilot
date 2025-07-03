@@ -52,7 +52,7 @@ export class StepPerformer {
 
     if (this.cacheHandler.isCacheInUse() && cacheKey) {
       const cachedValues =
-        await this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
+        this.cacheHandler.getFromPersistentCache<StepPerformerCacheValue>(
           cacheKey,
         );
       if (cachedValues) {

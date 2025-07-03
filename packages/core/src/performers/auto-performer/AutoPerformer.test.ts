@@ -241,7 +241,7 @@ The review of i18n
         },
       );
     } else {
-      mockCacheHandler.getFromPersistentCache.mockResolvedValue(undefined);
+      mockCacheHandler.getFromPersistentCache.mockReturnValue(undefined);
     }
   };
 
