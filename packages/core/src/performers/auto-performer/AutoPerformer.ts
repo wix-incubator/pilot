@@ -177,7 +177,11 @@ export class AutoPerformer {
         const hasReviews = Object.keys(review).length > 0;
 
         if (hasReviews) {
-          this.logReviews(lastScreenDescription, review, reviewSectionTypes);
+          await this.logReviews(
+            lastScreenDescription,
+            review,
+            reviewSectionTypes,
+          );
         }
 
         const summary = outputs.goalSummary;
@@ -194,7 +198,7 @@ export class AutoPerformer {
             summary,
           };
 
-          this.cacheHandler.addToTemporaryCacheSnapshotBased(
+          await this.cacheHandler.addToTemporaryCacheSnapshotBased(
             cacheKey,
             cacheValue,
             snapshotHashes,
@@ -329,11 +333,11 @@ export class AutoPerformer {
     return report;
   }
 
-  private logReviews(
+  private async logReviews(
     screenDescription: string,
     review: AutoReview,
     reviewSectionTypes?: AutoReviewSectionConfig[],
-  ): void {
+  ): Promise<void> {
     const allReviewComponents: LoggerMessageComponent[] = [];
 
     allReviewComponents.push(...parseFormattedText(screenDescription));
@@ -387,7 +391,7 @@ export class AutoPerformer {
       const hasReviews =
         cachedReport.review && Object.keys(cachedReport.review).length > 0;
       if (hasReviews && reviewSectionTypes && cachedReport.review) {
-        this.logReviews(
+        await this.logReviews(
           cachedReport.screenDescription,
           cachedReport.review,
           reviewSectionTypes,
