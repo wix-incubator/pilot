@@ -137,11 +137,11 @@ export class CacheHandler {
    * @param value The value to cache
    * @param snapshotHashes Hash values for the current snapshot
    */
-  public async addToTemporaryCacheSnapshotBased<T>(
+  public addToTemporaryCacheSnapshotBased<T>(
     cacheKey: string,
     value: T,
     snapshotHashes?: Partial<SnapshotHashes>,
-  ): Promise<void> {
+  ): void {
     logger.info("Saving result to cache for future use");
 
     const cacheValue: CacheValueSnapshot<T> = {
@@ -163,11 +163,11 @@ export class CacheHandler {
    * @param value The value to cache
    * @param validationMatcher a code line that validate the existence of the step's relevant element
    */
-  public async addToTemporaryCacheValidationMatcherBased<T>(
+  public addToTemporaryCacheValidationMatcherBased<T>(
     cacheKey: string,
     value: T & { code: string },
     validationMatcher?: string[] | string | undefined,
-  ): Promise<void> {
+  ): void {
     logger.labeled("CACHE").info("Saving response to cache");
 
     const cacheValue: CacheValueValidationMatcher<T> = {
@@ -186,7 +186,7 @@ export class CacheHandler {
   /**
    * Persist temporary cache to permanent cache and save to file
    */
-  public async flushTemporaryCache(): Promise<void> {
+  public flushTemporaryCache(): void {
     this.temporaryCache.forEach((values, key) => {
       const existingValues = this.cache.get(key) || [];
       this.cache.set(key, [...existingValues, ...values]);

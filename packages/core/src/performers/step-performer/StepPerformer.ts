@@ -100,13 +100,13 @@ export class StepPerformer {
       cacheKey &&
       extractedCodeBlock.cacheValidationMatcher
     ) {
-      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
         extractedCodeBlock.cacheValidationMatcher,
       );
     } else if (this.cacheHandler.isCacheInUse() && cacheKey) {
-      await this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
+      this.cacheHandler.addToTemporaryCacheValidationMatcherBased(
         cacheKey,
         cacheValue,
       );

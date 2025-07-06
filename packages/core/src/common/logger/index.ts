@@ -9,6 +9,7 @@ import {
   ProgressOptions,
   LoggerDelegate,
   LogLevel,
+  LabeledLogger,
 } from "@/types/logger";
 import {
   createLogger,
@@ -275,17 +276,7 @@ class Logger {
     this.log("debug", ...components);
   }
 
-  public labeled(label: string): {
-    warn: (...c: LoggerMessageComponent[]) => void;
-    debug: (...c: LoggerMessageComponent[]) => void;
-    progress: () => Promise<{
-      fail: (...c: LoggerMessageComponent[]) => void;
-      update: (...c: LoggerMessageComponent[]) => void;
-      complete: (...c: LoggerMessageComponent[]) => void;
-    }>;
-    error: (...c: LoggerMessageComponent[]) => void;
-    info: (...c: LoggerMessageComponent[]) => void;
-  } {
+  public labeled(label: string): LabeledLogger {
     const createMethod =
       (level: LogLevel) =>
       (...c: LoggerMessageComponent[]) =>
@@ -296,8 +287,8 @@ class Logger {
       warn: createMethod("warn"),
       error: createMethod("error"),
       debug: createMethod("debug"),
-      progress: async () => {
-        await this.logWithLabel("info", label, "Starting");
+      progress: () => {
+        this.logWithLabel("info", label, "Starting");
         return {
           update: createMethod("info"),
           complete: createMethod("info"),
