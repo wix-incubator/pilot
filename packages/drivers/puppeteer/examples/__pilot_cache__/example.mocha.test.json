@@ -1,0 +1,10 @@
+{
+  "{\"currentStep\":\"Open https://www.yohaiknaani.com\",\"previousSteps\":[]}": [
+    {
+      "value": {
+        "code": "const browser = await puppeteer.launch({ \n  headless: false, \n  executablePath: \"/Users/lironsh/.cache/puppeteer/chrome/mac_arm-127.0.6533.88/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\n  defaultViewport: null,\n  args: ['--start-maximized']\n});\nconst page = await browser.newPage();\nsetCurrentPage(page);\nawait page.goto('https://www.yohaiknaani.com', { waitUntil: 'networkidle2' });"
+      },
+      "creationTime": 1750249766934
+    }
+  ]
+}

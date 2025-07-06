@@ -7,9 +7,9 @@ import {
   LoggerMessageColor,
   LoggerOperationResultType,
   ProgressOptions,
-  LabeledLogger,
   LoggerDelegate,
   LogLevel,
+  LabeledLogger,
 } from "@/types/logger";
 import {
   createLogger,

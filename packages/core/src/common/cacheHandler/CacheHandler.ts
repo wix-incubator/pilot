@@ -30,6 +30,7 @@ export class CacheHandler {
   private cacheOptions?: CacheOptions;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
+  private resolvedCacheFilePath?: string;
 
   /**
    * Creates a new CacheHandler instance
@@ -75,10 +76,10 @@ export class CacheHandler {
 
   public loadCacheFromFile(): void {
     this.cacheFilePath = this.determineCurrentCacheFilePath();
-
     try {
-      if (fs.existsSync(this.cacheFilePath)) {
-        const data = fs.readFileSync(this.cacheFilePath, "utf-8");
+      const resolvedPath = this.cacheFilePath;
+      if (fs.existsSync(resolvedPath)) {
+        const data = fs.readFileSync(resolvedPath, "utf-8");
         const json = JSON.parse(data);
         this.cache = new Map(Object.entries(json));
       } else {
@@ -95,13 +96,14 @@ export class CacheHandler {
 
   private saveCacheToFile(): void {
     try {
-      const dirPath = path.dirname(this.cacheFilePath);
+      const resolvedPath = this.cacheFilePath;
+      const dirPath = path.dirname(resolvedPath);
       if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
       }
 
       const json = Object.fromEntries(this.cache);
-      fs.writeFileSync(this.cacheFilePath, JSON.stringify(json, null, 2), {
+      fs.writeFileSync(resolvedPath, JSON.stringify(json, null, 2), {
         flag: "w+",
       });
       logger.info("Pilot cache saved successfully");
@@ -323,9 +325,14 @@ export class CacheHandler {
   private getCacheFilePath(): string {
     const callerPath = getCurrentTestFilePath();
 
-    return callerPath
-      ? this.getCallerCacheFilePath(callerPath)
-      : this.getDefaultCacheFilePath();
+    if (callerPath) {
+      this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);
+    } else if (this.resolvedCacheFilePath) {
+      return this.resolvedCacheFilePath;
+    } else {
+      this.resolvedCacheFilePath = this.getDefaultCacheFilePath();
+    }
+    return this.resolvedCacheFilePath;
   }
 
   /**
