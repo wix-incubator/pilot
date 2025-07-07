@@ -55,6 +55,7 @@ export class WixPromptHandler {
           ownershipTag: "Pilot OSS",
           project: "Pilot OSS",
           images,
+          appDefId: "4a30b6ba-688a-498b-967d-8880d6acb023",
         },
       );
       const generatedText: string | undefined = response.data.generatedTexts[0];
