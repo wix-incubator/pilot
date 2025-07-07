@@ -35,7 +35,7 @@
   },
   "peerDependencies": {
     "@wdio/globals": ">=8.0.0",
-    "@wix-pilot/core": "^3.3.4"
+    "@wix-pilot/core": "^3.4.0"
   },
   "devDependencies": {
     "@react-native/eslint-config": "^0.80.0",

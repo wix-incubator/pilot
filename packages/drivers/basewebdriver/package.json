@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "@wix-pilot/web-utils": "^2.1.0",
-    "@wix-pilot/core": "^3.3.4"
+    "@wix-pilot/core": "^3.4.0"
   }
 }
