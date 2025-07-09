@@ -28,6 +28,9 @@ const pilot = new Pilot({
       shouldUseCache: true,
       shouldOverrideCache: false
     }
+  },
+  testContext: {
+    getCurrentTestFilePath: () => '/path/to/my/test.spec.ts'
   }
 });
 ```
@@ -252,6 +255,13 @@ interface Config {
     loggerDelegate?: LoggerDelegate;
     /** Optional behavior settings */
     options?: PilotOptions;
+    /**
+     * Configuration for test context awareness.
+     *
+     * Allows you to customize how the system detects the current test file path (for logging, cache, etc).
+     * If omitted, a default implementation is used that works with Jest and most test runners.
+     */
+    testContext?: TestContext;
 }
 
 interface PilotOptions {
@@ -259,22 +269,22 @@ interface PilotOptions {
     cacheOptions?: CacheOptions;
 }
 
-interface CacheOptions {
+interface TestContext {
     /**
-     * Optional function that returns the absolute path to the current test file.
-     * Used for deriving the cache snapshot file names. Useful for custom runners or advanced setups.
-     * If not provided, Pilot will try to auto-detect the test file path (e.g., in Jest).
+     * Returns the absolute path to the current test file.
+     * Override this if you use a custom test runner or need special logic.
+     * If not provided, a default implementation is used.
      */
     getCurrentTestFilePath?: () => string | undefined;
+}
+
+interface CacheOptions {
     /** If true, cache will be used for operations (default: true) */
     shouldUseCache?: boolean;
     /** If true, cache will be updated with new data (default: false) */
     shouldOverrideCache?: boolean;
 }
 ```
-
-> **Note:**
-> By default, Pilot tries to detect the current test file path (e.g., in Jest) to store cache files per test. You can override this behavior by providing a custom `getCurrentTestFilePath` function in `cacheOptions`—for example, if you use a custom test runner or want to control cache file locations manually.
 
 ### Framework Driver Interface
 

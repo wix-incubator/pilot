@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import path from "path";
-import { getCurrentTestFilePath } from "@/common/cacheHandler/testEnvUtils";
+
+import { TestContext } from "@/common/testContext";
 import {
   LoggerMessageComponent,
   LoggerProgress,
@@ -68,6 +69,7 @@ class Logger {
   private static instance: Logger;
   private delegate: LoggerDelegate;
   private projectRootCache = new Map<string, string | null>();
+  private testContext = new TestContext();
 
   private readonly logLevels: readonly LogLevel[] = [
     "info",
@@ -126,6 +128,14 @@ class Logger {
   }
 
   /**
+   * Set the test context for this logger instance
+   * @param testContext The test context to use for logging
+   */
+  public setTestContext(testContext: TestContext): void {
+    this.testContext = testContext;
+  }
+
+  /**
    * Convert message components to a colorized string
    * Applies colors and formatting to log components
    * @param components Array of message components to colorize
@@ -175,7 +185,7 @@ class Logger {
    * @returns Array of components for the test file label or empty array if not in a test
    */
   private createTestFileComponents(): LoggerMessageComponent[] {
-    const filePath = getCurrentTestFilePath();
+    const filePath = this.testContext.getCurrentTestFilePath();
     if (!filePath) {
       return [];
     }

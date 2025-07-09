@@ -11,8 +11,8 @@ import {
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
+import { TestContext } from "@/common/testContext";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
-import { getCurrentTestFilePath as defaultGetCurrentTestFilePath } from "./testEnvUtils";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
@@ -28,6 +28,7 @@ export class CacheHandler {
   private readonly overrideCacheFilePath: string | undefined;
   private cacheFilePath: string;
   private cacheOptions: Required<CacheOptions>;
+  private testContext: TestContext;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
   private resolvedCacheFilePath?: string;
@@ -35,17 +36,20 @@ export class CacheHandler {
   /**
    * Creates a new CacheHandler instance
    * @param snapshotComparator The snapshot comparator to use for hash generation and comparison
+   * @param testContext Test context containing the current test file path function
    * @param cacheOptions Cache configuration options
    * @param cacheFilePath Optional explicit cache file path override
    */
   constructor(
     snapshotComparator: SnapshotComparator,
+    testContext: TestContext,
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
+    this.testContext = testContext;
     this.cacheFilePath = this.determineCurrentCacheFilePath();
     this.codeEvaluator = new CodeEvaluator();
   }
@@ -54,8 +58,6 @@ export class CacheHandler {
     cacheOptions: CacheOptions,
   ): Required<CacheOptions> {
     return {
-      getCurrentTestFilePath:
-        cacheOptions.getCurrentTestFilePath ?? defaultGetCurrentTestFilePath,
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
@@ -325,7 +327,7 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private getCacheFilePath(): string {
-    const callerPath = this.cacheOptions.getCurrentTestFilePath();
+    const callerPath = this.testContext.getCurrentTestFilePath();
 
     if (callerPath) {
       this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);

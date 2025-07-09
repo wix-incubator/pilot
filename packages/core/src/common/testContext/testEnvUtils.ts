@@ -1,15 +1,24 @@
 /**
- * Utility functions for working with Jest
+ * Utility functions for detecting the current test environment and context.
+ * These utilities work across different test runners and frameworks.
  */
 
 /**
- * Gets the current test file path from the Jest expect API or the stack trace
- * @returns The current Jest test file path, or undefined if not in Jest or the path is not available
+ * Gets the current test file path from the Jest expect API or the stack trace.
+ * This function attempts multiple detection methods to work across different test environments.
+ *
+ * @returns The current test file path, or undefined if not in a test environment or the path is not available
  */
 export function getCurrentTestFilePath(): string | undefined {
   return getCurrentJestTestFilePath() || getCurrentTestFileFromStackTrace();
 }
 
+/**
+ * Attempts to get the current test file path using Jest's unofficial API.
+ * This method is Jest-specific and uses an undocumented API.
+ *
+ * @returns The test file path from Jest's expect.getState(), or undefined if not available
+ */
 function getCurrentJestTestFilePath(): string | undefined {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -28,7 +37,13 @@ function getCurrentJestTestFilePath(): string | undefined {
   }
 }
 
-function getCurrentTestFileFromStackTrace() {
+/**
+ * Attempts to get the current test file path by parsing the stack trace.
+ * This is a fallback method that works across different test runners.
+ *
+ * @returns The test file path extracted from stack trace, or undefined if not found
+ */
+function getCurrentTestFileFromStackTrace(): string | undefined {
   const err = new Error();
   if (!err.stack) {
     return undefined;
@@ -40,6 +55,7 @@ function getCurrentTestFileFromStackTrace() {
     .slice(1, STACK_TRACE_SEARCH_LINES_LIMIT);
 
   for (const line of stackLines) {
+    // Look for test file patterns in the stack trace
     const match = line.match(/\((.*\.(test|spec|e2e)\.[jt]sx?):\d+:\d+\)/);
     if (match) {
       return match[1];
