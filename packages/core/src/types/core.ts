@@ -28,6 +28,8 @@ export interface Config {
   loggerDelegate?: import("@/types/logger").LoggerDelegate;
   /** Optional behavior settings */
   options?: PilotOptions;
+  /**Optional path to cache */
+  cachePath?: string;
 }
 
 /**
