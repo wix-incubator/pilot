@@ -376,5 +376,40 @@ describe("CacheHandler", () => {
       const cacheFilePath = (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain("/custom/path/cache.json");
     });
+
+    it("should use the test file path from getCurrentTestFilePath when no explicit path is provided", () => {
+      const mockTestPath = "/some/test/dir/myTestFile.test.ts";
+      jest
+        .spyOn(testEnvUtils, "getCurrentTestFilePath")
+        .mockReturnValue(mockTestPath);
+
+      const newCacheHandler = new CacheHandler(mockSnapshotComparator);
+      const cacheFilePath = (newCacheHandler as any).cacheFilePath;
+      expect(cacheFilePath).toContain(
+        "/some/test/dir/__pilot_cache__/myTestFile.test.json",
+      );
+    });
+
+    it("should use the explicit cache file path for cache operations", () => {
+      const explicitPath = "/custom/path/explicit-cache.json";
+      const newCacheHandler = new CacheHandler(
+        mockSnapshotComparator,
+        {},
+        explicitPath,
+      );
+
+      // Add to cache and flush
+      newCacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "explicitKey",
+        { code: "explicit code" },
+        "explicit validation",
+      );
+      newCacheHandler.flushTemporaryCache();
+
+      // Check that fs.writeFileSync was called with the explicit path
+      expect((fs.writeFileSync as jest.Mock).mock.calls[0][0]).toBe(
+        explicitPath,
+      );
+    });
   });
 });

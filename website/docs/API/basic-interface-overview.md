@@ -260,12 +260,21 @@ interface PilotOptions {
 }
 
 interface CacheOptions {
+    /**
+     * Optional function that returns the absolute path to the current test file.
+     * Used for deriving the cache snapshot file names. Useful for custom runners or advanced setups.
+     * If not provided, Pilot will try to auto-detect the test file path (e.g., in Jest).
+     */
+    getCurrentTestFilePath?: () => string | undefined;
     /** If true, cache will be used for operations (default: true) */
     shouldUseCache?: boolean;
     /** If true, cache will be updated with new data (default: false) */
     shouldOverrideCache?: boolean;
 }
 ```
+
+> **Note:**
+> By default, Pilot tries to detect the current test file path (e.g., in Jest) to store cache files per test. You can override this behavior by providing a custom `getCurrentTestFilePath` function in `cacheOptions`—for example, if you use a custom test runner or want to control cache file locations manually.
 
 ### Framework Driver Interface
 

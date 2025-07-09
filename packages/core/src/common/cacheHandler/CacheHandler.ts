@@ -11,8 +11,8 @@ import {
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
-import { getCurrentTestFilePath } from "./testEnvUtils";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
+import { getCurrentTestFilePath as defaultGetCurrentTestFilePath } from "./testEnvUtils";
 
 /**
  * CacheHandler provides a unified caching solution for both StepPerformer and AutoPerformer.
@@ -27,7 +27,7 @@ export class CacheHandler {
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly overrideCacheFilePath: string | undefined;
   private cacheFilePath: string;
-  private cacheOptions?: CacheOptions;
+  private cacheOptions: Required<CacheOptions>;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
   private resolvedCacheFilePath?: string;
@@ -52,8 +52,10 @@ export class CacheHandler {
 
   private createCacheOptionsWithDefaults(
     cacheOptions: CacheOptions,
-  ): CacheOptions {
+  ): Required<CacheOptions> {
     return {
+      getCurrentTestFilePath:
+        cacheOptions.getCurrentTestFilePath ?? defaultGetCurrentTestFilePath,
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
     };
@@ -323,7 +325,7 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private getCacheFilePath(): string {
-    const callerPath = getCurrentTestFilePath();
+    const callerPath = this.cacheOptions.getCurrentTestFilePath();
 
     if (callerPath) {
       this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);

@@ -10,6 +10,11 @@ export interface PilotOptions {
 }
 
 export interface CacheOptions {
+  /**
+   * Optional function that returns the absolute path to the current test file.
+   * Used for deriving the cache snapshot file names.
+   */
+  getCurrentTestFilePath?: () => string | undefined;
   /** If true, cache will be used for operations (default: true) */
   shouldUseCache?: boolean;
   /** If true, cache will be updated with new data (default: false) */
