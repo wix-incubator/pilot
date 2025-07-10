@@ -61,18 +61,10 @@ export class Pilot {
       downscaleImage,
     );
 
-    if (!config.cachePath) {
-      this.cacheHandler = new CacheHandler(
-        this.snapshotComparator,
-        config.options?.cacheOptions,
-      );
-    } else {
-      this.cacheHandler = new CacheHandler(
-        this.snapshotComparator,
-        config.options?.cacheOptions,
-        config.cachePath,
-      );
-    }
+    this.cacheHandler = new CacheHandler(
+      this.snapshotComparator,
+      config.options?.cacheOptions,
+    );
 
     this.stepPerformerPromptCreator = new StepPerformerPromptCreator(
       config.frameworkDriver.apiCatalog,

@@ -16,7 +16,9 @@ describe("Example Test Suite", () => {
     pilot = new Pilot({
       frameworkDriver,
       promptHandler,
-      options: { cacheOptions: { cacheDirectoryPath: "../CheckCacheLocation" } },
+      options: {
+        cacheOptions: { cacheDirectoryPath: "../CheckCacheLocation" },
+      },
     });
   });
 

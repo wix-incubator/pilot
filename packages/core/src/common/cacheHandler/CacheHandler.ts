@@ -50,9 +50,6 @@ export class CacheHandler {
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
-    this.cacheFilePath = cacheFilePath
-      ? cacheFilePath
-      : this.determineCurrentCacheFilePath();
     this.codeEvaluator = new CodeEvaluator();
   }
 
