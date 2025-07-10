@@ -14,6 +14,8 @@ export interface CacheOptions {
   shouldUseCache?: boolean;
   /** If true, cache will be updated with new data (default: false) */
   shouldOverrideCache?: boolean;
+  /** Optional path to cache*/
+  cacheDirectoryPath?: string;
 }
 
 /**

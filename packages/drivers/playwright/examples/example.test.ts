@@ -16,7 +16,7 @@ describe("Example Test Suite", () => {
     pilot = new Pilot({
       frameworkDriver,
       promptHandler,
-      cachePath: "../../LironsCache",
+      options: { cacheOptions: { cacheDirectoryPath: "../CheckCacheLocation" } },
     });
   });
 
