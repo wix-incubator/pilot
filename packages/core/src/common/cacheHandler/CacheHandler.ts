@@ -43,10 +43,9 @@ export class CacheHandler {
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
-
-      if (cacheOptions.cacheDirectoryPath) {
-          CacheHandler.CACHE_DIRECTORY = cacheOptions.cacheDirectoryPath;
-      }
+    if (cacheOptions.cacheDirectoryPath) {
+      CacheHandler.CACHE_DIRECTORY = cacheOptions.cacheDirectoryPath;
+    }
 
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
