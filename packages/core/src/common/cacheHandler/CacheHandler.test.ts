@@ -1,14 +1,14 @@
-import { CacheHandler } from "./CacheHandler";
-import { mockCache, mockedCacheFile } from "../../test-utils/cache";
-import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
+import fs from "fs";
+import expect from "expect";
 import {
   CacheValueSnapshot,
   CacheValueValidationMatcher,
   ScreenCapturerResult,
 } from "@/types";
-import fs from "fs";
-import * as testEnvUtils from "./testEnvUtils";
-import expect from "expect";
+import { mockCache, mockedCacheFile } from "../../test-utils/cache";
+import { CacheHandler } from "./CacheHandler";
+import { TestContext } from "../testContext";
+import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 
 jest.mock("fs");
 jest.mock("../snapshot/comparator/SnapshotComparator");
@@ -16,6 +16,7 @@ jest.mock("../snapshot/comparator/SnapshotComparator");
 describe("CacheHandler", () => {
   let cacheHandler: CacheHandler;
   let mockSnapshotComparator: jest.Mocked<SnapshotComparator>;
+  let mockTestContext: TestContext;
 
   const CACHED_VALUE = {
     value: { code: "code to run" },
@@ -40,13 +41,13 @@ describe("CacheHandler", () => {
       compareSnapshot: jest.fn().mockReturnValue(false),
     } as unknown as jest.Mocked<SnapshotComparator>;
 
-    // Mock the getCurrentJestTestFilePath to return undefined by default
-    jest
-      .spyOn(testEnvUtils, "getCurrentTestFilePath")
-      .mockReturnValue(undefined);
+    mockTestContext = new TestContext({
+      getCurrentTestFilePath: jest.fn(),
+    });
 
     cacheHandler = new CacheHandler(
       mockSnapshotComparator as unknown as SnapshotComparator,
+      mockTestContext,
     );
   });
 
@@ -156,7 +157,7 @@ describe("CacheHandler", () => {
     });
 
     it("should return undefined when cache is disabled", () => {
-      cacheHandler = new CacheHandler(mockSnapshotComparator, {
+      cacheHandler = new CacheHandler(mockSnapshotComparator, mockTestContext, {
         shouldOverrideCache: true,
       });
 
@@ -303,7 +304,7 @@ describe("CacheHandler", () => {
 
   describe("generateCacheKey", () => {
     it("should return undefined if cache is disabled", () => {
-      cacheHandler = new CacheHandler(mockSnapshotComparator, {
+      cacheHandler = new CacheHandler(mockSnapshotComparator, mockTestContext, {
         shouldUseCache: false,
       });
 
@@ -326,7 +327,7 @@ describe("CacheHandler", () => {
     });
 
     it("should return false when shouldUseCache is false", () => {
-      cacheHandler = new CacheHandler(mockSnapshotComparator, {
+      cacheHandler = new CacheHandler(mockSnapshotComparator, mockTestContext, {
         shouldUseCache: false,
       });
       expect(cacheHandler.isCacheInUse()).toBe(false);
@@ -334,29 +335,28 @@ describe("CacheHandler", () => {
   });
 
   describe("cache file path handling", () => {
-    beforeEach(() => {
-      jest.spyOn(testEnvUtils, "getCurrentTestFilePath").mockReset();
-    });
-
-    it("should use default cache path when no Jest test path is available", () => {
-      jest
-        .spyOn(testEnvUtils, "getCurrentTestFilePath")
-        .mockReturnValue(undefined);
+    it("should use default cache path when no test path is available", () => {
       (fs.existsSync as jest.Mock).mockReturnValue(false);
 
-      const newCacheHandler = new CacheHandler(mockSnapshotComparator);
+      const newCacheHandler = new CacheHandler(
+        mockSnapshotComparator,
+        mockTestContext,
+      );
 
       const cacheFilePath = (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain("__pilot_cache__/global.json");
     });
 
-    it("should use Jest test file path when available", () => {
+    it("should use test file path when available", () => {
       const mockTestPath = "/path/to/test/myTest.test.ts";
-      jest
-        .spyOn(testEnvUtils, "getCurrentTestFilePath")
-        .mockReturnValue(mockTestPath);
+      const testContextWithPath = new TestContext({
+        getCurrentTestFilePath: jest.fn().mockReturnValue(mockTestPath),
+      });
 
-      const newCacheHandler = new CacheHandler(mockSnapshotComparator);
+      const newCacheHandler = new CacheHandler(
+        mockSnapshotComparator,
+        testContextWithPath,
+      );
 
       const cacheFilePath = (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain(
@@ -366,15 +366,41 @@ describe("CacheHandler", () => {
 
     it("should use explicit cache file path when provided", () => {
       const explicitPath = "/custom/path/cache.json";
+      const testContext = new TestContext();
 
       const newCacheHandler = new CacheHandler(
         mockSnapshotComparator,
+        testContext,
         {},
         explicitPath,
       );
 
       const cacheFilePath = (newCacheHandler as any).cacheFilePath;
       expect(cacheFilePath).toContain("/custom/path/cache.json");
+    });
+
+    it("should use the explicit cache file path for cache operations", () => {
+      const explicitPath = "/custom/path/explicit-cache.json";
+      const testContext = new TestContext();
+      const newCacheHandler = new CacheHandler(
+        mockSnapshotComparator,
+        testContext,
+        {},
+        explicitPath,
+      );
+
+      // Add to cache and flush
+      newCacheHandler.addToTemporaryCacheValidationMatcherBased(
+        "explicitKey",
+        { code: "explicit code" },
+        "explicit validation",
+      );
+      newCacheHandler.flushTemporaryCache();
+
+      // Check that fs.writeFileSync was called with the explicit path
+      expect((fs.writeFileSync as jest.Mock).mock.calls[0][0]).toBe(
+        explicitPath,
+      );
     });
   });
 });

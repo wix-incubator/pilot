@@ -28,6 +28,9 @@ const pilot = new Pilot({
       shouldUseCache: true,
       shouldOverrideCache: false
     }
+  },
+  testContext: {
+    getCurrentTestFilePath: () => '/path/to/my/test.spec.ts'
   }
 });
 ```
@@ -252,11 +255,27 @@ interface Config {
     loggerDelegate?: LoggerDelegate;
     /** Optional behavior settings */
     options?: PilotOptions;
+    /**
+     * Configuration for test context awareness.
+     *
+     * Allows you to customize how the system detects the current test file path (for logging, cache, etc).
+     * If omitted, a default implementation is used that works with Jest and most test runners.
+     */
+    testContext?: TestContext;
 }
 
 interface PilotOptions {
     /** Cache options */
     cacheOptions?: CacheOptions;
+}
+
+interface TestContext {
+    /**
+     * Returns the absolute path to the current test file.
+     * Override this if you use a custom test runner or need special logic.
+     * If not provided, a default implementation is used.
+     */
+    getCurrentTestFilePath?: () => string | undefined;
 }
 
 interface CacheOptions {

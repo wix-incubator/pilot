@@ -5,6 +5,7 @@ import {
   TestingFrameworkAPICatalogCategory,
   AutoReviewSectionConfig,
 } from "@/types";
+import { TestContext } from "@/common/testContext";
 import { PilotError } from "@/errors/PilotError";
 import { StepPerformer } from "@/performers/step-performer/StepPerformer";
 import { CacheHandler } from "@/common/cacheHandler/CacheHandler";
@@ -46,8 +47,15 @@ export class Pilot {
   private autoPerformer: AutoPerformer;
   private screenCapturer: ScreenCapturer;
   private snapshotComparator: SnapshotComparator;
+  private testContext: TestContext;
 
   constructor(config: Config) {
+    // Create test context with defaults handled internally
+    this.testContext = new TestContext(config.testContext);
+
+    // Configure the logger with our test context
+    logger.setTestContext(this.testContext);
+
     // Configure logger delegate if provided
     if (config.loggerDelegate) {
       logger.setDelegate(config.loggerDelegate);
@@ -63,6 +71,7 @@ export class Pilot {
 
     this.cacheHandler = new CacheHandler(
       this.snapshotComparator,
+      this.testContext,
       config.options?.cacheOptions,
     );
     this.stepPerformerPromptCreator = new StepPerformerPromptCreator(

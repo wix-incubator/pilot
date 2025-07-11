@@ -11,7 +11,7 @@ import {
 } from "@/types";
 import { SnapshotComparator } from "../snapshot/comparator/SnapshotComparator";
 import logger from "@/common/logger";
-import { getCurrentTestFilePath } from "./testEnvUtils";
+import { TestContext } from "@/common/testContext";
 import { CodeEvaluator } from "@/common/CodeEvaluator";
 
 /**
@@ -27,7 +27,8 @@ export class CacheHandler {
   private temporaryCache: Map<string, Array<CacheValue<unknown>>> = new Map();
   private readonly overrideCacheFilePath: string | undefined;
   private cacheFilePath: string;
-  private cacheOptions?: CacheOptions;
+  private cacheOptions: Required<CacheOptions>;
+  private testContext: TestContext;
   private snapshotComparator: SnapshotComparator;
   private codeEvaluator: CodeEvaluator;
   private resolvedCacheFilePath?: string;
@@ -35,24 +36,27 @@ export class CacheHandler {
   /**
    * Creates a new CacheHandler instance
    * @param snapshotComparator The snapshot comparator to use for hash generation and comparison
+   * @param testContext Test context containing the current test file path function
    * @param cacheOptions Cache configuration options
    * @param cacheFilePath Optional explicit cache file path override
    */
   constructor(
     snapshotComparator: SnapshotComparator,
+    testContext: TestContext,
     cacheOptions: CacheOptions = {},
     cacheFilePath?: string,
   ) {
     this.overrideCacheFilePath = cacheFilePath;
     this.cacheOptions = this.createCacheOptionsWithDefaults(cacheOptions);
     this.snapshotComparator = snapshotComparator;
+    this.testContext = testContext;
     this.cacheFilePath = this.determineCurrentCacheFilePath();
     this.codeEvaluator = new CodeEvaluator();
   }
 
   private createCacheOptionsWithDefaults(
     cacheOptions: CacheOptions,
-  ): CacheOptions {
+  ): Required<CacheOptions> {
     return {
       shouldUseCache: cacheOptions.shouldUseCache ?? true,
       shouldOverrideCache: cacheOptions.shouldOverrideCache ?? false,
@@ -323,7 +327,7 @@ export class CacheHandler {
    * @returns The resolved cache file path
    */
   private getCacheFilePath(): string {
-    const callerPath = getCurrentTestFilePath();
+    const callerPath = this.testContext.getCurrentTestFilePath();
 
     if (callerPath) {
       this.resolvedCacheFilePath = this.getCallerCacheFilePath(callerPath);
