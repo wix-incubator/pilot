@@ -35,7 +35,7 @@
     "@wix-pilot/basewebdriver": "^1.0.1"
   },
   "peerDependencies": {
-    "@wix-pilot/core": "^3.4.0"
+    "@wix-pilot/core": "^3.4.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
