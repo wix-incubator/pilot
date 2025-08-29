@@ -191,6 +191,10 @@ export class CacheHandler {
    * Persist temporary cache to permanent cache and save to file
    */
   public flushTemporaryCache(): void {
+    if (this.temporaryCache.size === 0) {
+      return;
+    }
+
     this.temporaryCache.forEach((values, key) => {
       const existingValues = this.cache.get(key) || [];
       this.cache.set(key, [...existingValues, ...values]);
