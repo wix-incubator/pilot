@@ -49,6 +49,6 @@
     "vitest": "^3.2.3"
   },
   "peerDependencies": {
-    "@wix-pilot/core": "^3.4.1"
+    "@wix-pilot/core": "^3.4.2"
   }
 }
