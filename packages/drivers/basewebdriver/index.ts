@@ -7,6 +7,7 @@ import type {
 } from "@wix-pilot/core";
 import { baseDriverCategories } from "./baseDriverCategories";
 import extendAPICategories from "./extendAPICategories";
+export { default as getCleanDOM } from "./utils/getCleanDOM";
 
 export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
   private driverUtils: WebTestingFrameworkDriverHelper;
