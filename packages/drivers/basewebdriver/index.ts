@@ -59,6 +59,81 @@ export class BaseWebDriver<T extends Page> implements TestingFrameworkDriver {
   }
 
   /**
+   * Get clean DOM from the page content
+   * - Removes hidden elements
+   * - Removes ads, analytics, tracking elements
+   * - Removes unnecessary attributes
+   * - Removes empty elements
+   * @param page - The page object to extract clean DOM from
+   */
+  async getCleanDOM(page: T): Promise<string> {
+    // Type assertion needed because Page interface doesn't include waitForSelector
+    // but both Puppeteer and Playwright pages have it
+    const pageWithWait = page as any;
+    await pageWithWait.waitForSelector("body");
+
+    return await page.evaluate(() => {
+      const copiedDocument = document.cloneNode(true) as Document;
+
+      copiedDocument
+        .querySelectorAll('[hidden], [aria-hidden="true"]')
+        .forEach((el) => el.remove());
+
+      const removeSelectors = [
+        "script",
+        "style",
+        "link",
+        "meta",
+        "noscript",
+        "iframe",
+        '[class*="ads"]',
+        '[id*="ads"]',
+        '[class*="analytics"]',
+        '[class*="tracking"]',
+        "footer",
+        "header",
+        "nav",
+        "path",
+        "aside",
+      ];
+
+      const allowedAttributes = [
+        "src",
+        "href",
+        "alt",
+        "title",
+        "aria-label",
+        "aria-labelledby",
+        "aria-describedby",
+        "aria-hidden",
+        "role",
+        "class",
+        "id",
+        "data-*",
+      ];
+
+      copiedDocument.querySelectorAll("*").forEach((el) => {
+        Array.from(el.attributes).forEach((attr) => {
+          if (!allowedAttributes.includes(attr.name)) {
+            el.removeAttribute(attr.name);
+          }
+        });
+
+        if (!el.innerHTML.trim()) {
+          el.remove();
+        }
+      });
+
+      removeSelectors.forEach((selector) => {
+        copiedDocument.querySelectorAll(selector).forEach((el) => el.remove());
+      });
+
+      const mainContent = copiedDocument.body.innerHTML;
+      return mainContent.replace(/\s+/g, " ").trim();
+    });
+  }
+
+  /**
    * Extends a base web api catalog with framework specific methods
    */
   get apiCatalog(): TestingFrameworkAPICatalog {
