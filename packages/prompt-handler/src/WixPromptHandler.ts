@@ -17,7 +17,7 @@ export class WixPromptHandler {
   private model: string;
 
   constructor(options: WixPromptHandlerOptions = {}) {
-    this.model = options.model || "SONNET_4_0";
+    this.model = options.model || "SONNET_4_5";
   }
 
   async uploadImage(imagePath: string): Promise<string> {
