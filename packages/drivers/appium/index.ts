@@ -87,7 +87,7 @@ export class WebdriverIOAppiumFrameworkDriver
                 "Locate an element by its accessibility ID (commonly used in Appium).",
               example: `const loginButton = await $('~loginButton'); // Accessibility ID`,
               guidelines: [
-                "Always prefer using test IDs when available; if no ID is present, use another stable identifier.",
+                "Always use Accessibility IDs when available as primary and first choice selector; if no ID is present, use another stable identifier.",
               ],
             },
             {
@@ -100,11 +100,19 @@ export class WebdriverIOAppiumFrameworkDriver
               ],
             },
             {
-              signature: `$('ios=predicateString')`,
+              signature: `$('-ios predicate string:YOUR_PREDICATE')`,
               description: "Locate an element using an iOS NSPredicate string.",
-              example: `const el = await $('ios=predicate string:type == "XCUIElementTypeButton" AND name == "Login"');`,
+              example: `const el = await $('-ios predicate string:type == "XCUIElementTypeButton" AND name == "Login"');`,
               guidelines: [
-                "For iOS, use NSPredicate strings to define clear and concise conditions for element identification. Validate the predicate to ensure it uniquely identifies the element.",
+                "For iOS, use NSPredicate strings to define clear and concise conditions for element identification.",
+              ],
+            },
+            {
+              signature: `$('-ios class chain: string')`,
+              description: "Locate an element using an iOS Class Chain string.",
+              example: `const el = await $('-ios class chain: **/XCUIElementTypeButton[\`name == "Login"\`]');`,
+              guidelines: [
+                "For iOS, use Class Chain strings to define clear and concise conditions for element identification.",
               ],
             },
             {
