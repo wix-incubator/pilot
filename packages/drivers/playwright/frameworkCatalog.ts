@@ -12,6 +12,7 @@ export const createAPICatalog: TestingFrameworkAPICatalog = {
   },
   restrictions: [
     "Never use `expect` directly on the `page` object (e.g., `await expect(page).toBeVisible()`). Assertions must be made on `Locator` objects (e.g., `await expect(page.locator('.my-element')).toBeVisible();`). Refer to the 'Locator Assertions' category and the official Playwright documentation for correct usage: https://playwright.dev/docs/api/class-locatorassertions",
+    "Never use `waitFor()` on elements returned by `findElement()`. The `findElement()` function returns an ElementHandle, not a Locator. ElementHandles do not have a `waitFor()` method. Use ElementHandle methods directly: `click()`, `fill()`, `type()`, `press()`, etc. If you need to wait, use `page.waitForSelector()` or `page.waitForLoadState()` before calling findElement.",
   ],
   categories: [
     {
