@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "workspaces": [
     "packages/*",
-    "packages/*/*"
+    "packages/*/*",
+    "website"
   ],
   "scripts": {
     "build": "npm run build:web-utils && npm run build:others",
