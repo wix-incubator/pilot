@@ -32,7 +32,7 @@
     "url": "https://github.com/wix-incubator/pilot/issues"
   },
   "dependencies": {
-    "@wix-pilot/web-utils": "^2.1.0",
-    "@wix-pilot/core": "^3.4.2"
+    "@wix-pilot/core": "^3.4.2",
+    "@wix-pilot/web-utils": "^2.1.0"
   }
 }

@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
-    "axios": "^1.7.9",
-    "@wix-pilot/prompt-handler": "^0.1.0"
+    "@wix-pilot/prompt-handler": "^0.1.0",
+    "axios": "^1.7.9"
   }
 }
