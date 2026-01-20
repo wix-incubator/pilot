@@ -10,7 +10,6 @@ permissions:
   pages: write
   id-token: write
 
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -29,12 +28,7 @@ jobs:
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: 20
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set Yarn version
-        run: corepack prepare yarn@4.12.0 --activate
+          cache: 'yarn'
 
       - name: Install dependencies
         working-directory: website
@@ -47,7 +41,6 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
-    
       - name: Create Pages artifact
         run: |
           tar \
