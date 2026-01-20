@@ -26,8 +26,8 @@
     "release:minor:alpha": "node ../../../scripts/release-package.js minor --prerelease",
     "release:major": "node ../../../scripts/release-package.js major",
     "release:major:alpha": "node ../../../scripts/release-package.js major --prerelease",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint . --ext .ts --ignore-pattern NewApp/",
+    "lint:fix": "eslint . --ext .ts --fix --ignore-pattern NewApp/",
     "type-check": "tsc --noEmit"
   },
   "bugs": {
