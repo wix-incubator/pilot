@@ -9,9 +9,7 @@ import { waitForStableState } from "./utils/getStableViewHierarchy";
 import os from "os";
 import { findTextLocation } from "./utils/findTextLocation";
 
-export class WebdriverIOAppiumFrameworkDriver
-  implements TestingFrameworkDriver
-{
+export class WebdriverIOAppiumFrameworkDriver implements TestingFrameworkDriver {
   constructor() {}
 
   /**
