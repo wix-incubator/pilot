@@ -33,7 +33,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: NPQ_PKG_MGR=yarn npx npq install -y
+        run: echo y | NPQ_PKG_MGR=yarn npx npq install
 
       - name: Build website
         run: yarn workspace website build
