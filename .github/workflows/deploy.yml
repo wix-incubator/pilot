@@ -5,6 +5,16 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build Docusaurus
@@ -23,32 +33,48 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Set Yarn version
+        run: corepack prepare yarn@4.10.0 --activate
+
       - name: Install dependencies
         working-directory: website
-        run: NPQ_PKG_MGR=yarn npx npq install
+        run: NPQ_PKG_MGR=yarn npx npq@3 install
 
       - name: Build website
         working-directory: website
         run: yarn build
 
-      - name: Upload Build Artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+      - name: Setup Pages
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+    
+      - name: Create Pages artifact
+        run: |
+          tar \
+            --dereference --hard-dereference \
+            --directory website/build \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            .
+
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         with:
-          path: website/build
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
 
   deploy:
     name: Deploy to GitHub Pages
     needs: build
-
-    permissions:
-      pages: write
-      id-token: write
+    runs-on: ubuntu-latest
 
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

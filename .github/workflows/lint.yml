@@ -22,8 +22,11 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Set Yarn version
+        run: corepack prepare yarn@4.10.0 --activate
+
       - name: Install dependencies
-        run: NPQ_PKG_MGR=yarn npx npq install
+        run: NPQ_PKG_MGR=yarn npx npq@3 install
 
       - name: Run ESLint
         run: yarn lint
