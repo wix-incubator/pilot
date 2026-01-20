@@ -24,9 +24,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        working-directory: website
         run: NPQ_PKG_MGR=yarn npx npq install -y
 
       - name: Test build website
-        working-directory: website
-        run: yarn build
+        run: yarn workspace website build

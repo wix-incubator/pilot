@@ -33,12 +33,10 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        working-directory: website
         run: NPQ_PKG_MGR=yarn npx npq install -y
 
       - name: Build website
-        working-directory: website
-        run: yarn build
+        run: yarn workspace website build
 
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
