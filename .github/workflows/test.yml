@@ -25,7 +25,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: NPQ_PKG_MGR=yarn npx npq install
+        run: NPQ_PKG_MGR=yarn npx npq install -y
 
       - name: Build packages
         run: yarn build
