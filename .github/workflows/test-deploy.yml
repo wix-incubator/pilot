@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: website
-        run: NPQ_PKG_MGR=yarn yarn dlx npq install
+        run: NPQ_PKG_MGR=yarn npx npq install
 
       - name: Test build website
         working-directory: website

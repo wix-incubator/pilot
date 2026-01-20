@@ -28,7 +28,7 @@ jobs:
         run: corepack prepare yarn@4.12.0 --activate
 
       - name: Install dependencies
-        run: NPQ_PKG_MGR=yarn yarn dlx npq install
+        run: NPQ_PKG_MGR=yarn npx npq install
 
       - name: Build packages
         run: yarn build
