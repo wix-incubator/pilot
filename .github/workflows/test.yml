@@ -20,10 +20,12 @@ jobs:
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: 20
-          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: NPQ_PKG_MGR=yarn npx npq install
+        run: yarn install
 
       - name: Build packages
         run: yarn build
