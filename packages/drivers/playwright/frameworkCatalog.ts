@@ -16,6 +16,23 @@ export const createAPICatalog: TestingFrameworkAPICatalog = {
   ],
   categories: [
     {
+      title: "Using findElement",
+      items: [
+        {
+          signature: "const element = await findElement(page, attributes)",
+          description: "Finds an element by attributes. Returns an ElementHandle, not a Locator.",
+          example: `const page = getCurrentPage();
+const button = await findElement(page, { "aria-pilot-category": "button" });
+await button.click();`,
+          guidelines: [
+            "findElement returns ElementHandle - use click(), fill(), type() directly.",
+            "Do NOT use waitFor() or expect().toBeVisible() on ElementHandle.",
+            "For waiting, use page.waitForSelector() before findElement.",
+          ],
+        },
+      ],
+    },
+    {
       title: "Browser and Context Setup",
       items: [
         {
