@@ -20,7 +20,8 @@ export const createAPICatalog: TestingFrameworkAPICatalog = {
       items: [
         {
           signature: "const element = await findElement(page, attributes)",
-          description: "Finds an element by attributes. Returns an ElementHandle, not a Locator.",
+          description:
+            "Finds an element by attributes. Returns an ElementHandle, not a Locator.",
           example: `const page = getCurrentPage();
 const button = await findElement(page, { "aria-pilot-category": "button" });
 await button.click();`,
