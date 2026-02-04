@@ -357,6 +357,63 @@ await driver.performTouchAction({
           ],
         },
         {
+          title: "Scrolling and Swiping",
+          items: [
+            {
+              signature: `driver.executeScript('mobile: scroll', [{ direction, elementId? }])`,
+              description:
+                "Scrolls in the specified direction. The second argument MUST be an array containing the options object.",
+              example: `// Scroll down on the entire screen
+await driver.executeScript('mobile: scroll', [{ direction: 'down' }]);
+
+// Scroll within a specific element
+const scrollView = await $('XCUIElementTypeScrollView');
+await driver.executeScript('mobile: scroll', [{
+  direction: 'down',
+  elementId: scrollView.elementId
+}]);`,
+              guidelines: [
+                "The second argument to executeScript must be an array, not a plain object.",
+                "Valid directions: 'up', 'down', 'left', 'right'.",
+                "For iOS, use 'elementId' (not 'element') to specify the scrollable container.",
+                "If no elementId is provided, scrolls the entire screen.",
+              ],
+            },
+            {
+              signature: `driver.executeScript('mobile: swipe', [{ direction, elementId?, velocity? }])`,
+              description:
+                "Performs a swipe gesture in the specified direction. The second argument MUST be an array.",
+              example: `// Swipe left on an element (e.g., to delete)
+const listItem = await $('~myListItem');
+await driver.executeScript('mobile: swipe', [{
+  direction: 'left',
+  elementId: listItem.elementId,
+  velocity: 2500
+}]);`,
+              guidelines: [
+                "The second argument to executeScript must be an array, not a plain object.",
+                "Use swipe for faster gestures, scroll for controlled navigation.",
+                "velocity is optional and controls swipe speed (default varies by platform).",
+              ],
+            },
+            {
+              signature: `driver.executeScript('mobile: scrollToElement', [{ elementId, toVisible? }])`,
+              description:
+                "Scrolls until a specific element becomes visible (iOS only).",
+              example: `// Find and scroll to an element
+const targetElement = await $('~targetElement');
+await driver.executeScript('mobile: scrollToElement', [{
+  elementId: targetElement.elementId,
+  toVisible: true
+}]);`,
+              guidelines: [
+                "The second argument to executeScript must be an array.",
+                "This is iOS-specific; for Android, use UiScrollable selectors.",
+              ],
+            },
+          ],
+        },
+        {
           title: "Find text location on screen",
           items: [
             {

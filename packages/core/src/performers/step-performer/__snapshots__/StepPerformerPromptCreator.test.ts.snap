@@ -107,6 +107,10 @@ Please follow these steps carefully:
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
 
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
+
 ### Examples
 
 #### Example of throwing an informative error:
@@ -232,6 +236,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -376,6 +384,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -526,6 +538,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -696,6 +712,10 @@ Please follow these steps carefully:
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
 
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
+
 ### Examples
 
 #### Example of throwing an informative error:
@@ -828,6 +848,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -976,6 +1000,10 @@ Please follow these steps carefully:
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
 
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
+
 ### Examples
 
 #### Example of throwing an informative error:
@@ -1101,6 +1129,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -1236,6 +1268,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -1376,6 +1412,10 @@ Please follow these steps carefully:
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
 
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
+
 ### Examples
 
 #### Example of throwing an informative error:
@@ -1511,6 +1551,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
@@ -1655,6 +1699,10 @@ Please follow these steps carefully:
 ### Verify the prompt
 
 Before generating the code, please review the provided context and instructions to ensure they are clear and unambiguous. If you encounter any issues or have questions, please throw an informative error explaining the problem.
+
+### Guidelines
+
+Do not return natural language descriptions, explanations, or summaries. Your response must contain ONLY executable code wrapped in the appropriate tags.
 
 ### Examples
 
