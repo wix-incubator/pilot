@@ -1,6 +1,6 @@
 {
   "name": "@wix-pilot/webdriverio-appium",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "WebdriverIO and Appium driver for Wix Pilot usage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
